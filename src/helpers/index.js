@@ -1,6 +1,7 @@
 export * from './Accept'
 export * from './CheckModules'
 export * from './CheckProp'
+export * from './ComandModules'
 export * from './DataFormat'
 export * from './DateFormat'
 export * from './Fetch'

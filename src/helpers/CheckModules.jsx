@@ -1,1 +1,1 @@
-export const checkModules = (menu, modules) => menu.filter(link => link.meta ? link.meta.filter(m => modules.find(acc => acc === m)).length === link.meta.length : link).map(link => ({ ...link, children: link.children && checkModules(link.children, modules) }))
+export const checkModules = (menu, modules) => menu.filter(link => link.meta ? link.meta.filter(m => modules.find(acc => acc === m)).length === link.meta.length : link).map(link => ({ ...link, children: link.children ? checkModules(link.children, modules) : null }))

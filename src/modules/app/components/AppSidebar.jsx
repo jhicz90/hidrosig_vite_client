@@ -29,13 +29,13 @@ export const AppSidebar = () => {
                 </PerfectScrollbar> */}
                 <Sidebar />
                 <div
-                className="nav-footer user-select-none"
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent:'center'
-                }}
+                    className="nav-footer user-select-none"
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
                 >
                     <FaWifi color={isOnline ? '#4caf50' : '#f44336'} />
                     <span className="ms-1">{isOnline ? "Conectado" : "Desconectado"}</span>
@@ -49,7 +49,6 @@ export const AppSidebar = () => {
 const Sidebar = () => {
 
     const { modAccess: modules } = useSelector(state => state.auth)
-
     const menu = modules[0] === secretAccess ? menuModule : checkModules(menuModule, modules)
 
     return (

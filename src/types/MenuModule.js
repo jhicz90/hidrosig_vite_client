@@ -40,6 +40,7 @@ export const menuModule = [
         icon: 1081,
         to: 'user_reg',
         meta: ['userreg'],
+        detail: 'Lista de usuarios y predios inscritos en el sistema.',
         children: [
             {
                 label: 'Resumen',

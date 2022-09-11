@@ -2,18 +2,20 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 // import { ResourceUpload } from '../../components'
-import { AppHeader, AppSidebar } from '../components'
+import { AppComandBar, AppHeader, AppSidebar } from '../components'
 
 export const Layout = () => {
     return (
         <RootApp className='root-app animate__animated animate__fadeIn'>
-            <AppHeader />
-            <AppSidebar />
-            <ContentApp className='content-app'>
-                {/* <AppHeaderNav /> */}
-                <Outlet />
-            </ContentApp>
-            {/* <ResourceUpload /> */}
+            <AppComandBar>
+                <AppHeader />
+                <AppSidebar />
+                <ContentApp className='content-app'>
+                    {/* <AppHeaderNav /> */}
+                    <Outlet />
+                </ContentApp>
+                {/* <ResourceUpload /> */}
+            </AppComandBar>
         </RootApp>
     )
 }
