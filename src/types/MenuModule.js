@@ -1,12 +1,16 @@
+import { FcCalculator, FcConferenceCall, FcHome, FcOpenedFolder, FcOrganization, FcPuzzle, FcSalesPerformance, FcSettings, FcTreeStructure } from 'react-icons/all'
+
 export const menuModule = [
     {
         label: 'Página principal',
         icon: 1068,
+        rcIcon: FcHome,
         to: 'home',
     },
     {
         label: 'Ámbito',
         icon: 4001,
+        rcIcon: FcOrganization,
         to: 'ambit',
         meta: ['ambit'],
         detail: 'Vista resumen del módulo de Ámbito.',
@@ -38,6 +42,7 @@ export const menuModule = [
     {
         label: 'Padrón de usuarios',
         icon: 1081,
+        rcIcon: FcConferenceCall,
         to: 'user_reg',
         meta: ['userreg'],
         detail: 'Lista de usuarios y predios inscritos en el sistema.',
@@ -69,6 +74,7 @@ export const menuModule = [
     {
         label: 'Esquema de riego',
         icon: 1088,
+        rcIcon: FcTreeStructure,
         to: 'schm',
         meta: ['irrigschm'],
         children: [
@@ -95,6 +101,7 @@ export const menuModule = [
     {
         label: 'Recaudación de tarifa',
         icon: 1046,
+        rcIcon: FcSalesPerformance,
         to: 'collect',
         meta: ['ratecollect'],
         children: [
@@ -115,6 +122,7 @@ export const menuModule = [
     {
         label: 'Contabilidad',
         icon: 1089,
+        rcIcon: FcCalculator,
         to: 'acct',
         meta: ['accounting'],
         children: [
@@ -133,6 +141,7 @@ export const menuModule = [
     {
         label: 'Archivos',
         icon: 1029,
+        rcIcon: FcOpenedFolder,
         to: 'exp',
         meta: ['explorer'],
         children: [
@@ -151,6 +160,7 @@ export const menuModule = [
     {
         label: 'SIGA',
         icon: 9000,
+        rcIcon: FcPuzzle,
         to: 'siga',
         meta: ['siga'],
         children: [
@@ -169,6 +179,7 @@ export const menuModule = [
     {
         label: 'Ajustes de sistema',
         icon: 1060,
+        rcIcon: FcSettings,
         to: 'sys',
         meta: ['system'],
         children: [

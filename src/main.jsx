@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './SIHGApp'
 // ESTILOS
+import 'react-cmdk/dist/cmdk.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'animate.css'
 import './style/index.css'

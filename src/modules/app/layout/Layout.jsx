@@ -7,15 +7,14 @@ import { AppComandBar, AppHeader, AppSidebar } from '../components'
 export const Layout = () => {
     return (
         <RootApp className='root-app animate__animated animate__fadeIn'>
-            <AppComandBar>
-                <AppHeader />
-                <AppSidebar />
-                <ContentApp className='content-app'>
-                    {/* <AppHeaderNav /> */}
-                    <Outlet />
-                </ContentApp>
-                {/* <ResourceUpload /> */}
-            </AppComandBar>
+            <AppHeader />
+            <AppSidebar />
+            <ContentApp className='content-app'>
+                {/* <AppHeaderNav /> */}
+                <Outlet />
+            </ContentApp>
+            {/* <ResourceUpload /> */}
+            <AppComandBar />
         </RootApp>
     )
 }
