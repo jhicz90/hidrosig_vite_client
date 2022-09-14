@@ -2,7 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 // import { ResourceUpload } from '../../components'
-import { AppComandBar, AppHeader, AppSidebar } from '../components'
+import { AppComandBar, AppHeader, AppSidebar, AppToolboxBar } from '../components'
 
 export const Layout = () => {
     return (
@@ -10,7 +10,7 @@ export const Layout = () => {
             <AppHeader />
             <AppSidebar />
             <ContentApp className='content-app'>
-                {/* <AppHeaderNav /> */}
+                <AppToolboxBar />
                 <Outlet />
             </ContentApp>
             {/* <ResourceUpload /> */}

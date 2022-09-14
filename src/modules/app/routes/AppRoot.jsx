@@ -1,18 +1,13 @@
-import React, { useEffect, useLayoutEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
+import React, { useLayoutEffect } from 'react'
 import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom'
 // import socketClient from 'socket.io-client'
 
 import { Layout } from '../layout'
 
-// import { startChecking, startLogout, startUpdateActiveUserSysNewData, } from '../actions'
-// import { msgAlert } from '../../../helpers'
 import { GuardRoute } from '../../../guards/GuardRoute'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
-// import { SigaRoutes } from '../modules/siga/routes/SigaRoutes'
-// import { UserSysRoutes } from '../modules/usersys/routes/UserSysRoutes'
-// import { PettyCashRoutes } from '../modules/pettycash/routes/PettyCashRoutes'
+import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 // const secretAccess = process.env.REACT_APP_SECRET_ACCESS
@@ -158,17 +153,17 @@ export const AppRoot = () => {
                         <Route path={`irrig/wtsrc/:id`} element={<GuardRoute meta={['irrigschm', 'irrignet']} component={WaterSourceEdit} />} />
                         <Route path={`var`} element={<GuardRoute meta={['irrigschm', 'variables']} component={VariableList} />} />
                     </Route>*/}
-                    {/* <Route path={`acct/*`} element={<PettyCashRoutes />} />
-                    <Route path={`siga/*`} element={<SigaRoutes />} />
+                    {/* <Route path={`acct/*`} element={<PettyCashRoutes />} /> */}
+                    {/* <Route path={`siga/*`} element={<SigaRoutes />} /> */}
                     <Route path={`sys`}>
                         <Route index element={<SysPageResume />} />
                         <Route path={`user_sys/*`} element={<GuardRoute meta={['system']} component={UserSysRoutes} />} />
-                        <Route path={`occup`} element={<GuardRoute meta={['system', 'occupation']} component={ListOfOccupation} />} />
+                        {/* <Route path={`occup`} element={<GuardRoute meta={['system', 'occupation']} component={ListOfOccupation} />} />
                         <Route path={`occup/:id`} element={<GuardRoute meta={['system', 'occupation']} component={OccupationEdit} />} />
                         <Route path={`perms`} element={<GuardRoute meta={['system', 'permission']} component={ListOfPermission} />} />
                         <Route path={`perms/:id`} element={<GuardRoute meta={['system', 'permission']} component={PermissionEdit} />} />
-                        <Route path={`settings`} element={<GuardRoute meta={['system', 'settings']} component={SystemEdit} />} />
-                    </Route> */}
+                        <Route path={`settings`} element={<GuardRoute meta={['system', 'settings']} component={SystemEdit} />} /> */}
+                    </Route>
                     <Route path={`*`} element={<NotFoundPage />} />
                 </Route>
             </Routes>

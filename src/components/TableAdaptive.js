@@ -11,8 +11,6 @@ const Table = styled(GridTable)`
 
 export const TableAdaptive = ({ columns = [], data = [], onSearchTextChange = null, emptyText = '' }) => {
 
-    // const dataFinal = data.map(c => ({ ...c, key: c._id }))
-
     return (
         <Table
             columns={columns}

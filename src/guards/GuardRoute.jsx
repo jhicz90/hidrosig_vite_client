@@ -5,10 +5,10 @@ const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
 
 export const GuardRoute = ({ meta = [], component: RouteComponent }) => {
 
-    const { modules } = useSelector(state => state.auth)
-    const access = meta.filter(m => modules.find(acc => acc === m))
+    const { modAccess } = useSelector(state => state.auth)
+    const access = meta.filter(m => modAccess.find(acc => acc === m))
 
-    if (modules[0] === secretAccess) {
+    if (modAccess[0] === secretAccess) {
         return <RouteComponent />
     }
 

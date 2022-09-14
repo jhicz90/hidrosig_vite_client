@@ -53,7 +53,9 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
     } catch (err) {
         console.log(err)
         const errorFetch = { ok: false, msg: err.hasOwnProperty('response') ? err.response.data.msg : [{ content: err.message, delay: 5000, type: 'error' }] }
-        msgFetchAlert(errorFetch)
+        
+        if (alert) msgFetchAlert(errorFetch)
+
         return errorFetch
     }
 }
@@ -82,7 +84,7 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                         : value
                 ))
 
-                if (bodyResponse.msg !== undefined && alert) {
+                if (bodyResponse.hasOwnProperty('msg') && alert) {
                     msgFetchAlert(bodyResponse)
                 }
 
@@ -105,7 +107,7 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                         : value
                 ))
 
-                if (bodyResponse.msg !== undefined && alert) {
+                if (bodyResponse.hasOwnProperty('msg') && alert) {
                     msgFetchAlert(bodyResponse)
                 }
 
@@ -117,7 +119,9 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
     } catch (err) {
         console.log(err)
         const errorFetch = { ok: false, msg: err.hasOwnProperty('response') ? err.response.data.msg : [{ content: err.message, delay: 5000, type: 'error' }] }
-        msgFetchAlert(errorFetch)
+
+        if (alert) msgFetchAlert(errorFetch)
+
         return errorFetch
     }
 }
@@ -148,7 +152,9 @@ export const fetchUpFilesByToken = async ({ endpoint = '', data = {}, method = '
     } catch (err) {
         console.log(err)
         const errorFetch = { ok: false, msg: err.hasOwnProperty('response') ? err.response.data.msg : [{ content: err.message, delay: 5000, type: 'error' }] }
-        msgFetchAlert(errorFetch)
+        
+        if (alert) msgFetchAlert(errorFetch)
+        
         return errorFetch
     }
 }

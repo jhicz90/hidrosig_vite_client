@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './SIHGApp'
+// CONFIGURACION JS
+import 'moment/dist/locale/es'
+
 // ESTILOS
 import 'react-cmdk/dist/cmdk.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
