@@ -9,7 +9,7 @@ import { FaRegQuestionCircle } from 'react-icons/fa'
 export const UserSysModuleBanner = () => {
 
     const dispatch = useDispatch()
-    const { active } = useSelector(state => state.usersys)
+    const { active, isSaving } = useSelector(state => state.usersys)
     const [data, setData] = useState(active)
 
     useEffect(() => {
@@ -40,8 +40,8 @@ export const UserSysModuleBanner = () => {
 
     return (
         <Card>
-            <Cover coverImage={data.coverImage.fileName} />
-            <AvatarProfile avatarImg={data.image.fileName} />
+            <Cover coverImage={data.coverImage?.fileName} />
+            <AvatarProfile avatarImg={data.image?.fileName} />
             <Card.Body className='py-0 pb-3'>
                 <div className='row'>
                     <div className='col'>
@@ -62,6 +62,7 @@ export const UserSysModuleBanner = () => {
                             onChange={confirmActiveStatus}
                             checked={data.active}
                             handleDiameter={30}
+                            disabled={isSaving}
                             height={40}
                             width={140}
                             activeBoxShadow='0 0 0 2px #2684ff'

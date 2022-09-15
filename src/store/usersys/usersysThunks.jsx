@@ -16,7 +16,7 @@ export const startListUserSys = (search) => {
         if (resp.ok) {
             dispatch(setListUserSys(resp.docs))
         } else {
-            dispatch(loadListUserSys([]))
+            dispatch(setListUserSys([]))
         }
     }
 }
@@ -147,19 +147,24 @@ export const startUpdateActiveUserSysCover = ({ coverImage }) => {
     }
 }
 
-export const startUpdateActiveUserSysInfo = ({ names, surnames, birthday, docid, occupation, gender, contacts }) => {
+export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid, occupation, gender }) => {
     return async (dispatch, getState) => {
+
+        dispatch(setSaving(true))
+
         const { active } = getState().usersys
         const { _id } = active
 
         const resp = await fetchByToken({
             endpoint: `usersys/profile/${_id}`,
-            data: { names, surnames, birthday, docid, occupation, gender, contacts },
+            data: { names, surnames, birthday, docid, occupation, gender },
             method: 'PUT'
         })
 
+        dispatch(setSaving(false))
+
         if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
+            dispatch(setActiveUserSys(resp.usersys))
             dispatch(startListUserSys())
         }
     }

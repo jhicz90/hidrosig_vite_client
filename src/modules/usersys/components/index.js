@@ -14,3 +14,4 @@
 // export * from './UserSysCreate'
 export * from './UserSysList'
 export * from './ModuleBanner'
+export * from './ModuleInformation'

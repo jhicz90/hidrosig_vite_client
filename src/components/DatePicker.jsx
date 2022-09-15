@@ -1,10 +1,12 @@
 import moment from 'moment'
 import ReactDatePicker from 'react-datepicker'
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { rangeNumber } from '../helpers'
 
 export const DatePicker = (props) => {
     return (
         <ReactDatePicker
+            id={props.id || ''}
             renderCustomHeader={DateHeader}
             dateFormat={'dd/MM/yyyy'}
             selected={moment(props.value).toDate() || new Date()}
@@ -46,10 +48,10 @@ const DateHeader = ({
     <div className='input-group'>
         <button
             style={{ border: '1px solid #ced4da' }}
-            className='btn btn-light'
+            className='btn btn-light ms-1'
             onClick={decreaseMonth}
             disabled={prevMonthButtonDisabled}>
-            <i className='fas fa-chevron-left'></i>
+            <BsChevronLeft />
         </button>
         <select
             className='form-select'
@@ -77,10 +79,10 @@ const DateHeader = ({
         </select>
         <button
             style={{ border: '1px solid #ced4da' }}
-            className='btn btn-light'
+            className='btn btn-light me-1'
             onClick={increaseMonth}
             disabled={nextMonthButtonDisabled}>
-            <i className='fas fa-chevron-right'></i>
+            <BsChevronRight />
         </button>
     </div>
 )

@@ -1,7 +1,11 @@
 import { Button, Card, Container } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const AppToolboxBar = () => {
+
+    const navigate = useNavigate()
+
     return (
         <Container>
             <Card>
@@ -11,7 +15,10 @@ export const AppToolboxBar = () => {
                             Titulo o subtitulo de la página
                         </NavBarInfo>
                         <NavBarTool>
-                            <Button variant='primary'>
+                            <Button
+                                variant='primary'
+                                onClick={() => navigate('/app/sys/user_sys/new')}
+                            >
                                 Nuevo
                             </Button>
                         </NavBarTool>

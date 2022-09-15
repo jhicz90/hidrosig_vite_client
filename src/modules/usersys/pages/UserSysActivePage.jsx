@@ -3,8 +3,8 @@ import { Navigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaIdBadge, FaAddressCard, FaKey, FaLock, FaMobileAlt, FaRegTrashAlt } from 'react-icons/fa'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { setActiveUserSys, startGetUserSys } from '../../../store/usersys'
-import { UserSysModuleBanner } from '../components'
+import { setActiveUserSys, startAddNewUserSys, startGetUserSys } from '../../../store/usersys'
+import { UserSysModuleBanner, UserSysModuleInformation } from '../components'
 
 export const UserSysActivePage = () => {
 
@@ -13,7 +13,12 @@ export const UserSysActivePage = () => {
     const { active } = useSelector(state => state.usersys)
 
     useEffect(() => {
-        if (userid && userid !== '') dispatch(startGetUserSys(userid))
+        if (userid === 'new') {
+            dispatch(startAddNewUserSys())
+        } else if (userid !== '') {
+            dispatch(startGetUserSys(userid))
+        }
+
         return () => dispatch(setActiveUserSys(null))
     }, [userid, dispatch])
 
@@ -32,13 +37,13 @@ export const UserSysActivePage = () => {
                                     title: false,
                                     module: UserSysModuleBanner
                                 },
-                                // {
-                                //     id: 'infousersys',
-                                //     icon: FaAddressCard,
-                                //     name: 'Información básica',
-                                //     title: true,
-                                //     module: UserSysInformationModule
-                                // },
+                                {
+                                    id: 'infousersys',
+                                    icon: FaAddressCard,
+                                    name: 'Información básica',
+                                    title: true,
+                                    module: UserSysModuleInformation
+                                },
                                 // {
                                 //     id: 'accountusersys',
                                 //     icon: FaKey,
