@@ -165,7 +165,7 @@ export const startUpdateActiveUserSysInfo = ({ names, surnames, birthday, docid,
     }
 }
 
-export const startUpdateActiveUserSysActive = ({ state }) => {
+export const startUpdateStatusUserSys = ({ state }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id, names, surnames, active: stateUsersys } = active
@@ -201,7 +201,7 @@ export const startUpdateActiveUserSysActive = ({ state }) => {
                 })
 
                 if (resp.ok) {
-                    dispatch(loadActiveUserSys(resp.usersys))
+                    dispatch(setActiveUserSys(resp.usersys))
                     dispatch(startListUserSys())
                 }
             }

@@ -1,6 +1,7 @@
 body {
     background-color: #ebeef4;
     font-size: 0.875rem;
+    position: relative;
 }
 
 .dropdown.dropdown-noarrow .dropdown-toggle::after {
@@ -529,3 +530,16 @@ kbd.type-writer,
     --bs-btn-active-border-color: #f9fafd;
 }
 /* BUTTON NEUTRAL */
+/* CARD */
+.card {
+    --bs-card-border-radius: 9px;
+    --bs-card-box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1),
+        0 3px 6px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: var(--bs-card-box-shadow);
+}
+/* CARD */
+/* SWEETALERT */
+.swal2-actions {
+    gap: 0.25rem;
+}
+/* SWEETALERT */

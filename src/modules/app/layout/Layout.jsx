@@ -20,7 +20,7 @@ export const Layout = () => {
 }
 
 const RootApp = styled.div`
-    height: 100vh;
+    /* height: 100vh; */
 `
 
 const ContentApp = styled.main`
