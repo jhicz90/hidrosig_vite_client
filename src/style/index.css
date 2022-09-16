@@ -18,6 +18,10 @@ body {
     box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }
 
+.swal2-actions {
+    gap: 0.5rem;
+}
+
 /* LOADING */
 .spinner-wrapper {
     position: relative;
@@ -548,8 +552,3 @@ kbd.type-writer,
     box-shadow: var(--bs-card-box-shadow);
 }
 /* CARD */
-/* SWEETALERT */
-.swal2-actions {
-    gap: 0.25rem;
-}
-/* SWEETALERT */

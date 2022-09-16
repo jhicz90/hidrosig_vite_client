@@ -147,6 +147,56 @@ export const startUpdateActiveUserSysCover = ({ coverImage }) => {
     }
 }
 
+
+export const startUpdateStatusUserSys = ({ state }) => {
+    return async (dispatch, getState) => {
+        const { active } = getState().usersys
+        const { _id, names, surnames, active: stateUsersys } = active
+
+        SwalReact.fire({
+            title:
+                <>
+                    <div className='text-uppercase'>Estado</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
+                </>,
+            html:
+                <>
+                    <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
+                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de este usuario se reiniciaran.</div>
+                </>,
+            showCancelButton: true,
+            confirmButtonText: stateUsersys ? 'Desactivar' : 'Activar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            icon: 'question',
+            customClass: {
+                confirmButton: stateUsersys ? 'btn btn-warning' : 'btn btn-success',
+                cancelButton: 'btn btn-neutral'
+            },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                dispatch(setSaving(true))
+
+                const resp = await fetchByToken({
+                    endpoint: `usersys/active/${_id}`,
+                    data: { active: state },
+                    method: 'PUT'
+                })
+
+                dispatch(setSaving(false))
+
+                if (resp.ok) {
+                    dispatch(setActiveUserSys(resp.usersys))
+                    dispatch(startListUserSys())
+                }
+            }
+        })
+    }
+}
+
 export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid, occupation, gender }) => {
     return async (dispatch, getState) => {
 
@@ -170,40 +220,51 @@ export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid
     }
 }
 
-export const startUpdateStatusUserSys = ({ state }) => {
+export const startUpdateEmailUserSys = ({ newEmail: email }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
-        const { _id, names, surnames, active: stateUsersys } = active
+        const { _id, names, surnames } = active
 
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Estado de la cuenta de usuario</div>
+                    <div className='text-uppercase'>Correo electronico</div>
                     <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
-                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de este usuario se reiniciaran.</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar el correo con: {email}?</div>
+                    <div className='fs-5'>Si es asi, escriba su contraseña para confirmar</div>
                 </>,
             showCancelButton: true,
-            confirmButtonText: stateUsersys ? 'Desactivar' : 'Activar',
+            confirmButtonText: 'Cambiar correo',
             cancelButtonText: 'Cancelar',
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: stateUsersys ? 'btn btn-warning' : 'btn btn-success',
+                confirmButton: 'btn btn-success',
                 cancelButton: 'btn btn-neutral'
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
             },
             buttonsStyling: false,
             reverseButtons: true
         }).then(async (result) => {
             if (result.isConfirmed) {
+
+                dispatch(setSaving(true))
+
+                const passwordConfirm = result.value || ''
+
                 const resp = await fetchByToken({
-                    endpoint: `usersys/active/${_id}`,
-                    data: { active: state },
+                    endpoint: `usersys/changeemail/${_id}`,
+                    data: { passwordConfirm, email },
                     method: 'PUT'
                 })
+
+                dispatch(setSaving(false))
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
@@ -214,61 +275,117 @@ export const startUpdateStatusUserSys = ({ state }) => {
     }
 }
 
-export const startUpdateActiveUserSysUsername = ({ passwordConfirm, username }) => {
+export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
-        const { _id } = active
+        const { _id, names, surnames } = active
 
-        const resp = await fetchByToken({
-            endpoint: `usersys/changeusername/${_id}`,
-            data: { passwordConfirm, username },
-            method: 'PUT'
+        SwalReact.fire({
+            title:
+                <>
+                    <div className='text-uppercase'>Contraseña</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
+                </>,
+            html:
+                <>
+                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar la contraseña?</div>
+                    <div className='fs-5'>Si es asi, escriba la actual contraseña para confirmar</div>
+                </>,
+            showCancelButton: true,
+            confirmButtonText: 'Cambiar contraseña',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            icon: 'question',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-neutral'
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                dispatch(setSaving(true))
+
+                const password = result.value || ''
+
+                const resp = await fetchByToken({
+                    endpoint: `usersys/changepassw/${_id}`,
+                    data: { password, newPassword, newPasswordConfirm },
+                    method: 'PUT'
+                })
+
+                dispatch(setSaving(false))
+
+                if (resp.ok) {
+                    dispatch(setActiveUserSys(resp.usersys))
+                    dispatch(startListUserSys())
+                }
+            }
         })
-
-        if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
-        }
     }
 }
 
-export const startUpdateActiveUserSysEmail = ({ passwordConfirm, email }) => {
+export const startUpdatePermissionUserSys = ({ permission }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
-        const { _id } = active
+        const { _id, names, surnames } = active
 
-        const resp = await fetchByToken({
-            endpoint: `usersys/changeemail/${_id}`,
-            data: { passwordConfirm, email },
-            method: 'PUT'
+        SwalReact.fire({
+            title:
+                <>
+                    <div className='text-uppercase'>Permiso</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
+                </>,
+            html:
+                <>
+                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar el permiso?</div>
+                    <div className='fs-5'>Si es asi, escriba su contraseña para confirmar</div>
+                </>,
+            showCancelButton: true,
+            confirmButtonText: 'Cambiar permiso',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            icon: 'question',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-neutral'
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                dispatch(setSaving(true))
+
+                const passwordConfirm = result.value || ''
+
+                const resp = await fetchByToken({
+                    endpoint: `usersys/changeperm/${_id}`,
+                    data: { passwordConfirm, permission },
+                    method: 'PUT'
+                })
+
+                dispatch(setSaving(false))
+
+                if (resp.ok) {
+                    dispatch(setActiveUserSys(resp.usersys))
+                    dispatch(startListUserSys())
+                }
+            }
         })
-
-        if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
-        }
     }
 }
 
-export const startUpdateActiveUserSysPassword = ({ password, newPassword, newPasswordConfirm }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/changepassw/${_id}`,
-            data: { password, newPassword, newPasswordConfirm },
-            method: 'PUT'
-        })
-
-        if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
-        }
-    }
-}
-
-export const startUpdateActiveUserSysGenerateNewPassword = ({ passwordConfirm }) => {
+export const startGenerateNewPasswordUserSys = () => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id } = active
@@ -287,24 +404,6 @@ export const startUpdateActiveUserSysGenerateNewPassword = ({ passwordConfirm })
                 allowOutsideClick: false,
                 icon: 'success'
             })
-            dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
-        }
-    }
-}
-
-export const startUpdateActiveUserSysPermission = ({ passwordConfirm, permission }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/changeperm/${_id}`,
-            data: { passwordConfirm, permission },
-            method: 'PUT'
-        })
-
-        if (resp.ok) {
             dispatch(loadActiveUserSys(resp.usersys))
             dispatch(startListUserSys())
         }

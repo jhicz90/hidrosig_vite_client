@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { FaIdBadge, FaAddressCard, FaKey, FaLock, FaMobileAlt, FaRegTrashAlt } from 'react-icons/fa'
+import { BsKey, BsPersonBadge, BsShieldLock } from 'react-icons/bs'
+import { FiUser } from 'react-icons/fi'
+import { MdOutlineAlternateEmail } from 'react-icons/md'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { setActiveUserSys, startAddNewUserSys, startGetUserSys } from '../../../store/usersys'
-import { UserSysModuleBanner, UserSysModuleInformation } from '../components'
+import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModulePermission } from '../components'
 
 export const UserSysActivePage = () => {
 
@@ -32,32 +34,39 @@ export const UserSysActivePage = () => {
                             modules={[
                                 {
                                     id: 'bannerusersys',
-                                    icon: FaIdBadge,
+                                    icon: BsPersonBadge,
                                     name: 'Portada',
                                     title: false,
                                     module: UserSysModuleBanner
                                 },
                                 {
                                     id: 'infousersys',
-                                    icon: FaAddressCard,
+                                    icon: FiUser,
                                     name: 'Información básica',
                                     title: true,
                                     module: UserSysModuleInformation
                                 },
-                                // {
-                                //     id: 'accountusersys',
-                                //     icon: FaKey,
-                                //     name: 'Cuenta',
-                                //     title: true,
-                                //     module: UserSysAccountModule
-                                // },
-                                // {
-                                //     id: 'securityusersys',
-                                //     icon: FaLock,
-                                //     name: 'Permisos y seguridad',
-                                //     title: true,
-                                //     module: UserSysSecurityModule
-                                // },
+                                {
+                                    id: 'emailusersys',
+                                    icon: MdOutlineAlternateEmail,
+                                    name: 'Correo',
+                                    title: true,
+                                    module: UserSysModuleEmail
+                                },
+                                {
+                                    id: 'passwordusersys',
+                                    icon: BsKey,
+                                    name: 'Contraseña',
+                                    title: true,
+                                    module: UserSysModulePassword
+                                },
+                                {
+                                    id: 'permissionusersys',
+                                    icon: BsShieldLock,
+                                    name: 'Permisos y seguridad',
+                                    title: true,
+                                    module: UserSysModulePermission
+                                },
                                 // {
                                 //     id: 'sessionusersys',
                                 //     icon: FaMobileAlt,

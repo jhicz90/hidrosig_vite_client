@@ -11,7 +11,7 @@ export const UserSysModuleInformation = () => {
 
     const dispatch = useDispatch()
     const { active, isSaving } = useSelector(state => state.usersys)
-    const { register, control, setValue, getValues, handleSubmit, reset } = useForm()
+    const { register, control, setValue, handleSubmit, reset } = useForm()
 
     const [loadingNewOccupation, setLoadingNewOccupation] = useState(false)
 
@@ -103,7 +103,7 @@ export const UserSysModuleInformation = () => {
                                             <AsyncCreatable
                                                 {...field}
                                                 inputId='uOccupation'
-                                                classNamePrefix={'rc-select'}
+                                                classNamePrefix='rc-select'
                                                 isClearable
                                                 defaultOptions
                                                 isDisabled={loadingNewOccupation}
@@ -142,16 +142,14 @@ export const UserSysModuleInformation = () => {
                             </Form.Group>
                         </div>
                     </div>
-                    <div className='row justify-content-end'>
-                        <div className='col-auto'>
-                            <Button
-                                disabled={isSaving}
-                                variant={'primary'}
-                                type='submit'
-                            >
-                                Guardar cambios
-                            </Button>
-                        </div>
+                    <div className='d-flex justify-content-end gap-2'>
+                        <Button
+                            disabled={isSaving}
+                            variant={'primary'}
+                            type='submit'
+                        >
+                            Guardar cambios
+                        </Button>
                     </div>
                 </form>
             </Card.Body>
