@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 // import socketClient from 'socket.io-client'
 
 import { Layout } from '../layout'
@@ -8,6 +8,7 @@ import { GuardRoute } from '../../../guards/GuardRoute'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
 import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
+import { UserSysCreatePage } from '../../usersys/pages'
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 // const secretAccess = process.env.REACT_APP_SECRET_ACCESS
@@ -15,10 +16,7 @@ const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 export const AppRoot = () => {
     // const dispatch = useDispatch()
     // const navigate = useNavigate()
-    const location = useLocation()
     // const { uid, iat, exp, session } = useSelector(state => state.auth)
-
-    const { state } = location
 
     // Efecto de estilo, al redimensionar el área de la página
     useLayoutEffect(() => {
@@ -127,7 +125,7 @@ export const AppRoot = () => {
 
     return (
         <>
-            <Routes location={state?.backgroundLocation || location}>
+            <Routes>
                 <Route path={`/`} element={<Layout />}>
                     <Route index element={<Navigate to={`/app/home`} />} />
                     <Route path={`home`} element={<DashboardPage />} />
@@ -167,11 +165,7 @@ export const AppRoot = () => {
                     <Route path={`*`} element={<NotFoundPage />} />
                 </Route>
             </Routes>
-            {/* {state?.backgroundLocation && (
-                <Routes>
-                    <Route path="/schm/irrig/wtsrc/:id" element={<WaterSourceEdit />} />
-                </Routes>
-            )} */}
+            <UserSysCreatePage />
         </>
     )
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form } from 'react-bootstrap'
 import AsyncCreatable from 'react-select/async-creatable'
@@ -10,8 +9,6 @@ import { registerOccupation, searchOccupation } from '../../../store/occupation'
 
 export const CreateUserStep1 = () => {
 
-    const navigate = useNavigate()
-    const { state } = useLocation()
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.usersys)
     const { register, control, setValue, handleSubmit, reset } = useForm()
@@ -27,14 +24,9 @@ export const CreateUserStep1 = () => {
             occupation,
             gender
         }))
-        navigate('./step2', { state })
     }
 
     useEffect(() => {
-        if (!state?.background) {
-            navigate(-1)
-        }
-
         reset({
             ...activeNew
         })
@@ -161,8 +153,6 @@ export const CreateUserStep1 = () => {
 
 export const CreateUserStep2 = () => {
 
-    const navigate = useNavigate()
-    const { state } = useLocation()
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.usersys)
     const { register, getValues, handleSubmit, reset } = useForm()
@@ -174,14 +164,9 @@ export const CreateUserStep2 = () => {
             password,
             passwordConfirm
         }))
-        navigate('./step3', { state })
     }
 
     useEffect(() => {
-        if (!state?.background) {
-            navigate(-1)
-        }
-
         reset({
             ...activeNew
         })
@@ -250,7 +235,6 @@ export const CreateUserStep2 = () => {
             </ul>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
-                    onClick={() => navigate(-1, { state })}
                     variant='primary'
                 >
                     Volver

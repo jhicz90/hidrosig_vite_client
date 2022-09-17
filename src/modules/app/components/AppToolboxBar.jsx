@@ -1,11 +1,12 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Container } from 'react-bootstrap'
-import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { startAddNewUserSys } from '../../../store/usersys'
 
 export const AppToolboxBar = () => {
 
-    const navigate = useNavigate()
-    const location = useLocation()
+    const dispatch = useDispatch()
+    const { isSavingNew } = useSelector(state => state.usersys)
 
     return (
         <Container>
@@ -17,8 +18,9 @@ export const AppToolboxBar = () => {
                         </NavBarInfo>
                         <NavBarTool>
                             <Button
+                                disabled={isSavingNew}
                                 variant='primary'
-                                onClick={() => navigate('/app/sys/user_sys/new', { state: { background: location } })}
+                                onClick={() => dispatch(startAddNewUserSys())}
                             >
                                 Nuevo
                             </Button>
