@@ -1,10 +1,11 @@
 import { Button, Card, Container } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const AppToolboxBar = () => {
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     return (
         <Container>
@@ -17,7 +18,7 @@ export const AppToolboxBar = () => {
                         <NavBarTool>
                             <Button
                                 variant='primary'
-                                onClick={() => navigate('/app/sys/user_sys/new')}
+                                onClick={() => navigate('/app/sys/user_sys/new', { state: { background: location } })}
                             >
                                 Nuevo
                             </Button>

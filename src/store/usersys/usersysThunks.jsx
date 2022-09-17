@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewUserSys, setActiveUserSys, setListUserSys, setSaving } from './usersysSlice'
+import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setListUserSys, setSaving, setSavingNew } from './usersysSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -30,10 +30,10 @@ export const startAddNewUserSys = () => {
             endpoint: `usersys/create/new`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingNew(false))
 
         if (resp.ok) {
-            dispatch(setActiveUserSys(resp.usersys))
+            dispatch(setActiveNewUserSys(resp.usersys))
         }
     }
 }
@@ -41,14 +41,14 @@ export const startAddNewUserSys = () => {
 export const startSaveNewUserSys = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingNew(true))
 
-        const { active } = getState().usersys
+        const { activeNew } = getState().usersys
 
         const newUsersys = {
-            ...active,
-            occupation: active.occupation !== null ? active.occupation._id : null,
-            permission: active.permission !== null ? active.permission._id : null
+            ...activeNew,
+            occupation: activeNew.occupation !== null ? activeNew.occupation._id : null,
+            permission: activeNew.permission !== null ? activeNew.permission._id : null
         }
 
         const resp = await fetchByToken({
@@ -57,7 +57,7 @@ export const startSaveNewUserSys = () => {
             method: 'POST'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingNew(false))
 
         if (resp.ok) {
             dispatch(startListUserSys())

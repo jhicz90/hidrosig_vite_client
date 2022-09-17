@@ -1,24 +1,26 @@
 import { useEffect } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsKey, BsPersonBadge, BsShieldLock } from 'react-icons/bs'
 import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
+import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { setActiveUserSys, startAddNewUserSys, startGetUserSys } from '../../../store/usersys'
+import { setActiveUserSys, startGetUserSys } from '../../../store/usersys'
 import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModulePermission } from '../components'
 
 export const UserSysActivePage = () => {
 
     const { userid } = useParams()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { active } = useSelector(state => state.usersys)
 
     useEffect(() => {
-        if (userid === 'new') {
-            dispatch(startAddNewUserSys())
-        } else if (userid !== '') {
+        if (validator.isMongoId(userid)) {
             dispatch(startGetUserSys(userid))
+        } else {
+            navigate(-1)
         }
 
         return () => dispatch(setActiveUserSys(null))
