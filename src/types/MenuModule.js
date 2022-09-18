@@ -17,7 +17,7 @@ export const menuModule = [
         children: [
             {
                 label: 'Resumen',
-                to: ''
+                to: 'resume'
             },
             {
                 label: 'Organización',
@@ -49,7 +49,7 @@ export const menuModule = [
         children: [
             {
                 label: 'Resumen',
-                to: ''
+                to: 'resume'
             },
             {
                 label: 'Usuarios agrarios',
@@ -128,7 +128,7 @@ export const menuModule = [
         children: [
             {
                 label: 'Resumen',
-                to: ''
+                to: 'resume'
             },
             {
                 label: 'Caja chica',
@@ -147,7 +147,7 @@ export const menuModule = [
         children: [
             {
                 label: 'Resumen',
-                to: ''
+                to: 'resume'
             },
             {
                 label: 'Recursos',
@@ -166,7 +166,7 @@ export const menuModule = [
         children: [
             {
                 label: 'Resumen',
-                to: ''
+                to: 'resume'
             },
             {
                 label: 'Reportes',
@@ -185,7 +185,7 @@ export const menuModule = [
         children: [
             {
                 label: 'Resumen',
-                to: ''
+                to: 'resume'
             },
             {
                 label: 'Usuarios de sistema',

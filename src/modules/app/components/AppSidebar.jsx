@@ -125,7 +125,6 @@ const NavItemHeader = ({ item }) => {
 
                                     return (
                                         <NavLink
-                                            end
                                             key={key}
                                             to={resolveLinkPath(itemChildren.to, item.to)}
                                             className={({ isActive }) => isActive ? "active" : ""}

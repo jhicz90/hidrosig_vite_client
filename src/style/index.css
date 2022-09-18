@@ -22,6 +22,66 @@ body {
     gap: 0.5rem;
 }
 
+.sticky-mobile {
+    position: sticky;
+    top: 60px;
+}
+
+.spy-nav {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 1.5rem 0.5rem;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.spy-item {
+    margin-right: 0;
+}
+
+.spy-link {
+    display: flex;
+    align-items: center !important;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    margin-left: -0.5rem;
+    border: 0.0625rem solid transparent;
+    border-left: 0.1875rem solid transparent;
+    border-bottom: 0.1875rem solid transparent;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    color: #132144;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out;
+    background: 0 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-color: transparent;
+    border-right-color: transparent;
+}
+
+.spy-link i {
+    flex: 0 0 1.9375rem;
+}
+
+.spy-link:hover {
+    color: #1366ff;
+    isolation: isolate;
+}
+
+.spy-link.active {
+    border-color: #377dff;
+    font-weight: 600;
+    color: #377dff;
+    background-color: transparent;
+}
+
 /* LOADING */
 .spinner-wrapper {
     position: relative;

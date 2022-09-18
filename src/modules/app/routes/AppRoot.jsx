@@ -154,7 +154,7 @@ export const AppRoot = () => {
                     {/* <Route path={`acct/*`} element={<PettyCashRoutes />} /> */}
                     {/* <Route path={`siga/*`} element={<SigaRoutes />} /> */}
                     <Route path={`sys`}>
-                        <Route index element={<SysPageResume />} />
+                        <Route path={`resume`} element={<SysPageResume />} />
                         <Route path={`user_sys/*`} element={<GuardRoute meta={['system']} component={UserSysRoutes} />} />
                         {/* <Route path={`occup`} element={<GuardRoute meta={['system', 'occupation']} component={ListOfOccupation} />} />
                         <Route path={`occup/:id`} element={<GuardRoute meta={['system', 'occupation']} component={OccupationEdit} />} />
