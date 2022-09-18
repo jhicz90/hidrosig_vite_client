@@ -15,6 +15,7 @@
 export * from './ModuleEmail'
 export * from './ModuleBanner'
 export * from './ModuleCreate'
+export * from './ModuleDelete'
 export * from './ModuleInformation'
 export * from './ModulePassword'
 export * from './ModulePermission'

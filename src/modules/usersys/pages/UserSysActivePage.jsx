@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsKey, BsPersonBadge, BsShieldLock } from 'react-icons/bs'
+import { BsKey, BsPersonBadge, BsShieldLock, BsTrash } from 'react-icons/bs'
 import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { setActiveUserSys, startGetUserSys } from '../../../store/usersys'
-import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModulePermission } from '../components'
+import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModulePermission, UserSysModuleDelete } from '../components'
 
 export const UserSysActivePage = () => {
 
@@ -76,13 +76,13 @@ export const UserSysActivePage = () => {
                                 //     title: true,
                                 //     module: UserSysSessionModule
                                 // },
-                                // {
-                                //     id: 'deleteusersys',
-                                //     icon: FaRegTrashAlt,
-                                //     name: 'Eliminar',
-                                //     title: true,
-                                //     module: UserSysDelete
-                                // },
+                                {
+                                    id: 'deleteusersys',
+                                    icon: BsTrash,
+                                    name: 'Eliminar cuenta',
+                                    title: true,
+                                    module: UserSysModuleDelete
+                                },
                             ]}
                         />
                     </div>

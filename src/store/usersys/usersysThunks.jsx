@@ -386,69 +386,69 @@ export const startUpdatePermissionUserSys = ({ permission }) => {
     }
 }
 
-export const startGenerateNewPasswordUserSys = () => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
+// export const startGenerateNewPasswordUserSys = () => {
+//     return async (dispatch, getState) => {
+//         const { active } = getState().usersys
+//         const { _id } = active
 
-        const resp = await fetchByToken({
-            endpoint: `usersys/generatenewpassw/${_id}`,
-            data: { passwordConfirm },
-            method: 'PUT'
-        })
+//         const resp = await fetchByToken({
+//             endpoint: `usersys/generatenewpassw/${_id}`,
+//             data: { passwordConfirm },
+//             method: 'PUT'
+//         })
 
-        if (resp.ok) {
-            Swal.fire({
-                title: resp.newpassw,
-                text: 'La nueva contraseña fue generada, se envio una copia al correo de esta cuenta, o podria copiarla.',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false,
-                icon: 'success'
-            })
-            dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
-        }
-    }
-}
+//         if (resp.ok) {
+//             Swal.fire({
+//                 title: resp.newpassw,
+//                 text: 'La nueva contraseña fue generada, se envio una copia al correo de esta cuenta, o podria copiarla.',
+//                 confirmButtonText: 'Aceptar',
+//                 allowOutsideClick: false,
+//                 icon: 'success'
+//             })
+//             dispatch(loadActiveUserSys(resp.usersys))
+//             dispatch(startListUserSys())
+//         }
+//     }
+// }
 
-export const startUpdateActiveUserSysCloseSessionRemote = ({ session }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
+// export const startUpdateActiveUserSysCloseSessionRemote = ({ session }) => {
+//     return async (dispatch, getState) => {
+//         const { active } = getState().usersys
+//         const { _id } = active
 
-        const resp = await fetchByToken({
-            endpoint: `usersys/closesession/${session}`,
-            data: { uidAccount: _id },
-            method: 'PUT'
-        })
+//         const resp = await fetchByToken({
+//             endpoint: `usersys/closesession/${session}`,
+//             data: { uidAccount: _id },
+//             method: 'PUT'
+//         })
 
-        if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
-        }
-    }
-}
+//         if (resp.ok) {
+//             dispatch(loadActiveUserSys(resp.usersys))
+//             dispatch(startListUserSys())
+//         }
+//     }
+// }
 
-export const startUpdateActiveUserSysCloseAllSession = () => {
-    return async (dispatch, getState) => {
-        const { uid } = getState().auth
-        const { active } = getState().usersys
-        const { _id } = active
+// export const startUpdateActiveUserSysCloseAllSession = () => {
+//     return async (dispatch, getState) => {
+//         const { uid } = getState().auth
+//         const { active } = getState().usersys
+//         const { _id } = active
 
-        const resp = await fetchByToken({
-            endpoint: `usersys/closeallsession`,
-            data: { uidAccount: _id },
-            method: 'PUT'
-        })
+//         const resp = await fetchByToken({
+//             endpoint: `usersys/closeallsession`,
+//             data: { uidAccount: _id },
+//             method: 'PUT'
+//         })
 
-        if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
-            if (uid !== _id) dispatch(startListUserSys())
-        }
-    }
-}
+//         if (resp.ok) {
+//             dispatch(loadActiveUserSys(resp.usersys))
+//             if (uid !== _id) dispatch(startListUserSys())
+//         }
+//     }
+// }
 
-export const startDeleteActiveUserSys = () => {
+export const startDeleteUserSys = ({ navigate = null }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id, names, surnames } = active
@@ -490,13 +490,19 @@ export const startDeleteActiveUserSys = () => {
             }
         }).then(async (result) => {
             if (result.value) {
+
+                dispatch(setSaving(true))
+
                 const resp = await fetchByToken({
                     endpoint: `usersys/delete/${_id}`,
                     method: 'DELETE'
                 })
 
+                dispatch(setSaving(false))
+
                 if (resp.ok) {
-                    dispatch(loadActiveUserSys({ err: 'Error' }))
+                    navigate(-1)
+                    dispatch(setActiveUserSys(null))
                     dispatch(startListUserSys())
                 }
             }
@@ -504,80 +510,80 @@ export const startDeleteActiveUserSys = () => {
     }
 }
 
-export const startEraseActiveUserSys = () => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id, names, surnames } = active
+// export const startEraseActiveUserSys = () => {
+//     return async (dispatch, getState) => {
+//         const { active } = getState().usersys
+//         const { _id, names, surnames } = active
 
-        const wordConfirm = normalizeText(names, { lowerCase: true, removeSpaces: true })
+//         const wordConfirm = normalizeText(names, { lowerCase: true, removeSpaces: true })
 
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Borrar permanentemente</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar este usuario de sistema permanentemente?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Borrar permanentemente',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'warning',
-            customClass: {
-                confirmButton: `btn btn-danger`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        }).then(async (result) => {
-            if (result.value) {
-                const resp = await fetchByToken({
-                    endpoint: `usersys/erase/${_id}`,
-                    method: 'DELETE'
-                })
+//         SwalReact.fire({
+//             title:
+//                 <>
+//                     <div className='text-uppercase'>Borrar permanentemente</div>
+//                     <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
+//                 </>,
+//             html:
+//                 <>
+//                     <div className='fs-5 mb-2'>¿Estás seguro de eliminar este usuario de sistema permanentemente?</div>
+//                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+//                 </>,
+//             showCancelButton: true,
+//             confirmButtonText: 'Borrar permanentemente',
+//             cancelButtonText: 'Cancelar',
+//             allowOutsideClick: false,
+//             icon: 'warning',
+//             customClass: {
+//                 confirmButton: `btn btn-danger`,
+//                 cancelButton: `btn btn-neutral`
+//             },
+//             input: 'text',
+//             inputAttributes: {
+//                 autocapitalize: 'off'
+//             },
+//             buttonsStyling: false,
+//             reverseButtons: true,
+//             preConfirm: (typed) => {
+//                 if (typed === wordConfirm) {
+//                     return true
+//                 } else {
+//                     return false
+//                 }
+//             }
+//         }).then(async (result) => {
+//             if (result.value) {
+//                 const resp = await fetchByToken({
+//                     endpoint: `usersys/erase/${_id}`,
+//                     method: 'DELETE'
+//                 })
 
-                if (resp.ok) {
-                    dispatch(loadActiveUserSys({ err: 'Error' }))
-                    dispatch(startListUserSys())
-                }
-            }
-        })
-    }
-}
+//                 if (resp.ok) {
+//                     dispatch(loadActiveUserSys({ err: 'Error' }))
+//                     dispatch(startListUserSys())
+//                 }
+//             }
+//         })
+//     }
+// }
 
-export const startUpdateActiveUserSysNewData = ({ uid }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
+// export const startUpdateActiveUserSysNewData = ({ uid }) => {
+//     return async (dispatch, getState) => {
+//         const { active } = getState().usersys
+//         const { _id } = active
 
-        if (uid === _id) {
-            const resp = await fetchByToken({
-                endpoint: `usersys/edit/${_id}`
-            })
+//         if (uid === _id) {
+//             const resp = await fetchByToken({
+//                 endpoint: `usersys/edit/${_id}`
+//             })
 
-            if (resp.ok) {
-                dispatch(loadActiveUserSys(resp.usersys))
-                dispatch(startListUserSys())
-            }
-        }
+//             if (resp.ok) {
+//                 dispatch(loadActiveUserSys(resp.usersys))
+//                 dispatch(startListUserSys())
+//             }
+//         }
 
-    }
-}
+//     }
+// }
 
 export const findUserSysByPermission = async ({ type, perm, search }) => {
     const resp = await fetchByToken({
