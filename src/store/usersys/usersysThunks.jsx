@@ -501,7 +501,7 @@ export const startDeleteUserSys = ({ navigate = null }) => {
                 dispatch(setSaving(false))
 
                 if (resp.ok) {
-                    navigate(-1)
+                    navigate('/app/sys/user_sys')
                     dispatch(setActiveUserSys(null))
                     dispatch(startListUserSys())
                 }
