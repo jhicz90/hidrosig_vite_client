@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form } from 'react-bootstrap'
+import AsyncSelect from 'react-select/async'
 import AsyncCreatable from 'react-select/async-creatable'
-import { editActiveNewUserSys } from '../../../store/usersys'
+import { editActiveNewUserSys, startSaveNewUserSys } from '../../../store/usersys'
 import { DatePicker } from '../../../components'
 import { registerOccupation, searchOccupation } from '../../../store/occupation'
+import { searchPermission } from '../../../store/permission'
 
-export const CreateUserStep1 = () => {
+export const CreateUserStep1 = ({ setStep }) => {
 
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.usersys)
@@ -24,6 +26,7 @@ export const CreateUserStep1 = () => {
             occupation,
             gender
         }))
+        setStep(2)
     }
 
     useEffect(() => {
@@ -74,21 +77,19 @@ export const CreateUserStep1 = () => {
                                         defaultOptions
                                         isDisabled={loadingNewOccupation}
                                         isLoading={loadingNewOccupation}
-                                        loadOptions={async e => {
-                                            const fetchData = await searchOccupation(e)
-                                            return fetchData.map(d => ({ value: d._id, label: d.name }))
-                                        }}
+                                        loadOptions={searchOccupation}
                                         menuPlacement={'auto'}
                                         onCreateOption={async e => {
                                             setLoadingNewOccupation(true)
-                                            const { _id, name } = await registerOccupation(e)
-                                            setValue('occupation', { value: _id, label: name })
+                                            setValue('occupation', await registerOccupation(e))
                                             setLoadingNewOccupation(false)
                                         }}
                                         placeholder={`Ocupación...`}
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
                                         formatCreateLabel={e => `Crear ocupación: '${e}'`}
+                                        getOptionValue={e => e._id}
+                                        getOptionLabel={e => e.name}
                                     />
                             }
                         />
@@ -151,7 +152,7 @@ export const CreateUserStep1 = () => {
     )
 }
 
-export const CreateUserStep2 = () => {
+export const CreateUserStep2 = ({ setStep }) => {
 
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.usersys)
@@ -164,6 +165,7 @@ export const CreateUserStep2 = () => {
             password,
             passwordConfirm
         }))
+        setStep(3)
     }
 
     useEffect(() => {
@@ -235,6 +237,7 @@ export const CreateUserStep2 = () => {
             </ul>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
+                    onClick={() => setStep(1)}
                     variant='primary'
                 >
                     Volver
@@ -244,6 +247,84 @@ export const CreateUserStep2 = () => {
                     type='submit'
                 >
                     Siguiente
+                </Button>
+            </div>
+        </form>
+    )
+}
+
+export const CreateUserStep3 = ({ setStep }) => {
+
+    const dispatch = useDispatch()
+    const { activeNew, isSavingNew } = useSelector(state => state.usersys)
+    const { control, handleSubmit, reset } = useForm()
+
+    const handleNext = ({ permission }) => {
+        dispatch(editActiveNewUserSys({
+            permission
+        }))
+        dispatch(startSaveNewUserSys())
+    }
+
+    useEffect(() => {
+        reset({
+            ...activeNew
+        })
+    }, [reset, activeNew])
+
+    return (
+        <form onSubmit={handleSubmit(handleNext)}>
+            <div className='row'>
+                <div className='col-12'>
+                    <div className='mb-3'>
+                        <label htmlFor='uPermission' className='form-label'>Permisos</label>
+                        <Controller
+                            name='permission'
+                            control={control}
+                            rules={{ required: true }}
+                            render={
+                                ({ field }) =>
+                                    <AsyncSelect
+                                        {...field}
+                                        inputId='uPermission'
+                                        classNamePrefix='rc-select'
+                                        isClearable
+                                        defaultOptions
+                                        loadOptions={searchPermission}
+                                        getOptionLabel={e =>
+                                            <div className='d-flex flex-column'>
+                                                <div>{e.name}</div>
+                                                <div>Nivel de acceso: {e.levelOrg}</div>
+                                                {e.levelOrg > 1 && <div>Junta: {e.junta.name}</div>}
+                                                {e.levelOrg === 3 && <div>Comision(es): {e.committee.map(c => c.name).join(', ')}</div>}
+                                            </div>
+                                        }
+                                        getOptionValue={e => e._id}
+                                        menuPlacement={'auto'}
+                                        placeholder={`Busque el permiso...`}
+                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                        noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+
+                                    />
+                            }
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className='d-flex justify-content-end gap-2'>
+                <Button
+                    onClick={() => setStep(2)}
+                    disabled={isSavingNew}
+                    variant='primary'
+                >
+                    Volver
+                </Button>
+                <Button
+                    disabled={isSavingNew}
+                    variant='primary'
+                    type='submit'
+                >
+                    Grabar
                 </Button>
             </div>
         </form>

@@ -5,7 +5,7 @@ import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setListUserSys, s
 
 const SwalReact = withReactContent(Swal)
 
-export const startListUserSys = (search) => {
+export const startListUserSys = (search = '') => {
     return async (dispatch) => {
 
         const resp = await fetchByToken({
@@ -57,6 +57,7 @@ export const startSaveNewUserSys = () => {
             method: 'POST'
         })
 
+        dispatch(setActiveNewUserSys(null))
         dispatch(setSavingNew(false))
 
         if (resp.ok) {

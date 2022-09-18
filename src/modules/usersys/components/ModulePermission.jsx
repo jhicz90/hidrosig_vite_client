@@ -46,7 +46,7 @@ export const UserSysModulePermission = () => {
                                                 defaultOptions
                                                 loadOptions={searchPermission}
                                                 getOptionLabel={e =>
-                                                    <div className="d-flex flex-column">
+                                                    <div className='d-flex flex-column'>
                                                         <div>{e.name}</div>
                                                         <div>Nivel de acceso: {e.levelOrg}</div>
                                                         {e.levelOrg > 1 && <div>Junta: {e.junta.name}</div>}
