@@ -17,7 +17,7 @@ export const UserSysModuleBanner = () => {
     }, [active])
 
     const confirmActiveStatus = (ck) => {
-        dispatch(startUpdateStatusUserSys({ state: ck }))
+        dispatch(startUpdateStatusUserSys(ck))
     }
 
     // const handleChangeImage = () => {
@@ -60,7 +60,7 @@ export const UserSysModuleBanner = () => {
                         </div>
                         <Switch
                             onChange={confirmActiveStatus}
-                            checked={data.active}
+                            checked={data.status}
                             handleDiameter={30}
                             disabled={isSaving}
                             height={40}

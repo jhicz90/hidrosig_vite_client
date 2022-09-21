@@ -8,7 +8,6 @@ import { GuardRoute } from '../../../guards/GuardRoute'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
 import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
-import { UserSysCreatePage } from '../../usersys/pages'
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 // const secretAccess = process.env.REACT_APP_SECRET_ACCESS
@@ -165,7 +164,6 @@ export const AppRoot = () => {
                     <Route path={`*`} element={<NotFoundPage />} />
                 </Route>
             </Routes>
-            <UserSysCreatePage />
         </>
     )
 }

@@ -27,7 +27,7 @@
 // export * from './TableAdaptive'
 // export * from './WindowBox'
 // export * from './WizardStep'
-export * from './Active'
+export * from './TagStatus'
 export * from './Avatar'
 export * from './AvatarProfile'
 export * from './Cover'

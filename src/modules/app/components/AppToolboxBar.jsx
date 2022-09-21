@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Container } from 'react-bootstrap'
+import { Card, Container } from 'react-bootstrap'
 import styled from 'styled-components'
-import { startAddNewUserSys } from '../../../store/usersys'
+import { CreateUserSys } from '../../usersys/components'
 
 export const AppToolboxBar = () => {
 
@@ -17,13 +17,8 @@ export const AppToolboxBar = () => {
                             Titulo o subtitulo de la página
                         </NavBarInfo>
                         <NavBarTool>
-                            <Button
-                                disabled={isSavingNew}
-                                variant='primary'
-                                onClick={() => dispatch(startAddNewUserSys())}
-                            >
-                                Nuevo
-                            </Button>
+                            <CreateUserSys />
+                            {/* Aqui van los botones de accion rapida */}
                         </NavBarTool>
                     </NavBarMain>
                 </Card.Body>

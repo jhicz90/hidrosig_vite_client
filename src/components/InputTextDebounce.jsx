@@ -20,7 +20,7 @@ export const InputTextDebounce = ({ value, onChange, autoComplete = false }) => 
             value={valueInput}
             onChange={(e) => setValueInput(e.target.value)}
             autoComplete={autoComplete ? true : 'off'}
-            placeholder={'Escriba...'}
+            placeholder={'Buscar...'}
             />
             {
                 valueInput.length > 0

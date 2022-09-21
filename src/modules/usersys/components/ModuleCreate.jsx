@@ -7,7 +7,7 @@ import AsyncCreatable from 'react-select/async-creatable'
 import { editActiveNewUserSys, startSaveNewUserSys } from '../../../store/usersys'
 import { DatePicker } from '../../../components'
 import { registerOccupation, searchOccupation } from '../../../store/occupation'
-import { searchPermission } from '../../../store/permission'
+import { searchRole } from '../../../store/role'
 
 export const CreateUserStep1 = ({ setStep }) => {
 
@@ -62,56 +62,6 @@ export const CreateUserStep1 = ({ setStep }) => {
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <div className='mb-3'>
-                        <label htmlFor='uOccupation' className='form-label'>Ocupación</label>
-                        <Controller
-                            name='occupation'
-                            control={control}
-                            rules={{ required: true }}
-                            render={
-                                ({ field }) =>
-                                    <AsyncCreatable
-                                        {...field}
-                                        inputId='uOccupation'
-                                        classNamePrefix='rc-select'
-                                        isClearable
-                                        defaultOptions
-                                        isDisabled={loadingNewOccupation}
-                                        isLoading={loadingNewOccupation}
-                                        loadOptions={searchOccupation}
-                                        menuPlacement={'auto'}
-                                        onCreateOption={async e => {
-                                            setLoadingNewOccupation(true)
-                                            setValue('occupation', await registerOccupation(e))
-                                            setLoadingNewOccupation(false)
-                                        }}
-                                        placeholder={`Ocupación...`}
-                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                        noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
-                                        formatCreateLabel={e => `Crear ocupación: '${e}'`}
-                                        getOptionValue={e => e._id}
-                                        getOptionLabel={e => e.name}
-                                    />
-                            }
-                        />
-                    </div>
-                </div>
-                <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uGender'>
-                        <Form.Label>Género</Form.Label>
-                        <Form.Select
-                            {...register('gender', { required: true })}
-                            autoComplete='off'
-                        >
-                            <option value={'F'}>Femenino</option>
-                            <option value={'M'}>Masculino</option>
-                            <option value={'O'}>Otro</option>
-                        </Form.Select>
-                    </Form.Group>
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col-12 col-md-6'>
-                    <div className='mb-3'>
                         <label htmlFor='uBirthday' className='form-label'>Fecha de nacimiento</label>
                         <Controller
                             control={control}
@@ -137,6 +87,56 @@ export const CreateUserStep1 = ({ setStep }) => {
                             type='text'
                             autoComplete='off'
                         />
+                    </Form.Group>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-12 col-md-6'>
+                    <div className='mb-3'>
+                        <label htmlFor='uOccupation' className='form-label'>Ocupación</label>
+                        <Controller
+                            name='occupation'
+                            control={control}
+                            rules={{ required: true }}
+                            render={
+                                ({ field }) =>
+                                    <AsyncCreatable
+                                        {...field}
+                                        inputId='uOccupation'
+                                        classNamePrefix='rc-select'
+                                        isClearable
+                                        defaultOptions
+                                        isDisabled={loadingNewOccupation}
+                                        isLoading={loadingNewOccupation}
+                                        loadOptions={searchOccupation}
+                                        menuPlacement={'auto'}
+                                        onCreateOption={async e => {
+                                            setLoadingNewOccupation(true)
+                                            setValue('occupation', await registerOccupation(e))
+                                            setLoadingNewOccupation(false)
+                                        }}
+                                        placeholder={`Buscar...`}
+                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                        noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+                                        formatCreateLabel={e => `Crear ocupación: '${e}'`}
+                                        getOptionValue={e => e._id}
+                                        getOptionLabel={e => e.name}
+                                    />
+                            }
+                        />
+                    </div>
+                </div>
+                <div className='col-12 col-md-6'>
+                    <Form.Group className='mb-3' controlId='uGender'>
+                        <Form.Label>Género</Form.Label>
+                        <Form.Select
+                            {...register('gender', { required: true })}
+                            autoComplete='off'
+                        >
+                            <option value={'F'}>Femenino</option>
+                            <option value={'M'}>Masculino</option>
+                            <option value={'O'}>Otro</option>
+                        </Form.Select>
                     </Form.Group>
                 </div>
             </div>
@@ -259,9 +259,9 @@ export const CreateUserStep3 = ({ setStep }) => {
     const { activeNew, isSavingNew } = useSelector(state => state.usersys)
     const { control, handleSubmit, reset } = useForm()
 
-    const handleNext = ({ permission }) => {
+    const handleNext = ({ role }) => {
         dispatch(editActiveNewUserSys({
-            permission
+            role
         }))
         dispatch(startSaveNewUserSys())
     }
@@ -277,31 +277,31 @@ export const CreateUserStep3 = ({ setStep }) => {
             <div className='row'>
                 <div className='col-12'>
                     <div className='mb-3'>
-                        <label htmlFor='uPermission' className='form-label'>Permisos</label>
+                        <label htmlFor='uRole' className='form-label'>Rol de usuario</label>
                         <Controller
-                            name='permission'
+                            name='role'
                             control={control}
                             rules={{ required: true }}
                             render={
                                 ({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uPermission'
+                                        inputId='uRole'
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
-                                        loadOptions={searchPermission}
+                                        loadOptions={searchRole}
                                         getOptionLabel={e =>
                                             <div className='d-flex flex-column'>
                                                 <div>{e.name}</div>
-                                                <div>Nivel de acceso: {e.levelOrg}</div>
-                                                {e.levelOrg > 1 && <div>Junta: {e.junta.name}</div>}
-                                                {e.levelOrg === 3 && <div>Comision(es): {e.committee.map(c => c.name).join(', ')}</div>}
+                                                <div>Nivel de acceso: {e.levelRole}</div>
+                                                {e.levelRole > 1 && <div>Junta: {e.junta.name}</div>}
+                                                {e.levelRole === 3 && <div>Comision: {e.committee.name}</div>}
                                             </div>
                                         }
                                         getOptionValue={e => e._id}
                                         menuPlacement={'auto'}
-                                        placeholder={`Busque el permiso...`}
+                                        placeholder={`Buscar...`}
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
 

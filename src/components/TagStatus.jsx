@@ -1,10 +1,10 @@
 import { FaCheck, FaMinusCircle } from 'react-icons/fa'
 
-export const Active = ({ active }) => {
+export const TagStatus = ({ status }) => {
     return (
         <>
             {
-                active
+                status
                     ?
                     <span className='badge bg-success rounded-pill px-2 py-1'><FaCheck className='me-1' />Activo</span>
                     :

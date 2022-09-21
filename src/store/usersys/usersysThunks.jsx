@@ -48,7 +48,7 @@ export const startSaveNewUserSys = () => {
         const newUsersys = {
             ...activeNew,
             occupation: activeNew.occupation !== null ? activeNew.occupation._id : null,
-            permission: activeNew.permission !== null ? activeNew.permission._id : null
+            role: activeNew.role !== null ? activeNew.role._id : null
         }
 
         const resp = await fetchByToken({
@@ -57,10 +57,10 @@ export const startSaveNewUserSys = () => {
             method: 'POST'
         })
 
-        dispatch(setActiveNewUserSys(null))
         dispatch(setSavingNew(false))
 
         if (resp.ok) {
+            dispatch(setActiveNewUserSys(null))
             dispatch(startListUserSys())
         }
     }
@@ -149,10 +149,10 @@ export const startUpdateActiveUserSysCover = ({ coverImage }) => {
 }
 
 
-export const startUpdateStatusUserSys = ({ state }) => {
+export const startUpdateStatusUserSys = (status) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
-        const { _id, names, surnames, active: stateUsersys } = active
+        const { _id, names, surnames, status: statusUsersys } = active
 
         SwalReact.fire({
             title:
@@ -166,12 +166,12 @@ export const startUpdateStatusUserSys = ({ state }) => {
                     <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de este usuario se reiniciaran.</div>
                 </>,
             showCancelButton: true,
-            confirmButtonText: stateUsersys ? 'Desactivar' : 'Activar',
+            confirmButtonText: statusUsersys ? 'Desactivar' : 'Activar',
             cancelButtonText: 'Cancelar',
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: stateUsersys ? 'btn btn-warning' : 'btn btn-success',
+                confirmButton: statusUsersys ? 'btn btn-warning' : 'btn btn-success',
                 cancelButton: 'btn btn-neutral'
             },
             buttonsStyling: false,
@@ -182,8 +182,8 @@ export const startUpdateStatusUserSys = ({ state }) => {
                 dispatch(setSaving(true))
 
                 const resp = await fetchByToken({
-                    endpoint: `usersys/active/${_id}`,
-                    data: { active: state },
+                    endpoint: `usersys/status/${_id}`,
+                    data: { status },
                     method: 'PUT'
                 })
 
@@ -260,7 +260,7 @@ export const startUpdateEmailUserSys = ({ newEmail: email }) => {
                 const passwordConfirm = result.value || ''
 
                 const resp = await fetchByToken({
-                    endpoint: `usersys/changeemail/${_id}`,
+                    endpoint: `usersys/change_email/${_id}`,
                     data: { passwordConfirm, email },
                     method: 'PUT'
                 })
@@ -293,7 +293,7 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
                     <div className='fs-5'>Si es asi, escriba la actual contraseña para confirmar</div>
                 </>,
             showCancelButton: true,
-            confirmButtonText: 'Cambiar contraseña',
+            confirmButtonText: 'Cambiar',
             cancelButtonText: 'Cancelar',
             allowOutsideClick: false,
             icon: 'question',
@@ -315,7 +315,7 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
                 const password = result.value || ''
 
                 const resp = await fetchByToken({
-                    endpoint: `usersys/changepassw/${_id}`,
+                    endpoint: `usersys/change_passw/${_id}`,
                     data: { password, newPassword, newPasswordConfirm },
                     method: 'PUT'
                 })
@@ -331,7 +331,7 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
     }
 }
 
-export const startUpdatePermissionUserSys = ({ permission }) => {
+export const startUpdateRoleUserSys = ({ role }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id, names, surnames } = active
@@ -339,16 +339,16 @@ export const startUpdatePermissionUserSys = ({ permission }) => {
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Permiso</div>
+                    <div className='text-uppercase'>Rol del usuario</div>
                     <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar el permiso?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar el rol?</div>
                     <div className='fs-5'>Si es asi, escriba su contraseña para confirmar</div>
                 </>,
             showCancelButton: true,
-            confirmButtonText: 'Cambiar permiso',
+            confirmButtonText: 'Cambiar',
             cancelButtonText: 'Cancelar',
             allowOutsideClick: false,
             icon: 'question',
@@ -370,8 +370,8 @@ export const startUpdatePermissionUserSys = ({ permission }) => {
                 const passwordConfirm = result.value || ''
 
                 const resp = await fetchByToken({
-                    endpoint: `usersys/changeperm/${_id}`,
-                    data: { passwordConfirm, permission },
+                    endpoint: `usersys/change_role/${_id}`,
+                    data: { passwordConfirm, role },
                     method: 'PUT'
                 })
 

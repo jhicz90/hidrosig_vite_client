@@ -7,7 +7,7 @@ import { MdOutlineAlternateEmail } from 'react-icons/md'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { setActiveUserSys, startGetUserSys } from '../../../store/usersys'
-import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModulePermission, UserSysModuleDelete } from '../components'
+import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete } from '../components'
 
 export const UserSysActivePage = () => {
 
@@ -65,9 +65,9 @@ export const UserSysActivePage = () => {
                                 {
                                     id: 'permissionusersys',
                                     icon: BsShieldLock,
-                                    name: 'Permisos y seguridad',
+                                    name: 'Roles del usuario',
                                     title: true,
-                                    module: UserSysModulePermission
+                                    module: UserSysModuleRole
                                 },
                                 // {
                                 //     id: 'sessionusersys',

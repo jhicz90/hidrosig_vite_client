@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { chckProp } from '../../../helpers'
-import { Active, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
+import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
 import { startListUserSys } from '../../../store/usersys'
+import { BsSearch } from 'react-icons/bs'
 
 export const UserSysList = () => {
 
@@ -19,9 +20,9 @@ export const UserSysList = () => {
 
     return (
         <>
-            <Form.Group as={Row} className='my-3 px-3' controlId='search'>
-                <Form.Label column xs={12} md={'auto'} >
-                    Buscar:
+            <Form.Group as={Row} className='my-3 px-3 gx-2' controlId='search'>
+                <Form.Label column xs={'auto'} >
+                    <BsSearch size={24} />
                 </Form.Label>
                 <Col>
                     <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
@@ -61,7 +62,7 @@ export const UserSysList = () => {
                         {
                             label: 'ESTADO',
                             renderCell: (item) =>
-                                <Active active={item.active} />
+                                <TagStatus status={item.status} />
                         },
                         {
                             label: 'CREADO',
