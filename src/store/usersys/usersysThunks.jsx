@@ -83,7 +83,7 @@ export const startGetUserSys = (id) => {
     }
 }
 
-export const startUpdateActiveUserSys = () => {
+export const startUpdateUserSys = () => {
     return async (dispatch, getState) => {
 
         dispatch(setSaving(true))
@@ -112,7 +112,7 @@ export const startUpdateActiveUserSys = () => {
     }
 }
 
-export const startUpdateActiveUserSysImage = ({ image }) => {
+export const startUpdateImageUserSys = ({ image }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id } = active
@@ -130,7 +130,7 @@ export const startUpdateActiveUserSysImage = ({ image }) => {
     }
 }
 
-export const startUpdateActiveUserSysCover = ({ coverImage }) => {
+export const startUpdateCoverUserSys = ({ coverImage }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id } = active
@@ -238,7 +238,7 @@ export const startUpdateEmailUserSys = ({ newEmail: email }) => {
                     <div className='fs-5'>Si es asi, escriba su contraseña para confirmar</div>
                 </>,
             showCancelButton: true,
-            confirmButtonText: 'Cambiar correo',
+            confirmButtonText: 'Cambiar',
             cancelButtonText: 'Cancelar',
             allowOutsideClick: false,
             icon: 'question',

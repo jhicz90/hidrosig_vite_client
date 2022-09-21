@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Switch from 'react-switch'
-import { Cover, AvatarProfile } from '../../../components'
-import { startUpdateStatusUserSys } from '../../../store/usersys'
 import { FaRegQuestionCircle } from 'react-icons/fa'
+import { Cover, AvatarProfile } from '../../../components'
+import { startUpdateStatusOccupation } from '../../../store/occupation'
 
-export const UserSysModuleBanner = () => {
+export const OccupationModuleBanner = () => {
 
     const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.usersys)
+    const { active, isSaving } = useSelector(state => state.occupation)
     const [data, setData] = useState(active)
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export const UserSysModuleBanner = () => {
     }, [active])
 
     const confirmActiveStatus = (ck) => {
-        dispatch(startUpdateStatusUserSys(ck))
+        dispatch(startUpdateStatusOccupation(ck))
     }
 
     // const handleChangeImage = () => {
@@ -40,17 +40,17 @@ export const UserSysModuleBanner = () => {
 
     return (
         <Card>
-            <Cover coverImage={data.coverImage} />
+            <Cover coverImage={''} />
             <AvatarProfile avatarImg={data.image} />
             <Card.Body className='py-0 pb-3'>
                 <div className='row'>
                     <div className='col'>
                         <div className='mt-3'>
-                            Estado de la cuenta de usuario
+                            Estado de la ocupación
                             <OverlayTrigger
                                 placement='auto'
                                 overlay={
-                                    <Tooltip>Puede habilitar o desabilitar la cuenta de usuario, al hacer dicho cambio se actualizaran todas las sesiones.</Tooltip>
+                                    <Tooltip>Puede habilitar o desabilitar la ocupación, al hacer dicho cambio se actualizaran todas las sesiones de usuario asociadas a esta ocupación.</Tooltip>
                                 }
                             >
                                 <div className='d-inline ms-1'>

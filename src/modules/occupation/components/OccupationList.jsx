@@ -6,16 +6,16 @@ import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
 import { chckProp } from '../../../helpers'
 import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
-import { startListUserSys } from '../../../store/usersys'
+import { startListOccupation } from '../../../store/occupation'
 
-export const UserSysList = () => {
+export const OccupationList = () => {
 
     const dispatch = useDispatch()
-    const { list } = useSelector(state => state.usersys)
+    const { list } = useSelector(state => state.occupation)
     const [search, setSearch] = useState('')
 
     useEffect(() => {
-        dispatch(startListUserSys(search))
+        dispatch(startListOccupation(search))
     }, [search, dispatch])
 
     return (
@@ -33,30 +33,23 @@ export const UserSysList = () => {
                 columns={
                     [
                         {
-                            label: 'USUARIO',
+                            label: 'OCUPACIÓN',
                             resize: true,
                             renderCell: (item) => (
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
                                         <Avatar
-                                            img={chckProp(item, 'image') ? item.image.fileNameThumbnail : ''}
-                                            noImgTxt={item.names}
+                                            img={item.image}
+                                            noImgTxt={item.name}
                                             circle={true}
                                             width={40}
                                             height={40}
                                         />
                                     </div>
                                     <div className='d-flex flex-column'>
-                                        <span className='d-block fw-bolder mb-0'>{item.names} {item.surnames}</span>
-                                        <span className='d-block text-body'>{item.email}</span>
+                                        <span className='d-block fw-bolder mb-0'>{item.name}</span>
                                     </div>
                                 </div>
-                            )
-                        },
-                        {
-                            label: 'OCUPACIÓN',
-                            renderCell: (item) => (
-                                <span>{item.occupation.name}</span>
                             )
                         },
                         {
@@ -81,7 +74,7 @@ export const UserSysList = () => {
                                 <div className='btn-group'>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/sys/user_sys/${item._id}`}
+                                        to={`/app/sys/occup/${item._id}`}
                                     >
                                         <FaPen />
                                     </Link>
