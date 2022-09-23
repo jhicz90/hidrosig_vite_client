@@ -7,15 +7,20 @@ export const TableGrid = ({ columns, rows }) => {
         getTheme(),
         {
             Table: `
-                --data-table-library_grid-template-columns: 350px ${columns.length > 2 ? `repeat(${columns.length-2}, 300px)` : ``} 100px;
+                --data-table-library_grid-template-columns: ${columns.map(c => {
+                if (!c.width) return 'minmax(150px, auto)'
+                return c.width
+            }).join(' ')};
                 --bs-table-bg: white;
                 border-top: 1px solid rgb(221, 226, 235);
             `,
             BaseCell: `
-                &:nth-of-type(${columns.length}) {
-                    right: 0px;
-                    z-index: 1;
-                }
+                ${columns[length - 1]?.pinRight === true && `
+                    &:nth-of-type(${columns.length - 1}) {
+                        right: 0px;
+                        z-index: 1;
+                    }
+                `}
 
                 padding: 9px 16px !important;
             `,
@@ -24,11 +29,13 @@ export const TableGrid = ({ columns, rows }) => {
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
 
     return (
-        <CompactTable
-            theme={theme}
-            columns={columns}
-            data={data}
-            layout={{ custom: true, horizontalScroll: true }}
-        />
+        <div style={{ maxHeight: '500px' }}>
+            <CompactTable
+                theme={theme}
+                columns={columns}
+                data={data}
+                layout={{ custom: true, fixedHeader: true, horizontalScroll: true }}
+            />
+        </div>
     )
 }

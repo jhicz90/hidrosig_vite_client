@@ -53,6 +53,11 @@ export const OccupationList = () => {
                             )
                         },
                         {
+                            label: 'USUARIOS',
+                            renderCell: (item) =>
+                                <span>{item.usersWithOccupation.length}</span>
+                        },
+                        {
                             label: 'ESTADO',
                             renderCell: (item) =>
                                 <TagStatus status={item.status} />

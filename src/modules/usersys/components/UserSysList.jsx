@@ -39,7 +39,7 @@ export const UserSysList = () => {
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
                                         <Avatar
-                                            img={chckProp(item, 'image') ? item.image.fileNameThumbnail : ''}
+                                            img={item.image}
                                             noImgTxt={item.names}
                                             circle={true}
                                             width={40}

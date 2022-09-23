@@ -3,12 +3,12 @@ import { Button, FormControl } from 'react-bootstrap'
 import { MdClear } from 'react-icons/md'
 import styled from 'styled-components'
 import { useDebounce } from 'use-debounce'
-import { systemConstants } from '../types'
+import { SYSCONST } from '../types'
 
 export const InputTextDebounce = ({ value, onChange, autoComplete = false }) => {
 
     const [valueInput, setValueInput] = useState(value)
-    const [valueDebounce] = useDebounce(valueInput, systemConstants.searchDebounce)
+    const [valueDebounce] = useDebounce(valueInput, SYSCONST.searchDebounce)
 
     useEffect(() => {
         onChange(valueDebounce)
@@ -17,10 +17,10 @@ export const InputTextDebounce = ({ value, onChange, autoComplete = false }) => 
     return (
         <InputText>
             <FormControl
-            value={valueInput}
-            onChange={(e) => setValueInput(e.target.value)}
-            autoComplete={autoComplete ? true : 'off'}
-            placeholder={'Buscar...'}
+                value={valueInput}
+                onChange={(e) => setValueInput(e.target.value)}
+                autoComplete={autoComplete ? true : 'off'}
+                placeholder={'Buscar...'}
             />
             {
                 valueInput.length > 0
