@@ -56,7 +56,7 @@ export const UserSysList = () => {
                         {
                             label: 'OCUPACIÓN',
                             renderCell: (item) => (
-                                <span>{item.occupation.name}</span>
+                                <span>{item.occupation?.name || 'Sin ocupación'}</span>
                             )
                         },
                         {

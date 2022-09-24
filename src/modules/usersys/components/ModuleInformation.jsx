@@ -21,15 +21,14 @@ export const UserSysModuleInformation = () => {
             surnames,
             birthday,
             docid,
-            occupation: occupation.value || null,
+            occupation,
             gender
         }))
     }
 
     useEffect(() => {
         reset({
-            ...active,
-            occupation: active.occupation ? { value: active.occupation._id, label: active.occupation.name } : null
+            ...active
         })
     }, [reset, active])
 
@@ -108,21 +107,40 @@ export const UserSysModuleInformation = () => {
                                                 defaultOptions
                                                 isDisabled={loadingNewOccupation}
                                                 isLoading={loadingNewOccupation}
-                                                loadOptions={async e => {
-                                                    const fetchData = await searchOccupation(e)
-                                                    return fetchData.map(d => ({ value: d._id, label: d.name }))
-                                                }}
+                                                loadOptions={searchOccupation}
                                                 menuPlacement={'auto'}
                                                 onCreateOption={async e => {
                                                     setLoadingNewOccupation(true)
-                                                    const { _id, name } = await registerOccupation(e)
-                                                    setValue('occupation', { value: _id, label: name })
+                                                    setValue('occupation', await registerOccupation(e))
                                                     setLoadingNewOccupation(false)
                                                 }}
-                                                placeholder={`Busque la ocupación...`}
+                                                placeholder={`Buscar...`}
                                                 loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
                                                 formatCreateLabel={e => `Crear ocupación: '${e}'`}
+                                                getOptionValue={e => e._id}
+                                                getOptionLabel={e => e.name}
+                                            // inputId='uOccupation'
+                                            // classNamePrefix='rc-select'
+                                            // isClearable
+                                            // defaultOptions
+                                            // isDisabled={loadingNewOccupation}
+                                            // isLoading={loadingNewOccupation}
+                                            // loadOptions={async e => {
+                                            //     const fetchData = await searchOccupation(e)
+                                            //     return fetchData.map(d => ({ value: d._id, label: d.name }))
+                                            // }}
+                                            // menuPlacement={'auto'}
+                                            // onCreateOption={async e => {
+                                            //     setLoadingNewOccupation(true)
+                                            //     const { _id, name } = await registerOccupation(e)
+                                            //     setValue('occupation', { value: _id, label: name })
+                                            //     setLoadingNewOccupation(false)
+                                            // }}
+                                            // placeholder={`Busque la ocupación...`}
+                                            // loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                            // noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+                                            // formatCreateLabel={e => `Crear ocupación: '${e}'`}
                                             />
                                     }
                                 />

@@ -3,10 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsFillEyeFill, BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FiUsers } from 'react-icons/fi'
+import { RiShieldUserLine } from 'react-icons/ri'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { setActiveOccupation, startGetOccupation, } from '../../../store/occupation'
-import { OccupationModuleBanner, OccupationModuleDelete, OccupationModuleInformation, OccupationModuleToUsers } from '../components'
+import { OccupationModuleBanner, OccupationModuleDelete, OccupationModuleInformation, OccupationModuleLevel, OccupationModuleToUsers } from '../components'
 
 export const OccupationActivePage = () => {
 
@@ -46,6 +47,13 @@ export const OccupationActivePage = () => {
                                     name: 'Información básica',
                                     title: true,
                                     module: OccupationModuleInformation
+                                },
+                                {
+                                    id: 'lvloccupation',
+                                    icon: RiShieldUserLine,
+                                    name: 'Nivel de ocupación',
+                                    title: true,
+                                    module: OccupationModuleLevel
                                 },
                                 {
                                     id: 'tousersoccupation',

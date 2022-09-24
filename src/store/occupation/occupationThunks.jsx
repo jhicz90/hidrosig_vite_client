@@ -198,6 +198,29 @@ export const startUpdateInformationOccupation = ({ name, desc }) => {
     }
 }
 
+export const startUpdateLevelOccupation = ({ levelOccupation, junta, committee }) => {
+    return async (dispatch, getState) => {
+
+        dispatch(setSaving(true))
+
+        const { active } = getState().occupation
+        const { _id } = active
+
+        const resp = await fetchByToken({
+            endpoint: `occupation/info/${_id}`,
+            data: { levelOccupation, junta, committee },
+            method: 'PUT'
+        })
+
+        dispatch(setSaving(false))
+
+        if (resp.ok) {
+            dispatch(setActiveOccupation(resp.occupation))
+            dispatch(startListOccupation())
+        }
+    }
+}
+
 export const startDeleteOccupation = ({ navigate = null }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
