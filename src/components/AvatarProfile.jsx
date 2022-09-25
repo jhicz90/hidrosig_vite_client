@@ -41,7 +41,7 @@ const ProfileAvatar = styled.div`
     & .avatar-uploader-trigger {
         position: absolute;
         bottom: 0;
-        right: 0;
+        right: 10px;
         cursor: pointer;
         border-radius: 50%;
         transition: 0.2s;

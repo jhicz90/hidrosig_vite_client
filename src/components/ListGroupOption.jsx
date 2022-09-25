@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { Form, FormCheck, ListGroup } from 'react-bootstrap'
+import { Form, FormCheck, ListGroup, ListGroupItem } from 'react-bootstrap'
 import styled from 'styled-components'
 
 export const ListGroupOption = ({ children }) => {
@@ -10,21 +10,21 @@ export const ListGroupOption = ({ children }) => {
     )
 }
 
-export const ListGroupOptionItem = forwardRef(({ labelTitle, labelDesc, value, ...rest }, ref) => {
+export const ListGroupOptionItem = forwardRef(({ labelTitle, labelDesc, valueOption, ...rest }, ref) => {
     return (
         <div className='position-relative'>
             <input
-                id={`radio-option-${value}`}
+                id={`radio-option-${valueOption}`}
                 {...rest}
                 ref={ref}
                 type='radio'
-                value={value}
+                value={valueOption}
                 className='form-check-input position-absolute top-50 end-0 me-3 fs-5'
             />
-            <ListGroup.Item htmlFor={`radio-option-${value}`} as={Form.Label} className='py-3 pe-5'>
+            <label htmlFor={`radio-option-${valueOption}`} className='form-label list-group-item py-3 pe-5'>
                 <strong className='fw-semibold'>{labelTitle}</strong>
                 <span className='d-block small opacity-75'>{labelDesc}</span>
-            </ListGroup.Item>
+            </label>
         </div>
     )
 })

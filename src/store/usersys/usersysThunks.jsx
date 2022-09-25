@@ -1,25 +1,9 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setListUserSys, setSaving, setSavingNew } from './usersysSlice'
+import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setSaving, setSavingNew } from './usersysSlice'
 
 const SwalReact = withReactContent(Swal)
-
-export const startListUserSys = (search = '') => {
-    return async (dispatch) => {
-
-        const resp = await fetchByToken({
-            endpoint: 'usersys/list',
-            params: { search }
-        })
-
-        if (resp.ok) {
-            dispatch(setListUserSys(resp.docs))
-        } else {
-            dispatch(setListUserSys([]))
-        }
-    }
-}
 
 export const startAddNewUserSys = () => {
     return async (dispatch) => {
@@ -61,7 +45,6 @@ export const startSaveNewUserSys = () => {
 
         if (resp.ok) {
             dispatch(setActiveNewUserSys(null))
-            dispatch(startListUserSys())
         }
     }
 }
@@ -107,7 +90,6 @@ export const startUpdateUserSys = () => {
 
         if (resp.ok) {
             dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
         }
     }
 }
@@ -125,7 +107,6 @@ export const startUpdateImageUserSys = ({ image }) => {
 
         if (resp.ok) {
             dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
         }
     }
 }
@@ -143,7 +124,6 @@ export const startUpdateCoverUserSys = ({ coverImage }) => {
 
         if (resp.ok) {
             dispatch(loadActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
         }
     }
 }
@@ -191,7 +171,6 @@ export const startUpdateStatusUserSys = (status) => {
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
-                    dispatch(startListUserSys())
                 }
             }
         })
@@ -206,9 +185,18 @@ export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid
         const { active } = getState().usersys
         const { _id } = active
 
+        const updateUserSys = {
+            names,
+            surnames,
+            birthday,
+            docid,
+            occupation: occupation !== null ? occupation._id : null,
+            gender
+        }
+
         const resp = await fetchByToken({
             endpoint: `usersys/profile/${_id}`,
-            data: { names, surnames, birthday, docid, occupation, gender },
+            data: updateUserSys,
             method: 'PUT'
         })
 
@@ -216,7 +204,6 @@ export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid
 
         if (resp.ok) {
             dispatch(setActiveUserSys(resp.usersys))
-            dispatch(startListUserSys())
         }
     }
 }
@@ -269,7 +256,6 @@ export const startUpdateEmailUserSys = ({ newEmail: email }) => {
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
-                    dispatch(startListUserSys())
                 }
             }
         })
@@ -324,7 +310,6 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
-                    dispatch(startListUserSys())
                 }
             }
         })
@@ -379,7 +364,6 @@ export const startUpdateRoleUserSys = ({ role }) => {
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
-                    dispatch(startListUserSys())
                 }
             }
         })
@@ -503,7 +487,6 @@ export const startDeleteUserSys = ({ navigate = null }) => {
                 if (resp.ok) {
                     navigate('/app/sys/user_sys')
                     dispatch(setActiveUserSys(null))
-                    dispatch(startListUserSys())
                 }
             }
         })

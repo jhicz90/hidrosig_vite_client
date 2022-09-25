@@ -1,22 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
-import { chckProp } from '../../../helpers'
 import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
-import { startListOccupation } from '../../../store/occupation'
+import { useGetOccupsQuery } from '../../../store'
 
 export const OccupationList = () => {
 
-    const dispatch = useDispatch()
-    const { list } = useSelector(state => state.occupation)
     const [search, setSearch] = useState('')
-
-    useEffect(() => {
-        dispatch(startListOccupation(search))
-    }, [search, dispatch])
+    const { data: list = [], isLoading } = useGetOccupsQuery(search)
 
     return (
         <>

@@ -1,22 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
-import { chckProp } from '../../../helpers'
 import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
-import { startListUserSys } from '../../../store/usersys'
+import { useGetUsrsQuery } from '../../../store'
 
 export const UserSysList = () => {
 
-    const dispatch = useDispatch()
-    const { list } = useSelector(state => state.usersys)
     const [search, setSearch] = useState('')
-
-    useEffect(() => {
-        dispatch(startListUserSys(search))
-    }, [search, dispatch])
+    const { data: list = [], isLoading } = useGetUsrsQuery(search)
 
     return (
         <>

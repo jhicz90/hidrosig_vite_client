@@ -7,7 +7,7 @@ export const OccupationModuleDelete = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { isSavingNew } = useSelector(state => state.occupation)
+    const { isSaving } = useSelector(state => state.occupation)
 
     const handleDelete = () => {
         dispatch(startDeleteOccupation({ navigate }))
@@ -22,7 +22,7 @@ export const OccupationModuleDelete = () => {
                 <div className='d-flex justify-content-end gap-2'>
                     <Button
                         onClick={handleDelete}
-                        disabled={isSavingNew}
+                        disabled={isSaving}
                         variant='danger'
                     >
                         Eliminar

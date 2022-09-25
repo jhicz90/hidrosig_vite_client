@@ -6,7 +6,6 @@ export const usersysSlice = createSlice({
         isSavingNew: false,
         active: null,
         activeNew: null,
-        list: [],
     },
     reducers: {
         addNewUserSys: (state) => {
@@ -31,9 +30,6 @@ export const usersysSlice = createSlice({
         setSavingNew: (state, action) => {
             state.isSavingNew = action.payload
         },
-        setListUserSys: (state, action) => {
-            state.list = [...action.payload]
-        },
     }
 });
 
@@ -43,7 +39,6 @@ export const {
     editActiveUserSys,
     setActiveNewUserSys,
     setActiveUserSys,
-    setListUserSys,
     setSaving,
     setSavingNew,
 } = usersysSlice.actions

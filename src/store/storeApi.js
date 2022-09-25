@@ -17,12 +17,39 @@ export const storeApi = createApi({
         }
     }),
     endpoints: (builder) => ({
+        getUsrs: builder.query({
+            query: (search) => ({
+                url: `usersys/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+        }),
+        getOccups: builder.query({
+            query: (search) => ({
+                url: `occupation/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+        }),
         getUsrSysForOccup: builder.query({
-            query: ({ id, search }) => `occupation/list_usersys_in/${id}/${search}`,
+            query: ({ id, search }) => ({
+                url: `occupation/list_usersys_in/${id}`,
+                params: {
+                    search
+                }
+            }),
             transformResponse: (response, meta, arg) => response.docs,
             // query: ({ id, search }) => ({ url: `list_usersys_in`, body: { id, search } })
         }),
     }),
 })
 
-export const { useGetUsrSysForOccupQuery } = storeApi
+export const {
+    useGetUsrsQuery,
+    useGetOccupsQuery,
+    useGetUsrSysForOccupQuery
+} = storeApi

@@ -1,25 +1,9 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewOccupation, setActiveNewOccupation, setActiveOccupation, setListOccupation, setSaving, setSavingNew } from './occupationSlice'
+import { addNewOccupation, setActiveNewOccupation, setActiveOccupation, setSaving, setSavingNew } from './occupationSlice'
 
 const SwalReact = withReactContent(Swal)
-
-export const startListOccupation = (search = '') => {
-    return async (dispatch) => {
-
-        const resp = await fetchByToken({
-            endpoint: 'occupation/list',
-            params: { search }
-        })
-
-        if (resp.ok) {
-            dispatch(setListOccupation(resp.docs))
-        } else {
-            dispatch(setListOccupation([]))
-        }
-    }
-}
 
 export const startAddNewOccupation = () => {
     return async (dispatch) => {
@@ -59,7 +43,6 @@ export const startSaveNewOccupation = () => {
 
         if (resp.ok) {
             dispatch(setActiveNewOccupation(null))
-            dispatch(startListOccupation())
         }
     }
 }
@@ -103,7 +86,6 @@ export const startUpdateOccupation = () => {
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
-            dispatch(startListOccupation())
         }
     }
 }
@@ -121,7 +103,6 @@ export const startUpdateImageOccupation = ({ image }) => {
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
-            dispatch(startListOccupation())
         }
     }
 }
@@ -168,7 +149,6 @@ export const startUpdateStatusOccupation = (status) => {
 
                 if (resp.ok) {
                     dispatch(setActiveOccupation(resp.occupation))
-                    dispatch(startListOccupation())
                 }
             }
         })
@@ -193,7 +173,6 @@ export const startUpdateInformationOccupation = ({ name, desc }) => {
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
-            dispatch(startListOccupation())
         }
     }
 }
@@ -216,17 +195,16 @@ export const startUpdateLevelOccupation = ({ levelOccupation, junta, committee }
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
-            dispatch(startListOccupation())
         }
     }
 }
 
 export const startDeleteOccupation = ({ navigate = null }) => {
     return async (dispatch, getState) => {
-        const { active } = getState().usersys
+        const { active } = getState().occupation
         const { _id, name } = active
 
-        const wordConfirm = normalizeText(names, { lowerCase: true, removeSpaces: true })
+        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
         SwalReact.fire({
             title:
@@ -276,7 +254,6 @@ export const startDeleteOccupation = ({ navigate = null }) => {
                 if (resp.ok) {
                     navigate('/app/sys/occup')
                     dispatch(setActiveOccupation(null))
-                    dispatch(startListOccupation())
                 }
             }
         })

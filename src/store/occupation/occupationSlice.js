@@ -6,7 +6,6 @@ export const occupationSlice = createSlice({
         isSavingNew: false,
         active: null,
         activeNew: null,
-        list: [],
     },
     reducers: {
         addNewOccupation: (state) => {
@@ -31,9 +30,6 @@ export const occupationSlice = createSlice({
         setSavingNew: (state, action) => {
             state.isSavingNew = action.payload
         },
-        setListOccupation: (state, action) => {
-            state.list = [...action.payload]
-        },
     }
 });
 
@@ -43,7 +39,6 @@ export const {
     editActiveOccupation,
     setActiveNewOccupation,
     setActiveOccupation,
-    setListOccupation,
     setSaving,
     setSavingNew,
 } = occupationSlice.actions

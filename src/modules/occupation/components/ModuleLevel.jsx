@@ -41,8 +41,8 @@ export const OccupationModuleLevel = () => {
                                 {
                                     [
                                         { name: 'Administrador', desc: 'La ocupación solo la verá los que tengan el mismo nivel', value: 1 },
-                                        { name: 'Junta de usuarios', desc: 'Podra acceder en su ámbito y sus comisiones respectivas', value: 2 },
-                                        { name: 'Comisión de usuarios', desc: 'Esta cuenta solo podra acceder dentro de su ámbito', value: 3 }
+                                        { name: 'Junta de usuarios', desc: 'Esta ocupación se verá en su ámbito y sus comisiones respectivas', value: 2 },
+                                        { name: 'Comisión de usuarios', desc: 'Esta ocupación solo podra acceder dentro de su ámbito', value: 3 }
                                     ].map(
                                         (option) =>
                                             lvlAccess <= option.value && (
@@ -57,12 +57,11 @@ export const OccupationModuleLevel = () => {
                                                     key={`check-${option.name}`}
                                                     labelTitle={option.name}
                                                     labelDesc={option.desc}
-                                                    value={option.value}
+                                                    valueOption={option.value}
                                                 />
                                             )
                                     )
                                 }
-
                             </ListGroupOption>
                         </div>
                     </div>
