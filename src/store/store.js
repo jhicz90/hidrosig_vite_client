@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { authSlice } from './auth'
 import { usersysSlice } from './usersys'
 import { occupationSlice } from './occupation'
+import { roleSlice } from './role'
 import { storeApi } from './storeApi'
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
         auth: authSlice.reducer,
         usersys: usersysSlice.reducer,
         occupation: occupationSlice.reducer,
+        role: roleSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(storeApi.middleware)

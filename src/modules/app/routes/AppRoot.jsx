@@ -9,6 +9,7 @@ import { GuardRoute } from '../../../guards/GuardRoute'
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
 import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
 import { OccupationRoutes } from '../../occupation/routes/OccupationRoutes'
+import { RoleRoutes } from '../../role/routes/RoleRoutes'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 // const secretAccess = process.env.REACT_APP_SECRET_ACCESS
@@ -157,6 +158,7 @@ export const AppRoot = () => {
                         <Route path={`resume`} element={<SysPageResume />} />
                         <Route path={`user_sys/*`} element={<GuardRoute meta={['system']} component={UserSysRoutes} />} />
                         <Route path={`occup/*`} element={<GuardRoute meta={['system']} component={OccupationRoutes} />} />
+                        <Route path={`role/*`} element={<GuardRoute meta={['system']} component={RoleRoutes} />} />
                         {/* <Route path={`occup/:id`} element={<GuardRoute meta={['system', 'occupation']} component={OccupationEdit} />} />
                         <Route path={`perms`} element={<GuardRoute meta={['system', 'permission']} component={ListOfPermission} />} />
                         <Route path={`perms/:id`} element={<GuardRoute meta={['system', 'permission']} component={PermissionEdit} />} />

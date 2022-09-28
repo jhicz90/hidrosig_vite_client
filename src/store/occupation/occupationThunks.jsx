@@ -186,7 +186,7 @@ export const startUpdateLevelOccupation = ({ levelOccupation, junta, committee }
         const { _id } = active
 
         const resp = await fetchByToken({
-            endpoint: `occupation/info/${_id}`,
+            endpoint: `occupation/change_type/${_id}`,
             data: { levelOccupation, junta, committee },
             method: 'PUT'
         })

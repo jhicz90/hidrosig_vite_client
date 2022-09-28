@@ -45,11 +45,21 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             // query: ({ id, search }) => ({ url: `list_usersys_in`, body: { id, search } })
         }),
+        getRoles: builder.query({
+            query: (search) => ({
+                url: `role/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+        }),
     }),
 })
 
 export const {
     useGetUsrsQuery,
     useGetOccupsQuery,
-    useGetUsrSysForOccupQuery
+    useGetUsrSysForOccupQuery,
+    useGetRolesQuery,
 } = storeApi

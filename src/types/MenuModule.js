@@ -194,10 +194,10 @@ export const menuModule = [
                 detail: 'Lista de usuarios o cuentas de usuario registradas en el sistema.'
             },
             {
-                label: 'Permisos',
-                to: 'perms',
-                meta: ['permission'],
-                detail: 'Lista de permisos y restricciones de las cuentas de usuario.'
+                label: 'Roles de usuario',
+                to: 'role',
+                meta: ['role'],
+                detail: 'Lista de roles y restricciones de las cuentas de usuario.'
             },
             {
                 label: 'Ocupaciones',
