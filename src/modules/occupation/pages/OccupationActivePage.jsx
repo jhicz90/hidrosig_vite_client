@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsFillEyeFill, BsInfoCircle, BsTrash } from 'react-icons/bs'
-import { FiUsers } from 'react-icons/fi'
-import { RiShieldUserLine } from 'react-icons/ri'
+import { FiBarChart2, FiUsers } from 'react-icons/fi'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { setActiveOccupation, startGetOccupation, } from '../../../store/occupation'
@@ -50,7 +49,7 @@ export const OccupationActivePage = () => {
                                 },
                                 {
                                     id: 'lvloccupation',
-                                    icon: RiShieldUserLine,
+                                    icon: FiBarChart2,
                                     name: 'Nivel de ocupación',
                                     title: true,
                                     module: OccupationModuleLevel
