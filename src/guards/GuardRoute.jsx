@@ -1,14 +1,15 @@
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
+import { MD5 } from 'crypto-js'
 
 const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
 
 export const GuardRoute = ({ meta = [], component: RouteComponent }) => {
 
-    const { modAccess } = useSelector(state => state.auth)
-    const access = meta.filter(m => modAccess.find(acc => acc === m))
+    const { modAccess: modules } = useSelector(state => state.auth)
+    const access = meta.filter(m => modules.find(acc => acc === m))
 
-    if (modAccess[0] === secretAccess) {
+    if (modules[0] === MD5(secretAccess).toString()) {
         return <RouteComponent />
     }
 

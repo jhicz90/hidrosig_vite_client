@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, useLocation } from 'react-router-dom'
 import { FaWifi } from 'react-icons/fa'
+import { MD5 } from 'crypto-js'
 // import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { checkModules, imageSysGet } from '../../../helpers'
@@ -49,7 +50,8 @@ export const AppSidebar = () => {
 const Sidebar = () => {
 
     const { modAccess: modules } = useSelector(state => state.auth)
-    const menu = modules[0] === secretAccess ? menuModule : checkModules(menuModule, modules)
+    
+    const menu = modules[0] === MD5(secretAccess).toString() ? menuModule : checkModules(menuModule, modules)
 
     return (
         <nav>

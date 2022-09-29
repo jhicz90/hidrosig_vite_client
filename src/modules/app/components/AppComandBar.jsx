@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { MD5 } from 'crypto-js'
 import CommandPalette, { useHandleOpenCommandPalette, filterItems, renderJsonStructure } from 'react-cmdk'
 import { menuModule } from '../../../types'
 import { checkModules, comandModules } from '../../../helpers'
@@ -15,7 +16,7 @@ export const AppComandBar = () => {
     const [page, setPage] = useState('root')
 
     const { modAccess: modules } = useSelector(state => state.auth)
-    const actions = comandModules(modules[0] === secretAccess ? [...menuModule] : checkModules([...menuModule], modules))
+    const actions = comandModules(modules[0] === MD5(secretAccess).toString() ? [...menuModule] : checkModules([...menuModule], modules))
 
     const rootItems = filterItems(
         [
