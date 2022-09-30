@@ -1,5 +1,6 @@
 export * from './CreateModule'
 export * from './CreatePermission'
+export * from './CreateRole'
 export * from './ModuleBanner'
 export * from './ModuleDelete'
 export * from './ModuleInformation'

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row } from 'react-bootstrap'
+import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row, Table } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
 import { InputTextDebounce, LoadingPage } from '../../../components'
@@ -62,6 +62,37 @@ export const RoleModuleModuleAccess = () => {
                             <Alert className='mx-3' variant='info'>
                                 Seleccione los módulos que desee agregar en el rol de usuario, una vez seleccionados GUARDE los cambios, luego las sesiones de enlazadas a este rol se actualizarán.
                             </Alert>
+                            <Table striped bordered responsive>
+                                <thead className='table-light'>
+                                    <tr>
+                                        <th>Grupo de módulos</th>
+                                        {
+                                            Object.keys(grouped).map((group, index) => (
+                                                <th>{`${group} (${checkInGroup(group)})`}</th>
+                                            ))
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td colSpan={2}>Larry the Bird</td>
+                                        <td>@twitter</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
                             <Accordion flush className='mb-3'>
                                 {
                                     Object.keys(grouped).map((group, index) => (
