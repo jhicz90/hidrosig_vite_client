@@ -1,23 +1,23 @@
 import { Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { startDeleteOccupation } from '../../../store/occupation'
+import { startDeleteRole } from '../../../store/role'
 
-export const OccupationModuleDelete = () => {
+export const RoleModuleDelete = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { isSaving } = useSelector(state => state.occupation)
+    const { isSaving } = useSelector(state => state.role)
 
     const handleDelete = () => {
-        dispatch(startDeleteOccupation({ navigate }))
+        dispatch(startDeleteRole({ navigate }))
     }
 
     return (
         <Card border='danger'>
             <Card.Body>
                 <p className='card-text'>
-                    Al eliminar la ocupación no podrá acceder a este registro.
+                    Al eliminar el rol de usuario no podrá acceder a este registro.
                 </p>
                 <div className='d-flex justify-content-end gap-2'>
                     <Button

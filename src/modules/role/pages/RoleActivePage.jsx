@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsFillEyeFill, BsInfoCircle, BsTrash } from 'react-icons/bs'
-import { FiUsers } from 'react-icons/fi'
+import { BsFillEyeFill, BsInfoCircle, BsShieldLock, BsTrash } from 'react-icons/bs'
 import { RiShieldUserLine } from 'react-icons/ri'
+import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { setActiveRole, startGetRole } from '../../../store/role'
-import { RoleModuleBanner, RoleModuleInformation, RoleModuleLevel } from '../components'
+import { RoleModuleBanner, RoleModuleDelete, RoleModuleInformation, RoleModuleLevel, RoleModuleModuleAccess, RoleModulePermissions } from '../components'
 
 export const RoleActivePage = () => {
 
@@ -55,20 +55,27 @@ export const RoleActivePage = () => {
                                     title: true,
                                     module: RoleModuleLevel
                                 },
-                                // {
-                                //     id: 'tousersrole',
-                                //     icon: FiUsers,
-                                //     name: 'Usuarios',
-                                //     title: true,
-                                //     module: OccupationModuleToUsers
-                                // },
-                                // {
-                                //     id: 'deleterole',
-                                //     icon: BsTrash,
-                                //     name: 'Eliminar ocupación',
-                                //     title: true,
-                                //     module: OccupationModuleDelete
-                                // },
+                                {
+                                    id: 'permsrole',
+                                    icon: BsShieldLock,
+                                    name: 'Permisos',
+                                    title: true,
+                                    module: RoleModulePermissions
+                                },
+                                {
+                                    id: 'modulerole',
+                                    icon: FaBuffer,
+                                    name: 'Módulos',
+                                    title: true,
+                                    module: RoleModuleModuleAccess
+                                },
+                                {
+                                    id: 'deleterole',
+                                    icon: BsTrash,
+                                    name: 'Eliminar',
+                                    title: true,
+                                    module: RoleModuleDelete
+                                },
                             ]}
                         />
                     </div>

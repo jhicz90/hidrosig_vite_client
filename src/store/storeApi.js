@@ -4,6 +4,10 @@ const baseURL = import.meta.env.VITE_APP_API_URL
 
 export const storeApi = createApi({
     reducerPath: 'storeApi',
+    keepUnusedDataFor: 60,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl'],
     baseQuery: fetchBaseQuery({
         baseUrl: `${baseURL}`,
         prepareHeaders: (headers, { getState }) => {
@@ -17,7 +21,7 @@ export const storeApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getUsrs: builder.query({
+        getUsrsSys: builder.query({
             query: (search) => ({
                 url: `usersys/list`,
                 params: {
@@ -25,6 +29,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['UsrSys']
         }),
         getOccups: builder.query({
             query: (search) => ({
@@ -34,6 +39,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Occup']
         }),
         getUsrSysForOccup: builder.query({
             query: ({ id, search }) => ({
@@ -43,7 +49,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            // query: ({ id, search }) => ({ url: `list_usersys_in`, body: { id, search } })
+            providesTags: ['UsrSys', 'Occup']
         }),
         getRoles: builder.query({
             query: (search) => ({
@@ -53,13 +59,54 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Role']
+        }),
+        getPerms: builder.query({
+            query: (search) => ({
+                url: `permission/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Perm']
+        }),
+        addNewPerm: builder.mutation({
+            query: (newPermission) => ({
+                url: `permission/create/new`,
+                method: 'post',
+                body: newPermission
+            }),
+            invalidatesTags: ['Perm']
+        }),
+        getModules: builder.query({
+            query: (search) => ({
+                url: `module/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Modl']
+        }),
+        addNewModule: builder.mutation({
+            query: (newModule) => ({
+                url: `module/create/new`,
+                method: 'post',
+                body: newModule
+            }),
+            invalidatesTags: ['Modl']
         }),
     }),
 })
 
 export const {
-    useGetUsrsQuery,
     useGetOccupsQuery,
-    useGetUsrSysForOccupQuery,
+    useGetPermsQuery,
+    useAddNewPermMutation,
+    useGetModulesQuery,
+    useAddNewModuleMutation,
     useGetRolesQuery,
+    useGetUsrsSysQuery,
+    useGetUsrSysForOccupQuery,
 } = storeApi

@@ -9,7 +9,7 @@ export const OccupationModuleToUsers = () => {
 
     const [search, setSearch] = useState('')
     const { active: { _id: occupId } } = useSelector(state => state.occupation)
-    const { data: usersSysIn = [], isLoading } = useGetUsrSysForOccupQuery({ id: occupId, search })
+    const { data: usersSysIn = [], isLoading } = useGetUsrSysForOccupQuery({ id: occupId, search }, { refetchOnMountOrArgChange: true })
 
     return (
         <Card>

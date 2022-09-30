@@ -9,7 +9,7 @@ export const GuardRoute = ({ meta = [], component: RouteComponent }) => {
     const { modAccess: modules } = useSelector(state => state.auth)
     const access = meta.filter(m => modules.find(acc => acc === m))
 
-    if (modules[0] === MD5(secretAccess).toString()) {
+    if (modules.find(m => m === MD5(secretAccess).toString())) {
         return <RouteComponent />
     }
 

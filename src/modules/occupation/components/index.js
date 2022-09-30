@@ -1,6 +1,5 @@
 export * from './CreateOccupation'
 export * from './ModuleBanner'
-export * from './ModuleCreate'
 export * from './ModuleDelete'
 export * from './ModuleInformation'
 export * from './ModuleLevel'
