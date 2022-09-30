@@ -23,9 +23,9 @@ export const CreatePermission = () => {
     return (
         <>
             <Button
+                onClick={() => setShowModal(true)}
                 disabled={isLoading}
                 variant='primary'
-                onClick={() => setShowModal(true)}
             >
                 Nuevo permiso
             </Button>

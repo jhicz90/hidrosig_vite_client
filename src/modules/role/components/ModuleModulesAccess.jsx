@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Accordion, Button, Card, Col, Form, FormCheck, ListGroup, Row } from 'react-bootstrap'
+import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
 import { InputTextDebounce, LoadingPage } from '../../../components'
@@ -59,6 +59,9 @@ export const RoleModuleModuleAccess = () => {
                                     <CreateModule />
                                 </Col>
                             </Form.Group>
+                            <Alert className='mx-3' variant='info'>
+                                Seleccione los módulos que desee agregar en el rol de usuario, una vez seleccionados GUARDE los cambios, luego las sesiones de enlazadas a este rol se actualizarán.
+                            </Alert>
                             <Accordion flush className='mb-3'>
                                 {
                                     Object.keys(grouped).map((group, index) => (

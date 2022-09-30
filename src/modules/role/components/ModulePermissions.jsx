@@ -60,10 +60,7 @@ export const RoleModulePermissions = () => {
                                 </Col>
                             </Form.Group>
                             <Alert className='mx-3' variant='info'>
-                                <Alert.Heading>Información</Alert.Heading>
-                                <p>
-                                    Seleccione los permisos que desee agregar en el rol de usuario, una vez seleccionados GUARDE los cambios, luego las sesiones de enlazadas a este rol se actualizarán.
-                                </p>
+                                Seleccione los permisos que desee agregar en el rol de usuario, una vez seleccionados GUARDE los cambios, luego las sesiones de enlazadas a este rol se actualizarán.
                             </Alert>
                             <Accordion flush className='mb-3'>
                                 {
