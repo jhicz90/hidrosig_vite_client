@@ -7,6 +7,7 @@ import { Layout } from '../layout'
 import { GuardRoute } from '../../../guards/GuardRoute'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
+import { SigaRoutes } from '../../siga/routes/SigaRoutes'
 import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
 import { OccupationRoutes } from '../../occupation/routes/OccupationRoutes'
 import { RoleRoutes } from '../../role/routes/RoleRoutes'
@@ -153,7 +154,7 @@ export const AppRoot = () => {
                         <Route path={`var`} element={<GuardRoute meta={['irrigschm', 'variables']} component={VariableList} />} />
                     </Route>*/}
                     {/* <Route path={`acct/*`} element={<PettyCashRoutes />} /> */}
-                    {/* <Route path={`siga/*`} element={<SigaRoutes />} /> */}
+                    <Route path={`siga/*`} element={<SigaRoutes />} />
                     <Route path={`sys`}>
                         <Route path={`resume`} element={<SysPageResume />} />
                         <Route path={`user_sys/*`} element={<GuardRoute meta={['system']} component={UserSysRoutes} />} />
