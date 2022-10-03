@@ -18,7 +18,9 @@ export const store = configureStore({
         siga: sigaSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(storeApi.middleware)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false,
+    }).concat(storeApi.middleware)
 })
 
 setupListeners(store.dispatch)

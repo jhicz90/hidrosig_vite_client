@@ -8,17 +8,12 @@ export const ReportOptions = () => {
 
     const dispatch = useDispatch()
     const { report, reportDateStart, reportDateEnd } = useSelector(state => state.siga)
-    const [endDateEff, setEndDateEff] = useState(reportDateEnd)
-    const [dateRange, setDateRange] = useState([reportDateStart, reportDateEnd])
-    const [startDate, endDate] = dateRange
 
     const reportDateEndChange = (date) => {
-        setEndDateEff(date)
         dispatch(setReportEndDate(date))
     }
 
     const reportDateRangeChange = (dates) => {
-        setDateRange(dates)
         dispatch(setReportStartDate(dates[0]))
         dispatch(setReportEndDate(dates[1]))
     }
@@ -44,6 +39,7 @@ export const ReportOptions = () => {
                                     <label htmlFor='reportDateEnd' className='form-label'>Fecha de reporte</label>
                                     <ReactDatePicker
                                         id='reportDateEnd'
+                                        startDate={reportDateStart}
                                         dateFormat={'dd/MM/yyyy'}
                                         onChange={reportDateEndChange}
                                         showWeekNumbers
@@ -66,16 +62,15 @@ export const ReportOptions = () => {
                                     <div className='input-group'>
                                         <ReactDatePicker
                                             id='reportDateRange'
-                                            selectsRange
+                                            selectsRange={true}
+                                            startDate={reportDateStart}
+                                            endDate={reportDateEnd}
                                             dateFormat={'dd/MM/yyyy'}
                                             onChange={reportDateRangeChange}
                                             showWeekNumbers
                                             className='form-control'
                                             autoComplete='off'
                                         />
-                                    </div>
-                                    <div className='form-text'>
-                                        La fecha que indique se obtendra la información de pagos y deudas.
                                     </div>
                                 </div>
                             </div>
