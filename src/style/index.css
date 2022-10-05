@@ -31,7 +31,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    padding: 1.5rem 0.5rem;
+    padding: 0.5rem;
     margin-bottom: 0;
     list-style: none;
 }

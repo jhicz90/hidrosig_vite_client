@@ -33,51 +33,49 @@ export const RoleActivePage = () => {
                     ?
                     <div className='container'>
                         <ModuleNav
-                            modules={[
-                                {
-                                    id: 'bannerrole',
-                                    icon: BsFillEyeFill,
-                                    name: 'Inicio',
-                                    title: false,
-                                    module: RoleModuleBanner
-                                },
-                                {
-                                    id: 'inforole',
-                                    icon: BsInfoCircle,
-                                    name: 'Información básica',
-                                    title: true,
-                                    module: RoleModuleInformation
-                                },
-                                {
-                                    id: 'lvlrole',
-                                    icon: RiShieldUserLine,
-                                    name: 'Nivel de rol',
-                                    title: true,
-                                    module: RoleModuleLevel
-                                },
-                                {
-                                    id: 'permsrole',
-                                    icon: BsShieldLock,
-                                    name: 'Permisos',
-                                    title: true,
-                                    module: RoleModulePermissions
-                                },
-                                {
-                                    id: 'modulerole',
-                                    icon: FaBuffer,
-                                    name: 'Módulos',
-                                    title: true,
-                                    module: RoleModuleModuleAccess
-                                },
-                                {
-                                    id: 'deleterole',
-                                    icon: BsTrash,
-                                    name: 'Eliminar',
-                                    title: true,
-                                    module: RoleModuleDelete
-                                },
-                            ]}
-                        />
+                            modules={
+                                [
+                                    {
+                                        id: 'inforole',
+                                        icon: BsInfoCircle,
+                                        name: 'Información básica',
+                                        title: true,
+                                        module: RoleModuleInformation
+                                    },
+                                    {
+                                        id: 'lvlrole',
+                                        icon: RiShieldUserLine,
+                                        name: 'Nivel de rol',
+                                        title: true,
+                                        module: RoleModuleLevel
+                                    },
+                                    {
+                                        id: 'permsrole',
+                                        icon: BsShieldLock,
+                                        name: 'Permisos',
+                                        title: true,
+                                        module: RoleModulePermissions
+                                    },
+                                    {
+                                        id: 'modulerole',
+                                        icon: FaBuffer,
+                                        name: 'Módulos',
+                                        title: true,
+                                        module: RoleModuleModuleAccess
+                                    },
+                                    {
+                                        id: 'deleterole',
+                                        icon: BsTrash,
+                                        name: 'Eliminar',
+                                        title: true,
+                                        module: RoleModuleDelete
+                                    },
+                                ]
+
+                            }
+                        >
+                            <RoleModuleBanner />
+                        </ModuleNav>
                     </div>
                     :
                     <LoadingPage />

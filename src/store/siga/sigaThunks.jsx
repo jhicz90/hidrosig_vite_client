@@ -46,7 +46,7 @@ export const startGetSigaIrrigationNetwork = () => {
 
 export const startReportSigaCollectEfficiency = () => {
     return async (dispatch, getState) => {
-        const { reportCommittee, reportRate, reportDate: { end }, netIrrigChk } = getState().siga
+        const { reportCommittee, reportRate, reportDateEnd, netIrrigChk } = getState().siga
 
         await fetchByToken({
             endpoint: `siga/collectefficiency`,
@@ -54,7 +54,7 @@ export const startReportSigaCollectEfficiency = () => {
                 comm: reportCommittee,
                 rate: reportRate,
                 net: netIrrigChk,
-                endDate: end
+                endDate: reportDateEnd
             }
         })
     }
@@ -62,7 +62,7 @@ export const startReportSigaCollectEfficiency = () => {
 
 export const startReportSigaIrrigationScheduling = () => {
     return async (dispatch, getState) => {
-        const { reportCommittee, reportRate, reportDate: { start, end }, netIrrigChk } = getState().siga
+        const { reportCommittee, reportRate, reportDateStart, reportDateEnd, netIrrigChk } = getState().siga
 
         await fetchByToken({
             endpoint: `siga/irrigationscheduling`,
@@ -70,8 +70,8 @@ export const startReportSigaIrrigationScheduling = () => {
                 comm: reportCommittee,
                 rate: reportRate,
                 net: netIrrigChk,
-                startDate: start,
-                endDate: end
+                startDate: reportDateStart,
+                endDate: reportDateEnd
             }
         })
     }

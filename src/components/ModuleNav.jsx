@@ -1,12 +1,20 @@
 import React from 'react'
+import { Card } from 'react-bootstrap'
 import ScrollspyNav from 'react-scrollspy-nav'
 
-export const ModuleNav = ({ modules = [] }) => {
+export const ModuleNav = ({ modules = [], children }) => {
     return (
         <div className='row justify-content-center'>
             <div className='d-none d-lg-block col-12 col-lg-4 col-xl-3'>
                 <div className='sticky-mobile'>
-                    <div className='card mb-3 mb-lg-0 w-lg-220'>
+                    <Card className='card mb-3 mb-lg-0 w-lg-220'>
+                        {
+                            !!children
+                            &&
+                            <Card.Body>
+                                {children}
+                            </Card.Body>
+                        }
                         <ScrollspyNav
                             scrollTargetIds={modules.map(m => m.id)}
                             activeNavClass='active'
@@ -26,7 +34,7 @@ export const ModuleNav = ({ modules = [] }) => {
                                 }
                             </ul>
                         </ScrollspyNav>
-                    </div>
+                    </Card>
                 </div>
             </div>
             <div className='col-12 col-lg-8 col-xl-9'>
