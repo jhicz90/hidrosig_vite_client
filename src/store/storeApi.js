@@ -1,6 +1,45 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import axios from 'axios'
+import { msgFetchAlert } from '../helpers'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
+const token = localStorage.getItem('token') || ''
+
+const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
+    async ({ url, method, data, params }) => {
+        try {
+            const result = await axios({
+                url: baseUrl + '/' + url,
+                method,
+                data,
+                params,
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': token
+                }
+            })
+
+            if (result.data.hasOwnProperty('msg')) {
+                msgFetchAlert(result.data)
+            }
+
+            return { data: result.data }
+        } catch (axiosError) {
+            let err = axiosError
+
+            if (err.response?.data.hasOwnProperty('msg')) {
+                msgFetchAlert(err.response?.data)
+            }
+
+            return {
+                error: {
+                    status: err.response?.status,
+                    data: err.response?.data || err.message,
+                },
+            }
+        }
+    }
+
 
 export const storeApi = createApi({
     reducerPath: 'storeApi',
@@ -8,18 +47,21 @@ export const storeApi = createApi({
     refetchOnFocus: true,
     refetchOnReconnect: true,
     tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl'],
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${baseURL}`,
-        prepareHeaders: (headers, { getState }) => {
-            const token = getState().auth.token
-
-            if (token) {
-                headers.set('Authorization', token)
-            }
-
-            return headers
-        }
+    baseQuery: axiosBaseQuery({
+        baseUrl: baseURL
     }),
+    // baseQuery: fetchBaseQuery({
+    //     baseUrl: `${baseURL}`,
+    //     prepareHeaders: (headers, { getState }) => {
+    //         const token = getState().auth.token
+
+    //         if (token) {
+    //             headers.set('Authorization', token)
+    //         }
+
+    //         return headers
+    //     }
+    // }),
     endpoints: (builder) => ({
         getUsrsSys: builder.query({
             query: (search) => ({
@@ -75,7 +117,7 @@ export const storeApi = createApi({
             query: (newPermission) => ({
                 url: `permission/create/new`,
                 method: 'post',
-                body: newPermission
+                data: newPermission
             }),
             invalidatesTags: ['Perm']
         }),
@@ -93,7 +135,7 @@ export const storeApi = createApi({
             query: (newModule) => ({
                 url: `module/create/new`,
                 method: 'post',
-                body: newModule
+                data: newModule
             }),
             invalidatesTags: ['Modl']
         }),

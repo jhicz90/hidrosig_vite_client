@@ -6,7 +6,7 @@ import { useAddNewPermMutation } from '../../../store'
 export const CreatePermission = () => {
 
     const [createPermission, { isLoading, isSuccess }] = useAddNewPermMutation()
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, reset } = useForm()
     const [showModal, setShowModal] = useState(false)
 
     const handleSave = (e) => {
@@ -15,10 +15,10 @@ export const CreatePermission = () => {
 
     useEffect(() => {
         if (isSuccess) {
+            reset()
             setShowModal(false)
         }
     }, [isSuccess])
-
 
     return (
         <>

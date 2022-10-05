@@ -6,7 +6,7 @@ import { useAddNewModuleMutation } from '../../../store'
 export const CreateModule = () => {
 
     const [createModule, { isLoading, isSuccess }] = useAddNewModuleMutation()
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, reset } = useForm()
     const [showModal, setShowModal] = useState(false)
 
     const handleSave = (e) => {
@@ -15,10 +15,10 @@ export const CreateModule = () => {
 
     useEffect(() => {
         if (isSuccess) {
+            reset()
             setShowModal(false)
         }
     }, [isSuccess])
-
 
     return (
         <>
