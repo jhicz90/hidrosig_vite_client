@@ -3,7 +3,6 @@ import axios from 'axios'
 import { msgFetchAlert } from '../helpers'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
-const token = localStorage.getItem('token') || ''
 
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
     async ({ url, method, data, params }) => {
@@ -15,7 +14,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
                 params,
                 headers: {
                     'Content-type': 'application/json',
-                    'Authorization': token
+                    'Authorization': localStorage.getItem('token') || ''
                 }
             })
 
@@ -26,7 +25,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
             return { data: result.data }
         } catch (axiosError) {
             let err = axiosError
-
+            console.log(err)
             if (err.response?.data.hasOwnProperty('msg')) {
                 msgFetchAlert(err.response?.data)
             }
