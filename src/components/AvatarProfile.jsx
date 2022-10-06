@@ -4,60 +4,47 @@ import { imageGet, imageSysGet } from '../helpers'
 
 export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null }) => {
     return (
-        <ProfileAvatar className={`shadow-sm ${className}`}>
-            <img
-                className='avatar-img'
-                src={avatarImg ? imageGet(avatarImg) : imageSysGet(noImg)}
-                alt={`avatar-image-${avatarImg}`}
-                loading={'lazy'}
-            />
-            <span
-                // onClick={handleChangeImage}
-                className='avatar-uploader-trigger shadow-sm'>
-                <FaPen size={20} />
-            </span>
-        </ProfileAvatar>
-
+        <div className='text-center mb-3'>
+            <ProfileAvatar className={`${className}`}>
+                <img
+                    className='avatar-img'
+                    src={avatarImg ? imageGet(avatarImg) : imageSysGet(noImg)}
+                    alt={`avatar-image-${avatarImg}`}
+                    loading={'lazy'}
+                />
+                {
+                    !!actionChange
+                    &&
+                    <div className='d-block cursor-pointer'>
+                        <span
+                            onClick={actionChange}
+                            className='position-absolute bottom-0 end-0 m-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center'>
+                            <FaPen />
+                        </span>
+                    </div>
+                }
+            </ProfileAvatar>
+        </div>
     )
 }
 
 const ProfileAvatar = styled.div`
     position: relative;
-    display: flex;
-    border-radius: 50%;
-    background-color: #fff;
-    border: 0.25rem solid #fff;
-    margin: -6.3rem auto 0.5rem auto;
-    justify-content: center;
-    height: 10.5rem;
-    width: 10.5rem;
+    display: inline-block;
+    height: 120px;
+    width: 120px;
 
     & img.avatar-img {
-        height: 100%;
+        height: 120px;
+        width: 120px;
         object-fit: cover;
         border-radius: 50%;
+        border: 0.25rem solid #fff;
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
     }
 
-    & .avatar-uploader-trigger {
-        position: absolute;
-        bottom: 0;
-        right: 10px;
-        cursor: pointer;
-        border-radius: 50%;
-        transition: 0.2s;
-        width: 2.40625rem;
-        height: 2.40625rem;
-        display: inline-flex;
-        flex-shrink: 0;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        color: #677788;
-        background-color: #fff;
-    }
-
-    &:hover .avatar-uploader-trigger {
-        color: #fff;
-        background-color: #377dff;
+    & span {
+        height: 30px;
+        width: 30px;
     }
 `

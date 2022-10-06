@@ -33,58 +33,55 @@ export const UserSysActivePage = () => {
                     ?
                     <div className='container'>
                         <ModuleNav
-                            modules={[
-                                {
-                                    id: 'bannerusersys',
-                                    icon: BsPersonBadge,
-                                    name: 'Portada',
-                                    title: false,
-                                    module: UserSysModuleBanner
-                                },
-                                {
-                                    id: 'infousersys',
-                                    icon: FiUser,
-                                    name: 'Información básica',
-                                    title: true,
-                                    module: UserSysModuleInformation
-                                },
-                                {
-                                    id: 'emailusersys',
-                                    icon: MdOutlineAlternateEmail,
-                                    name: 'Correo',
-                                    title: true,
-                                    module: UserSysModuleEmail
-                                },
-                                {
-                                    id: 'passwordusersys',
-                                    icon: BsKey,
-                                    name: 'Contraseña',
-                                    title: true,
-                                    module: UserSysModulePassword
-                                },
-                                {
-                                    id: 'permissionusersys',
-                                    icon: BsShieldLock,
-                                    name: 'Roles del usuario',
-                                    title: true,
-                                    module: UserSysModuleRole
-                                },
-                                // {
-                                //     id: 'sessionusersys',
-                                //     icon: FaMobileAlt,
-                                //     name: 'Sesiones',
-                                //     title: true,
-                                //     module: UserSysSessionModule
-                                // },
-                                {
-                                    id: 'deleteusersys',
-                                    icon: BsTrash,
-                                    name: 'Eliminar cuenta',
-                                    title: true,
-                                    module: UserSysModuleDelete
-                                },
-                            ]}
-                        />
+                            modules={
+                                [
+                                    {
+                                        id: 'infousersys',
+                                        icon: FiUser,
+                                        name: 'Información básica',
+                                        title: true,
+                                        module: UserSysModuleInformation
+                                    },
+                                    {
+                                        id: 'emailusersys',
+                                        icon: MdOutlineAlternateEmail,
+                                        name: 'Correo',
+                                        title: true,
+                                        module: UserSysModuleEmail
+                                    },
+                                    {
+                                        id: 'passwordusersys',
+                                        icon: BsKey,
+                                        name: 'Contraseña',
+                                        title: true,
+                                        module: UserSysModulePassword
+                                    },
+                                    {
+                                        id: 'permissionusersys',
+                                        icon: BsShieldLock,
+                                        name: 'Roles del usuario',
+                                        title: true,
+                                        module: UserSysModuleRole
+                                    },
+                                    // {
+                                    //     id: 'sessionusersys',
+                                    //     icon: FaMobileAlt,
+                                    //     name: 'Sesiones',
+                                    //     title: true,
+                                    //     module: UserSysSessionModule
+                                    // },
+                                    {
+                                        id: 'deleteusersys',
+                                        icon: BsTrash,
+                                        name: 'Eliminar cuenta',
+                                        title: true,
+                                        module: UserSysModuleDelete
+                                    },
+                                ]
+                            }
+                        >
+                            <UserSysModuleBanner />
+                        </ModuleNav>
                     </div>
                     :
                     <LoadingPage />

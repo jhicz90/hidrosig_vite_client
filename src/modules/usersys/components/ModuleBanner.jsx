@@ -39,41 +39,62 @@ export const UserSysModuleBanner = () => {
     // }
 
     return (
-        <Card>
-            <Cover coverImage={data.coverImage} />
+        <div className='text-center'>
             <AvatarProfile avatarImg={data.image} />
-            <Card.Body className='py-0 pb-3'>
-                <div className='row'>
-                    <div className='col'>
-                        <div className='mt-3'>
-                            Estado de la cuenta de usuario
-                            <OverlayTrigger
-                                placement='auto'
-                                overlay={
-                                    <Tooltip>Puede habilitar o desabilitar la cuenta de usuario, al hacer dicho cambio se actualizaran todas las sesiones.</Tooltip>
-                                }
-                            >
-                                <div className='d-inline ms-1'>
-                                    <FaRegQuestionCircle />
-                                </div>
-                            </OverlayTrigger>
-                        </div>
-                        <Switch
-                            onChange={confirmActiveStatus}
-                            checked={data.status}
-                            handleDiameter={30}
-                            disabled={isSaving}
-                            height={40}
-                            width={140}
-                            activeBoxShadow='0 0 0 2px #2684ff'
-                            onColor='#198754'
-                            offColor='#ffcd39'
-                            uncheckedIcon={<div className='d-flex justify-content-center align-items-center text-black h-100 me-5'>Desactivado</div>}
-                            checkedIcon={<div className='d-flex justify-content-center align-items-center text-white h-100 ms-5'>Activado</div>}
-                        />
-                    </div>
+            <h3 className='mb-0'>{`${active.names} ${active.surnames}`}</h3>
+            <span className='small text-secondary fw-semibold'>Usuario de sistema</span>
+            <div className='row mt-3'>
+                <div className='col'>
+                    <Switch
+                        onChange={confirmActiveStatus}
+                        checked={data.status}
+                        handleDiameter={30}
+                        disabled={isSaving}
+                        height={40}
+                        width={140}
+                        activeBoxShadow='0 0 0 2px #2684ff'
+                        onColor='#198754'
+                        offColor='#ffcd39'
+                        uncheckedIcon={<div className='d-flex justify-content-center align-items-center text-black h-100 me-5'>Desactivado</div>}
+                        checkedIcon={<div className='d-flex justify-content-center align-items-center text-white h-100 ms-5'>Activado</div>}
+                    />
                 </div>
-            </Card.Body>
-        </Card>
+            </div>
+        </div>
+        // <Card>
+        //     <Cover coverImage={data.coverImage} />
+        //     <Card.Body className='py-0 pb-3'>
+        //         <div className='row'>
+        //             <div className='col'>
+        //                 <div className='mt-3'>
+        //                     Estado de la cuenta de usuario
+        //                     <OverlayTrigger
+        //                         placement='auto'
+        //                         overlay={
+        //                             <Tooltip>Puede habilitar o desabilitar la cuenta de usuario, al hacer dicho cambio se actualizaran todas las sesiones.</Tooltip>
+        //                         }
+        //                     >
+        //                         <div className='d-inline ms-1'>
+        //                             <FaRegQuestionCircle />
+        //                         </div>
+        //                     </OverlayTrigger>
+        //                 </div>
+        //                 <Switch
+        //                     onChange={confirmActiveStatus}
+        //                     checked={data.status}
+        //                     handleDiameter={30}
+        //                     disabled={isSaving}
+        //                     height={40}
+        //                     width={140}
+        //                     activeBoxShadow='0 0 0 2px #2684ff'
+        //                     onColor='#198754'
+        //                     offColor='#ffcd39'
+        //                     uncheckedIcon={<div className='d-flex justify-content-center align-items-center text-black h-100 me-5'>Desactivado</div>}
+        //                     checkedIcon={<div className='d-flex justify-content-center align-items-center text-white h-100 ms-5'>Activado</div>}
+        //                 />
+        //             </div>
+        //         </div>
+        //     </Card.Body>
+        // </Card>
     )
 }
