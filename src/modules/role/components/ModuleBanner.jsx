@@ -21,8 +21,8 @@ export const RoleModuleBanner = () => {
 
     return (
         <div className='text-center'>
-            <h3 className='mb-0'>{active.name}</h3>
-            <span className='small text-secondary fw-semibold'>Rol de usuario</span>
+            <div className='fs-5 mb-0'>{active.name}</div>
+            <span className='text-secondary fw-semibold'>Rol de usuario</span>
             <div className='row mt-3'>
                 <div className='col'>
                     <Switch

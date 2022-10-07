@@ -41,8 +41,8 @@ export const UserSysModuleBanner = () => {
     return (
         <div className='text-center'>
             <AvatarProfile avatarImg={data.image} />
-            <h3 className='mb-0'>{`${active.names} ${active.surnames}`}</h3>
-            <span className='small text-secondary fw-semibold'>Usuario de sistema</span>
+            <div className='fs-5 mb-0'>{`${active.names} ${active.surnames}`}</div>
+            <span className='text-secondary fw-semibold'>Usuario de sistema</span>
             <div className='row mt-3'>
                 <div className='col'>
                     <Switch
