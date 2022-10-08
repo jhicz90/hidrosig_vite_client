@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsKey, BsPersonBadge, BsShieldLock, BsTrash } from 'react-icons/bs'
+import { BsKey, BsShieldLock, BsTrash } from 'react-icons/bs'
 import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import validator from 'validator'

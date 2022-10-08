@@ -11,6 +11,7 @@ import { SigaRoutes } from '../../siga/routes/SigaRoutes'
 import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
 import { OccupationRoutes } from '../../occupation/routes/OccupationRoutes'
 import { RoleRoutes } from '../../role/routes/RoleRoutes'
+import { SystemRoutes } from '../../system/routes/SystemRoutes'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 // const secretAccess = process.env.REACT_APP_SECRET_ACCESS
@@ -160,6 +161,7 @@ export const AppRoot = () => {
                         <Route path={`user_sys/*`} element={<GuardRoute meta={['system']} component={UserSysRoutes} />} />
                         <Route path={`occup/*`} element={<GuardRoute meta={['system']} component={OccupationRoutes} />} />
                         <Route path={`role/*`} element={<GuardRoute meta={['system']} component={RoleRoutes} />} />
+                        <Route path={`settings/*`} element={<GuardRoute meta={['system']} component={SystemRoutes} />} />
                         {/* <Route path={`occup/:id`} element={<GuardRoute meta={['system', 'occupation']} component={OccupationEdit} />} />
                         <Route path={`perms`} element={<GuardRoute meta={['system', 'permission']} component={ListOfPermission} />} />
                         <Route path={`perms/:id`} element={<GuardRoute meta={['system', 'permission']} component={PermissionEdit} />} />

@@ -17,7 +17,7 @@ export const OccupationModuleDelete = () => {
         <Card border='danger'>
             <Card.Body>
                 <p className='card-text'>
-                    Al eliminar la ocupación no podrá acceder a este registro.
+                    Al eliminar la ocupación no podrá acceder a este registro. Recordar que la eliminación se puede cancelar por el administrador.
                 </p>
                 <div className='d-flex justify-content-end gap-2'>
                     <Button

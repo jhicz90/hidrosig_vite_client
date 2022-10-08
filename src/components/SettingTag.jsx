@@ -6,10 +6,10 @@ export const SettingBlock = ({ title = '', children }) => {
     const block = children.filter((ch, i) => i !== action)
 
     return (
-        <div className="d-flex flex-sm-row flex-column align-items-start align-items-sm-center">
-            <div className="mb-2 mb-md-0">
-                <div className="fs-6 fw-bolder mb-1">{title}</div>
-                <div className="fs-6 text-muted">
+        <div className='d-flex flex-sm-row flex-column align-items-start align-items-sm-center'>
+            <div className='mb-2 mb-md-0'>
+                <div className='fs-6 fw-bolder mb-1'>{title}</div>
+                <div className='fs-6 text-muted'>
                     {block}
                 </div>
             </div>
@@ -21,7 +21,7 @@ export const SettingBlock = ({ title = '', children }) => {
 export const SettingAction = ({ children }) => {
 
     return (
-        <div className="settingaction ms-sm-auto w-100 w-sm-auto flex-md-shrink-0">
+        <div className='settingaction ms-sm-auto w-sm-auto flex-md-shrink-0'>
             {children}
         </div>
     )

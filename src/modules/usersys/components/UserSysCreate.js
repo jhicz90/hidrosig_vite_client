@@ -256,7 +256,7 @@ const Step2 = () => {
                             autoComplete='off'
                         />
                         {errors.email && (
-                            <div class='text-danger'>
+                            <div className='text-danger'>
                                 {errors.email.message}
                             </div>
                         )}
@@ -293,7 +293,7 @@ const Step2 = () => {
                             autoComplete='off'
                         />
                         {errors.passwordConfirmation && (
-                            <div class='text-danger'>
+                            <div className='text-danger'>
                                 {errors.passwordConfirmation.message}
                             </div>
                         )}

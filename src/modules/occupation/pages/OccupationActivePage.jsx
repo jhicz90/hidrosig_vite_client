@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsFillEyeFill, BsInfoCircle, BsTrash } from 'react-icons/bs'
+import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FiBarChart2, FiUsers } from 'react-icons/fi'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
@@ -34,13 +34,6 @@ export const OccupationActivePage = () => {
                         <ModuleNav
                             modules={[
                                 {
-                                    id: 'banneroccupation',
-                                    icon: BsFillEyeFill,
-                                    name: 'Inicio',
-                                    title: false,
-                                    module: OccupationModuleBanner
-                                },
-                                {
                                     id: 'infooccupation',
                                     icon: BsInfoCircle,
                                     name: 'Información básica',
@@ -69,7 +62,9 @@ export const OccupationActivePage = () => {
                                     module: OccupationModuleDelete
                                 },
                             ]}
-                        />
+                        >
+                            <OccupationModuleBanner />
+                        </ModuleNav>
                     </div>
                     :
                     <LoadingPage />

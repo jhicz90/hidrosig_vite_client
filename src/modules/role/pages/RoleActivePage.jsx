@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsFillEyeFill, BsInfoCircle, BsShieldLock, BsTrash } from 'react-icons/bs'
+import { BsInfoCircle, BsShieldLock, BsTrash } from 'react-icons/bs'
 import { RiShieldUserLine } from 'react-icons/ri'
 import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'

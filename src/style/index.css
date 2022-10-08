@@ -4,6 +4,16 @@ body {
     position: relative;
 }
 
+@media (max-width: 576px) {
+    .settingaction .btn-group {
+        width: 100%;
+    }
+
+    .settingaction .btn {
+        width: 100%;
+    }
+}
+
 .cursor-pointer {
     cursor: pointer;
 }
@@ -611,6 +621,7 @@ kbd.type-writer,
 /* CARD */
 .card {
     --bs-card-border-radius: 9px;
+    --bs-card-inner-border-radius: 9px;
     --bs-card-box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1),
         0 3px 6px 0 rgba(0, 0, 0, 0.07);
     box-shadow: var(--bs-card-box-shadow);
@@ -628,3 +639,8 @@ kbd.type-writer,
     background-color: #f8fafd;
 }
 /* TABLE */
+/* LIST */
+.list-group {
+    --bs-list-group-border-radius: 9px;
+}
+/* LIST */

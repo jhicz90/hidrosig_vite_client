@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Switch from 'react-switch'
-import { Cover, AvatarProfile } from '../../../components'
+import { AvatarProfile } from '../../../components'
 import { startUpdateStatusUserSys } from '../../../store/usersys'
-import { FaRegQuestionCircle } from 'react-icons/fa'
 
 export const UserSysModuleBanner = () => {
 
@@ -29,19 +27,10 @@ export const UserSysModuleBanner = () => {
     //     }))
     // }
 
-    // const handleChangeCover = () => {
-    //     dispatch(startModalResource({
-    //         title: 'Cambiar imagen de portada',
-    //         tags: ['usuario', 'portada'],
-    //         accept: 'images',
-    //         setArchive: (data) => dispatch(startUpdateActiveUserSysCover({ coverImage: data }))
-    //     }))
-    // }
-
     return (
         <div className='text-center'>
             <AvatarProfile avatarImg={data.image} />
-            <div className='fs-5 mb-0'>{`${active.names} ${active.surnames}`}</div>
+            <div className='fs-5 mb-0'>{`${data.names} ${data.surnames}`}</div>
             <span className='text-secondary fw-semibold'>Usuario de sistema</span>
             <div className='row mt-3'>
                 <div className='col'>
