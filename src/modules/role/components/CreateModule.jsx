@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Card, Modal, Button, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { useAddNewModuleMutation } from '../../../store'
+import { useAddNewModuleMutation, useGetModulesGroupQuery } from '../../../store'
 
 export const CreateModule = () => {
 
+    const { register, watch, handleSubmit, reset } = useForm()
     const [createModule, { isLoading, isSuccess }] = useAddNewModuleMutation()
-    const { register, handleSubmit, reset } = useForm()
+    const { data: listOptions = [] } = useGetModulesGroupQuery(watch().group || '')
     const [showModal, setShowModal] = useState(false)
 
     const handleSave = (e) => {
@@ -19,7 +20,6 @@ export const CreateModule = () => {
             setShowModal(false)
         }
     }, [isSuccess])
-
     return (
         <>
             <Button
@@ -81,22 +81,37 @@ export const CreateModule = () => {
                                 </div>
                             </div>
                             <div className='row'>
-                                <div className='col-12 col-md-6'>
-                                    <Form.Group className='mb-3' controlId='pGroup'>
-                                        <Form.Label>Grupo</Form.Label>
-                                        <Form.Control
-                                            {...register('group', { required: true })}
-                                            type='text'
-                                            autoComplete='off'
-                                        />
-                                    </Form.Group>
+                                <div className='col-12'>
+                                    <div className='mb-3'>
+                                        <Form.Group controlId='pGroup'>
+                                            <Form.Label>Grupo</Form.Label>
+                                            <Form.Control
+                                                {...register('group', { required: true })}
+                                                type='text'
+                                                autoComplete='off'
+                                                list='optionsGroup'
+                                            />
+                                        </Form.Group>
+                                        <datalist id='optionsGroup'>
+                                            {
+                                                listOptions.map(op =>
+                                                    <option key={op._id} value={op._id}>{op._id}</option>
+                                                )
+                                            }
+                                        </datalist>
+                                        <Form.Text muted>
+                                            Escriba el nombre con exactitud si desea agregarlo a otro grupo ya creado o simplemente escriba un nombre para uno nuevo.
+                                        </Form.Text>
+                                    </div>
                                 </div>
+                            </div>
+                            <div className='row'>
                                 <div className='col-12 col-md-6'>
                                     <Form.Group className='mb-3' controlId='pPrivate'>
                                         <Form.Label>Privado</Form.Label>
                                         <Form.Check
                                             {...register('private')}
-                                            type='switch'
+                                            type='checkbox'
                                             autoComplete='off'
                                             size={10}
                                         />

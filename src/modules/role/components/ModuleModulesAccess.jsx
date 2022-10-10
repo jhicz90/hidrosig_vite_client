@@ -1,15 +1,18 @@
 import { useState, useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row, Table } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
+import { FcLock } from 'react-icons/fc'
 import { InputTextDebounce, LoadingPage } from '../../../components'
 import { groupBy } from '../../../helpers'
 import { useGetModulesQuery } from '../../../store'
+import { startUpdateModulesRole } from '../../../store/role'
 import { CreateModule } from '.'
 
 export const RoleModuleModuleAccess = () => {
 
+    const dispatch = useDispatch()
     const [search, setSearch] = useState('')
     const { active, isSaving } = useSelector(state => state.role)
     const { data: listModules = [], isLoading, refetch } = useGetModulesQuery(search, { refetchOnMountOrArgChange: true })
@@ -28,6 +31,12 @@ export const RoleModuleModuleAccess = () => {
     const checkRemoveModule = (valueMod) => {
         const remove = modules.filter(p => p !== valueMod)
         setModules(remove)
+    }
+
+    const handleSave = () => {
+        if (modules.length > 0) {
+            dispatch(startUpdateModulesRole(modules))
+        }
     }
 
     return (
@@ -65,7 +74,7 @@ export const RoleModuleModuleAccess = () => {
                             <Accordion flush className='mb-3'>
                                 {
                                     Object.keys(grouped).map((group, index) => (
-                                        <Accordion.Item key={`perm-restrict-${group}`} eventKey={index}>
+                                        <Accordion.Item key={`module-restrict-${group}`} eventKey={index}>
                                             <Accordion.Header>
                                                 {group}
                                                 <span className='ms-1'>{`(${checkInGroup(group)})`}</span>
@@ -73,25 +82,31 @@ export const RoleModuleModuleAccess = () => {
                                             <Accordion.Body className='p-0'>
                                                 <ListGroup variant='flush'>
                                                     {
-                                                        grouped[group].map((perm, index) => (
-                                                            <ListGroup.Item key={`module-${perm.nameTag}-${index}`} as={'label'}>
+                                                        grouped[group].map((modl, index) => (
+                                                            <ListGroup.Item key={`module-${modl.nameTag}-${index}`} as={'label'}>
                                                                 <div className='d-block'>
-                                                                    <FormCheck
-                                                                        inline
-                                                                        type='checkbox'
-                                                                        id={`chck-module-${perm._id}`}
-                                                                        checked={!modules.find(p => p === perm._id) ? false : true}
-                                                                        onChange={e => {
-                                                                            if (!e.target.checked) {
-                                                                                checkRemoveModule(perm._id)
-                                                                            } else {
-                                                                                checkAddModule(perm._id)
-                                                                            }
-                                                                        }}
-                                                                    />
-                                                                    <b>{perm.nameTag}</b>
+                                                                    {
+                                                                        !modl.private
+                                                                            ?
+                                                                            <FormCheck
+                                                                                inline
+                                                                                type='checkbox'
+                                                                                id={`chck-module-${modl._id}`}
+                                                                                checked={!modules.find(p => p === modl._id) ? false : true}
+                                                                                onChange={e => {
+                                                                                    if (!e.target.checked) {
+                                                                                        checkRemoveModule(modl._id)
+                                                                                    } else {
+                                                                                        checkAddModule(modl._id)
+                                                                                    }
+                                                                                }}
+                                                                            />
+                                                                            :
+                                                                            <FcLock className='me-3' />
+                                                                    }
+                                                                    <b>{modl.nameTag}</b>
                                                                 </div>
-                                                                <p className='mb-0'>{perm.desc}</p>
+                                                                <p className='mb-0'>{modl.desc}</p>
                                                             </ListGroup.Item>
                                                         ))
                                                     }
@@ -101,6 +116,15 @@ export const RoleModuleModuleAccess = () => {
                                     ))
                                 }
                             </Accordion>
+                            <div className='d-flex justify-content-end gap-2 my-3 px-3 gx-2'>
+                                <Button
+                                    onClick={handleSave}
+                                    disabled={isSaving}
+                                    variant='primary'
+                                >
+                                    Guardar cambios
+                                </Button>
+                            </div>
                         </>
                 }
             </Card.Body>

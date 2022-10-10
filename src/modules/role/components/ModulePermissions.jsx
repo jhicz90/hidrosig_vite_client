@@ -3,9 +3,11 @@ import { useSelector } from 'react-redux'
 import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
+import { FcLock } from 'react-icons/fc'
 import { InputTextDebounce, LoadingPage } from '../../../components'
 import { groupBy } from '../../../helpers'
 import { useGetPermsQuery } from '../../../store'
+import { startUpdatePermissionsRole } from '../../../store/role'
 import { CreatePermission } from '.'
 
 export const RoleModulePermissions = () => {
@@ -28,6 +30,12 @@ export const RoleModulePermissions = () => {
     const checkRemovePermission = (valuePerm) => {
         const remove = permissions.filter(p => p !== valuePerm)
         setPermissions(remove)
+    }
+
+    const handleSave = () => {
+        if (modules.length > 0) {
+            dispatch(startUpdatePermissionsRole(permissions))
+        }
     }
 
     return (
@@ -76,19 +84,25 @@ export const RoleModulePermissions = () => {
                                                         grouped[group].map((perm, index) => (
                                                             <ListGroup.Item key={`permission-${perm.nameTag}-${index}`} as={'label'}>
                                                                 <div className='d-block'>
-                                                                    <FormCheck
-                                                                        inline
-                                                                        type='checkbox'
-                                                                        id={`chck-permission-${perm._id}`}
-                                                                        checked={!permissions.find(p => p === perm._id) ? false : true}
-                                                                        onChange={e => {
-                                                                            if (!e.target.checked) {
-                                                                                checkRemovePermission(perm._id)
-                                                                            } else {
-                                                                                checkAddPermission(perm._id)
-                                                                            }
-                                                                        }}
-                                                                    />
+                                                                    {
+                                                                        !perm.private
+                                                                        ?
+                                                                        <FormCheck
+                                                                            inline
+                                                                            type='checkbox'
+                                                                            id={`chck-permission-${perm._id}`}
+                                                                            checked={!permissions.find(p => p === perm._id) ? false : true}
+                                                                            onChange={e => {
+                                                                                if (!e.target.checked) {
+                                                                                    checkRemovePermission(perm._id)
+                                                                                } else {
+                                                                                    checkAddPermission(perm._id)
+                                                                                }
+                                                                            }}
+                                                                        />
+                                                                        :
+                                                                        <FcLock className='me-3' />
+                                                                    }
                                                                     <b>{perm.nameTag}</b>
                                                                 </div>
                                                                 <p className='mb-0'>{perm.desc}</p>
@@ -101,6 +115,15 @@ export const RoleModulePermissions = () => {
                                     ))
                                 }
                             </Accordion>
+                            <div className='d-flex justify-content-end gap-2 my-3 px-3 gx-2'>
+                                <Button
+                                    onClick={handleSave}
+                                    disabled={isSaving}
+                                    variant='primary'
+                                >
+                                    Guardar cambios
+                                </Button>
+                            </div>
                         </>
                 }
             </Card.Body>

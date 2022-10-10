@@ -90,6 +90,114 @@ export const startUpdateRole = () => {
     }
 }
 
+export const startUpdateModulesRole = (modules) => {
+    return async (dispatch, getState) => {
+        const { active } = getState().role
+        const { _id, name } = active
+
+        SwalReact.fire({
+            title:
+                <>
+                    <div className='text-uppercase'>Módulos de acceso</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+                </>,
+            html:
+                <>
+                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar los módulos de acceso?</div>
+                    <div className='fs-5'>Si es asi, escriba su contraseña para confirmar</div>
+                </>,
+            showCancelButton: true,
+            confirmButtonText: 'Cambiar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            icon: 'question',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-neutral'
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                dispatch(setSaving(true))
+
+                const passwordConfirm = result.value || ''
+
+                const resp = await fetchByToken({
+                    endpoint: `role/change_modules/${_id}`,
+                    data: { passwordConfirm, modules },
+                    method: 'PUT'
+                })
+
+                dispatch(setSaving(false))
+
+                if (resp.ok) {
+                    dispatch(setActiveRole(resp.role))
+                }
+            }
+        })
+    }
+}
+
+export const startUpdatePermissionsRole = (permissions) => {
+    return async (dispatch, getState) => {
+        const { active } = getState().role
+        const { _id, name } = active
+
+        SwalReact.fire({
+            title:
+                <>
+                    <div className='text-uppercase'>Permisos</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+                </>,
+            html:
+                <>
+                    <div className='fs-5 mb-2'>¿Estás seguro de cambiar los permisos de consultas a la base de datos?</div>
+                    <div className='fs-5'>Si es asi, escriba su contraseña para confirmar</div>
+                </>,
+            showCancelButton: true,
+            confirmButtonText: 'Cambiar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            icon: 'question',
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-neutral'
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            buttonsStyling: false,
+            reverseButtons: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+                dispatch(setSaving(true))
+
+                const passwordConfirm = result.value || ''
+
+                const resp = await fetchByToken({
+                    endpoint: `role/change_permissions/${_id}`,
+                    data: { passwordConfirm, permissions },
+                    method: 'PUT'
+                })
+
+                dispatch(setSaving(false))
+
+                if (resp.ok) {
+                    dispatch(setActiveRole(resp.role))
+                }
+            }
+        })
+    }
+}
+
 export const startUpdateStatusRole = (status) => {
     return async (dispatch, getState) => {
         const { active } = getState().role

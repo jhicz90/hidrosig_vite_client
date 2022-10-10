@@ -53,7 +53,7 @@ export const RoleModuleInformation = () => {
                     <div className='d-flex justify-content-end gap-2'>
                         <Button
                             disabled={isSaving}
-                            variant={'primary'}
+                            variant='primary'
                             type='submit'
                         >
                             Guardar cambios

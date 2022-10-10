@@ -112,6 +112,15 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Perm']
         }),
+        getPermsGroup: builder.query({
+            query: (search) => ({
+                url: `permission/list_group`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs
+        }),
         addNewPerm: builder.mutation({
             query: (newPermission) => ({
                 url: `permission/create/new`,
@@ -130,6 +139,15 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Modl']
         }),
+        getModulesGroup: builder.query({
+            query: (search) => ({
+                url: `module/list_group`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs
+        }),
         addNewModule: builder.mutation({
             query: (newModule) => ({
                 url: `module/create/new`,
@@ -142,11 +160,13 @@ export const storeApi = createApi({
 })
 
 export const {
-    useGetOccupsQuery,
-    useGetPermsQuery,
-    useAddNewPermMutation,
-    useGetModulesQuery,
     useAddNewModuleMutation,
+    useAddNewPermMutation,
+    useGetModulesGroupQuery,
+    useGetModulesQuery,
+    useGetOccupsQuery,
+    useGetPermsGroupQuery,
+    useGetPermsQuery,
     useGetRolesQuery,
     useGetUsrsSysQuery,
     useGetUsrSysForOccupQuery,
