@@ -45,7 +45,7 @@ export const storeApi = createApi({
     keepUnusedDataFor: 60,
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),
@@ -156,12 +156,34 @@ export const storeApi = createApi({
             }),
             invalidatesTags: ['Modl']
         }),
+        getJunts: builder.query({
+            query: (search) => ({
+                url: `junta/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getComms: builder.query({
+            query: (search) => ({
+                url: `committee/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
     }),
 })
 
 export const {
     useAddNewModuleMutation,
     useAddNewPermMutation,
+    useGetCommsQuery,
+    useGetJuntsQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
     useGetOccupsQuery,
