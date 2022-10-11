@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { BsSearch } from 'react-icons/bs'
+import { FcSearch } from 'react-icons/fc'
 import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
 import { useGetJuntsQuery } from '../../../store'
 
@@ -15,7 +15,7 @@ export const JuntaList = () => {
         <>
             <Form.Group as={Row} className='my-3 px-3 gx-2' controlId='search'>
                 <Form.Label column xs={'auto'} >
-                    <BsSearch size={24} />
+                    <FcSearch size={24} />
                 </Form.Label>
                 <Col>
                     <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
@@ -67,7 +67,7 @@ export const JuntaList = () => {
                                 <div className='btn-group'>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/orgz/junta/${item._id}`}
+                                        to={`/app/ambit/orgz/junta/${item._id}`}
                                     >
                                         <FaPen />
                                     </Link>

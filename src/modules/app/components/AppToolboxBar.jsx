@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { CreateUserSys } from '../../usersys/components'
 import { CreateOccupation } from '../../occupation/components'
 import { CreateRole } from '../../role/components'
+import { CreateCommittee, CreateJunta } from '../../organization/components'
 
 export const AppToolboxBar = () => {
 
@@ -22,6 +23,8 @@ export const AppToolboxBar = () => {
                             <CreateUserSys />
                             <CreateOccupation />
                             <CreateRole />
+                            <CreateJunta />
+                            <CreateCommittee />
                             {/* Aqui van los botones de accion rapida */}
                         </NavBarTool>
                     </NavBarMain>
