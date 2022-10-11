@@ -7,6 +7,7 @@ import { Layout } from '../layout'
 import { GuardRoute } from '../../../guards/GuardRoute'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
+import { OrganizationRoutes } from '../../organization/routes/OrganizationRoutes'
 import { SigaRoutes } from '../../siga/routes/SigaRoutes'
 import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
 import { OccupationRoutes } from '../../occupation/routes/OccupationRoutes'
@@ -132,6 +133,9 @@ export const AppRoot = () => {
                 <Route path={`/`} element={<Layout />}>
                     <Route index element={<Navigate to={`/app/home`} />} />
                     <Route path={`home`} element={<DashboardPage />} />
+                    <Route path={`ambit`}>
+                        <Route path={`orgz/*`} element={<GuardRoute meta={['ambit']} component={OrganizationRoutes} />} />
+                    </Route>
                     {/* <Route path={`ambit`}>
                         <Route index element={<AmbitResume />} />
                         <Route path={`orgz`} element={<GuardRoute meta={['ambit', 'organization']} component={OrganizationList} />} />

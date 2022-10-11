@@ -4,12 +4,12 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
 import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
-import { useGetJuntsQuery } from '../../../store'
+import { useGetCommsQuery } from '../../../store'
 
-export const JuntaList = () => {
+export const CommitteeList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isLoading } = useGetJuntsQuery(search)
+    const { data: list = [], isLoading } = useGetCommsQuery(search)
 
     return (
         <>
@@ -67,7 +67,7 @@ export const JuntaList = () => {
                                 <div className='btn-group'>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/orgz/junta/${item._id}`}
+                                        to={`/app/orgz/comm/${item._id}`}
                                     >
                                         <FaPen />
                                     </Link>

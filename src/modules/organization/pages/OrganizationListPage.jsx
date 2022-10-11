@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
+import { CommitteeList, JuntaList } from '../components'
 
 export const OrganizationListPage = () => {
 
@@ -15,13 +16,13 @@ export const OrganizationListPage = () => {
                         lvlAccess === 3
                             ?
                             <Card className='pb-3'>
-                                <ListCommittee />
+                                <CommitteeList />
                             </Card>
                             :
                             <Card>
                                 <Tab.Container defaultActiveKey={hash === '' ? '#junta' : hash}>
                                     <Card.Header>
-                                        <Nav variant='tabs' fill>
+                                        <Nav variant='tabs'>
                                             <Nav.Item>
                                                 <Nav.Link eventKey='#junta'>Junta</Nav.Link>
                                             </Nav.Item>
@@ -33,10 +34,10 @@ export const OrganizationListPage = () => {
                                     <Card.Body className='p-0'>
                                         <Tab.Content>
                                             <Tab.Pane eventKey='#junta'>
-                                                <ListJunta />
+                                                <JuntaList />
                                             </Tab.Pane>
                                             <Tab.Pane eventKey='#comm'>
-                                                <ListCommittee />
+                                                <CommitteeList />
                                             </Tab.Pane>
                                         </Tab.Content>
                                     </Card.Body>
