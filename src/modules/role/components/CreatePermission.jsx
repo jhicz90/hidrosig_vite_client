@@ -3,7 +3,7 @@ import { Card, Modal, Button, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useAddNewPermMutation, useGetPermsGroupQuery } from '../../../store'
 
-export const CreatePermission = () => {
+export const CreatePermission = ({ btnVariant = 'secondary' }) => {
 
     const { register, watch, handleSubmit, reset } = useForm()
     const [createPermission, { isLoading, isSuccess }] = useAddNewPermMutation()
@@ -26,7 +26,7 @@ export const CreatePermission = () => {
             <Button
                 onClick={() => setShowModal(true)}
                 disabled={isLoading}
-                variant='primary'
+                variant={btnVariant}
             >
                 Nuevo permiso
             </Button>
@@ -36,7 +36,7 @@ export const CreatePermission = () => {
                 backdrop='static'
                 size='lg'
             >
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={!isLoading}>
                     <Modal.Title>Crear permiso</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

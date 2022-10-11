@@ -3,7 +3,7 @@ import { Card, Modal, Button, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useAddNewModuleMutation, useGetModulesGroupQuery } from '../../../store'
 
-export const CreateModule = () => {
+export const CreateModule = ({ btnVariant = 'secondary' }) => {
 
     const { register, watch, handleSubmit, reset } = useForm()
     const [createModule, { isLoading, isSuccess }] = useAddNewModuleMutation()
@@ -20,12 +20,13 @@ export const CreateModule = () => {
             setShowModal(false)
         }
     }, [isSuccess])
+    
     return (
         <>
             <Button
                 onClick={() => setShowModal(true)}
                 disabled={isLoading}
-                variant='primary'
+                variant={btnVariant}
             >
                 Nuevo módulo
             </Button>
@@ -35,7 +36,7 @@ export const CreateModule = () => {
                 backdrop='static'
                 size='lg'
             >
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={!isLoading}>
                     <Modal.Title>Crear módulo</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
