@@ -123,7 +123,7 @@ export const startUpdateStatusJunta = (status) => {
             html:
                 <>
                     <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
-                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta ocupación se reiniciaran.</div>
+                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta junta de usuarios se actualizaran.</div>
                 </>,
             showCancelButton: true,
             confirmButtonText: statusJunta ? 'Desactivar' : 'Activar',
@@ -157,7 +157,7 @@ export const startUpdateStatusJunta = (status) => {
     }
 }
 
-export const startUpdateInformationJunta = ({ name, desc }) => {
+export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc }) => {
     return async (dispatch, getState) => {
 
         dispatch(setSaving(true))
@@ -167,7 +167,7 @@ export const startUpdateInformationJunta = ({ name, desc }) => {
 
         const resp = await fetchByToken({
             endpoint: `junta/info/${_id}`,
-            data: { name, desc },
+            data: { name, nameAbrev, nameLarge, nameLargeAbrev, desc },
             method: 'PUT'
         })
 
