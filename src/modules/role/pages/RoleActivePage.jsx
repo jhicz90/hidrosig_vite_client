@@ -5,8 +5,8 @@ import { BsInfoCircle, BsShieldLock, BsTrash } from 'react-icons/bs'
 import { RiShieldUserLine } from 'react-icons/ri'
 import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'
+import { setActiveRole, startGetRole } from '../../../store'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { setActiveRole, startGetRole } from '../../../store/role'
 import { RoleModuleBanner, RoleModuleDelete, RoleModuleInformation, RoleModuleLevel, RoleModuleModuleAccess, RoleModulePermissions } from '../components'
 
 export const RoleActivePage = () => {

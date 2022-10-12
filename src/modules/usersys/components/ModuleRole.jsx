@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, Button, Card } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { searchRole } from '../../../store/role'
-import { startUpdateRoleUserSys } from '../../../store/usersys'
+import { startUpdateRoleUserSys, searchRole } from '../../../store'
 
 export const UserSysModuleRole = () => {
 

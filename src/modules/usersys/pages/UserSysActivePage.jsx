@@ -6,7 +6,7 @@ import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { setActiveUserSys, startGetUserSys } from '../../../store/usersys'
+import { setActiveUserSys, startGetUserSys } from '../../../store'
 import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete } from '../components'
 
 export const UserSysActivePage = () => {

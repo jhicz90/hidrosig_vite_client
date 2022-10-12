@@ -4,9 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Button, Card, Form, Modal } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import AsyncCreatable from 'react-select/async-creatable'
-import { setActiveNewUserSys, startAddNewUserSys, editActiveNewUserSys, startSaveNewUserSys } from '../../../store/usersys'
-import { registerOccupation, searchOccupation } from '../../../store/occupation'
-import { searchRole } from '../../../store/role'
+import { setActiveNewUserSys, startAddNewUserSys, editActiveNewUserSys, startSaveNewUserSys, registerOccupation, searchOccupation, searchRole } from '../../../store'
 import { DatePicker } from '../../../components'
 
 export const CreateUserSys = () => {

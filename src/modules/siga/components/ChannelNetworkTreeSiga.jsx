@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Alert, ButtonGroup, Modal } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
 import { FaChevronDown, FaChevronRight, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
-import { setNetIrrigChk, setNetIrrigExp, startGetSigaIrrigationNetwork } from '../../../store/siga'
+import { setNetIrrigChk, setNetIrrigExp, startGetSigaIrrigationNetwork } from '../../../store'
 import { childrenNode, treeNetIrrigSiga } from '../../../helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'

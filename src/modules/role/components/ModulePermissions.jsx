@@ -4,10 +4,9 @@ import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row } 
 import { BsSearch } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
 import { FcLock } from 'react-icons/fc'
+import { useGetPermsQuery,startUpdatePermissionsRole } from '../../../store'
 import { InputTextDebounce, LoadingPage } from '../../../components'
 import { groupBy } from '../../../helpers'
-import { useGetPermsQuery } from '../../../store'
-import { startUpdatePermissionsRole } from '../../../store/role'
 import { CreatePermission } from '.'
 
 export const RoleModulePermissions = () => {

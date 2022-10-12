@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FiBarChart2, FiUsers } from 'react-icons/fi'
 import validator from 'validator'
+import { setActiveOccupation, startGetOccupation, } from '../../../store'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { setActiveOccupation, startGetOccupation, } from '../../../store/occupation'
 import { OccupationModuleBanner, OccupationModuleDelete, OccupationModuleInformation, OccupationModuleLevel, OccupationModuleToUsers } from '../components'
 
 export const OccupationActivePage = () => {

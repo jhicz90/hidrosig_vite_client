@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCommittee, startGetSigaComms } from '../../../store/siga'
+import { setCommittee, startGetSigaComms } from '../../../store'
 
 export const ReportListComms = () => {
 

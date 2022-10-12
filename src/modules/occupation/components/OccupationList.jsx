@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
-import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
 import { useGetOccupsQuery } from '../../../store'
+import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
 
 export const OccupationList = () => {
 

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { FcSearch } from 'react-icons/fc'
-import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
 import { useGetCommsQuery } from '../../../store'
+import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
 
 export const CommitteeList = () => {
 

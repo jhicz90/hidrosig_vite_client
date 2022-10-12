@@ -1,7 +1,7 @@
 import { Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { startDeleteRole } from '../../../store/role'
+import { startDeleteRole } from '../../../store'
 
 export const RoleModuleDelete = () => {
 

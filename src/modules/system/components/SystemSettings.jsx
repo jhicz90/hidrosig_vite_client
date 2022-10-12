@@ -7,7 +7,7 @@ import humanInterval from 'human-interval'
 import { filesize } from 'filesize'
 import { FaInfoCircle } from 'react-icons/fa'
 import { IoListSharp } from 'react-icons/io5'
-import { startForceBackupDatabase, startUpdateBackupSchedule } from '../../../store/system'
+import { startForceBackupDatabase, startUpdateBackupSchedule } from '../../../store'
 import { SettingAction, SettingBlock } from '../../../components'
 
 export const SystemSettings = () => {

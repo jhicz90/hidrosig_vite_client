@@ -1,13 +1,11 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { ListGroupOption, ListGroupOptionItem } from '../../../components'
+import { searchJunta, searchCommitteeByJunta } from '../../../store'
 import { imageGet } from '../../../helpers'
-import { searchJunta } from '../../../store/junta'
-import { searchCommitteeByJunta } from '../../../store/committee'
-import {  } from '../../../store/role'
 
 export const RoleModuleLevel = () => {
 

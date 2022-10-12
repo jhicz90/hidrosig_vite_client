@@ -156,7 +156,7 @@ export const storeApi = createApi({
             }),
             invalidatesTags: ['Modl']
         }),
-        getJunts: builder.query({
+        getJuntas: builder.query({
             query: (search) => ({
                 url: `junta/list`,
                 params: {
@@ -165,6 +165,14 @@ export const storeApi = createApi({
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
+        }),
+        addNewJunta: builder.mutation({
+            query: (newJunta) => ({
+                url: `junta/create/new`,
+                method: 'post',
+                data: newJunta
+            }),
+            invalidatesTags: ['Orgz']
         }),
         getComms: builder.query({
             query: (search) => ({
@@ -176,14 +184,24 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
         }),
+        addNewComm: builder.mutation({
+            query: (newCommittee) => ({
+                url: `committee/create/new`,
+                method: 'post',
+                data: newCommittee
+            }),
+            invalidatesTags: ['Orgz']
+        }),
     }),
 })
 
 export const {
+    useAddNewCommMutation,
+    useAddNewJuntaMutation,
     useAddNewModuleMutation,
     useAddNewPermMutation,
     useGetCommsQuery,
-    useGetJuntsQuery,
+    useGetJuntasQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
     useGetOccupsQuery,

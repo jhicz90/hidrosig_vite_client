@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
+import { startUpdateStatusOccupation } from '../../../store'
 import { AvatarProfile } from '../../../components'
-import { startUpdateStatusOccupation } from '../../../store/occupation'
 
 export const OccupationModuleBanner = () => {
 

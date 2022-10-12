@@ -4,8 +4,7 @@ import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncCreatable from 'react-select/async-creatable'
 import { DatePicker } from '../../../components'
-import { registerOccupation, searchOccupation } from '../../../store/occupation'
-import { startUpdateInformationUserSys } from '../../../store/usersys'
+import { startUpdateInformationUserSys, registerOccupation, searchOccupation } from '../../../store'
 
 export const UserSysModuleInformation = () => {
 
@@ -120,27 +119,6 @@ export const UserSysModuleInformation = () => {
                                                 formatCreateLabel={e => `Crear ocupación: '${e}'`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e => e.name}
-                                            // inputId='uOccupation'
-                                            // classNamePrefix='rc-select'
-                                            // isClearable
-                                            // defaultOptions
-                                            // isDisabled={loadingNewOccupation}
-                                            // isLoading={loadingNewOccupation}
-                                            // loadOptions={async e => {
-                                            //     const fetchData = await searchOccupation(e)
-                                            //     return fetchData.map(d => ({ value: d._id, label: d.name }))
-                                            // }}
-                                            // menuPlacement={'auto'}
-                                            // onCreateOption={async e => {
-                                            //     setLoadingNewOccupation(true)
-                                            //     const { _id, name } = await registerOccupation(e)
-                                            //     setValue('occupation', { value: _id, label: name })
-                                            //     setLoadingNewOccupation(false)
-                                            // }}
-                                            // placeholder={`Busque la ocupación...`}
-                                            // loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                            // noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
-                                            // formatCreateLabel={e => `Crear ocupación: '${e}'`}
                                             />
                                     }
                                 />

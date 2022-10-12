@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, Modal, Button, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
+import { setActiveNewOccupation, startAddNewOccupation, editActiveNewOccupation, startSaveNewOccupation, searchJunta, searchCommitteeByJunta } from '../../../store'
 import { ListGroupOption, ListGroupOptionItem } from '../../../components'
-import { setActiveNewOccupation, startAddNewOccupation, editActiveNewOccupation, startSaveNewOccupation } from '../../../store/occupation'
-import { searchJunta } from '../../../store/junta'
-import { searchCommitteeByJunta } from '../../../store/committee'
 import { imageGet } from '../../../helpers'
 
 export const CreateOccupation = () => {

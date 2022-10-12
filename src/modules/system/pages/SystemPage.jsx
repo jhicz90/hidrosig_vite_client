@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { FaServer } from 'react-icons/fa'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { SystemSettings } from '../components'
-import { setSettings, startGetSystemSettings } from '../../../store/system'
+import { setSettings, startGetSystemSettings } from '../../../store'
 
 export const SystemPage = () => {
 

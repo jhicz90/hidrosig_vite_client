@@ -3,11 +3,9 @@ import { useSelector } from 'react-redux'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
+import { startUpdateLevelOccupation, searchJunta, searchCommitteeByJunta } from '../../../store'
 import { ListGroupOption, ListGroupOptionItem } from '../../../components'
 import { imageGet } from '../../../helpers'
-import { searchJunta } from '../../../store/junta'
-import { searchCommitteeByJunta } from '../../../store/committee'
-import { startUpdateLevelOccupation } from '../../../store/occupation'
 
 export const OccupationModuleLevel = () => {
 

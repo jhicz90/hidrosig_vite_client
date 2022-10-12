@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { startUpdateInformationOccupation } from '../../../store/occupation'
+import { startUpdateInformationOccupation } from '../../../store'
 
 export const OccupationModuleInformation = () => {
 

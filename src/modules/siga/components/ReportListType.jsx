@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setReport } from '../../../store/siga'
+import { setReport } from '../../../store'
 
 export const ReportListType = () => {
 

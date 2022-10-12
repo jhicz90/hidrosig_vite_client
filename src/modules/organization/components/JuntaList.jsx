@@ -4,12 +4,12 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { FcSearch } from 'react-icons/fc'
 import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
-import { useGetJuntsQuery } from '../../../store'
+import { useGetJuntasQuery } from '../../../store'
 
 export const JuntaList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isLoading } = useGetJuntsQuery(search)
+    const { data: list = [], isLoading } = useGetJuntasQuery(search)
 
     return (
         <>

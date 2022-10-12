@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
 import { AvatarProfile } from '../../../components'
-import { startUpdateStatusUserSys } from '../../../store/usersys'
+import { startUpdateStatusUserSys } from '../../../store'
 
 export const UserSysModuleBanner = () => {
 

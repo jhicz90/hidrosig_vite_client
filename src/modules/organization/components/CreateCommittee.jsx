@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Card, Form, Modal } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { setActiveNewCommittee, startAddNewCommittee, editActiveNewCommittee, startSaveNewCommittee } from '../../../store/committee'
-import { searchJunta } from '../../../store/junta'
-import { searchZoneByJunta } from '../../../store/zone'
+import { setActiveNewCommittee, startAddNewCommittee, editActiveNewCommittee, startSaveNewCommittee, searchJunta, searchZoneByJunta } from '../../../store'
 import { imageGet, upperCaseCatch } from '../../../helpers'
 
 export const CreateCommittee = () => {
@@ -36,7 +34,7 @@ export const CreateCommittee = () => {
                 backdrop='static'
                 size='lg'
             >
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={!isSavingNew}>
                     <Modal.Title>Crear comisión de usuarios</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

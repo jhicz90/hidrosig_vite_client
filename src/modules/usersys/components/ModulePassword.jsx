@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { Button, Card, Form } from 'react-bootstrap'
-import { startUpdatePasswordUserSys } from '../../../store/usersys'
+import { startUpdatePasswordUserSys } from '../../../store'
 
 export const UserSysModulePassword = () => {
 

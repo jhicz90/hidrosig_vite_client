@@ -4,10 +4,9 @@ import { Accordion, Alert, Button, Card, Col, Form, FormCheck, ListGroup, Row, T
 import { BsSearch } from 'react-icons/bs'
 import { RiRefreshLine } from 'react-icons/ri'
 import { FcLock } from 'react-icons/fc'
+import { useGetModulesQuery,startUpdateModulesRole } from '../../../store'
 import { InputTextDebounce, LoadingPage } from '../../../components'
 import { groupBy } from '../../../helpers'
-import { useGetModulesQuery } from '../../../store'
-import { startUpdateModulesRole } from '../../../store/role'
 import { CreateModule } from '.'
 
 export const RoleModuleModuleAccess = () => {

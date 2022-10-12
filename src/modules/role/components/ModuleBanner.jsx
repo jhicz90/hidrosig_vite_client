@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Switch from 'react-switch'
 import { FaRegQuestionCircle } from 'react-icons/fa'
-import { startUpdateStatusRole } from '../../../store/role'
+import { startUpdateStatusRole } from '../../../store'
 
 export const RoleModuleBanner = () => {
 

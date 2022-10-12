@@ -5,7 +5,7 @@ import ReactDatePicker from 'react-datepicker'
 import CreatableSelect from 'react-select'
 import validator from 'validator'
 import { useNavigate } from 'react-router-dom'
-import { UseDateHeader, UseDateOne,UseForm } from '../../../hooks'
+import { UseDateHeader, UseDateOne, UseForm } from '../../../hooks'
 import { registerAdmin } from '../../../actions'
 
 export const AdminPage = () => {

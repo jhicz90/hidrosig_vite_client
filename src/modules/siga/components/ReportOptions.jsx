@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import ReactDatePicker from 'react-datepicker'
-import { setReportEndDate, setReportStartDate } from '../../../store/siga'
+import { setReportEndDate, setReportStartDate } from '../../../store'
 
 export const ReportOptions = () => {
 

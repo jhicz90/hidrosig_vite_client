@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
-import { Avatar, InputTextDebounce, TableGrid, TagStatus } from '../../../components'
 import { useGetUsrSysForOccupQuery } from '../../../store'
+import { Avatar, InputTextDebounce, TableGrid, TagStatus } from '../../../components'
 
 export const OccupationModuleToUsers = () => {
 

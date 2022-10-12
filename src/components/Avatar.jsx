@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { imageGet, imageSysGet } from '../helpers'
+import { imageGet, imageSysGet, upperCaseCatch } from '../helpers'
 
 export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 2010, nameTag = false, imgTag = '', noImgTag = 1085, tag = '', circle = false, size = 'none', width = 0, height = 0 }) => {
 
     const [wAvatar, setWAvatar] = useState(width)
     const [hAvatar, setHAvatar] = useState(height)
-    const imgTxt = noImgTxt.split(' ')
-    const nameTxt = imgTxt.map(t => t.charAt(0)).join('')
+    const nameTxt = upperCaseCatch(noImgTxt).slice(0, 3)
 
     useEffect(() => {
         if (size === 'none' && width === 0 && height === 0) {

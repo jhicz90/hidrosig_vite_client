@@ -1,7 +1,7 @@
 import { Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { startDeleteUserSys } from '../../../store/usersys'
+import { startDeleteUserSys } from '../../../store'
 
 export const UserSysModuleDelete = () => {
 

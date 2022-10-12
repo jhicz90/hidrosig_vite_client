@@ -1,7 +1,8 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { fetchByToken, normalizeText } from '../../helpers'
+import { storeApi } from '../storeApi'
 import { addNewJunta, setActiveNewJunta, setActiveJunta, setSaving, setSavingNew } from './juntaSlice'
+import { fetchByToken, normalizeText } from '../../helpers'
 
 const SwalReact = withReactContent(Swal)
 
@@ -42,6 +43,7 @@ export const startSaveNewJunta = () => {
         dispatch(setSavingNew(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Orgz']))
             dispatch(setActiveNewJunta(null))
         }
     }

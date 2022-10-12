@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { startUpdateEmailUserSys } from '../../../store/usersys'
+import { startUpdateEmailUserSys } from '../../../store'
 
 export const UserSysModuleEmail = () => {
 

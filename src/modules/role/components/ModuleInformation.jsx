@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { startUpdateInformationRole } from '../../../store/role'
+import { startUpdateInformationRole } from '../../../store'
 
 export const RoleModuleInformation = () => {
 
