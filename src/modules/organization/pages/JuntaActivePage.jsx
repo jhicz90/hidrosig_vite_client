@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsInfoCircle } from 'react-icons/bs'
+import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'
 import { setActiveJunta, startGetJunta } from '../../../store'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { JuntaModuleBanner, JuntaModuleInformation } from '../components'
+import { JuntaModuleAmbit, JuntaModuleBanner, JuntaModuleInformation } from '../components'
 
 export const JuntaActivePage = () => {
 
@@ -40,6 +41,13 @@ export const JuntaActivePage = () => {
                                         title: true,
                                         module: JuntaModuleInformation
                                     },
+                                    {
+                                        id: 'ambitjunta',
+                                        icon: FaBuffer,
+                                        name: 'Ámbito',
+                                        title: true,
+                                        module: JuntaModuleAmbit
+                                    }
                                 ]
 
                             }

@@ -157,7 +157,7 @@ export const startUpdateStatusJunta = (status) => {
     }
 }
 
-export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc }) => {
+export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
     return async (dispatch, getState) => {
 
         dispatch(setSaving(true))
@@ -167,7 +167,7 @@ export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLa
 
         const resp = await fetchByToken({
             endpoint: `junta/info/${_id}`,
-            data: { name, nameAbrev, nameLarge, nameLargeAbrev, desc },
+            data: { name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email },
             method: 'PUT'
         })
 

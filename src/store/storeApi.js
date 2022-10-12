@@ -192,6 +192,36 @@ export const storeApi = createApi({
             }),
             invalidatesTags: ['Orgz']
         }),
+        getZones: builder.query({
+            query: (search) => ({
+                url: `zone/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getZonesForJunta: builder.query({
+            query: ({ junta, search }) => ({
+                url: `zone/search_by_junta/${junta}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getWaterSources: builder.query({
+            query: ({ junta, search }) => ({
+                url: `watersource/search_by_junta/${junta}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
     }),
 })
 
@@ -210,4 +240,7 @@ export const {
     useGetRolesQuery,
     useGetUsrsSysQuery,
     useGetUsrSysForOccupQuery,
+    useGetWaterSourcesQuery,
+    useGetZonesForJuntaQuery,
+    useGetZonesQuery,
 } = storeApi

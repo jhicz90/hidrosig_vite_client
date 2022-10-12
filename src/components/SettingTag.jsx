@@ -2,8 +2,8 @@ import React from 'react'
 
 export const SettingBlock = ({ title = '', children }) => {
 
-    const action = children.findIndex(ch => ch.hasOwnProperty('type') && ch.type.hasOwnProperty('name') && ch.type.name === 'SettingAction')
-    const block = children.filter((ch, i) => i !== action)
+    const action = Array.isArray(children) ? children.findIndex(ch => ch.hasOwnProperty('type') && ch.type.hasOwnProperty('name') && ch.type.name === 'SettingAction') : null
+    const block = Array.isArray(children) ? children.filter((ch, i) => i !== action) : null
 
     return (
         <div className='d-flex flex-sm-row flex-column align-items-start align-items-sm-center'>

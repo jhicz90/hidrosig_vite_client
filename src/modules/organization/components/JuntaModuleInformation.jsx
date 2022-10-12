@@ -9,15 +9,17 @@ export const JuntaModuleInformation = () => {
 
     const dispatch = useDispatch()
     const { active, isSaving } = useSelector(state => state.junta)
-    const { register, setValue, handleSubmit, reset } = useForm()
+    const { register, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc }) => {
+    const handleSave = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
         dispatch(startUpdateInformationJunta({
             name,
             nameAbrev,
             nameLarge,
             nameLargeAbrev,
-            desc
+            desc,
+            docid,
+            email
         }))
     }
 
@@ -36,12 +38,7 @@ export const JuntaModuleInformation = () => {
                             <Form.Group className='mb-3' controlId='uName'>
                                 <Form.Label>Nombre</Form.Label>
                                 <Form.Control
-                                    {...register('name', {
-                                        required: true,
-                                        onChange: (e) => {
-                                            setValue('nameAbrev', upperCaseCatch(e.target.value))
-                                        }
-                                    })}
+                                    {...register('name', { required: true })}
                                     type='text'
                                     autoComplete='off'
                                 />
@@ -63,12 +60,7 @@ export const JuntaModuleInformation = () => {
                             <Form.Group className='mb-3' controlId='uNameLarge'>
                                 <Form.Label>Nombre largo o juridico</Form.Label>
                                 <Form.Control
-                                    {...register('nameLarge', {
-                                        required: true,
-                                        onChange: (e) => {
-                                            setValue('nameLargeAbrev', upperCaseCatch(e.target.value))
-                                        }
-                                    })}
+                                    {...register('nameLarge', { required: true })}
                                     type='text'
                                     autoComplete='off'
                                 />
@@ -93,6 +85,28 @@ export const JuntaModuleInformation = () => {
                                     {...register('desc')}
                                     as='textarea'
                                     type={'text'}
+                                    autoComplete='off'
+                                />
+                            </Form.Group>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-12 col-md-6'>
+                            <Form.Group className='mb-3' controlId='uDocId'>
+                                <Form.Label>Código de identidad o RUC</Form.Label>
+                                <Form.Control
+                                    {...register('docid', { required: true })}
+                                    type='text'
+                                    autoComplete='off'
+                                />
+                            </Form.Group>
+                        </div>
+                        <div className='col-12 col-md-6'>
+                            <Form.Group className='mb-3' controlId='uEmail'>
+                                <Form.Label>Correo electrónico</Form.Label>
+                                <Form.Control
+                                    {...register('email', { required: true })}
+                                    type='text'
                                     autoComplete='off'
                                 />
                             </Form.Group>
