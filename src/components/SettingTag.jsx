@@ -2,8 +2,15 @@ import React from 'react'
 
 export const SettingBlock = ({ title = '', children }) => {
 
-    const action = Array.isArray(children) ? children.findIndex(ch => ch.hasOwnProperty('type') && ch.type.hasOwnProperty('name') && ch.type.name === 'SettingAction') : null
-    const block = Array.isArray(children) ? children.filter((ch, i) => i !== action) : null
+    const action = Array.isArray(children)
+        ? children[children.findIndex(ch => ch.hasOwnProperty('type') && ch.type.hasOwnProperty('name') && ch.type.name === 'SettingAction')]
+        : null
+
+    const block = Array.isArray(children)
+        ? children[children.findIndex(ch => ch.type?.name !== 'SettingAction')]
+        : typeof children === 'string'
+            ? children
+            : null
 
     return (
         <div className='d-flex flex-sm-row flex-column align-items-start align-items-sm-center'>
@@ -13,7 +20,11 @@ export const SettingBlock = ({ title = '', children }) => {
                     {block}
                 </div>
             </div>
-            {children[action]}
+            {
+                !!action
+                &&
+                action
+            }
         </div>
     )
 }

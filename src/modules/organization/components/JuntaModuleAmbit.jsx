@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { Card, ListGroup } from 'react-bootstrap'
+import { Button, Card, ListGroup } from 'react-bootstrap'
 import { useGetWaterSourcesQuery, useGetZonesForJuntaQuery } from '../../../store'
 import { SettingAction, SettingBlock } from '../../../components'
 import { Link } from 'react-router-dom'
@@ -40,6 +40,9 @@ const JuntaZone = () => {
                             :
                             'No ahi zonas asociadas a esta junta de usuarios'
                     }
+                    <SettingAction>
+                        <Button variant='neutral'>Agregar zonas</Button>
+                    </SettingAction>
                 </SettingBlock>
             </ListGroup.Item>
         </>
@@ -61,6 +64,14 @@ const JuntaSource = () => {
                             waterSourcesIn.map((z, i) =>
                                 <div key={z._id} className="d-inline">
                                     <img src='https://img.icons8.com/color/512/dam.png' width={32} height={32} />
+                                    {/* <img src='https://img.icons8.com/color/512/rain--v1.png' width={32} height={32} /> */}
+                                    {/* <img src='https://img.icons8.com/color/512/lake.png' width={32} height={32} /> */}
+                                    {/* <img src='https://img.icons8.com/color/512/hand-dug-well.png' width={32} height={32} /> */}
+                                    {/* <img src='https://img.icons8.com/color/512/pumphouse.png' width={32} height={32} /> */}
+                                    {/* <img src='https://img.icons8.com/color/512/valley.png' width={32} height={32} /> */}
+                                    {/* <img src='https://img.icons8.com/color/512/water-treatment-plant.png' width={32} height={32} /> */}
+                                    {/* https://img.icons8.com/color/512/swamp.png */}
+                                    {/* https://img.icons8.com/color/512/flow.png */}
                                     <Link
                                         to={`/app/ambit/trrty/zone/${z._id}`}
                                         className="link-primary text-decoration-none"
@@ -70,6 +81,9 @@ const JuntaSource = () => {
                             :
                             'No ahi fuentes de agua asociadas a esta junta de usuarios'
                     }
+                    <SettingAction>
+                        <Button variant='neutral'>Agregar fuentes de agua</Button>
+                    </SettingAction>
                 </SettingBlock>
             </ListGroup.Item>
         </>
