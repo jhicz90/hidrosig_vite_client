@@ -45,7 +45,7 @@ export const storeApi = createApi({
     keepUnusedDataFor: 60,
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),
@@ -221,7 +221,7 @@ export const storeApi = createApi({
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
-        }),
+        })
     }),
 })
 

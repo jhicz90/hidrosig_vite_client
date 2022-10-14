@@ -7,12 +7,14 @@ import { Layout } from '../layout'
 import { GuardRoute } from '../../../guards/GuardRoute'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
-import { OrganizationRoutes } from '../../organization/routes/OrganizationRoutes'
-import { SigaRoutes } from '../../siga/routes/SigaRoutes'
-import { UserSysRoutes } from '../../usersys/routes/UserSysRoutes'
-import { OccupationRoutes } from '../../occupation/routes/OccupationRoutes'
-import { RoleRoutes } from '../../role/routes/RoleRoutes'
-import { SystemRoutes } from '../../system/routes/SystemRoutes'
+import {
+    OrganizationRoutes,
+    SigaRoutes,
+    UserSysRoutes,
+    OccupationRoutes,
+    RoleRoutes,
+    SystemRoutes
+} from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
 // const secretAccess = process.env.REACT_APP_SECRET_ACCESS

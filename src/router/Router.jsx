@@ -2,11 +2,9 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
-import { WebRoot } from '../modules/web/routes'
-import { AppRoot } from '../modules/app/routes'
+import { WebRoot, AppRoot, LoginPage } from '../modules'
 import { Loading } from '../components'
 import { checkingToken } from '../store/auth'
-import { LoginPage } from '../modules/auth/pages'
 
 export const Router = () => {
     const dispatch = useDispatch()

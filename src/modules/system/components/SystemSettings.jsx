@@ -27,40 +27,40 @@ export const SystemStorage = () => {
     const { settings } = useSelector(state => state.system)
 
     return (
-        <>
-            <ListGroup.Item>
-                <SettingBlock title='Almacenamiento'>
-                    {filesize(settings.sizeStorageUsed)}
-                    /
-                    {filesize(settings.sizeStorage)}
-                    <OverlayTrigger
-                        placement='auto'
-                        overlay={
-                            <Tooltip>
-                                <span className='d-block text-start'>
-                                    Carpetas incluidas en el uso del espacio almacenamiento:
-                                </span>
-                                <div className='d-block text-start'>temp/</div>
-                                <div className='d-block text-start'>images/</div>
-                                <div className='d-block text-start'>uploads/</div>
-                                <div className='d-block text-start'>backups/</div>
-                            </Tooltip>
-                        }
+        <SettingBlock
+            title='Almacenamiento'
+            action={
+                <SettingAction>
+                    <button
+                        className='btn btn-neutral fw-bolder px-3'
                     >
-                        <div className='d-inline ms-1'>
-                            <FaInfoCircle />
-                        </div>
-                    </OverlayTrigger>
-                    <SettingAction>
-                        <button
-                            className='btn btn-neutral fw-bolder px-3'
-                        >
-                            Editar
-                        </button>
-                    </SettingAction>
-                </SettingBlock>
-            </ListGroup.Item>
-        </>
+                        Editar
+                    </button>
+                </SettingAction>
+            }
+        >
+            {filesize(settings.sizeStorageUsed)}
+            /
+            {filesize(settings.sizeStorage)}
+            <OverlayTrigger
+                placement='auto'
+                overlay={
+                    <Tooltip>
+                        <span className='d-block text-start'>
+                            Carpetas incluidas en el uso del espacio almacenamiento:
+                        </span>
+                        <div className='d-block text-start'>temp/</div>
+                        <div className='d-block text-start'>images/</div>
+                        <div className='d-block text-start'>uploads/</div>
+                        <div className='d-block text-start'>backups/</div>
+                    </Tooltip>
+                }
+            >
+                <div className='d-inline ms-1'>
+                    <FaInfoCircle />
+                </div>
+            </OverlayTrigger>
+        </SettingBlock>
     )
 }
 
@@ -76,9 +76,9 @@ export const SystemBackupScheduled = () => {
                 show={showScheduled}
                 onHide={() => setShowScheduled(false)}
             />
-            <ListGroup.Item>
-                <SettingBlock title='Programación de respaldo'>
-                    {`Cada ${moment.duration(humanInterval(settings.backupDatabaseSchedule)).humanize()}`}
+            <SettingBlock
+                title='Programación de respaldo'
+                action={
                     <SettingAction>
                         <button
                             onClick={() => setShowScheduled(!showScheduled)}
@@ -87,8 +87,11 @@ export const SystemBackupScheduled = () => {
                             Editar
                         </button>
                     </SettingAction>
-                </SettingBlock>
-            </ListGroup.Item>
+                }
+            >
+                {`Cada ${moment.duration(humanInterval(settings.backupDatabaseSchedule)).humanize()}`}
+
+            </SettingBlock>
         </>
     )
 }
@@ -99,36 +102,36 @@ export const SystemForceBackup = () => {
     const { isGeneratingBackup } = useSelector(state => state.system)
 
     return (
-        <>
-            <ListGroup.Item>
-                <SettingBlock title='Crear copia de seguridad'>
-                    Cree una copia de respaldo de la base de datos (mongodb, mariadb, mysql, etc)
-                    <SettingAction>
-                        <div className='btn-group'>
-                            <button
-                                className='btn btn-neutral fw-bolder px-3'
-                            >
-                                <IoListSharp />
-                            </button>
-                            <button
-                                disabled={isGeneratingBackup}
-                                onClick={() => dispatch(startForceBackupDatabase())}
-                                className='btn btn-neutral fw-bolder px-3'
-                            >
-                                {
-                                    !isGeneratingBackup
-                                        ? 'Generar respaldo'
-                                        : <>
-                                            <span className='spinner-border spinner-border-sm me-1' />
-                                            Generando...
-                                        </>
-                                }
-                            </button>
-                        </div>
-                    </SettingAction>
-                </SettingBlock>
-            </ListGroup.Item>
-        </>
+        <SettingBlock
+            title='Crear copia de seguridad'
+            action={
+                <SettingAction>
+                    <div className='btn-group'>
+                        <button
+                            className='btn btn-neutral fw-bolder px-3'
+                        >
+                            <IoListSharp />
+                        </button>
+                        <button
+                            disabled={isGeneratingBackup}
+                            onClick={() => dispatch(startForceBackupDatabase())}
+                            className='btn btn-neutral fw-bolder px-3'
+                        >
+                            {
+                                !isGeneratingBackup
+                                    ? 'Generar respaldo'
+                                    : <>
+                                        <span className='spinner-border spinner-border-sm me-1' />
+                                        Generando...
+                                    </>
+                            }
+                        </button>
+                    </div>
+                </SettingAction>
+            }
+        >
+            Cree una copia de respaldo de la base de datos (mongodb, mariadb, mysql, etc)
+        </SettingBlock>
     )
 }
 

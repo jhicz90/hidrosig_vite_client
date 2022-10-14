@@ -1,31 +1,28 @@
-import React from 'react'
+import { ListGroup } from 'react-bootstrap'
+import { MiniLoader } from './MiniLoader'
 
-export const SettingBlock = ({ title = '', children }) => {
-
-    const action = Array.isArray(children)
-        ? children[children.findIndex(ch => ch.hasOwnProperty('type') && ch.type.hasOwnProperty('name') && ch.type.name === 'SettingAction')]
-        : null
-
-    const block = Array.isArray(children)
-        ? children[children.findIndex(ch => ch.type?.name !== 'SettingAction')]
-        : typeof children === 'string'
-            ? children
-            : null
-
+export const SettingBlock = ({ title = '', children, loading = false, action = null, list = null }) => {
     return (
-        <div className='d-flex flex-sm-row flex-column align-items-start align-items-sm-center'>
-            <div className='mb-2 mb-md-0'>
-                <div className='fs-6 fw-bolder mb-1'>{title}</div>
-                <div className='fs-6 text-muted'>
-                    {block}
+        <>
+            <ListGroup.Item>
+                <div className='d-flex flex-sm-row flex-column align-items-start align-items-sm-center'>
+                    <div className='mb-2 mb-md-0'>
+                        <div className='fs-6 fw-bolder mb-1'>{title}</div>
+                        <div className='fs-6 text-muted'>
+                            {
+                                loading
+                                    ?
+                                    <MiniLoader />
+                                    :
+                                    <>{children}</>
+                            }
+                        </div>
+                    </div>
+                    {action}
                 </div>
-            </div>
-            {
-                !!action
-                &&
-                action
-            }
-        </div>
+            </ListGroup.Item>
+            {list}
+        </>
     )
 }
 
