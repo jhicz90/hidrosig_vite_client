@@ -33,6 +33,7 @@ export const AppComandBar = () => {
                         onClick: () => {
                             if (c.children) {
                                 setPage(c.id)
+                                setSearch('')
                             } else {
                                 navigate(c.to)
                             }

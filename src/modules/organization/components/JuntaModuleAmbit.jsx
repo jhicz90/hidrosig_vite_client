@@ -1,10 +1,9 @@
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Button, Card, ListGroup } from 'react-bootstrap'
 import { useGetWaterSourcesQuery, useGetZonesForJuntaQuery } from '../../../store'
 import { SettingAction, SettingBlock } from '../../../components'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
-import { ViewZone } from '../../territories'
+import { CreateZone } from '../../territories'
 
 export const JuntaModuleAmbit = () => {
     return (
@@ -29,7 +28,7 @@ const JuntaZone = () => {
             loading={isLoading}
             action={
                 <SettingAction>
-                    <Button variant='neutral'>Agregar zonas</Button>
+                    <CreateZone />
                 </SettingAction>
             }
             list={

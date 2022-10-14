@@ -601,6 +601,7 @@ kbd.type-writer,
     --bs-btn-active-color: #4d5969;
     --bs-btn-active-bg: rgba(240, 240, 251, 1);
     --bs-btn-active-border-color: rgba(209, 213, 219, 1);
+    --bs-btn-disabled-border-color: rgba(209, 213, 219, 1);
 }
 
 .btn-outline-neutral {

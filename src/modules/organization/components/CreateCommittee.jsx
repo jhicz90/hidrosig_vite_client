@@ -250,8 +250,8 @@ export const CreateCommitteeStep3 = ({ setStep }) => {
 
     return (
         <form onSubmit={handleSubmit(handleNext)}>
-            <div className="row">
-                <div className="col">
+            <div className='row'>
+                <div className='col'>
                     <div className='mb-3'>
                         <label htmlFor='junta' className='form-label'>Junta de usuarios</label>
                         <Controller

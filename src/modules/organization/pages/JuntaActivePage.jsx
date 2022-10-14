@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsInfoCircle } from 'react-icons/bs'
+import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'
 import { setActiveJunta, startGetJunta } from '../../../store'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { JuntaModuleAmbit, JuntaModuleBanner, JuntaModuleInformation } from '../components'
+import { JuntaModuleAmbit, JuntaModuleBanner, JuntaModuleDelete, JuntaModuleInformation } from '../components'
 
 export const JuntaActivePage = () => {
 
@@ -47,6 +47,13 @@ export const JuntaActivePage = () => {
                                         name: 'Ámbito',
                                         title: true,
                                         module: JuntaModuleAmbit
+                                    },
+                                    {
+                                        id: 'deletejunta',
+                                        icon: BsTrash,
+                                        name: 'Eliminar junta',
+                                        title: true,
+                                        module: JuntaModuleDelete
                                     }
                                 ]
 
