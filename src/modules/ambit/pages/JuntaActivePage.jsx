@@ -56,7 +56,6 @@ export const JuntaActivePage = () => {
                                         module: JuntaModuleDelete
                                     }
                                 ]
-
                             }
                         >
                             <JuntaModuleBanner />

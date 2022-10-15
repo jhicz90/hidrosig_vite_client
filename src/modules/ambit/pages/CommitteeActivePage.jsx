@@ -1,30 +1,28 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsInfoCircle, BsShieldLock, BsTrash } from 'react-icons/bs'
-import { RiShieldUserLine } from 'react-icons/ri'
-import { FaBuffer } from 'react-icons/fa'
+import { BsInfoCircle } from 'react-icons/bs'
 import validator from 'validator'
-import { setActiveRole, startGetRole } from '../../../store/actions'
+import { setActiveCommittee, startGetCommittee } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { RoleModuleBanner, RoleModuleDelete, RoleModuleInformation, RoleModuleLevel, RoleModuleModuleAccess, RoleModulePermissions } from '../components'
+import { CommitteeModuleBanner, CommitteeModuleInformation } from '../components'
 
 export const CommitteeActivePage = () => {
 
-    const { roleid } = useParams()
+    const { commid } = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { active } = useSelector(state => state.role)
+    const { active } = useSelector(state => state.committee)
 
     useEffect(() => {
-        if (validator.isMongoId(roleid)) {
-            dispatch(startGetRole(roleid))
+        if (validator.isMongoId(commid)) {
+            dispatch(startGetCommittee(commid))
         } else {
             navigate(-1)
         }
 
-        return () => dispatch(setActiveRole(null))
-    }, [roleid, dispatch])
+        return () => dispatch(setActiveCommittee(null))
+    }, [commid, dispatch])
 
     return (
         <>
@@ -36,45 +34,16 @@ export const CommitteeActivePage = () => {
                             modules={
                                 [
                                     {
-                                        id: 'inforole',
+                                        id: 'infocommittee',
                                         icon: BsInfoCircle,
                                         name: 'Información básica',
                                         title: true,
-                                        module: RoleModuleInformation
-                                    },
-                                    {
-                                        id: 'lvlrole',
-                                        icon: RiShieldUserLine,
-                                        name: 'Nivel de rol',
-                                        title: true,
-                                        module: RoleModuleLevel
-                                    },
-                                    {
-                                        id: 'permsrole',
-                                        icon: BsShieldLock,
-                                        name: 'Permisos',
-                                        title: true,
-                                        module: RoleModulePermissions
-                                    },
-                                    {
-                                        id: 'modulerole',
-                                        icon: FaBuffer,
-                                        name: 'Módulos',
-                                        title: true,
-                                        module: RoleModuleModuleAccess
-                                    },
-                                    {
-                                        id: 'deleterole',
-                                        icon: BsTrash,
-                                        name: 'Eliminar',
-                                        title: true,
-                                        module: RoleModuleDelete
-                                    },
+                                        module: CommitteeModuleInformation
+                                    }
                                 ]
-
                             }
                         >
-                            <RoleModuleBanner />
+                            <CommitteeModuleBanner />
                         </ModuleNav>
                     </div>
                     :

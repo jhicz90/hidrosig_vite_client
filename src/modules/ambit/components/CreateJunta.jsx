@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Button, Card, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Modal } from 'react-bootstrap'
 import { setActiveNewJunta, startAddNewJunta, editActiveNewJunta, startSaveNewJunta } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
 
@@ -9,7 +9,6 @@ export const CreateJunta = ({ typeButton = 1 }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.junta)
-    const [step, setStep] = useState(1)
 
     useEffect(() => {
         return () => dispatch(setActiveNewJunta(null))
@@ -22,11 +21,10 @@ export const CreateJunta = ({ typeButton = 1 }) => {
                 variant={typeButton === 1 ? 'neutral' : 'link'}
                 className='text-primary text-decoration-none'
                 onClick={() => {
-                    setStep(1)
                     dispatch(startAddNewJunta())
                 }}
             >
-                Nuevo junta
+                Nueva junta
             </Button>
             <Modal
                 show={!!activeNew}
@@ -38,39 +36,30 @@ export const CreateJunta = ({ typeButton = 1 }) => {
                     <Modal.Title>Crear junta de usuarios</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Card.Body>
-                        {
-                            step === 1
-                            &&
-                            <CreateJuntaStep1 setStep={setStep} />
-                        }
-                        {
-                            step === 2
-                            &&
-                            <CreateJuntaStep2 setStep={setStep} />
-                        }
-                    </Card.Body>
+                    <CreateJuntaStep />
                 </Modal.Body>
             </Modal>
         </>
     )
 }
 
-export const CreateJuntaStep1 = ({ setStep }) => {
+export const CreateJuntaStep = () => {
 
     const dispatch = useDispatch()
-    const { activeNew } = useSelector(state => state.junta)
+    const { activeNew, isSavingNew } = useSelector(state => state.junta)
     const { register, setValue, handleSubmit, reset } = useForm()
 
-    const handleNext = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc }) => {
+    const handleNext = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
         dispatch(editActiveNewJunta({
             name,
             nameAbrev,
             nameLarge,
             nameLargeAbrev,
-            desc
+            desc,
+            docid,
+            email,
         }))
-        setStep(2)
+        dispatch(startSaveNewJunta())
     }
 
     useEffect(() => {
@@ -148,40 +137,6 @@ export const CreateJuntaStep1 = ({ setStep }) => {
                     </Form.Group>
                 </div>
             </div>
-            <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    variant='primary'
-                    type='submit'
-                >
-                    Siguiente
-                </Button>
-            </div>
-        </form>
-    )
-}
-
-export const CreateJuntaStep2 = ({ setStep }) => {
-
-    const dispatch = useDispatch()
-    const { activeNew ,isSavingNew} = useSelector(state => state.junta)
-    const { register, handleSubmit, reset } = useForm()
-
-    const handleNext = async ({ docid, email }) => {
-        dispatch(editActiveNewJunta({
-            docid,
-            email,
-        }))
-        dispatch(startSaveNewJunta())
-    }
-
-    useEffect(() => {
-        reset({
-            ...activeNew
-        })
-    }, [reset, activeNew])
-
-    return (
-        <form onSubmit={handleSubmit(handleNext)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uDocId'>
@@ -205,13 +160,6 @@ export const CreateJuntaStep2 = ({ setStep }) => {
                 </div>
             </div>
             <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    onClick={() => setStep(1)}
-                    disabled={isSavingNew}
-                    variant='primary'
-                >
-                    Volver
-                </Button>
                 <Button
                     disabled={isSavingNew}
                     variant='success'

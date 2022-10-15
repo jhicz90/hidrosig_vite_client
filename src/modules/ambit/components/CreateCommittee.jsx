@@ -50,11 +50,6 @@ export const CreateCommittee = ({ typeButton = 1 }) => {
                             &&
                             <CreateCommitteeStep2 setStep={setStep} />
                         }
-                        {
-                            step === 3
-                            &&
-                            <CreateCommitteeStep3 setStep={setStep} />
-                        }
                     </Card.Body>
                 </Modal.Body>
             </Modal>
@@ -68,13 +63,15 @@ export const CreateCommitteeStep1 = ({ setStep }) => {
     const { activeNew } = useSelector(state => state.committee)
     const { register, setValue, handleSubmit, reset } = useForm()
 
-    const handleNext = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc }) => {
+    const handleNext = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
         dispatch(editActiveNewCommittee({
             name,
             nameAbrev,
             nameLarge,
             nameLargeAbrev,
-            desc
+            desc,
+            docid,
+            email
         }))
         setStep(2)
     }
@@ -154,40 +151,6 @@ export const CreateCommitteeStep1 = ({ setStep }) => {
                     </Form.Group>
                 </div>
             </div>
-            <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    variant='primary'
-                    type='submit'
-                >
-                    Siguiente
-                </Button>
-            </div>
-        </form>
-    )
-}
-
-export const CreateCommitteeStep2 = ({ setStep }) => {
-
-    const dispatch = useDispatch()
-    const { activeNew } = useSelector(state => state.committee)
-    const { register, handleSubmit, reset } = useForm()
-
-    const handleNext = ({ docid, email }) => {
-        dispatch(editActiveNewCommittee({
-            docid,
-            email
-        }))
-        setStep(3)
-    }
-
-    useEffect(() => {
-        reset({
-            ...activeNew
-        })
-    }, [reset, activeNew])
-
-    return (
-        <form onSubmit={handleSubmit(handleNext)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uDocId'>
@@ -212,23 +175,17 @@ export const CreateCommitteeStep2 = ({ setStep }) => {
             </div>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
-                    onClick={() => setStep(1)}
-                    variant='primary'
-                >
-                    Volver
-                </Button>
-                <Button
                     variant='primary'
                     type='submit'
                 >
-                    Guardar
+                    Siguiente
                 </Button>
             </div>
         </form>
     )
 }
 
-export const CreateCommitteeStep3 = ({ setStep }) => {
+export const CreateCommitteeStep2 = ({ setStep }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.committee)
@@ -334,7 +291,7 @@ export const CreateCommitteeStep3 = ({ setStep }) => {
             </div>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
-                    onClick={() => setStep(2)}
+                    onClick={() => setStep(1)}
                     disabled={isSavingNew}
                     variant='primary'
                 >
