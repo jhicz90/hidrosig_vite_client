@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
+import { storeApi } from '../storeApi'
 import { addNewZone, setActiveNewZone, setActiveZone, setSavingZone, setSavingNewZone } from './zoneSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -43,6 +44,7 @@ export const startSaveNewZone = () => {
         dispatch(setSavingNewZone(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Trrt']))
             dispatch(setActiveNewZone(null))
         }
     }

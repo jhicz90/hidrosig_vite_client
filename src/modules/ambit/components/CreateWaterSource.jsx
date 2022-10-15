@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { editActiveNewWaterSource, searchJunta, setActiveNewWaterSource, startAddNewWaterSource, startSaveNewWaterSource } from '../../../store/actions'
 import { imageGet } from '../../../helpers'
 
-export const CreateWaterSource = ({ juntaId = null, typeButton = 1 }) => {
+export const CreateWaterSource = ({ junta = null, typeButton = 1 }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.watersource)
@@ -37,15 +37,15 @@ export const CreateWaterSource = ({ juntaId = null, typeButton = 1 }) => {
                     <Modal.Title>Crear fuente de agua</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <CreateWaterSourceStep juntaId={juntaId} />
+                    <CreateWaterSourceStep juntaActive={junta} />
                 </Modal.Body>
             </Modal>
         </>
     )
 }
 
-const CreateWaterSourceStep = ({ juntaId }) => {
-    
+const CreateWaterSourceStep = ({ juntaActive }) => {
+
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.watersource)
     const { register, control, handleSubmit, reset } = useForm()
@@ -54,7 +54,7 @@ const CreateWaterSourceStep = ({ juntaId }) => {
         dispatch(editActiveNewWaterSource({
             name,
             desc,
-            junta: juntaId ? juntaId : junta,
+            junta: juntaActive ? juntaActive : junta,
             type
         }))
         dispatch(startSaveNewWaterSource())
@@ -112,7 +112,7 @@ const CreateWaterSourceStep = ({ juntaId }) => {
                 </div>
             </div>
             {
-                !juntaId
+                !juntaActive
                 &&
                 <div className='row'>
                     <div className='col'>

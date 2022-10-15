@@ -210,9 +210,19 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
+            providesTags: ['Orgz', 'Trrt']
         }),
         getWaterSources: builder.query({
+            query: (search) => ({
+                url: `watersource/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getWaterSourcesForJunta: builder.query({
             query: ({ junta, search }) => ({
                 url: `watersource/search_by_junta/${junta}`,
                 params: {
@@ -220,7 +230,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
+            providesTags: ['Orgz', 'Trrt']
         })
     }),
 })
@@ -240,6 +250,7 @@ export const {
     useGetRolesQuery,
     useGetUsrsSysQuery,
     useGetUsrSysForOccupQuery,
+    useGetWaterSourcesForJuntaQuery,
     useGetWaterSourcesQuery,
     useGetZonesForJuntaQuery,
     useGetZonesQuery,

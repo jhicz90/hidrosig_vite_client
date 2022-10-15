@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
+import { storeApi } from '../storeApi'
 import { addNewWaterSource, setActiveNewWaterSource, setActiveWaterSource, setSavingWaterSource, setSavingNewWaterSource } from './watersourceSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -43,6 +44,7 @@ export const startSaveNewWaterSource = () => {
         dispatch(setSavingNewWaterSource(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Trrt']))
             dispatch(setActiveNewWaterSource(null))
         }
     }

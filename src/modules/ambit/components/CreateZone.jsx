@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { editActiveNewZone, searchJunta, setActiveNewZone, startAddNewZone, startSaveNewZone } from '../../../store/actions'
 import { imageGet } from '../../../helpers'
 
-export const CreateZone = ({ juntaId = null, typeButton = 1 }) => {
+export const CreateZone = ({ junta = null, typeButton = 1 }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.zone)
@@ -38,7 +38,7 @@ export const CreateZone = ({ juntaId = null, typeButton = 1 }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <Card.Body>
-                        <CreateZoneStep juntaId={juntaId} />
+                        <CreateZoneStep juntaActive={junta} />
                     </Card.Body>
                 </Modal.Body>
             </Modal>
@@ -46,7 +46,7 @@ export const CreateZone = ({ juntaId = null, typeButton = 1 }) => {
     )
 }
 
-const CreateZoneStep = ({ juntaId }) => {
+const CreateZoneStep = ({ juntaActive }) => {
 
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.zone)
@@ -57,7 +57,7 @@ const CreateZoneStep = ({ juntaId }) => {
             order,
             name,
             desc,
-            junta: juntaId ? juntaId : junta,
+            junta: juntaActive ? juntaActive : junta,
         }))
         dispatch(startSaveNewZone())
     }
@@ -106,7 +106,7 @@ const CreateZoneStep = ({ juntaId }) => {
                 </div>
             </div>
             {
-                !juntaId
+                !juntaActive
                 &&
                 <div className='row'>
                     <div className='col'>
