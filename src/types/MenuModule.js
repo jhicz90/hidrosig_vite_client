@@ -1,4 +1,4 @@
-import { FcCalculator, FcConferenceCall, FcHome, FcOpenedFolder, FcOrganization, FcPuzzle, FcSalesPerformance, FcSettings, FcTreeStructure } from 'react-icons/all'
+import { FcCalculator, FcConferenceCall, FcHome, FcOpenedFolder, FcOrganization, FcPuzzle, FcSalesPerformance, FcSettings, FcSupport, FcTreeStructure } from 'react-icons/all'
 
 export const menuModule = [
     {
@@ -135,6 +135,25 @@ export const menuModule = [
                 to: 'pettycash',
                 meta: ['pettycash'],
                 detail: 'Lista y registro de caja chica, para un mejor control y detalle de los comprobantes.'
+            }
+        ]
+    },
+    {
+        label: 'Herramientas',
+        icon: 1090,
+        rcIcon: FcSupport,
+        to: 'tools',
+        meta: ['tools'],
+        children: [
+            {
+                label: 'Resumen',
+                to: 'resume'
+            },
+            {
+                label: 'Elaboración de presupuestos',
+                to: 'budget',
+                meta: ['budget'],
+                detail: 'Herramienta para elaborar fichas a partir de metrados y datos del proyecto a realizar.'
             }
         ]
     },
