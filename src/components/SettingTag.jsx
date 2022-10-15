@@ -7,14 +7,21 @@ export const SettingBlock = ({ title = '', children, loading = false, action = n
             <ListGroup.Item>
                 <div className='d-flex flex-sm-row flex-column align-items-start align-items-sm-center'>
                     <div className='mb-2 mb-md-0'>
-                        <div className='fs-6 fw-bolder mb-1'>{title}</div>
-                        <div className='fs-6 text-muted'>
+                        <div className='fs-6 fw-bolder mb-1'>
+                            {title}
                             {
                                 loading
-                                    ?
+                                &&
+                                <div className='d-inline ms-3'>
                                     <MiniLoader />
-                                    :
-                                    <>{children}</>
+                                </div>
+                            }
+                        </div>
+                        <div className='fs-6 text-muted'>
+                            {
+                                !loading
+                                &&
+                                <>{children}</>
                             }
                         </div>
                     </div>

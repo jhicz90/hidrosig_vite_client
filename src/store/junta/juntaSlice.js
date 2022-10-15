@@ -24,10 +24,10 @@ export const juntaSlice = createSlice({
         editActiveJunta: (state, action) => {
             state.active = { ...state.active, ...action.payload }
         },
-        setSaving: (state, action) => {
+        setSavingJunta: (state, action) => {
             state.isSaving = action.payload
         },
-        setSavingNew: (state, action) => {
+        setSavingNewJunta: (state, action) => {
             state.isSavingNew = action.payload
         },
     }
@@ -39,6 +39,6 @@ export const {
     editActiveJunta,
     setActiveNewJunta,
     setActiveJunta,
-    setSaving,
-    setSavingNew,
+    setSavingJunta,
+    setSavingNewJunta,
 } = juntaSlice.actions

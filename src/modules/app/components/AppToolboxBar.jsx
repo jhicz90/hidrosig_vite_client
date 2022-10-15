@@ -1,15 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux'
 import { Card, Container } from 'react-bootstrap'
 import styled from 'styled-components'
-import { CreateUserSys } from '../../usersys/components'
-import { CreateOccupation } from '../../occupation/components'
-import { CreateRole } from '../../role/components'
-import { CreateCommittee, CreateJunta } from '../../organization/components'
+import { CreateUserSys, CreateOccupation, CreateRole, CreateCommittee, CreateJunta } from '../../'
 
 export const AppToolboxBar = () => {
-
-    const dispatch = useDispatch()
-    const { isSavingNew } = useSelector(state => state.usersys)
 
     return (
         <Container>

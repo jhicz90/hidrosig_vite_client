@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { GuardRoute } from '../../../guards/GuardRoute'
+import { GuardRoute } from '../../../guards'
 import { SystemPage } from '../pages'
 
 export const SystemRoutes = () => {

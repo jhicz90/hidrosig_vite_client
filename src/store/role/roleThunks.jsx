@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewRole, setActiveNewRole, setActiveRole, setSaving, setSavingNew } from './roleSlice'
+import { addNewRole, setActiveNewRole, setActiveRole, setSavingRole, setSavingNewRole } from './roleSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -14,7 +14,7 @@ export const startAddNewRole = () => {
             endpoint: `role/create/new`
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewRole(false))
 
         if (resp.ok) {
             dispatch(setActiveNewRole(resp.role))
@@ -25,7 +25,7 @@ export const startAddNewRole = () => {
 export const startSaveNewRole = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNew(true))
+        dispatch(setSavingNewRole(true))
 
         const { activeNew } = getState().role
 
@@ -39,7 +39,7 @@ export const startSaveNewRole = () => {
             method: 'POST'
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewRole(false))
 
         if (resp.ok) {
             dispatch(setActiveNewRole(null))
@@ -50,13 +50,13 @@ export const startSaveNewRole = () => {
 export const startGetRole = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingRole(true))
 
         const resp = await fetchByToken({
             endpoint: `role/edit/${id}`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingRole(false))
 
         if (resp.ok) {
             dispatch(setActiveRole(resp.role))
@@ -67,7 +67,7 @@ export const startGetRole = (id) => {
 export const startUpdateRole = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingRole(true))
 
         const { active } = getState().role
         const { _id } = active
@@ -82,7 +82,7 @@ export const startUpdateRole = () => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingRole(false))
 
         if (resp.ok) {
             dispatch(setActiveRole(resp.role))
@@ -124,7 +124,7 @@ export const startUpdateModulesRole = (modules) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingRole(true))
 
                 const passwordConfirm = result.value || ''
 
@@ -134,7 +134,7 @@ export const startUpdateModulesRole = (modules) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingRole(false))
 
                 if (resp.ok) {
                     dispatch(setActiveRole(resp.role))
@@ -178,7 +178,7 @@ export const startUpdatePermissionsRole = (permissions) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingRole(true))
 
                 const passwordConfirm = result.value || ''
 
@@ -188,7 +188,7 @@ export const startUpdatePermissionsRole = (permissions) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingRole(false))
 
                 if (resp.ok) {
                     dispatch(setActiveRole(resp.role))
@@ -228,7 +228,7 @@ export const startUpdateStatusRole = (status) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingRole(true))
 
                 const resp = await fetchByToken({
                     endpoint: `role/status/${_id}`,
@@ -236,7 +236,7 @@ export const startUpdateStatusRole = (status) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingRole(false))
 
                 if (resp.ok) {
                     dispatch(setActiveRole(resp.role))
@@ -249,7 +249,7 @@ export const startUpdateStatusRole = (status) => {
 export const startUpdateInformationRole = ({ name, desc }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingRole(true))
 
         const { active } = getState().role
         const { _id } = active
@@ -260,7 +260,7 @@ export const startUpdateInformationRole = ({ name, desc }) => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingRole(false))
 
         if (resp.ok) {
             dispatch(setActiveRole(resp.role))
@@ -271,7 +271,7 @@ export const startUpdateInformationRole = ({ name, desc }) => {
 export const startUpdateLevelRole = ({ levelRole, junta, committee }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingRole(true))
 
         const { active } = getState().role
         const { _id } = active
@@ -282,7 +282,7 @@ export const startUpdateLevelRole = ({ levelRole, junta, committee }) => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingRole(false))
 
         if (resp.ok) {
             dispatch(setActiveRole(resp.role))
@@ -333,14 +333,14 @@ export const startDeleteRole = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingRole(true))
 
                 const resp = await fetchByToken({
                     endpoint: `role/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingRole(false))
 
                 if (resp.ok) {
                     navigate('/app/sys/role')

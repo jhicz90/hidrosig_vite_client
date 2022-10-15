@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { WebRoot, AppRoot, LoginPage } from '../modules'
 import { Loading } from '../components'
-import { checkingToken } from '../store/auth'
+import { checkingToken } from '../store/actions'
 
 export const Router = () => {
     const dispatch = useDispatch()

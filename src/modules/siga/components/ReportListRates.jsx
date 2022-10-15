@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setRate, startGetSigaRates } from '../../../store'
+import { setRate, startGetSigaRates } from '../../../store/actions'
 
 export const ReportListRates = () => {
 

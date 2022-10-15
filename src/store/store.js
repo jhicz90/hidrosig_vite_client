@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 
-import { storeApi } from './storeApi'
+import { storeApi } from './'
 
 import { authSlice } from './auth'
 import { occupationSlice } from './occupation'
@@ -12,6 +12,7 @@ import { usersysSlice } from './usersys'
 import { juntaSlice } from './junta'
 import { committeeSlice } from './committee'
 import { zoneSlice } from './zone'
+import { watersourceSlice } from './watersource'
 
 export const store = configureStore({
     reducer: {
@@ -24,6 +25,7 @@ export const store = configureStore({
         junta: juntaSlice.reducer,
         committee: committeeSlice.reducer,
         zone: zoneSlice.reducer,
+        watersource: watersourceSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

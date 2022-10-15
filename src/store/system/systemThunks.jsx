@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken } from '../../helpers'
-import { setGeneratingBackup, setSaving, setSettings } from './systemSlice'
+import { setGeneratingBackup, setSavingSystem, setSettings } from './systemSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -17,6 +17,7 @@ export const startGetSystemSettings = () => {
         }
     }
 }
+
 export const startUpdateBackupSchedule = ({ backupDatabaseSchedule }) => {
     return async (dispatch, getState) => {
 
@@ -48,7 +49,7 @@ export const startUpdateBackupSchedule = ({ backupDatabaseSchedule }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingSystem(true))
 
                 const passwordConfirm = result.value || ''
 
@@ -58,7 +59,7 @@ export const startUpdateBackupSchedule = ({ backupDatabaseSchedule }) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingSystem(false))
 
                 if (resp.ok) {
                     dispatch(setSettings(resp.systemsettings))

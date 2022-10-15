@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewZone, setActiveNewZone, setActiveZone, setSaving, setSavingNew } from './zoneSlice'
+import { addNewZone, setActiveNewZone, setActiveZone, setSavingZone, setSavingNewZone } from './zoneSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -14,7 +14,7 @@ export const startAddNewZone = () => {
             endpoint: `zone/create/new`
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewZone(false))
 
         if (resp.ok) {
             dispatch(setActiveNewZone(resp.zone))
@@ -25,7 +25,7 @@ export const startAddNewZone = () => {
 export const startSaveNewZone = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNew(true))
+        dispatch(setSavingNewZone(true))
 
         const { activeNew } = getState().zone
 
@@ -40,7 +40,7 @@ export const startSaveNewZone = () => {
             method: 'POST'
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewZone(false))
 
         if (resp.ok) {
             dispatch(setActiveNewZone(null))
@@ -51,13 +51,13 @@ export const startSaveNewZone = () => {
 export const startGetZone = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingZone(true))
 
         const resp = await fetchByToken({
             endpoint: `zone/edit/${id}`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingZone(false))
 
         if (resp.ok) {
             dispatch(setActiveZone(resp.zone))
@@ -68,7 +68,7 @@ export const startGetZone = (id) => {
 export const startUpdateZone = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingZone(true))
 
         const { active } = getState().zone
         const { _id } = active
@@ -83,7 +83,7 @@ export const startUpdateZone = () => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingZone(false))
 
         if (resp.ok) {
             dispatch(setActiveZone(resp.zone))
@@ -101,12 +101,12 @@ export const startDeleteZone = ({ navigate = null }) => {
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Eliminar ocupación</div>
+                    <div className='text-uppercase'>Eliminar zona</div>
                     <div className="fs-5 fw-bold text-info mt-1">{name}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta ocupación?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta zona?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
                 </>,
             showCancelButton: true,
@@ -134,17 +134,17 @@ export const startDeleteZone = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingZone(true))
 
                 const resp = await fetchByToken({
                     endpoint: `zone/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingZone(false))
 
                 if (resp.ok) {
-                    navigate('/app/sys/occup')
+                    navigate('/app/ambit/trrty')
                     dispatch(setActiveZone(null))
                 }
             }

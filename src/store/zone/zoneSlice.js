@@ -24,10 +24,10 @@ export const zoneSlice = createSlice({
         editActiveZone: (state, action) => {
             state.active = { ...state.active, ...action.payload }
         },
-        setSaving: (state, action) => {
+        setSavingZone: (state, action) => {
             state.isSaving = action.payload
         },
-        setSavingNew: (state, action) => {
+        setSavingNewZone: (state, action) => {
             state.isSavingNew = action.payload
         },
     }
@@ -39,6 +39,6 @@ export const {
     editActiveZone,
     setActiveNewZone,
     setActiveZone,
-    setSaving,
-    setSavingNew,
+    setSavingZone,
+    setSavingNewZone,
 } = zoneSlice.actions

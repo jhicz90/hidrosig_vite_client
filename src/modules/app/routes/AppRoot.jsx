@@ -4,7 +4,7 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 
 import { Layout } from '../layout'
 
-import { GuardRoute } from '../../../guards/GuardRoute'
+import { GuardRoute } from '../../../guards'
 
 import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
 import {

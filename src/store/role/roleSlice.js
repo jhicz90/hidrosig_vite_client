@@ -24,10 +24,10 @@ export const roleSlice = createSlice({
         editActiveRole: (state, action) => {
             state.active = { ...state.active, ...action.payload }
         },
-        setSaving: (state, action) => {
+        setSavingRole: (state, action) => {
             state.isSaving = action.payload
         },
-        setSavingNew: (state, action) => {
+        setSavingNewRole: (state, action) => {
             state.isSavingNew = action.payload
         },
     }
@@ -39,6 +39,6 @@ export const {
     editActiveRole,
     setActiveNewRole,
     setActiveRole,
-    setSaving,
-    setSavingNew,
+    setSavingRole,
+    setSavingNewRole,
 } = roleSlice.actions

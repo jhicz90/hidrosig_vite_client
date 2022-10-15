@@ -24,10 +24,10 @@ export const occupationSlice = createSlice({
         editActiveOccupation: (state, action) => {
             state.active = { ...state.active, ...action.payload }
         },
-        setSaving: (state, action) => {
+        setSavingOccupation: (state, action) => {
             state.isSaving = action.payload
         },
-        setSavingNew: (state, action) => {
+        setSavingNewOccupation: (state, action) => {
             state.isSavingNew = action.payload
         },
     }
@@ -39,6 +39,6 @@ export const {
     editActiveOccupation,
     setActiveNewOccupation,
     setActiveOccupation,
-    setSaving,
-    setSavingNew,
+    setSavingOccupation,
+    setSavingNewOccupation,
 } = occupationSlice.actions

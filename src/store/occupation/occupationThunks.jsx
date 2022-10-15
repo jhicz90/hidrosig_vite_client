@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewOccupation, setActiveNewOccupation, setActiveOccupation, setSaving, setSavingNew } from './occupationSlice'
+import { addNewOccupation, setActiveNewOccupation, setActiveOccupation, setSavingOccupation, setSavingNewOccupation } from './occupationSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -14,7 +14,7 @@ export const startAddNewOccupation = () => {
             endpoint: `occupation/create/new`
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewOccupation(false))
 
         if (resp.ok) {
             dispatch(setActiveNewOccupation(resp.occupation))
@@ -25,7 +25,7 @@ export const startAddNewOccupation = () => {
 export const startSaveNewOccupation = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNew(true))
+        dispatch(setSavingNewOccupation(true))
 
         const { activeNew } = getState().occupation
 
@@ -39,7 +39,7 @@ export const startSaveNewOccupation = () => {
             method: 'POST'
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewOccupation(false))
 
         if (resp.ok) {
             dispatch(setActiveNewOccupation(null))
@@ -50,13 +50,13 @@ export const startSaveNewOccupation = () => {
 export const startGetOccupation = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingOccupation(true))
 
         const resp = await fetchByToken({
             endpoint: `occupation/edit/${id}`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingOccupation(false))
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
@@ -67,7 +67,7 @@ export const startGetOccupation = (id) => {
 export const startUpdateOccupation = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingOccupation(true))
 
         const { active } = getState().occupation
         const { _id } = active
@@ -82,7 +82,7 @@ export const startUpdateOccupation = () => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingOccupation(false))
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
@@ -137,7 +137,7 @@ export const startUpdateStatusOccupation = (status) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingOccupation(true))
 
                 const resp = await fetchByToken({
                     endpoint: `occupation/status/${_id}`,
@@ -145,7 +145,7 @@ export const startUpdateStatusOccupation = (status) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingOccupation(false))
 
                 if (resp.ok) {
                     dispatch(setActiveOccupation(resp.occupation))
@@ -158,7 +158,7 @@ export const startUpdateStatusOccupation = (status) => {
 export const startUpdateInformationOccupation = ({ name, desc }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingOccupation(true))
 
         const { active } = getState().occupation
         const { _id } = active
@@ -169,7 +169,7 @@ export const startUpdateInformationOccupation = ({ name, desc }) => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingOccupation(false))
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
@@ -180,7 +180,7 @@ export const startUpdateInformationOccupation = ({ name, desc }) => {
 export const startUpdateLevelOccupation = ({ levelOccupation, junta, committee }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingOccupation(true))
 
         const { active } = getState().occupation
         const { _id } = active
@@ -191,7 +191,7 @@ export const startUpdateLevelOccupation = ({ levelOccupation, junta, committee }
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingOccupation(false))
 
         if (resp.ok) {
             dispatch(setActiveOccupation(resp.occupation))
@@ -242,14 +242,14 @@ export const startDeleteOccupation = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingOccupation(true))
 
                 const resp = await fetchByToken({
                     endpoint: `occupation/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingOccupation(false))
 
                 if (resp.ok) {
                     navigate('/app/sys/occup')

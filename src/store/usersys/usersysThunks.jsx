@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setSaving, setSavingNew } from './usersysSlice'
+import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setSavingUserSys, setSavingNewUserSys } from './usersysSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -14,7 +14,7 @@ export const startAddNewUserSys = () => {
             endpoint: `usersys/create/new`
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewUserSys(false))
 
         if (resp.ok) {
             dispatch(setActiveNewUserSys(resp.usersys))
@@ -25,7 +25,7 @@ export const startAddNewUserSys = () => {
 export const startSaveNewUserSys = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNew(true))
+        dispatch(setSavingNewUserSys(true))
 
         const { activeNew } = getState().usersys
 
@@ -41,7 +41,7 @@ export const startSaveNewUserSys = () => {
             method: 'POST'
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewUserSys(false))
 
         if (resp.ok) {
             dispatch(setActiveNewUserSys(null))
@@ -52,13 +52,13 @@ export const startSaveNewUserSys = () => {
 export const startGetUserSys = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingUserSys(true))
 
         const resp = await fetchByToken({
             endpoint: `usersys/edit/${id}`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingUserSys(false))
 
         if (resp.ok) {
             dispatch(setActiveUserSys(resp.usersys))
@@ -69,7 +69,7 @@ export const startGetUserSys = (id) => {
 export const startUpdateUserSys = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingUserSys(true))
 
         const { active } = getState().usersys
         const { _id } = active
@@ -86,7 +86,7 @@ export const startUpdateUserSys = () => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingUserSys(false))
 
         if (resp.ok) {
             dispatch(loadActiveUserSys(resp.usersys))
@@ -159,7 +159,7 @@ export const startUpdateStatusUserSys = (status) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingUserSys(true))
 
                 const resp = await fetchByToken({
                     endpoint: `usersys/status/${_id}`,
@@ -167,7 +167,7 @@ export const startUpdateStatusUserSys = (status) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingUserSys(false))
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
@@ -180,7 +180,7 @@ export const startUpdateStatusUserSys = (status) => {
 export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid, occupation, gender }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingUserSys(true))
 
         const { active } = getState().usersys
         const { _id } = active
@@ -200,7 +200,7 @@ export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingUserSys(false))
 
         if (resp.ok) {
             dispatch(setActiveUserSys(resp.usersys))
@@ -242,7 +242,7 @@ export const startUpdateEmailUserSys = ({ newEmail: email }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingUserSys(true))
 
                 const passwordConfirm = result.value || ''
 
@@ -252,7 +252,7 @@ export const startUpdateEmailUserSys = ({ newEmail: email }) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingUserSys(false))
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
@@ -296,7 +296,7 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingUserSys(true))
 
                 const password = result.value || ''
 
@@ -306,7 +306,7 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingUserSys(false))
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
@@ -350,7 +350,7 @@ export const startUpdateRoleUserSys = ({ role }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingUserSys(true))
 
                 const passwordConfirm = result.value || ''
 
@@ -360,7 +360,7 @@ export const startUpdateRoleUserSys = ({ role }) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingUserSys(false))
 
                 if (resp.ok) {
                     dispatch(setActiveUserSys(resp.usersys))
@@ -475,14 +475,14 @@ export const startDeleteUserSys = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingUserSys(true))
 
                 const resp = await fetchByToken({
                     endpoint: `usersys/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingUserSys(false))
 
                 if (resp.ok) {
                     navigate('/app/sys/user_sys')

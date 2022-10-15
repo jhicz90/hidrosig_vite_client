@@ -24,10 +24,10 @@ export const usersysSlice = createSlice({
         editActiveUserSys: (state, action) => {
             state.active = { ...state.active, ...action.payload }
         },
-        setSaving: (state, action) => {
+        setSavingUserSys: (state, action) => {
             state.isSaving = action.payload
         },
-        setSavingNew: (state, action) => {
+        setSavingNewUserSys: (state, action) => {
             state.isSavingNew = action.payload
         },
     }
@@ -39,6 +39,6 @@ export const {
     editActiveUserSys,
     setActiveNewUserSys,
     setActiveUserSys,
-    setSaving,
-    setSavingNew,
+    setSavingUserSys,
+    setSavingNewUserSys,
 } = usersysSlice.actions

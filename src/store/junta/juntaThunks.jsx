@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { storeApi } from '../storeApi'
-import { addNewJunta, setActiveNewJunta, setActiveJunta, setSaving, setSavingNew } from './juntaSlice'
+import { addNewJunta, setActiveNewJunta, setActiveJunta, setSavingJunta, setSavingNewJunta } from './juntaSlice'
 import { fetchByToken, normalizeText } from '../../helpers'
 
 const SwalReact = withReactContent(Swal)
@@ -15,7 +15,7 @@ export const startAddNewJunta = () => {
             endpoint: `junta/create/new`
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewJunta(false))
 
         if (resp.ok) {
             dispatch(setActiveNewJunta(resp.junta))
@@ -26,7 +26,7 @@ export const startAddNewJunta = () => {
 export const startSaveNewJunta = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNew(true))
+        dispatch(setSavingNewJunta(true))
 
         const { activeNew } = getState().junta
 
@@ -40,7 +40,7 @@ export const startSaveNewJunta = () => {
             method: 'POST'
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewJunta(false))
 
         if (resp.ok) {
             dispatch(storeApi.util.invalidateTags(['Orgz']))
@@ -52,13 +52,13 @@ export const startSaveNewJunta = () => {
 export const startGetJunta = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingJunta(true))
 
         const resp = await fetchByToken({
             endpoint: `junta/edit/${id}`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingJunta(false))
 
         if (resp.ok) {
             dispatch(setActiveJunta(resp.junta))
@@ -69,7 +69,7 @@ export const startGetJunta = (id) => {
 export const startUpdateJunta = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingJunta(true))
 
         const { active } = getState().junta
         const { _id } = active
@@ -84,7 +84,7 @@ export const startUpdateJunta = () => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingJunta(false))
 
         if (resp.ok) {
             dispatch(setActiveJunta(resp.junta))
@@ -139,7 +139,7 @@ export const startUpdateStatusJunta = (status) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingJunta(true))
 
                 const resp = await fetchByToken({
                     endpoint: `junta/status/${_id}`,
@@ -147,7 +147,7 @@ export const startUpdateStatusJunta = (status) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingJunta(false))
 
                 if (resp.ok) {
                     dispatch(setActiveJunta(resp.Junta))
@@ -160,7 +160,7 @@ export const startUpdateStatusJunta = (status) => {
 export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingJunta(true))
 
         const { active } = getState().junta
         const { _id } = active
@@ -171,7 +171,7 @@ export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLa
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingJunta(false))
 
         if (resp.ok) {
             dispatch(setActiveJunta(resp.junta))
@@ -222,14 +222,14 @@ export const startDeleteJunta = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingJunta(true))
 
                 const resp = await fetchByToken({
                     endpoint: `junta/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingJunta(false))
 
                 if (resp.ok) {
                     navigate('/app/ambit/orgz')

@@ -1,7 +1,0 @@
-export * from './CreateOccupation'
-export * from './ModuleBanner'
-export * from './ModuleDelete'
-export * from './ModuleInformation'
-export * from './ModuleLevel'
-export * from './ModuleToUsers'
-export * from './OccupationList'

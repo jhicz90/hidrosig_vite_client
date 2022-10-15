@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
-import { addNewCommittee, setActiveNewCommittee, setActiveCommittee, setSaving, setSavingNew } from './committeeSlice'
+import { addNewCommittee, setActiveNewCommittee, setActiveCommittee, setSavingCommittee, setSavingNewCommittee } from './committeeSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -14,7 +14,7 @@ export const startAddNewCommittee = () => {
             endpoint: `committee/create/new`
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewCommittee(false))
 
         if (resp.ok) {
             dispatch(setActiveNewCommittee(resp.committee))
@@ -25,7 +25,7 @@ export const startAddNewCommittee = () => {
 export const startSaveNewCommittee = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNew(true))
+        dispatch(setSavingNewCommittee(true))
 
         const { activeNew } = getState().committee
 
@@ -41,7 +41,7 @@ export const startSaveNewCommittee = () => {
             method: 'POST'
         })
 
-        dispatch(setSavingNew(false))
+        dispatch(setSavingNewCommittee(false))
 
         if (resp.ok) {
             dispatch(setActiveNewCommittee(null))
@@ -52,13 +52,13 @@ export const startSaveNewCommittee = () => {
 export const startGetCommittee = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingCommittee(true))
 
         const resp = await fetchByToken({
             endpoint: `committee/edit/${id}`
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingCommittee(false))
 
         if (resp.ok) {
             dispatch(setActiveCommittee(resp.committee))
@@ -69,7 +69,7 @@ export const startGetCommittee = (id) => {
 export const startUpdateCommittee = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingCommittee(true))
 
         const { active } = getState().committee
         const { _id } = active
@@ -84,7 +84,7 @@ export const startUpdateCommittee = () => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingCommittee(false))
 
         if (resp.ok) {
             dispatch(setActiveCommittee(resp.committee))
@@ -139,7 +139,7 @@ export const startUpdateStatusCommittee = (status) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingCommittee(true))
 
                 const resp = await fetchByToken({
                     endpoint: `committee/status/${_id}`,
@@ -147,7 +147,7 @@ export const startUpdateStatusCommittee = (status) => {
                     method: 'PUT'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingCommittee(false))
 
                 if (resp.ok) {
                     dispatch(setActiveCommittee(resp.Committee))
@@ -160,7 +160,7 @@ export const startUpdateStatusCommittee = (status) => {
 export const startUpdateInformationCommittee = ({ name, desc }) => {
     return async (dispatch, getState) => {
 
-        dispatch(setSaving(true))
+        dispatch(setSavingCommittee(true))
 
         const { active } = getState().committee
         const { _id } = active
@@ -171,7 +171,7 @@ export const startUpdateInformationCommittee = ({ name, desc }) => {
             method: 'PUT'
         })
 
-        dispatch(setSaving(false))
+        dispatch(setSavingCommittee(false))
 
         if (resp.ok) {
             dispatch(setActiveCommittee(resp.committee))
@@ -222,14 +222,14 @@ export const startDeleteCommittee = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSaving(true))
+                dispatch(setSavingCommittee(true))
 
                 const resp = await fetchByToken({
                     endpoint: `committee/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSaving(false))
+                dispatch(setSavingCommittee(false))
 
                 if (resp.ok) {
                     navigate('/app/sys/occup')

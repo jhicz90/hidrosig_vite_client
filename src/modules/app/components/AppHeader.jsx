@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { FaBell, FaEnvelope, FaSearch } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
-import { logoutAuth } from '../../../store'
+import { logoutAuth } from '../../../store/actions'
 import { imageGet, imageSysGet } from '../../../helpers'
 
 import logoApp from '../../../assets/logo192.png'

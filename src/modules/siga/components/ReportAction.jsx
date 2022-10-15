@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { startReportSigaCollectEfficiency, startReportSigaIrrigationScheduling } from '../../../store'
+import { startReportSigaCollectEfficiency, startReportSigaIrrigationScheduling } from '../../../store/actions'
 
 export const ReportAction = () => {
 

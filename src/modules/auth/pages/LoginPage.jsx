@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FormCheck } from 'react-bootstrap'
 
 import { UseForm } from '../../../hooks'
-import { checkingAuthentication } from '../../../store'
+import { checkingAuthentication } from '../../../store/actions'
 
 import backgroundLogin from '../../../assets/slider2.jpg'
 import logoApp from '../../../assets/logo192.png'

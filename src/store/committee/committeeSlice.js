@@ -24,10 +24,10 @@ export const committeeSlice = createSlice({
         editActiveCommittee: (state, action) => {
             state.active = { ...state.active, ...action.payload }
         },
-        setSaving: (state, action) => {
+        setSavingCommittee: (state, action) => {
             state.isSaving = action.payload
         },
-        setSavingNew: (state, action) => {
+        setSavingNewCommittee: (state, action) => {
             state.isSavingNew = action.payload
         },
     }
@@ -39,6 +39,6 @@ export const {
     editActiveCommittee,
     setActiveNewCommittee,
     setActiveCommittee,
-    setSaving,
-    setSavingNew,
+    setSavingCommittee,
+    setSavingNewCommittee,
 } = committeeSlice.actions

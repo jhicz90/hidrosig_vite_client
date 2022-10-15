@@ -10,7 +10,7 @@ export const systemSlice = createSlice({
         setSettings: (state, action) => {
             state.settings = action.payload
         },
-        setSaving: (state, action) => {
+        setSavingSystem: (state, action) => {
             state.isSaving = action.payload
         },
         setGeneratingBackup: (state, action) => {
@@ -21,6 +21,6 @@ export const systemSlice = createSlice({
 
 export const {
     setGeneratingBackup,
-    setSaving,
+    setSavingSystem,
     setSettings,
 } = systemSlice.actions

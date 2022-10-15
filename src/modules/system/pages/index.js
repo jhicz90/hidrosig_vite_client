@@ -1,1 +1,7 @@
+export * from './OccupationActivePage'
+export * from './OccupationListPage'
+export * from './RoleActivePage'
+export * from './RoleListPage'
 export * from './SystemPage'
+export * from './UserSysActivePage'
+export * from './UserSysListPage'
