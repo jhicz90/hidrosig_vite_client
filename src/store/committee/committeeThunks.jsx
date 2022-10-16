@@ -211,12 +211,12 @@ export const startDeleteCommittee = ({ navigate = null }) => {
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Eliminar ocupación</div>
+                    <div className='text-uppercase'>Eliminar</div>
                     <div className="fs-5 fw-bold text-info mt-1">{name}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta ocupación?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta comisión de usuarios?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
                 </>,
             showCancelButton: true,
@@ -254,7 +254,7 @@ export const startDeleteCommittee = ({ navigate = null }) => {
                 dispatch(setSavingCommittee(false))
 
                 if (resp.ok) {
-                    navigate('/app/sys/occup')
+                    navigate('/app/ambit/orgz')
                     dispatch(setActiveCommittee(null))
                 }
             }

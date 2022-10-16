@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { BsInfoCircle } from 'react-icons/bs'
+import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'
 import { setActiveCommittee, startGetCommittee } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { CommitteeModuleAmbit, CommitteeModuleBanner, CommitteeModuleInformation } from '../components'
+import { CommitteeModuleAmbit, CommitteeModuleBanner, CommitteeModuleDelete, CommitteeModuleInformation } from '../components'
 
 export const CommitteeActivePage = () => {
 
@@ -47,6 +47,13 @@ export const CommitteeActivePage = () => {
                                         name: 'Ámbito',
                                         title: true,
                                         module: CommitteeModuleAmbit
+                                    },
+                                    {
+                                        id: 'deletecommittee',
+                                        icon: BsTrash,
+                                        name: 'Eliminar comisión',
+                                        title: true,
+                                        module: CommitteeModuleDelete
                                     }
                                 ]
                             }

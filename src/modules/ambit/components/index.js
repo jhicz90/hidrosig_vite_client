@@ -1,6 +1,7 @@
 export * from './CommitteeList'
 export * from './CommitteeModuleAmbit'
 export * from './CommitteeModuleBanner'
+export * from './CommitteeModuleDelete'
 export * from './CommitteeModuleInformation'
 export * from './CreateCommittee'
 export * from './CreateJunta'

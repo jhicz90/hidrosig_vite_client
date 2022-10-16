@@ -26,6 +26,7 @@ const JuntaZone = () => {
         <SettingBlock
             title='Zonas'
             loading={isLoading}
+            colorBlock='rgba(0,0,0,0.08)'
             action={
                 <SettingAction>
                     <CreateZone junta={active} />
@@ -57,6 +58,7 @@ const JuntaSource = () => {
         <SettingBlock
             title='Fuentes de agua'
             loading={isLoading}
+            colorBlock='rgba(0,0,0,0.08)'
             action={
                 <SettingAction>
                     <CreateWaterSource junta={active} />
@@ -89,6 +91,7 @@ const JuntaCommittee = () => {
         <SettingBlock
             title='Comisiones de usuario'
             loading={isLoading}
+            colorBlock='rgba(0,0,0,0.08)'
             action={
                 <SettingAction>
                     <CreateCommittee junta={active} />
