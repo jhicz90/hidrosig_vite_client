@@ -128,7 +128,7 @@ const CreateZoneStep = ({ juntaActive }) => {
                                             menuPlacement={'auto'}
                                             placeholder={`Buscar...`}
                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                            noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                             getOptionValue={e => e._id}
                                             getOptionLabel={e =>
                                                 <div className='d-flex'>

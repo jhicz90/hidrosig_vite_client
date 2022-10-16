@@ -184,6 +184,16 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
         }),
+        getCommsForJunta: builder.query({
+            query: ({ junta, search }) => ({
+                url: `committee/search_by_junta/${junta}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
         addNewComm: builder.mutation({
             query: (newCommittee) => ({
                 url: `committee/create/new`,
@@ -240,6 +250,7 @@ export const {
     useAddNewJuntaMutation,
     useAddNewModuleMutation,
     useAddNewPermMutation,
+    useGetCommsForJuntaQuery,
     useGetCommsQuery,
     useGetJuntasQuery,
     useGetModulesGroupQuery,

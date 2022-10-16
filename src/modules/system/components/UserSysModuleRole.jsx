@@ -59,7 +59,7 @@ export const UserSysModuleRole = () => {
                                                         menuPlacement={'auto'}
                                                         placeholder={`Buscar...`}
                                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
 
                                                     />
                                             }

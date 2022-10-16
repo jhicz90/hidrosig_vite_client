@@ -169,8 +169,8 @@ export const searchZone = async (search) => {
 
 export const searchZoneByJunta = async (junta, search) => {
     const resp = await fetchByToken({
-        endpoint: 'zone/searchbyjunta',
-        params: { search, junta }
+        endpoint: `zone/search_by_junta/${junta}`,
+        params: { search }
     })
 
     if (resp.ok) {

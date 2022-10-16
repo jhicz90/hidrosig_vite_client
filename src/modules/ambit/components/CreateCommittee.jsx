@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { setActiveNewCommittee, startAddNewCommittee, editActiveNewCommittee, startSaveNewCommittee, searchJunta, searchZoneByJunta } from '../../../store/actions'
 import { imageGet, upperCaseCatch } from '../../../helpers'
 
-export const CreateCommittee = ({ typeButton = 1 }) => {
+export const CreateCommittee = ({ junta = null, typeButton = 1 }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.committee)
@@ -48,7 +48,7 @@ export const CreateCommittee = ({ typeButton = 1 }) => {
                         {
                             step === 2
                             &&
-                            <CreateCommitteeStep2 setStep={setStep} />
+                            <CreateCommitteeStep2 juntaActive={junta} setStep={setStep} />
                         }
                     </Card.Body>
                 </Modal.Body>
@@ -185,7 +185,7 @@ export const CreateCommitteeStep1 = ({ setStep }) => {
     )
 }
 
-export const CreateCommitteeStep2 = ({ setStep }) => {
+export const CreateCommitteeStep2 = ({ juntaActive, setStep }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.committee)
@@ -193,7 +193,7 @@ export const CreateCommitteeStep2 = ({ setStep }) => {
 
     const handleNext = ({ junta, zone, order }) => {
         dispatch(editActiveNewCommittee({
-            junta,
+            junta: juntaActive ? juntaActive : junta,
             zone,
             order
         }))
@@ -208,40 +208,44 @@ export const CreateCommitteeStep2 = ({ setStep }) => {
 
     return (
         <form onSubmit={handleSubmit(handleNext)}>
-            <div className='row'>
-                <div className='col'>
-                    <div className='mb-3'>
-                        <label htmlFor='junta' className='form-label'>Junta de usuarios</label>
-                        <Controller
-                            name='junta'
-                            control={control}
-                            rules={{ required: true }}
-                            render={
-                                ({ field }) =>
-                                    <AsyncSelect
-                                        {...field}
-                                        inputId='junta'
-                                        classNamePrefix='rc-select'
-                                        isClearable
-                                        defaultOptions
-                                        loadOptions={searchJunta}
-                                        menuPlacement={'auto'}
-                                        placeholder={`Buscar...`}
-                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                        noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
-                                        getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <div className='d-flex'>
-                                                <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                <span className='ms-2 align-self-center'>{e.name}</span>
-                                            </div>
-                                        }
-                                    />
-                            }
-                        />
+            {
+                !juntaActive
+                &&
+                <div className='row'>
+                    <div className='col'>
+                        <div className='mb-3'>
+                            <label htmlFor='junta' className='form-label'>Junta de usuarios</label>
+                            <Controller
+                                name='junta'
+                                control={control}
+                                rules={{ required: true }}
+                                render={
+                                    ({ field }) =>
+                                        <AsyncSelect
+                                            {...field}
+                                            inputId='junta'
+                                            classNamePrefix='rc-select'
+                                            isClearable
+                                            defaultOptions
+                                            loadOptions={searchJunta}
+                                            menuPlacement={'auto'}
+                                            placeholder={`Buscar...`}
+                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                            getOptionValue={e => e._id}
+                                            getOptionLabel={e =>
+                                                <div className='d-flex'>
+                                                    <img src={imageGet(e.image)} alt={e._id} width={32} />
+                                                    <span className='ms-2 align-self-center'>{e.name}</span>
+                                                </div>
+                                            }
+                                        />
+                                }
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uOrder'>
@@ -272,12 +276,12 @@ export const CreateCommitteeStep2 = ({ setStep }) => {
                                         isClearable
                                         defaultOptions
                                         loadOptions={async (e) => {
-                                            return await searchZoneByJunta(watch().junta._id, e)
+                                            return await searchZoneByJunta(juntaActive ? juntaActive._id : watch().junta._id, e)
                                         }}
                                         menuPlacement={'auto'}
                                         placeholder={`Buscar...`}
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                        noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                         getOptionValue={e => e._id}
                                         getOptionLabel={e => e.name}
                                     />

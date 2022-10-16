@@ -115,7 +115,7 @@ export const UserSysModuleInformation = () => {
                                                 }}
                                                 placeholder={`Buscar...`}
                                                 loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                noOptionsMessage={({ inputValue }) => `Sin resultados con '${inputValue}'`}
+                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 formatCreateLabel={e => `Crear ocupación: '${e}'`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e => e.name}

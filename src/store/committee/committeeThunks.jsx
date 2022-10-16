@@ -179,6 +179,28 @@ export const startUpdateInformationCommittee = ({ name, desc }) => {
     }
 }
 
+export const startUpdateAmbitCommittee = ({ junta, zone }) => {
+    return async (dispatch, getState) => {
+
+        dispatch(setSavingCommittee(true))
+
+        const { active } = getState().committee
+        const { _id } = active
+
+        const resp = await fetchByToken({
+            endpoint: `committee/change_ambit/${_id}`,
+            data: { junta, zone },
+            method: 'PUT'
+        })
+
+        dispatch(setSavingCommittee(false))
+
+        if (resp.ok) {
+            dispatch(setActiveCommittee(resp.committee))
+        }
+    }
+}
+
 export const startDeleteCommittee = ({ navigate = null }) => {
     return async (dispatch, getState) => {
         const { active } = getState().committee

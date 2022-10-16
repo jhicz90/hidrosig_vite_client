@@ -26,7 +26,7 @@ export const msgFetchAlert = ({ msg }) => {
                         'dismiss': e.dismiss ? 'true' : 'false'
                     },
                     style: {
-                        maxWidth: '500px',
+                        maxWidth: '350px',
                         padding: '0px',
                         paddingLeft: '10px'
                     },
@@ -44,7 +44,7 @@ export const msgFetchAlert = ({ msg }) => {
                         'dismiss': e.dismiss ? 'true' : 'false'
                     },
                     style: {
-                        maxWidth: '500px',
+                        maxWidth: '350px',
                         padding: '0px',
                         paddingLeft: '10px'
                     },
@@ -63,7 +63,7 @@ export const msgFetchAlert = ({ msg }) => {
                     </>
                 ), {
                     style: {
-                        maxWidth: '500px',
+                        maxWidth: '350px',
                         padding: '0px',
                     },
                     duration: e.delay
@@ -110,9 +110,9 @@ const parseContent = (alert, tst) => {
     return parse(alert.content, {
         replace: (domNode) => {
             if (domNode.type === 'tag') {
-                if (domNode.attribs.class === 'alerttitle') {
+                if (domNode.attribs.class === 'notify-title') {
                     return <div className="fs-5 fw-bold text-uppercase">{alert.title}</div>
-                } else if (domNode.attribs.class === 'alertlink') {
+                } else if (domNode.attribs.class === 'notify-link') {
                     if (alert.linkTitle === '') {
                         return (
                             alert.linkDownload

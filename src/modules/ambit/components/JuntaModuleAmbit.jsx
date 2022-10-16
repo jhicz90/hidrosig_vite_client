@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Card, ListGroup } from 'react-bootstrap'
-import { useGetWaterSourcesForJuntaQuery, useGetZonesForJuntaQuery } from '../../../store/actions'
+import { useGetCommsForJuntaQuery, useGetWaterSourcesForJuntaQuery, useGetZonesForJuntaQuery } from '../../../store/actions'
 import { SettingAction, SettingBlock, TypeWaterSource } from '../../../components'
-import { CreateZone, CreateWaterSource } from '.'
+import { CreateZone, CreateWaterSource, CreateCommittee } from '.'
 
 export const JuntaModuleAmbit = () => {
     return (
@@ -11,7 +11,7 @@ export const JuntaModuleAmbit = () => {
             <ListGroup variant='flush'>
                 <JuntaZone />
                 <JuntaSource />
-                {/* <JuntaComms /> */}
+                <JuntaCommittee />
             </ListGroup>
         </Card>
     )
@@ -76,6 +76,37 @@ const JuntaSource = () => {
                     )
                     :
                     <p className='mx-3'>No ahi fuentes de agua asociadas a esta junta de usuarios</p>
+            }
+        />
+    )
+}
+
+const JuntaCommittee = () => {
+
+    const { active } = useSelector(state => state.junta)
+    const { data: committeesIn = [], isLoading } = useGetCommsForJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+    return (
+        <SettingBlock
+            title='Comisiones de usuario'
+            loading={isLoading}
+            action={
+                <SettingAction>
+                    <CreateCommittee junta={active} />
+                </SettingAction>
+            }
+            list={
+                committeesIn.length > 0 || isLoading
+                    ?
+                    committeesIn.map((cm, i) =>
+                        <ListGroup.Item key={cm._id}>
+                            <Link
+                                to={`/app/ambit/orgz/comm/${cm._id}`}
+                                className='link-primary text-decoration-none'
+                            >{cm.name}</Link>
+                        </ListGroup.Item>
+                    )
+                    :
+                    <p className='mx-3'>No ahi comisiones de usuarios asociadas a esta junta de usuarios</p>
             }
         />
     )
