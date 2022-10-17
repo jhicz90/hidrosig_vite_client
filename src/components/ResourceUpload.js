@@ -8,7 +8,7 @@ import { ListUpload } from './ResourceUpload/listUpload'
 export const ResourceUpload = () => {
 
     const dispatch = useDispatch()
-    const { modalNew, modalInit, modalTags, modalMultiple, modalTitle, modalSetArchive, listToUpload } = useSelector(state => state.resource)
+    const { modalResource, modalInit, modalTags, modalMultiple, modalTitle, modalSetArchive, listToUpload } = useSelector(state => state.resource)
     const [activeKey, setActiveKey] = useState({
         1: 'system',
         3: 'uploaded',
@@ -46,7 +46,7 @@ export const ResourceUpload = () => {
     return (
         <Modal
             size='xl'
-            show={modalNew}
+            show={modalResource}
             onHide={closeModal}
             backdrop='static'
             scrollable
