@@ -89,12 +89,12 @@ export const startUpdateUserSys = () => {
         dispatch(setSavingUserSys(false))
 
         if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
+            dispatch(setActiveUserSys(resp.usersys))
         }
     }
 }
 
-export const startUpdateImageUserSys = ({ image }) => {
+export const startUpdateImageUserSys = (image) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys
         const { _id } = active
@@ -106,7 +106,7 @@ export const startUpdateImageUserSys = ({ image }) => {
         })
 
         if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
+            dispatch(setActiveUserSys(resp.usersys))
         }
     }
 }

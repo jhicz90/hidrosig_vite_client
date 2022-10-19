@@ -3,6 +3,7 @@ export const resourceSlice = createSlice({
     name: 'resource',
     initialState: {
         modalResource: false,
+        modalFilesSelected: [],
         modalInit: 9, // 1:Archivos de sistema, 3:Archivos subidos, 5:Archivos por subir
         modalTags: [],
         modalAccept: 'images',
@@ -14,6 +15,12 @@ export const resourceSlice = createSlice({
     reducers: {
         setModalResource: (state, { payload }) => {
             state.modalResource = payload
+        },
+        setModalFilesSelected: (state, { payload }) => {
+            state.modalFilesSelected = payload
+        },
+        addModalFilesSelected: (state, { payload }) => {
+            state.modalFilesSelected = [...state.modalFilesSelected, payload]
         },
         setModalInit: (state, { payload }) => {
             state.modalInit = payload
@@ -36,8 +43,9 @@ export const resourceSlice = createSlice({
         setModalSetArchive: (state, { payload }) => {
             state.modalSetArchive = payload
         },
-        resetModalResource: (state, { payload }) => {
+        resetModalResource: (state) => {
             state.modalResource = false
+            state.modalFilesSelected = []
             state.modalInit = 9
             state.modalTags = []
             state.modalAccept = 'images'
@@ -49,8 +57,10 @@ export const resourceSlice = createSlice({
 })
 
 export const {
+    addModalFilesSelected,
     resetModalResource,
     setModalAccept,
+    setModalFilesSelected,
     setModalInit,
     setModalLimit,
     setModalMultiple,

@@ -87,7 +87,8 @@ export const AppHeader = () => {
                         <div className='menu-img online'>
                             <img
                                 src={photoURL ? imageGet(photoURL) : imageSysGet(1069)}
-                                className='w-100 h-100 rounded-circle'
+                                className='w-100 h-100 rounded-circle shadow'
+                                style={{ objectFit: 'contain' }}
                                 alt='usersys'
                             />
                         </div>

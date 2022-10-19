@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useDebounce } from 'use-debounce'
 import { Waypoint } from 'react-waypoint'
-import { systemConstants } from '../../types'
+import { SYSCONST } from '../../types'
 import { endListUploadedResource, endModalResource, inputSearchUploadedResource, loadListUploadedResource, startListInfiniteUploadedResource } from '../../actions'
 import { FileArchive } from '../FileArchive'
 import { LoadingPage } from '../LoadingPage'
@@ -11,7 +11,7 @@ export const ListUploaded = () => {
 
     const dispatch = useDispatch()
     const { modalMultiple, modalSetArchive, searchUploaded, listUploaded, loadingListUploaded, endListUploaded } = useSelector(state => state.resource)
-    const [valueSearch] = useDebounce(searchUploaded, systemConstants.searchDebounce)
+    const [valueSearch] = useDebounce(searchUploaded, SYSCONST.searchDebounce)
 
     const handleInputSearch = (e) => {
         dispatch(inputSearchUploadedResource({ search: e.target.value }))

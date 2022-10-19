@@ -488,6 +488,7 @@ kbd.type-writer,
     border-radius: 6px;
     flex-shrink: 0;
     box-shadow: 0 0 0 1px rgba(27, 31, 36, 0.15);
+    object-fit: contain;
     /* padding: 4px; */
 }
 

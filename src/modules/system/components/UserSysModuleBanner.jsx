@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
 import { AvatarProfile } from '../../../components'
-import { startUpdateStatusUserSys } from '../../../store/actions'
+import { startUpdateImageUserSys, startUpdateStatusUserSys, startUploadResources } from '../../../store/actions'
 
 export const UserSysModuleBanner = () => {
 
@@ -18,18 +18,18 @@ export const UserSysModuleBanner = () => {
         dispatch(startUpdateStatusUserSys(ck))
     }
 
-    // const handleChangeImage = () => {
-    //     dispatch(startModalResource({
-    //         title: 'Cambiar imagen del usuario',
-    //         tags: ['usuario', 'perfil'],
-    //         accept: 'images',
-    //         setArchive: (data) => dispatch(startUpdateActiveUserSysImage({ image: data }))
-    //     }))
-    // }
+    const handleChangeImage = (file) => {
+        dispatch(startUploadResources({
+            files: [file],
+            tags: ['usuario', 'perfil'],
+            multiple: false,
+            setArchive: (data) => dispatch(startUpdateImageUserSys(data))
+        }))
+    }
 
     return (
         <div className='text-center'>
-            <AvatarProfile avatarImg={data.image} />
+            <AvatarProfile avatarImg={data.image} actionChange={handleChangeImage} />
             <div className='fs-5 mb-0'>{`${data.names} ${data.surnames}`}</div>
             <span className='text-secondary fw-semibold'>Usuario de sistema</span>
             <div className='row mt-3'>

@@ -13,6 +13,7 @@ import { juntaSlice } from './junta'
 import { committeeSlice } from './committee'
 import { zoneSlice } from './zone'
 import { watersourceSlice } from './watersource'
+import { resourceSlice } from './resource'
 
 export const store = configureStore({
     reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
         committee: committeeSlice.reducer,
         zone: zoneSlice.reducer,
         watersource: watersourceSlice.reducer,
+        resource: resourceSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

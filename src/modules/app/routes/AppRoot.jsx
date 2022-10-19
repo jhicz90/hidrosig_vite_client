@@ -13,7 +13,8 @@ import {
     UserSysRoutes,
     OccupationRoutes,
     RoleRoutes,
-    SystemRoutes
+    SystemRoutes,
+    ResourceRoutes
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -161,6 +162,7 @@ export const AppRoot = () => {
                         <Route path={`var`} element={<GuardRoute meta={['irrigschm', 'variables']} component={VariableList} />} />
                     </Route>*/}
                     {/* <Route path={`acct/*`} element={<PettyCashRoutes />} /> */}
+                    <Route path={`exp/*`} element={<ResourceRoutes />} />
                     <Route path={`siga/*`} element={<SigaRoutes />} />
                     <Route path={`sys`}>
                         <Route path={`resume`} element={<SysPageResume />} />

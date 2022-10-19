@@ -241,7 +241,13 @@ export const storeApi = createApi({
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
-        })
+        }),
+        getBrowser: builder.query({
+            query: (folder) => ({
+                url: `resource/browser/${folder}`,
+            }),
+            transformResponse: (response, meta, arg) => response.browser,
+        }),
     }),
 })
 
@@ -265,4 +271,5 @@ export const {
     useGetWaterSourcesQuery,
     useGetZonesForJuntaQuery,
     useGetZonesQuery,
+    useGetBrowserQuery,
 } = storeApi
