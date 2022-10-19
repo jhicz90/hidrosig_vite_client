@@ -1,8 +1,23 @@
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { prominent } from 'color.js'
 import { FaPen } from 'react-icons/fa'
 import { imageGet, imageSysGet } from '../helpers'
 
 export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null }) => {
+
+    const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
+
+    useEffect(() => {
+        prominent(imageGet(avatarImg), { amount: 1 }).then(color => {
+            if (color[0] === 0 && color[1] === 0 && color[2] === 0) {
+                setBackColor(`rgb(255, 255, 255)`)
+            } else {
+                setBackColor(`rgb(${color.join(',')})`)
+            }
+        })
+    }, [avatarImg])
+
     return (
         <div className='text-center mb-3'>
             <ProfileAvatar className={`${className}`}>
@@ -17,6 +32,7 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
                 <img
                     className='avatar-img'
                     src={avatarImg ? imageGet(avatarImg) : imageSysGet(noImg)}
+                    style={{ background: backColor }}
                     alt={`avatar-image-${avatarImg}`}
                     loading={'lazy'}
                 />
