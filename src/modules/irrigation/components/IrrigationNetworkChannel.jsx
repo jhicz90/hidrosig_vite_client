@@ -1,13 +1,11 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FcSearch } from 'react-icons/fc'
-import { InputTextDebounce } from '../../../components'
+import { ChannelNetworkTree } from '../../../components'
 import { setActiveAmbitIrrigationNetwork, useGetJuntasQuery } from '../../../store/actions'
 
 export const IrrigationNetworkChannel = () => {
 
-    const [search, setSearch] = useState('')
     const { activeAmbit, isSaving } = useSelector(state => state.irrigationnetwork)
     const { data: optionsJunta = [], isLoading } = useGetJuntasQuery('', { refetchOnMountOrArgChange: true })
 
@@ -19,7 +17,7 @@ export const IrrigationNetworkChannel = () => {
                 </Form.Label>
                 <Col>
                     <Form.Select
-                        disabled={optionsJunta.length === 0}
+                        disabled={optionsJunta.length === 0 || isLoading}
                         value={activeAmbit || ''}
                         onChange={({ target }) => setActiveAmbitIrrigationNetwork(target.value)}
                         autoComplete='off'
@@ -30,10 +28,11 @@ export const IrrigationNetworkChannel = () => {
                         }
                     </Form.Select>
                 </Col>
-                {/* <Col>
-                    <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
-                </Col> */}
             </Form.Group>
+            {
+                activeAmbit
+                && <ChannelNetworkTree junta={activeAmbit} search={valueSearch} showCheckbox={false} />
+            }
         </>
     )
 }

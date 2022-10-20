@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Col, Form, Row } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
+import { FcSearch } from 'react-icons/fc'
+import { InputTextDebounce } from './InputTextDebounce'
 import { loadActiveNetIrrigExpanded, loadActiveNode, startGetIrrigationNetwork } from '../actions'
+import { useGetIrrigNetQuery } from '../store/actions'
 import { childrenNode, treeNetIrrig } from '../helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
-export const ChannelNetworkTree = ({ junta = '', search = '', showCheckbox = false, selectNode = true }) => {
+export const ChannelNetworkTree = ({ juntaId = '', showCheckbox = false, selectNode = true }) => {
 
     const dispatch = useDispatch()
-    const { netIrrig, netIrrigExp, netIrrigChk } = useSelector(state => state.channelnetwork)
-
+    const [search, setSearch] = useState('')
     const [ctrlKey, setCtrlKey] = useState(false)
+    const { netIrrigExp, netIrrigChk } = useSelector(state => state.channelnetwork)
+    // const { netIrrig, netIrrigExp, netIrrigChk } = useSelector(state => state.channelnetwork)
+    const { data: netIrrig = [], isLoading } = useGetIrrigNetQuery(juntaId)
+
 
     const [net, setNet] = useState([])
     const [netFiltered, setNetFiltered] = useState([])
     const [netChecked, setNetChecked] = useState([])
     const [netExpanded, setNetExpanded] = useState(netIrrigExp)
-
-    useEffect(() => {
-        dispatch(startGetIrrigationNetwork({ junta }))
-    }, [junta, dispatch])
 
     useEffect(() => {
         const tree = treeNetIrrig(netIrrig, showCheckbox)
@@ -115,17 +118,27 @@ export const ChannelNetworkTree = ({ junta = '', search = '', showCheckbox = fal
     }, [])
 
     return (
-        <>
-            <CheckboxTree
-                onClick={handleSelectNode}
-                nodes={netFiltered}
-                checked={netChecked}
-                expanded={netExpanded}
-                onCheck={onCheck}
-                onExpand={onExpand}
-                iconsClass="fa5"
-                noCascade
-            />
-        </>
+        <div className='row'>
+            <div className='col-12'>
+                <Form.Group as={Row} className='my-3' controlId='search'>
+                    <Form.Label column xs={'auto'} >
+                        <FcSearch size={24} />
+                    </Form.Label>
+                    <Col>
+                        <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
+                    </Col>
+                </Form.Group>
+                <CheckboxTree
+                    onClick={handleSelectNode}
+                    nodes={netFiltered}
+                    checked={netChecked}
+                    expanded={netExpanded}
+                    onCheck={onCheck}
+                    onExpand={onExpand}
+                    iconsClass="fa5"
+                    noCascade
+                />
+            </div>
+        </div>
     )
 }

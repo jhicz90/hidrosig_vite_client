@@ -258,6 +258,15 @@ export const storeApi = createApi({
             }),
             transformResponse: (response, meta, arg) => response.browser,
         }),
+        getIrrigNet: builder.query({
+            query: (junta) => ({
+                url: `structure/irrignet`,
+                params: {
+                    junta
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.net,
+        }),
     }),
 })
 
@@ -270,6 +279,7 @@ export const {
     useGetBrowserQuery,
     useGetCommsForJuntaQuery,
     useGetCommsQuery,
+    useGetIrrigNetQuery,
     useGetJuntasQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
