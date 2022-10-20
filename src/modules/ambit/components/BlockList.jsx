@@ -41,7 +41,19 @@ export const BlockList = () => {
                         {
                             label: 'RESOLUCION',
                             renderCell: (item) =>
-                                item.resolution.name
+                                item.resolution?.name || 'Sin resolución'
+                        },
+                        {
+                            label: 'JUNTA',
+                            renderCell: (item) => (
+                                item.junta?.name || 'Sin junta de usuarios'
+                            )
+                        },
+                        {
+                            label: 'COMISION',
+                            renderCell: (item) => (
+                                item.committee?.name || 'Sin comision de usuarios'
+                            )
                         },
                         {
                             label: 'CREADO',

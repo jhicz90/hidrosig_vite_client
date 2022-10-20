@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
+import { storeApi } from '../storeApi'
 import { addNewCommittee, setActiveNewCommittee, setActiveCommittee, setSavingCommittee, setSavingNewCommittee } from './committeeSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -44,6 +45,7 @@ export const startSaveNewCommittee = () => {
         dispatch(setSavingNewCommittee(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Orgz']))
             dispatch(setActiveNewCommittee(null))
         }
     }
@@ -267,8 +269,8 @@ export const searchCommitteeByJunta = async (junta, search) => {
         return []
     } else {
         const resp = await fetchByToken({
-            endpoint: 'committee/searchbyjunta',
-            params: { junta, search },
+            endpoint: `committee/search_by_junta/${junta}`,
+            params: { search },
             alert: false
         })
 

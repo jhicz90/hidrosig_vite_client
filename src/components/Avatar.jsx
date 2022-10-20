@@ -42,7 +42,7 @@ export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 201
                     />
                     :
                     <div className={`avatar ${circle ? "rounded-circle" : "rounded-2"} ${className}`} style={{ width: wAvatar, height: hAvatar }}>
-                        <span className='avatar-initials' style={{ width: wAvatar, height: hAvatar }}>{nameTxt}</span>
+                        <span className='avatar-initials' style={{ fontSize:'80%',width: wAvatar, height: hAvatar }}>{nameTxt}</span>
                     </div>
             }
             {

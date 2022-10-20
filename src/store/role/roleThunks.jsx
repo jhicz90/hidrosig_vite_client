@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
+import { storeApi } from '../storeApi'
 import { addNewRole, setActiveNewRole, setActiveRole, setSavingRole, setSavingNewRole } from './roleSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -42,6 +43,7 @@ export const startSaveNewRole = () => {
         dispatch(setSavingNewRole(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Role']))
             dispatch(setActiveNewRole(null))
         }
     }

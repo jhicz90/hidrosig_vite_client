@@ -51,6 +51,12 @@ export const CommitteeList = () => {
                                 <TagStatus status={item.status} />
                         },
                         {
+                            label: 'JUNTA',
+                            renderCell: (item) => (
+                                item.junta?.name || 'Sin junta de usuarios'
+                            )
+                        },
+                        {
                             label: 'CREADO',
                             renderCell: (item) =>
                                 <TimeAgo timestamp={item.createdAt} />

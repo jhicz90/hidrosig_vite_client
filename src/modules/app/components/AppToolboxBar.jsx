@@ -1,6 +1,6 @@
 import { Card, Container } from 'react-bootstrap'
 import styled from 'styled-components'
-import { CreateUserSys, CreateOccupation, CreateRole, CreateCommittee, CreateJunta } from '../../'
+import { CreateBlock } from '../../'
 
 export const AppToolboxBar = () => {
 
@@ -13,11 +13,7 @@ export const AppToolboxBar = () => {
                             Titulo o subtitulo de la página
                         </NavBarInfo>
                         <NavBarTool>
-                            <CreateUserSys />
-                            <CreateOccupation />
-                            <CreateRole />
-                            <CreateJunta />
-                            <CreateCommittee />
+                            <CreateBlock />
                             {/* Aqui van los botones de accion rapida */}
                         </NavBarTool>
                     </NavBarMain>

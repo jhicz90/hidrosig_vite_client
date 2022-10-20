@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
+import { storeApi } from '../storeApi'
 import { addNewOccupation, setActiveNewOccupation, setActiveOccupation, setSavingOccupation, setSavingNewOccupation } from './occupationSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -42,6 +43,7 @@ export const startSaveNewOccupation = () => {
         dispatch(setSavingNewOccupation(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Occup']))
             dispatch(setActiveNewOccupation(null))
         }
     }

@@ -1,4 +1,5 @@
 export * from './auth'
+export * from './block'
 export * from './committee'
 export * from './junta'
 export * from './occupation'
