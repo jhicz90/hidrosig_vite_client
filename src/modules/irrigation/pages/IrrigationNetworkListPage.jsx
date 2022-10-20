@@ -1,8 +1,8 @@
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
-import { BlockList, ZoneList } from '../components'
+import { IrrigationNetworkChannel } from '../components'
 
-export const TerritoryListPage = () => {
+export const IrrigationNetworkListPage = () => {
 
     const { hash } = useLocation()
 
@@ -11,30 +11,24 @@ export const TerritoryListPage = () => {
             <div className='row justify-content-center'>
                 <div className='col'>
                     <Card>
-                        <Tab.Container defaultActiveKey={hash === '' ? '#zone' : hash}>
+                        <Tab.Container defaultActiveKey={hash === '' ? '#net' : hash}>
                             <Card.Header>
                                 <Nav variant='tabs'>
                                     <Nav.Item>
-                                        <Nav.Link eventKey='#zone'>Zonas</Nav.Link>
+                                        <Nav.Link eventKey='#net'>Red de riego</Nav.Link>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Nav.Link eventKey='#block'>Bloques de riego</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey='#location'>Localidades</Nav.Link>
+                                        <Nav.Link eventKey='#source'>Fuentes de agua</Nav.Link>
                                     </Nav.Item>
                                 </Nav>
                             </Card.Header>
                             <Card.Body className='p-0'>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey='#zone' unmountOnExit>
-                                        <ZoneList />
+                                    <Tab.Pane eventKey='#net'>
+                                        <IrrigationNetworkChannel />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey='#block' unmountOnExit>
-                                        <BlockList />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey='#location' unmountOnExit>
-                                        {/* <TerritoriesLocationList /> */}
+                                    <Tab.Pane eventKey='#source'>
+                                        {/* <ListWaterSource /> */}
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Card.Body>

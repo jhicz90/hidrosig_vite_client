@@ -10,7 +10,7 @@ export const JuntaModuleAmbit = () => {
         <Card>
             <ListGroup variant='flush'>
                 <JuntaZone />
-                <JuntaSource />
+                <JuntaWaterSource />
                 <JuntaCommittee />
             </ListGroup>
         </Card>
@@ -50,10 +50,11 @@ const JuntaZone = () => {
     )
 }
 
-const JuntaSource = () => {
+const JuntaWaterSource = () => {
 
     const { active } = useSelector(state => state.junta)
     const { data: waterSourcesIn = [], isLoading } = useGetWaterSourcesForJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+
     return (
         <SettingBlock
             title='Fuentes de agua'
@@ -87,6 +88,7 @@ const JuntaCommittee = () => {
 
     const { active } = useSelector(state => state.junta)
     const { data: committeesIn = [], isLoading } = useGetCommsForJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+    
     return (
         <SettingBlock
             title='Comisiones de usuario'

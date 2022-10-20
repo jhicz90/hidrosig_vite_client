@@ -14,6 +14,7 @@ import { committeeSlice } from './committee'
 import { zoneSlice } from './zone'
 import { blockSlice } from './block'
 import { watersourceSlice } from './watersource'
+import { irrigationnetworkSlice } from './irrigationnetwork'
 import { resourceSlice } from './resource'
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
         zone: zoneSlice.reducer,
         block: blockSlice.reducer,
         watersource: watersourceSlice.reducer,
+        irrigationnetwork: irrigationnetworkSlice.reducer,
         resource: resourceSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },

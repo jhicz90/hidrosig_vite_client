@@ -169,8 +169,8 @@ export const searchWaterSource = async (search) => {
 
 export const searchWaterSourceByJunta = async (junta, search) => {
     const resp = await fetchByToken({
-        endpoint: 'watersource/searchbyjunta',
-        params: { search, junta }
+        endpoint: `watersource/search_by_junta/${junta}`,
+        params: { search }
     })
 
     if (resp.ok) {
