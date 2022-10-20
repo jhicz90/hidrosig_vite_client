@@ -26,13 +26,13 @@ export const CommitteeList = () => {
                 columns={
                     [
                         {
-                            label: 'JUNTA',
+                            label: 'COMISION',
                             resize: true,
                             renderCell: (item) => (
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
                                         <Avatar
-                                            img={item.image}
+                                            img={item.image?.fileName}
                                             noImgTxt={item.name}
                                             circle={true}
                                             width={40}

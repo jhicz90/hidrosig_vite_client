@@ -58,9 +58,9 @@ export const startUploadResources = ({ files, setArchive, tags, multiple }) => {
 
         if (resp.ok) {
             if (!multiple) {
-                (setArchive && resp.files.length > 0) && setArchive(resp.files[0].fileName)
+                (setArchive && resp.files.length > 0) && setArchive(resp.files[0]._id)
             } else {
-                (setArchive && resp.files.length > 0) && setArchive(resp.files.map(f => f.fileName))
+                (setArchive && resp.files.length > 0) && setArchive(resp.files.map(f => f._id))
             }
         }
     }

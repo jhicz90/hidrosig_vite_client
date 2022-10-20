@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
-import { startUpdateStatusOccupation } from '../../../store/actions'
+import { startUpdateImageOccupation, startUpdateStatusOccupation, startUploadResources } from '../../../store/actions'
 import { AvatarProfile } from '../../../components'
 
 export const OccupationModuleBanner = () => {
@@ -18,18 +18,18 @@ export const OccupationModuleBanner = () => {
         dispatch(startUpdateStatusOccupation(ck))
     }
 
-    // const handleChangeImage = () => {
-    //     dispatch(startModalResource({
-    //         title: 'Cambiar imagen del usuario',
-    //         tags: ['usuario', 'perfil'],
-    //         accept: 'images',
-    //         setArchive: (data) => dispatch(startUpdateActiveUserSysImage({ image: data }))
-    //     }))
-    // }
+    const handleChangeImage = (file) => {
+        dispatch(startUploadResources({
+            files: [file],
+            tags: ['ocupación', 'logo'],
+            multiple: false,
+            setArchive: (data) => dispatch(startUpdateImageOccupation(data))
+        }))
+    }
 
     return (
         <div className='text-center'>
-            <AvatarProfile avatarImg={data.image} />
+            <AvatarProfile avatarImg={data.image?.fileName} actionChange={handleChangeImage} />
             <div className='fs-5 mb-0'>{data.name}</div>
             <span className='text-secondary fw-semibold'>Ocupación</span>
             <div className='row mt-3'>

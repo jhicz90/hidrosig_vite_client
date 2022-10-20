@@ -10,7 +10,7 @@ export const OccupationList = () => {
 
     const [search, setSearch] = useState('')
     const { data: list = [], isLoading } = useGetOccupsQuery(search)
-
+    console.log(list)
     return (
         <>
             <Form.Group as={Row} className='my-3 px-3 gx-2' controlId='search'>
@@ -32,7 +32,7 @@ export const OccupationList = () => {
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
                                         <Avatar
-                                            img={item.image}
+                                            img={item.image?.fileName}
                                             noImgTxt={item.name}
                                             circle={true}
                                             width={40}

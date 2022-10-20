@@ -90,7 +90,7 @@ export const startUpdateOccupation = () => {
     }
 }
 
-export const startUpdateImageOccupation = ({ image }) => {
+export const startUpdateImageOccupation = (image) => {
     return async (dispatch, getState) => {
         const { active } = getState().occupation
         const { _id } = active
