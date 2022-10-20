@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { FullFileBrowser, setChonkyDefaults } from 'chonky'
 import { ChonkyIconFA } from 'chonky-icon-fontawesome'
@@ -35,6 +35,9 @@ export const ResourceBrowser = () => {
 }
 
 const FileBrowser = ({ files = [] }) => {
+
+    const [selectedObjects, setSelectedObjects] = useState([])
+
     return (
         <div style={{
             // display: 'grid',
@@ -51,11 +54,31 @@ const FileBrowser = ({ files = [] }) => {
                 files.map(f => {
                     if (f.isDir) {
                         return (
-                            <FolderComponent key={f.fileName} folderName={f.name} />
+                            <FolderComponent
+                                key={f.fileName}
+                                folderName={f.name}
+                                action={() =>
+                                    selectedObjects.find(o => o.id === f.id)
+                                        ? setSelectedObjects([...selectedObjects.filter(o => o.id !== f.id)])
+                                        : setSelectedObjects([...selectedObjects, f])
+                                }
+                                selected={selectedObjects.find(o => o.id === f.id)}
+                            />
                         )
                     } else {
                         return (
-                            <FileComponent key={f.fileName} fileName={f.name} thumbnailUrl={imageGet(f.name)} sizeFile={f.size} />
+                            <FileComponent
+                                key={f.fileName}
+                                fileName={f.name}
+                                thumbnailUrl={imageGet(f.name)}
+                                sizeFile={f.size}
+                                action={() =>
+                                    selectedObjects.find(o => o.id === f.id)
+                                        ? setSelectedObjects([...selectedObjects.filter(o => o.id !== f.id)])
+                                        : setSelectedObjects([...selectedObjects, f])
+                                }
+                                selected={selectedObjects.find(o => o.id === f.id)}
+                            />
                         )
                     }
                 })
@@ -76,42 +99,47 @@ const FileBrowser = ({ files = [] }) => {
     )
 }
 
-const FolderComponent = ({ folderName = '' }) => {
+const FolderComponent = ({ folderName = '', action = null, selected = false }) => {
     return (
-        <div className="file" style={{
-            boxShadow: '0 0 0 0.25rem #0d6efd',
-            boxShadow: '0 0 0 0.25rem #e9ecef',
-            borderRadius: '0.375rem',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#f0f0f0ad',
-            overflow: 'hidden',
-            width: '200px',
-            height: '200px',
-        }}>
+        <div
+            onClick={action}
+            className="file"
+            style={{
+                boxShadow: `0 0 0 0.25rem ${selected ? '#0d6efd' : '#e9ecef'}`,
+                borderRadius: '0.375rem',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#f0f0f0ad',
+                overflow: 'hidden',
+                width: '230px',
+                height: '230px',
+            }}
+        >
             <div style={{
                 flexGrow: 1,
                 backgroundImage: 'url("http://localhost:4000/api/resource/image/sys/get/1022")',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'contain',
+                borderRadius: '0.375rem 0.375rem 0 0',
             }} />
             <div style={{
-                fontSize: '14px',
+                fontSize: '16px',
                 textAlign: 'center',
-                // wordBreak: 'break-word',
-                padding: '5px',
-                // textOverflow: 'ellipsis'
+                padding: '0.5rem',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                color: selected ? '#0d6efd' : 'inherit'
             }}>
-                <span style={{
-                    backgroundColor: 'transparent',
-                    textDecoration: 'none',
-                    padding: '2px 4px',
-                    borderRadius: '3px'
-                }}>
+                <span
+                    className='fw-semibold'
+                    style={{
+                        backgroundColor: 'transparent',
+                        textDecoration: 'none',
+                        padding: '2px 4px',
+                        borderRadius: '3px'
+                    }}>
                     {folderName}
                 </span>
             </div>
@@ -119,7 +147,7 @@ const FolderComponent = ({ folderName = '' }) => {
     )
 }
 
-const FileComponent = ({ fileName = '', thumbnailUrl = '', sizeFile = 0 }) => {
+const FileComponent = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, action = null, selected = false }) => {
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
@@ -134,21 +162,26 @@ const FileComponent = ({ fileName = '', thumbnailUrl = '', sizeFile = 0 }) => {
     }, [thumbnailUrl])
 
     return (
-        <div className="file" style={{
-            boxShadow: '0 0 0 0.25rem #0d6efd',
-            boxShadow: '0 0 0 0.25rem #e9ecef',
-            borderRadius: '0.375rem',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#f0f0f0ad',
-            overflow: 'hidden',
-            width: '200px',
-            height: '200px',
-        }}>
+        <div
+            onClick={action}
+            className="file"
+            style={{
+                boxShadow: `0 0 0 0.25rem ${selected ? '#0d6efd' : '#e9ecef'}`,
+                borderRadius: '0.375rem',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#f0f0f0ad',
+                backgroundColor: 'white',
+                overflow: 'hidden',
+                width: '230px',
+                height: '230px',
+            }}
+        >
             <div style={{
                 flexGrow: 1,
                 display: 'flex',
-                background: backColor
+                background: backColor,
+                borderRadius: '0.375rem 0.375rem 0 0',
             }} >
                 <div style={{
                     flexGrow: 1,
@@ -159,33 +192,35 @@ const FileComponent = ({ fileName = '', thumbnailUrl = '', sizeFile = 0 }) => {
                 }} />
             </div>
             <div style={{
-                fontSize: '14px',
+                fontSize: '12px',
                 textAlign: 'center',
                 wordBreak: 'break-word',
-                paddingTop: '5px',
-                maxHeight: '45px',
+                padding: '0.5rem',
+                whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical'
+                maxHeight: '45px',
+                color: selected ? '#0d6efd' : 'inherit'
             }}>
-                <span style={{
-                    backgroundColor: 'transparent',
-                    textDecoration: 'none',
-                    padding: '2px 4px',
-                    borderRadius: '3px'
-                }}>
+                <span
+                    className='fw-semibold'
+                    style={{
+                        backgroundColor: 'transparent',
+                        textDecoration: 'none',
+                        padding: '2px 4px',
+                        borderRadius: '3px'
+                    }}>
                     {fileName}
                 </span>
             </div>
             <div style={{
                 display: 'flex',
-                padding: '0 6px',
-                fontSize: '12px',
+                padding: '4px 6px',
+                fontSize: '10px',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                fontFamily: 'monospace'
+                backgroundColor: 'white',
+                borderTop: '1px solid #e9ecef'
             }}>
                 <span style={{
                     backgroundColor: 'transparent',
