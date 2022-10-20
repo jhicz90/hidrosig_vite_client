@@ -222,6 +222,16 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
         }),
+        getBlocks: builder.query({
+            query: (search) => ({
+                url: `block/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Trrt']
+        }),
         getWaterSources: builder.query({
             query: (search) => ({
                 url: `watersource/list`,
@@ -256,6 +266,8 @@ export const {
     useAddNewJuntaMutation,
     useAddNewModuleMutation,
     useAddNewPermMutation,
+    useGetBlocksQuery,
+    useGetBrowserQuery,
     useGetCommsForJuntaQuery,
     useGetCommsQuery,
     useGetJuntasQuery,
@@ -271,5 +283,4 @@ export const {
     useGetWaterSourcesQuery,
     useGetZonesForJuntaQuery,
     useGetZonesQuery,
-    useGetBrowserQuery,
 } = storeApi

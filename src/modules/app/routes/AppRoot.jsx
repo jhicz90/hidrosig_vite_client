@@ -14,7 +14,8 @@ import {
     OccupationRoutes,
     RoleRoutes,
     SystemRoutes,
-    ResourceRoutes
+    ResourceRoutes,
+    TerritoryRoutes
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -138,6 +139,7 @@ export const AppRoot = () => {
                     <Route path={`home`} element={<DashboardPage />} />
                     <Route path={`ambit`}>
                         <Route path={`orgz/*`} element={<GuardRoute meta={['ambit']} component={OrganizationRoutes} />} />
+                        <Route path={`trrty/*`} element={<GuardRoute meta={['ambit']} component={TerritoryRoutes} />} />
                     </Route>
                     {/* <Route path={`ambit`}>
                         <Route index element={<AmbitResume />} />
