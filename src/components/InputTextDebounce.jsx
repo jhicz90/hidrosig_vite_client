@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useDebounce } from 'use-debounce'
 import { SYSCONST } from '../types'
 
-export const InputTextDebounce = ({ value, onChange, autoComplete = false }) => {
+export const InputTextDebounce = ({ value, onChange, autoComplete = false, placeholder = 'Buscar...' }) => {
 
     const [valueInput, setValueInput] = useState(value)
     const [valueDebounce] = useDebounce(valueInput, SYSCONST.searchDebounce)
@@ -20,7 +20,7 @@ export const InputTextDebounce = ({ value, onChange, autoComplete = false }) => 
                 value={valueInput}
                 onChange={(e) => setValueInput(e.target.value)}
                 autoComplete={autoComplete ? true : 'off'}
-                placeholder={'Buscar...'}
+                placeholder={placeholder}
             />
             {
                 valueInput.length > 0

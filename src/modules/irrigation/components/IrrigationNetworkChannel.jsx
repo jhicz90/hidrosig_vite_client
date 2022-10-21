@@ -1,25 +1,23 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Col, Form, Row } from 'react-bootstrap'
-import { FcSearch } from 'react-icons/fc'
 import { ChannelNetworkTree } from '../../../components'
 import { setActiveAmbitIrrigationNetwork, useGetJuntasQuery } from '../../../store/actions'
 
 export const IrrigationNetworkChannel = () => {
 
+    const dispatch = useDispatch()
     const { activeAmbit, isSaving } = useSelector(state => state.irrigationnetwork)
     const { data: optionsJunta = [], isLoading } = useGetJuntasQuery('', { refetchOnMountOrArgChange: true })
 
     return (
         <>
-            <Form.Group as={Row} className='my-3 px-3 gx-2' controlId='search'>
-                <Form.Label column xs={'auto'} >
-                    <FcSearch size={24} />
-                </Form.Label>
-                <Col>
+            <Form.Group as={Row} className='my-3 px-3' controlId='uSource'>
+                <Form.Label column sm={12} md={2}>Junta de usuarios</Form.Label>
+                <Col sm={12} md={10}>
                     <Form.Select
                         disabled={optionsJunta.length === 0 || isLoading}
-                        value={activeAmbit || ''}
-                        onChange={({ target }) => setActiveAmbitIrrigationNetwork(target.value)}
+                        value={activeAmbit}
+                        onChange={({ target }) => dispatch(setActiveAmbitIrrigationNetwork(target.value))}
                         autoComplete='off'
                     >
                         <option value={''}>Seleccione la junta de usuarios</option>
@@ -30,8 +28,8 @@ export const IrrigationNetworkChannel = () => {
                 </Col>
             </Form.Group>
             {
-                activeAmbit
-                && <ChannelNetworkTree junta={activeAmbit} search={valueSearch} showCheckbox={false} />
+                (activeAmbit && activeAmbit !== '')
+                && <ChannelNetworkTree juntaId={activeAmbit} />
             }
         </>
     )

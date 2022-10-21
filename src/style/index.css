@@ -96,6 +96,15 @@ body {
     background-color: transparent;
 }
 
+.rct-node-icon {
+    display: inline-flex;
+}
+
+.rct-node-clickable {
+    display: flex;
+    align-items: center;
+}
+
 /* LOADING */
 .spinner-wrapper {
     position: relative;

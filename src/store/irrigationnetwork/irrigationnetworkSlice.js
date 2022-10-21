@@ -4,7 +4,7 @@ export const irrigationnetworkSlice = createSlice({
     initialState: {
         isSaving: false,
         isSavingNew: false,
-        activeAmbit: null,
+        activeAmbit: '',
         activeNode: {
             id: '',
             name: '',

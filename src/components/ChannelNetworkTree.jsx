@@ -2,28 +2,27 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Col, Form, Row } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
-import { FcSearch } from 'react-icons/fc'
+import { FaChevronDown, FaChevronRight, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
 import { InputTextDebounce } from './InputTextDebounce'
-import { loadActiveNetIrrigExpanded, loadActiveNode, startGetIrrigationNetwork } from '../actions'
-import { useGetIrrigNetQuery } from '../store/actions'
+import { searchIrrigationNetworkByJunta, setActiveNodeIrrigationNetwork, setNetIrrigExpIrrigationNetwork } from '../store/actions'
 import { childrenNode, treeNetIrrig } from '../helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
-export const ChannelNetworkTree = ({ juntaId = '', showCheckbox = false, selectNode = true }) => {
+export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) => {
 
     const dispatch = useDispatch()
+    const { activeAmbit, netIrrig, netIrrigExp, netIrrigChk } = useSelector(state => state.irrigationnetwork)
     const [search, setSearch] = useState('')
     const [ctrlKey, setCtrlKey] = useState(false)
-    const { netIrrigExp, netIrrigChk } = useSelector(state => state.channelnetwork)
-    // const { netIrrig, netIrrigExp, netIrrigChk } = useSelector(state => state.channelnetwork)
-    const { data: netIrrig = [], isLoading } = useGetIrrigNetQuery(juntaId)
-
-
     const [net, setNet] = useState([])
     const [netFiltered, setNetFiltered] = useState([])
-    const [netChecked, setNetChecked] = useState([])
+    const [checked, setChecked] = useState(netIrrigChk)
     const [netExpanded, setNetExpanded] = useState(netIrrigExp)
+
+    useEffect(() => {
+        dispatch(searchIrrigationNetworkByJunta(activeAmbit))
+    }, [dispatch, activeAmbit])
 
     useEffect(() => {
         const tree = treeNetIrrig(netIrrig, showCheckbox)
@@ -61,12 +60,12 @@ export const ChannelNetworkTree = ({ juntaId = '', showCheckbox = false, selectN
         if (search === '') {
             // Se desabilito para poder volver a ver los nodos expandidos
             // setExpanded([])
-            setNetChecked([])
+            setChecked([])
             setNetFiltered(net)
         } else {
             // Se desabilito para poder volver a ver los nodos expandidos
             setNetExpanded([])
-            setNetChecked([])
+            setChecked([])
             setNetFiltered(net.reduce(filterNodes, []))
         }
     }, [search, net])
@@ -76,28 +75,28 @@ export const ChannelNetworkTree = ({ juntaId = '', showCheckbox = false, selectN
             if (e.treeDepth > 0) {
                 if (e.checked === true) {
                     if (ctrlKey) {
-                        setNetChecked([...netChecked.filter(c => !childrenNode(e).includes(c))])
+                        setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
                     } else {
-                        setNetChecked(netChecked.filter(c => c !== e.value))
+                        setChecked(checked.filter(c => c !== e.value))
                     }
                 } else if (e.checked === false) {
                     if (ctrlKey) {
-                        setNetChecked([...netChecked, ...childrenNode(e)])
+                        setChecked([...checked, ...childrenNode(e)])
                     } else {
-                        setNetChecked([...netChecked, e.value])
+                        setChecked([...checked, e.value])
                     }
                 }
             }
-            dispatch(loadActiveNode({ id: e.value, name: e.label, depth: e.treeDepth }))
+            dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth }))
         }
     }
 
     const onCheck = (checked) => {
-        setNetChecked(checked)
+        setChecked(checked)
     }
 
     const onExpand = (expand) => {
-        dispatch(loadActiveNetIrrigExpanded(expand))
+        dispatch(setNetIrrigExpIrrigationNetwork(expand))
     }
 
     const keyEvent = (e) => {
@@ -118,27 +117,35 @@ export const ChannelNetworkTree = ({ juntaId = '', showCheckbox = false, selectN
     }, [])
 
     return (
-        <div className='row'>
-            <div className='col-12'>
-                <Form.Group as={Row} className='my-3' controlId='search'>
-                    <Form.Label column xs={'auto'} >
-                        <FcSearch size={24} />
-                    </Form.Label>
-                    <Col>
-                        <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
-                    </Col>
-                </Form.Group>
-                <CheckboxTree
-                    onClick={handleSelectNode}
-                    nodes={netFiltered}
-                    checked={netChecked}
-                    expanded={netExpanded}
-                    onCheck={onCheck}
-                    onExpand={onExpand}
-                    iconsClass="fa5"
-                    noCascade
-                />
+        <>
+            <Form.Group as={Row} className='my-3 px-3' controlId='uChannel'>
+                <Form.Label column sm={12} md={2}>Canales</Form.Label>
+                <Col sm={12} md={10}>
+                    <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
+                </Col>
+            </Form.Group>
+            <div className='row my-3 px-3'>
+                <div className='col-12 p-3' style={{ boxShadow: `0 0 0 0.25rem #e9ecef` }}>
+                    <CheckboxTree
+                        onClick={handleSelectNode}
+                        nodes={netFiltered}
+                        checked={checked}
+                        expanded={netExpanded}
+                        onCheck={onCheck}
+                        onExpand={onExpand}
+                        // iconsClass='fa5'
+                        noCascade
+                        lang={{ toggle: 'Abrir / cerrar' }}
+                        icons={{
+                            check: <FaRegCheckSquare />,
+                            uncheck: <FaRegSquare />,
+                            halfCheck: <FaRegMinusSquare />,
+                            expandClose: <FaChevronRight />,
+                            expandOpen: <FaChevronDown />,
+                        }}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     )
 }

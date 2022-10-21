@@ -171,7 +171,6 @@ const FileComponent = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, action 
                 display: 'flex',
                 flexDirection: 'column',
                 backgroundColor: '#f0f0f0ad',
-                backgroundColor: 'white',
                 overflow: 'hidden',
                 width: '230px',
                 height: '230px',
