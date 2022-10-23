@@ -9,9 +9,6 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
             const resp = await axios({
                 method,
                 baseURL,
-                headers: {
-                    'Content-type': 'application/json'
-                },
                 url: endpoint,
                 params
             })
@@ -31,9 +28,6 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
             const resp = await axios({
                 method,
                 baseURL,
-                headers: {
-                    'Content-type': 'application/json'
-                },
                 url: endpoint,
                 data
             })
@@ -71,7 +65,6 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                     method,
                     baseURL,
                     headers: {
-                        'Content-type': 'application/json',
                         'Authorization': token
                     },
                     url: endpoint,
@@ -94,7 +87,6 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                     method,
                     baseURL,
                     headers: {
-                        'Content-type': 'application/json',
                         'Authorization': token
                     },
                     url: endpoint,
