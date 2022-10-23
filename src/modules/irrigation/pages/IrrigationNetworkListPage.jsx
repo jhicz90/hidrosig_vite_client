@@ -1,6 +1,6 @@
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
-import { IrrigationNetworkChannel } from '../components'
+import { IrrigationNetworkChannel, WaterSourceList } from '../components'
 
 export const IrrigationNetworkListPage = () => {
 
@@ -28,7 +28,7 @@ export const IrrigationNetworkListPage = () => {
                                         <IrrigationNetworkChannel />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey='#source'>
-                                        {/* <ListWaterSource /> */}
+                                        <WaterSourceList />
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Card.Body>

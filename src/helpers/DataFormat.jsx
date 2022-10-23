@@ -1,4 +1,5 @@
 import { FaFaucet, FaTint, FaWater } from 'react-icons/fa'
+import { TypeWaterSource } from '../components'
 
 export const treeNetIrrig = (data, check = false) => {
     // const hierachy = (items, parent = 0, link = 'parent') => items.filter(item => item[link] === parent).map(item => ({ ...item, icon: <span className={item.classIcon} />, children: hierachy(items, item.value) }))
@@ -10,7 +11,7 @@ export const treeNetIrrig = (data, check = false) => {
                 showCheckbox: item.showCheckbox === true ? check : false,
                 children: hierachy(item.children),
                 icon: {
-                    0: <FaTint color='#0d6efd' />,
+                    0: <TypeWaterSource type={item.type} size='1em' />,
                     'CD': <FaWater color='#fd7e14' />,
                     'L01': <FaWater color='brown' />,
                     'L02': <FaWater color='blue' />,
@@ -21,13 +22,25 @@ export const treeNetIrrig = (data, check = false) => {
                     'CP': <FaWater color='#6f42c1' />,
                     'D01': <FaFaucet color='#432874' />,
                 }[item.order] || <FaQuestionCircle />
+                // icon: {
+                //     0: <FaTint color='#0d6efd' />,
+                //     'CD': <FaWater color='#fd7e14' />,
+                //     'L01': <FaWater color='brown' />,
+                //     'L02': <FaWater color='blue' />,
+                //     'L03': <FaWater color='green' />,
+                //     'L04': <FaWater color='yellow' />,
+                //     'L05': <FaWater color='black' />,
+                //     'L06': <FaWater color='purple' />,
+                //     'CP': <FaWater color='#6f42c1' />,
+                //     'D01': <FaFaucet color='#432874' />,
+                // }[item.order] || <FaQuestionCircle />
             }
         } else {
             return {
                 ...item,
                 showCheckbox: item.showCheckbox === true ? check : false,
                 icon: {
-                    0: <FaTint color='#0d6efd' />,
+                    0: <TypeWaterSource type={item.type} size='1em' />,
                     'CD': <FaWater color='#fd7e14' />,
                     'L01': <FaWater color='brown' />,
                     'L02': <FaWater color='blue' />,

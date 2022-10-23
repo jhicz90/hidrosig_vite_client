@@ -125,7 +125,7 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
                 </Col>
             </Form.Group>
             <div className='row my-3 px-3'>
-                <div className='col-12 p-3' style={{ boxShadow: `0 0 0 0.25rem #e9ecef` }}>
+                <div className='col-12 p-3'>
                     <CheckboxTree
                         onClick={handleSelectNode}
                         nodes={netFiltered}

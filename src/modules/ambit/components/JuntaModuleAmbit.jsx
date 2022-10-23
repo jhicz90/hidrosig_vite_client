@@ -73,7 +73,7 @@ const JuntaWaterSource = () => {
                             <TypeWaterSource type={ws.type} />
                             <Link
                                 to={`/app/ambit/trrty/watersource/${ws._id}`}
-                                className='link-primary text-decoration-none'
+                                className='link-primary text-decoration-none ms-2'
                             >{ws.name}</Link>
                         </ListGroup.Item>
                     )
