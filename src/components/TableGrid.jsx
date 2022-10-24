@@ -3,13 +3,19 @@ import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 
 export const TableGrid = ({ columns, rows }) => {
+
+    console.log('COLUMNAS', columns)
+
     const theme = useTheme([
         getTheme(),
         {
             Table: `
                 --data-table-library_grid-template-columns: ${columns.map(c => {
-                if (!c.width) return 'minmax(150px, auto)'
-                return c.width
+                if (!c.width) {
+                    return 'minmax(150px, auto)'
+                } else {
+                    return c.width
+                }
             }).join(' ')};
                 --bs-table-bg: white;
                 border-top: 1px solid rgb(221, 226, 235);
@@ -26,10 +32,11 @@ export const TableGrid = ({ columns, rows }) => {
             `,
         }
     ])
+
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
 
     return (
-        <div style={{ maxHeight: '500px' }}>
+        <div style={{ height: '500px' }}>
             <CompactTable
                 theme={theme}
                 columns={columns}

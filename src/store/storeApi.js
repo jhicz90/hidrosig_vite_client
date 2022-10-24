@@ -278,6 +278,26 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Acct']
         }),
+        getVouchers: builder.query({
+            query: (search) => ({
+                url: `voucher/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct']
+        }),
+        getVouchersByPettyCash: builder.query({
+            query: ({ pettycash, search }) => ({
+                url: `voucher/search_by_pettycash/${pettycash}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct']
+        }),
     }),
 })
 
@@ -301,6 +321,8 @@ export const {
     useGetRolesQuery,
     useGetUsrsSysQuery,
     useGetUsrSysByOccupQuery,
+    useGetVouchersByPettyCashQuery,
+    useGetVouchersQuery,
     useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
     useGetZonesByJuntaQuery,

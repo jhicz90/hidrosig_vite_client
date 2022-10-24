@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { BsSearch } from 'react-icons/bs'
 import { useGetPettyCashsQuery } from '../../../store/actions'
-import { InputSearch, MiniLoader, TableGrid, TimeAgo } from '../../../components'
+import { InputSearch, TableGrid, TimeAgo } from '../../../components'
 
 export const PettyCashList = () => {
 
@@ -20,12 +18,12 @@ export const PettyCashList = () => {
                     [
                         {
                             label: 'CÓDIGO',
+                            width: '80px',
                             renderCell: (item) =>
                                 item.code
                         },
                         {
                             label: 'CAJA CHICA',
-                            resize: true,
                             renderCell: (item) =>
                                 item.name
                         },
