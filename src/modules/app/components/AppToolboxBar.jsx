@@ -1,6 +1,6 @@
 import { Card, Container } from 'react-bootstrap'
 import styled from 'styled-components'
-import { CreateBlock } from '../../'
+import { CreateBlock, CreatePettyCash } from '../../'
 
 export const AppToolboxBar = () => {
 
@@ -14,6 +14,7 @@ export const AppToolboxBar = () => {
                         </NavBarInfo>
                         <NavBarTool>
                             <CreateBlock />
+                            <CreatePettyCash />
                             {/* Aqui van los botones de accion rapida */}
                         </NavBarTool>
                     </NavBarMain>

@@ -45,7 +45,7 @@ export const storeApi = createApi({
     keepUnusedDataFor: 60,
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Acct'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),
@@ -82,7 +82,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Occup']
         }),
-        getUsrSysForOccup: builder.query({
+        getUsrSysByOccup: builder.query({
             query: ({ id, search }) => ({
                 url: `occupation/list_usersys_in/${id}`,
                 params: {
@@ -184,7 +184,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
         }),
-        getCommsForJunta: builder.query({
+        getCommsByJunta: builder.query({
             query: ({ junta, search }) => ({
                 url: `committee/search_by_junta/${junta}`,
                 params: {
@@ -212,7 +212,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
         }),
-        getZonesForJunta: builder.query({
+        getZonesByJunta: builder.query({
             query: ({ junta, search }) => ({
                 url: `zone/search_by_junta/${junta}`,
                 params: {
@@ -242,7 +242,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
         }),
-        getWaterSourcesForJunta: builder.query({
+        getWaterSourcesByJunta: builder.query({
             query: ({ junta, search }) => ({
                 url: `watersource/search_by_junta/${junta}`,
                 params: {
@@ -258,14 +258,25 @@ export const storeApi = createApi({
             }),
             transformResponse: (response, meta, arg) => response.browser,
         }),
-        getIrrigNet: builder.query({
-            query: (junta) => ({
-                url: `structure/irrignet`,
+        getPettyCashs: builder.query({
+            query: (search) => ({
+                url: `pettycash/list`,
                 params: {
-                    junta
+                    search
                 }
             }),
-            transformResponse: (response, meta, arg) => response.net,
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct']
+        }),
+        getPettyCashsByUsrSys: builder.query({
+            query: ({ usersys, search }) => ({
+                url: `pettycash/search_by_usersys/${usersys}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct']
         }),
     }),
 })
@@ -277,20 +288,21 @@ export const {
     useAddNewPermMutation,
     useGetBlocksQuery,
     useGetBrowserQuery,
-    useGetCommsForJuntaQuery,
+    useGetCommsByJuntaQuery,
     useGetCommsQuery,
-    useGetIrrigNetQuery,
     useGetJuntasQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
     useGetOccupsQuery,
     useGetPermsGroupQuery,
     useGetPermsQuery,
+    useGetPettyCashsByUsrSysQuery,
+    useGetPettyCashsQuery,
     useGetRolesQuery,
     useGetUsrsSysQuery,
-    useGetUsrSysForOccupQuery,
-    useGetWaterSourcesForJuntaQuery,
+    useGetUsrSysByOccupQuery,
+    useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
-    useGetZonesForJuntaQuery,
+    useGetZonesByJuntaQuery,
     useGetZonesQuery,
 } = storeApi

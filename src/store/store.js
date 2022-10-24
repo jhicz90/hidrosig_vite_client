@@ -16,6 +16,7 @@ import { blockSlice } from './block'
 import { watersourceSlice } from './watersource'
 import { irrigationnetworkSlice } from './irrigationnetwork'
 import { resourceSlice } from './resource'
+import { pettycashSlice } from './pettycash'
 
 export const store = configureStore({
     reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
         watersource: watersourceSlice.reducer,
         irrigationnetwork: irrigationnetworkSlice.reducer,
         resource: resourceSlice.reducer,
+        pettycash: pettycashSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

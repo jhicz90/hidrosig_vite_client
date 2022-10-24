@@ -1,15 +1,15 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { FcSearch } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
-import { InputSearch, TableGrid, TimeAgo, TypeWaterSource } from '../../../components'
-import { useGetWaterSourcesQuery } from '../../../store/actions'
+import { BsSearch } from 'react-icons/bs'
+import { useGetPettyCashsQuery } from '../../../store/actions'
+import { InputSearch, MiniLoader, TableGrid, TimeAgo } from '../../../components'
 
-export const WaterSourceList = () => {
+export const PettyCashList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetWaterSourcesQuery(search)
+    const { data: list = [], isFetching } = useGetPettyCashsQuery(search)
 
     return (
         <>
@@ -19,24 +19,25 @@ export const WaterSourceList = () => {
                 columns={
                     [
                         {
-                            label: 'FUENTE DE AGUA',
-                            resize: true,
-                            renderCell: (item) => (
-                                <div className='d-flex align-items-center px-2 py-1'>
-                                    <div className='flex-shrink-0 me-3'>
-                                        <TypeWaterSource type={item.type} />
-                                    </div>
-                                    <div className='d-flex flex-column'>
-                                        <span className='d-block fw-bolder mb-0'>{item.name}</span>
-                                    </div>
-                                </div>
-                            )
+                            label: 'CÓDIGO',
+                            renderCell: (item) =>
+                                item.code
                         },
                         {
-                            label: 'JUNTA',
-                            renderCell: (item) => (
-                                item.junta?.name || 'Sin junta de usuarios'
-                            )
+                            label: 'CAJA CHICA',
+                            resize: true,
+                            renderCell: (item) =>
+                                item.name
+                        },
+                        {
+                            label: 'COMPROBANTE',
+                            renderCell: (item) =>
+                                item.receipt
+                        },
+                        {
+                            label: 'CHEQUE',
+                            renderCell: (item) =>
+                                item.check
                         },
                         {
                             label: 'CREADO',
@@ -55,7 +56,7 @@ export const WaterSourceList = () => {
                                 <div className='btn-group'>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/schm/trrty/watersource/${item._id}`}
+                                        to={`/app/acct/petty_cash/${item._id}`}
                                     >
                                         <FaPen />
                                     </Link>

@@ -2,26 +2,19 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
-import { useGetUsrSysForOccupQuery } from '../../../store/actions'
-import { Avatar, InputTextDebounce, TableGrid, TagStatus } from '../../../components'
+import { useGetUsrSysByOccupQuery } from '../../../store/actions'
+import { Avatar, InputSearch, TableGrid, TagStatus } from '../../../components'
 
 export const OccupationModuleToUsers = () => {
 
     const [search, setSearch] = useState('')
     const { active: { _id: occupId } } = useSelector(state => state.occupation)
-    const { data: usersSysIn = [], isLoading } = useGetUsrSysForOccupQuery({ id: occupId, search }, { refetchOnMountOrArgChange: true })
+    const { data: usersSysIn = [], isFetching } = useGetUsrSysByOccupQuery({ id: occupId, search }, { refetchOnMountOrArgChange: true })
 
     return (
         <Card>
             <Card.Body className='p-0'>
-                <Form.Group as={Row} className='my-3 px-3 gx-2' controlId='searchUserSys'>
-                    <Form.Label column xs={'auto'} >
-                        <BsSearch size={24} />
-                    </Form.Label>
-                    <Col>
-                        <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
-                    </Col>
-                </Form.Group>
+                <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
                 <TableGrid
                     rows={usersSysIn}
                     columns={

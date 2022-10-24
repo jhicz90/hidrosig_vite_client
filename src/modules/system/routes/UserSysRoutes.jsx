@@ -8,7 +8,6 @@ export const UserSysRoutes = () => {
             <Routes>
                 <Route path={`/`} element={<GuardRoute meta={['usersys']} component={UserSysListPage} />} />
                 <Route path={`/:userid`} element={<GuardRoute meta={['usersys']} component={UserSysActivePage} />} />
-                <Route path={`*`} element={<Navigate to={`./`} />} />
             </Routes>
         </>
     )

@@ -1,7 +1,7 @@
-import { PuffLoader } from 'react-spinners'
+import { MoonLoader } from 'react-spinners'
 
 export const MiniLoader = () => {
     return (
-        <PuffLoader size={24} color='#1f6bff' />
+        <MoonLoader size={24} color='#1f6bff' />
     )
 }

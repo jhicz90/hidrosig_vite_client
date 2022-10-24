@@ -132,9 +132,15 @@ export const menuModule = [
             },
             {
                 label: 'Caja chica',
-                to: 'pettycash',
+                to: 'petty_cash',
                 meta: ['pettycash'],
                 detail: 'Lista y registro de caja chica, para un mejor control y detalle de los comprobantes.'
+            },
+            {
+                label: 'Recibos',
+                to: 'receipt',
+                meta: ['receipt'],
+                detail: 'Lista de comprobantes registrados en contabilidad.'
             }
         ]
     },

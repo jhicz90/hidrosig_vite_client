@@ -4,23 +4,16 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
 import { useGetOccupsQuery } from '../../../store/actions'
-import { TagStatus, Avatar, InputTextDebounce, TableGrid, TimeAgo } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
 
 export const OccupationList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isLoading } = useGetOccupsQuery(search)
-    console.log(list)
+    const { data: list = [], isFetching } = useGetOccupsQuery(search)
+    
     return (
         <>
-            <Form.Group as={Row} className='my-3 px-3 gx-2' controlId='search'>
-                <Form.Label column xs={'auto'} >
-                    <BsSearch size={24} />
-                </Form.Label>
-                <Col>
-                    <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
-                </Col>
-            </Form.Group>
+            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
                 columns={

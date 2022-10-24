@@ -16,7 +16,8 @@ import {
     SystemRoutes,
     ResourceRoutes,
     TerritoryRoutes,
-    IrrigationNetworkRoutes
+    IrrigationNetworkRoutes,
+    PettyCashRoutes
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -167,7 +168,10 @@ export const AppRoot = () => {
                         <Route path={`irrig/wtsrc/:id`} element={<GuardRoute meta={['irrigschm', 'irrignet']} component={WaterSourceEdit} />} />
                         <Route path={`var`} element={<GuardRoute meta={['irrigschm', 'variables']} component={VariableList} />} />
                     </Route>*/}
-                    {/* <Route path={`acct/*`} element={<PettyCashRoutes />} /> */}
+                    <Route path={`acct`}>
+                        <Route path={`resume`} element={<>Hola somos el resumen de contabilidad</>} />
+                        <Route path={`petty_cash/*`} element={<GuardRoute meta={['accounting']} component={PettyCashRoutes} />} />
+                    </Route>
                     <Route path={`exp/*`} element={<ResourceRoutes />} />
                     <Route path={`siga/*`} element={<SigaRoutes />} />
                     <Route path={`sys`}>

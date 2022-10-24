@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Card, ListGroup } from 'react-bootstrap'
-import { useGetCommsForJuntaQuery, useGetWaterSourcesForJuntaQuery, useGetZonesForJuntaQuery } from '../../../store/actions'
+import { useGetCommsByJuntaQuery, useGetWaterSourcesByJuntaQuery, useGetZonesByJuntaQuery } from '../../../store/actions'
 import { SettingAction, SettingBlock, TypeWaterSource } from '../../../components'
 import { CreateZone, CreateWaterSource, CreateCommittee } from '.'
 
@@ -20,7 +20,7 @@ export const JuntaModuleAmbit = () => {
 const JuntaZone = () => {
 
     const { active } = useSelector(state => state.junta)
-    const { data: zonesIn = [], isLoading } = useGetZonesForJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+    const { data: zonesIn = [], isLoading } = useGetZonesByJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
 
     return (
         <SettingBlock
@@ -53,7 +53,7 @@ const JuntaZone = () => {
 const JuntaWaterSource = () => {
 
     const { active } = useSelector(state => state.junta)
-    const { data: waterSourcesIn = [], isLoading } = useGetWaterSourcesForJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+    const { data: waterSourcesIn = [], isLoading } = useGetWaterSourcesByJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
 
     return (
         <SettingBlock
@@ -87,7 +87,7 @@ const JuntaWaterSource = () => {
 const JuntaCommittee = () => {
 
     const { active } = useSelector(state => state.junta)
-    const { data: committeesIn = [], isLoading } = useGetCommsForJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+    const { data: committeesIn = [], isLoading } = useGetCommsByJuntaQuery({ junta: active._id, search: '' }, { refetchOnMountOrArgChange: true })
     
     return (
         <SettingBlock

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Col, Form, Row } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
 import { FaChevronDown, FaChevronRight, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
-import { InputTextDebounce } from './InputTextDebounce'
+import { InputSearch } from './InputSearch'
 import { searchIrrigationNetworkByJunta, setActiveNodeIrrigationNetwork, setNetIrrigExpIrrigationNetwork } from '../store/actions'
 import { childrenNode, treeNetIrrig } from '../helpers'
 
@@ -121,7 +121,7 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
             <Form.Group as={Row} className='my-3 px-3' controlId='uChannel'>
                 <Form.Label column sm={12} md={2}>Canales</Form.Label>
                 <Col sm={12} md={10}>
-                    <InputTextDebounce value={search} onChange={(e) => setSearch(e)} />
+                    <InputSearch value={search} onChange={(e) => setSearch(e)} />
                 </Col>
             </Form.Group>
             <div className='row my-3 px-3'>

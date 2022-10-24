@@ -7,7 +7,6 @@ export const RoleRoutes = () => {
         <Routes>
             <Route index element={<GuardRoute meta={['role']} component={RoleListPage} />} />
             <Route path={`/:roleid`} element={<GuardRoute meta={['role']} component={RoleActivePage} />} />
-            <Route path={`*`} element={<Navigate to={`./`} />} />
         </Routes>
     )
 }
