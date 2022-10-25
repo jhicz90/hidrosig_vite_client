@@ -2,10 +2,7 @@ import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 
-export const TableGrid = ({ columns, rows }) => {
-
-    console.log('COLUMNAS', columns)
-
+export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoResults }) => {
     const theme = useTheme([
         getTheme(),
         {
@@ -19,6 +16,7 @@ export const TableGrid = ({ columns, rows }) => {
             }).join(' ')};
                 --bs-table-bg: white;
                 border-top: 1px solid rgb(221, 226, 235);
+                grid-template-rows: 50px ${rows.length > 0 ? `repeat(${rows.length}, minmax(50px, 60px))` : ''};
             `,
             BaseCell: `
                 ${columns[length - 1]?.pinRight === true && `
@@ -36,13 +34,39 @@ export const TableGrid = ({ columns, rows }) => {
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
 
     return (
-        <div style={{ height: '500px' }}>
-            <CompactTable
-                theme={theme}
-                columns={columns}
-                data={data}
-                layout={{ custom: true, fixedHeader: true, horizontalScroll: true }}
-            />
+        <div style={{ height: '400px' }}>
+            {
+                rows.length > 0
+                    ?
+                    <CompactTable
+                        theme={theme}
+                        columns={columns}
+                        data={data}
+                        layout={{
+                            custom: true,
+                            fixedHeader: true,
+                            isDiv: true,
+                            horizontalScroll: true
+                        }}
+                    />
+                    :
+                    <div
+                        className='d-flex'
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                        <NoResultsComponent />
+                    </div>
+            }
         </div>
+    )
+}
+
+const NoResults = () => {
+    return (
+        <strong className='mx-3 fs-5'>No ahi datos para mostrar</strong>
     )
 }
