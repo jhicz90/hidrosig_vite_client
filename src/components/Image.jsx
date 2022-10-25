@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { imageGet, imageSysGet } from '../helpers'
 
-export const Image = ({ className = '', style = {}, onClick = null, img = '', noImg = 2010, size = 'none', width = 0, height = 0 }) => {
+export const Image = ({ className = '', style = {}, onClick = null, img = '', noImg = 2010, size = 'none', width = 0, height = 0, resSize = 0 }) => {
 
     const [wAvatar, setWAvatar] = useState(width)
     const [hAvatar, setHAvatar] = useState(height)
@@ -31,7 +31,7 @@ export const Image = ({ className = '', style = {}, onClick = null, img = '', no
             onClick={onClick}
             className={`${className}`}
             style={style}
-            src={(img !== '' && img !== null && img !== undefined) ? imageGet(img) : imageSysGet(noImg)}
+            src={(img !== '' && img !== null && img !== undefined) ? imageGet(img, { size: resSize }) : imageSysGet(noImg)}
             width={wAvatar}
             height={hAvatar}
             alt={img}

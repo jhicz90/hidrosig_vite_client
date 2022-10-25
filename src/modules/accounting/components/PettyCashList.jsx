@@ -18,7 +18,6 @@ export const PettyCashList = () => {
                     [
                         {
                             label: 'CÓDIGO',
-                            width: '80px',
                             renderCell: (item) =>
                                 item.code
                         },
@@ -49,6 +48,7 @@ export const PettyCashList = () => {
                         },
                         {
                             label: 'ACCIÓN',
+                            width: '100px',
                             pinRight: true,
                             renderCell: (item) =>
                                 <div className='btn-group'>

@@ -33,7 +33,7 @@ export const ImageLightbox = ({ galleryTitle, images, currentImageIndex, setCurr
                         <PageIndicator>
                             {currentImageIndex + 1} / {images.length}
                         </PageIndicator>
-                        <CloseButton onClick={onClose} type="button">
+                        <CloseButton onClick={onClose} type='button'>
                             <IoIosClose size={60} />
                         </CloseButton>
                     </RightSideContainer>
@@ -68,7 +68,8 @@ export const ImageLightbox = ({ galleryTitle, images, currentImageIndex, setCurr
 }
 
 const StyledLightbox = styled(Lightbox)`
-  background-color: rgba(0,0,0,0.5);
+  /* background-color: rgba(0,0,0,0.5); */
+  background-color: rgba(17, 24, 39,0.8);
 `
 
 const GalleryHeading = styled.h2`

@@ -19,15 +19,23 @@ export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoR
                 grid-template-rows: 50px ${rows.length > 0 ? `repeat(${rows.length}, minmax(50px, 60px))` : ''};
             `,
             BaseCell: `
-                ${columns[length - 1]?.pinRight === true && `
-                    &:nth-of-type(${columns.length - 1}) {
-                        right: 0px;
-                        z-index: 1;
+                ${columns.map((c, i) => {
+                    if (!c.pinRight) {
+                        return ''
+                    } else {
+                        return `
+                        &:nth-of-type(${i + 1}) {
+                            right: 0px;
+                            background-color: white;
+                        }`
                     }
-                `}
+                })}
 
                 padding: 9px 16px !important;
             `,
+            HeaderCell:`
+                background-color: white !important;
+            `
         }
     ])
 
