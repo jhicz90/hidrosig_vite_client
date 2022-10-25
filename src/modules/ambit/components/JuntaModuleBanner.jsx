@@ -29,7 +29,7 @@ export const JuntaModuleBanner = () => {
 
     return (
         <div className='text-center'>
-            <AvatarProfile avatarImg={data.image?.fileName} />
+            <AvatarProfile className='mb-3' avatarImg={data.image?.fileName} />
             <div className='fs-5 mb-0'>{data.name}</div>
             <span className='text-secondary fw-semibold'>Junta de usuarios</span>
             <div className='row mt-3'>

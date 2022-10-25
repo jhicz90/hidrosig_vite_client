@@ -10,6 +10,7 @@ import { logoutAuth } from '../../../store/actions'
 import { imageGet, imageSysGet } from '../../../helpers'
 
 import logoApp from '../../../assets/logo192.png'
+import { AvatarProfile } from '../../../components'
 
 export const AppHeader = () => {
 
@@ -85,12 +86,13 @@ export const AppHeader = () => {
                 <Dropdown className='menu-item dropdown-noarrow'>
                     <Dropdown.Toggle as='a' variant='light' className='menu-link'>
                         <div className='menu-img online'>
-                            <img
+                            {/* <img
                                 src={photoURL ? imageGet(photoURL) : imageSysGet(1069)}
                                 className='w-100 h-100 rounded-circle shadow'
                                 style={{ objectFit: 'contain' }}
                                 alt='usersys'
-                            />
+                            /> */}
+                            <AvatarProfile size='48px' avatarImg={photoURL} />
                         </div>
                         <div className='menu-text'>{displayName}</div>
                     </Dropdown.Toggle>
@@ -265,8 +267,8 @@ const HeaderApp = styled.header`
 
     & .menu .menu-item .menu-img,
     & .menu .menu-item .menu-img-text {
-        height: 36px;
-        width: 36px;
+        height: 48px;
+        width: 48px;
         position: relative;
         display: flex;
         align-items: center;
@@ -277,13 +279,14 @@ const HeaderApp = styled.header`
     & .menu .menu-item .menu-img.online:before {
         content: "";
         position: absolute;
-        width: 12px;
-        height: 12px;
+        width: 33%;
+        height: 33%;
         right: -1px;
         bottom: 0px;
         background: #03ba31;
         border-radius: 8px;
         border: 2px solid white;
+        z-index: 1;
     }
 
     & .menu .menu-item .menu-img + .menu-text,

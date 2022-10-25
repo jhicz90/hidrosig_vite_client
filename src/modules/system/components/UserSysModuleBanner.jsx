@@ -29,7 +29,7 @@ export const UserSysModuleBanner = () => {
 
     return (
         <div className='text-center'>
-            <AvatarProfile avatarImg={data.image?.fileName} actionChange={handleChangeImage} />
+            <AvatarProfile className='mb-3' avatarImg={data.image?.fileName} actionChange={handleChangeImage} />
             <div className='fs-5 mb-0'>{`${data.names} ${data.surnames}`}</div>
             <span className='text-secondary fw-semibold'>Usuario de sistema</span>
             <div className='row mt-3'>

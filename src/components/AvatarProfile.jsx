@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useId } from 'react'
 import styled from 'styled-components'
 import { prominent } from 'color.js'
 import { FaPen } from 'react-icons/fa'
 import { imageGet, imageSysGet } from '../helpers'
 
-export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null }) => {
+export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px' }) => {
+
+    const inputUploadImage = useId()
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
@@ -19,11 +21,11 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
     }, [avatarImg])
 
     return (
-        <div className='text-center mb-3'>
-            <ProfileAvatar className={`${className}`}>
+        <div className='text-center'>
+            <ProfileAvatar className={`${className}`} style={{ width: size, height: size }}>
                 <input
                     className='d-none'
-                    id='input-upload-image'
+                    id={inputUploadImage}
                     type='file'
                     multiple={false}
                     accept='image/jpeg, image/png'
@@ -32,7 +34,7 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
                 <img
                     className='avatar-img'
                     src={avatarImg ? imageGet(avatarImg) : imageSysGet(noImg)}
-                    style={{ background: backColor }}
+                    style={{ background: backColor, width: size, height: size }}
                     alt={`avatar-image-${avatarImg}`}
                     loading={'lazy'}
                 />
@@ -41,7 +43,7 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
                     &&
                     <div className='d-block cursor-pointer'>
                         <label
-                            htmlFor='input-upload-image'
+                            htmlFor={inputUploadImage}
                             className='position-absolute bottom-0 end-0 m-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center'>
                             <FaPen />
                         </label>
@@ -68,7 +70,7 @@ const ProfileAvatar = styled.div`
     }
 
     & label {
-        height: 30px;
-        width: 30px;
+        height: 25%;
+        width: 25%;
     }
 `
