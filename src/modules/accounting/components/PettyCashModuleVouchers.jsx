@@ -66,7 +66,7 @@ const PettyCashVoucher = () => {
                                         item.numReceipt
                                 },
                                 {
-                                    label: 'Comprobantes',
+                                    label: 'COMPROBANTES',
                                     renderCell: (item) => {
                                         const imageData = item.images.map(({ fileName }) => ({
                                             src: imageGet(fileName, { size: 1000 }),
