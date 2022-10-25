@@ -105,6 +105,10 @@ body {
     align-items: center;
 }
 
+.command-palette {
+    z-index: 500;
+}
+
 /* LOADING */
 .spinner-wrapper {
     position: relative;
