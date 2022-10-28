@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
+import { FaPen, FaTimes, FaTrashAlt } from 'react-icons/fa'
 import { ChannelNetworkTree } from '../../../components'
 import { setActiveAmbitIrrigationNetwork, useGetJuntasQuery } from '../../../store/actions'
 
 export const IrrigationNetworkChannel = () => {
 
     const dispatch = useDispatch()
-    const { activeAmbit, isSaving } = useSelector(state => state.irrigationnetwork)
+    const { activeAmbit, activeNode, isSaving } = useSelector(state => state.irrigationnetwork)
     const { data: optionsJunta = [], isLoading } = useGetJuntasQuery('', { refetchOnMountOrArgChange: true })
 
     return (
@@ -27,6 +28,44 @@ export const IrrigationNetworkChannel = () => {
                     </Form.Select>
                 </Col>
             </Form.Group>
+            {
+                <div className="row">
+                    <div className="col-12">
+                        {
+                            activeNode.id !== '' &&
+                            <div className="input-group">
+                                {/* <CreateStructure classNameBtn="btn btn-neutral" icon={true} /> */}
+                                <button
+                                    // onClick={handleClickDelete}
+                                    className="btn btn-neutral ui-text-red">
+                                    <FaTrashAlt />
+                                </button>
+                                {/* {
+                                    activeNode.depth === 0
+                                    &&
+                                    <button
+                                        onClick={handleClickSee}
+                                        className="btn btn-neutral">
+                                        Ver
+                                    </button>
+                                } */}
+                                <Button
+                                    // onClick={handleClickSeeDetail}
+                                    variant='neutral'
+                                >
+                                    <FaPen />
+                                </Button>
+                                <span className="input-group-text">{activeNode.name}</span>
+                                <button
+                                    // onClick={handleClearNode}
+                                    className="btn btn-neutral ui-text-red">
+                                    <FaTimes />
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
             {
                 (activeAmbit && activeAmbit !== '')
                 && <ChannelNetworkTree juntaId={activeAmbit} />

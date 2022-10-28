@@ -119,8 +119,7 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
     return (
         <>
             <Form.Group as={Row} className='my-3 px-3' controlId='uChannel'>
-                <Form.Label column sm={12} md={2}>Canales</Form.Label>
-                <Col sm={12} md={10}>
+                <Col xs='auto'>
                     <InputSearch value={search} onChange={(e) => setSearch(e)} />
                 </Col>
             </Form.Group>
