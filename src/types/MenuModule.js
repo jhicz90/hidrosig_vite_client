@@ -1,16 +1,15 @@
 import { FcCalculator, FcConferenceCall, FcHome, FcOpenedFolder, FcOrganization, FcPuzzle, FcSalesPerformance, FcSettings, FcSupport, FcTreeStructure } from 'react-icons/all'
+import { IconSysAccount, IconSysConfig, IconSysFiles, IconSysHome, IconSysIrrigSchm, IconSysOrg, IconSysSales, IconSysSIGA, IconSysTools, IconSysUserReg } from '../icons'
 
 export const menuModule = [
     {
         label: 'Página principal',
-        icon: 1068,
-        rcIcon: FcHome,
+        icon: IconSysHome,
         to: 'home',
     },
     {
         label: 'Ámbito',
-        icon: 4001,
-        rcIcon: FcOrganization,
+        icon: IconSysOrg,
         to: 'ambit',
         meta: ['ambit'],
         detail: 'Vista resumen del módulo de Ámbito.',
@@ -41,8 +40,7 @@ export const menuModule = [
     },
     {
         label: 'Padrón de usuarios',
-        icon: 1081,
-        rcIcon: FcConferenceCall,
+        icon: IconSysUserReg,
         to: 'user_reg',
         meta: ['userreg'],
         detail: 'Lista de usuarios y predios inscritos en el sistema.',
@@ -73,8 +71,7 @@ export const menuModule = [
     },
     {
         label: 'Esquema de riego',
-        icon: 1088,
-        rcIcon: FcTreeStructure,
+        icon: IconSysIrrigSchm,
         to: 'schm',
         meta: ['irrigschm'],
         children: [
@@ -100,7 +97,7 @@ export const menuModule = [
     },
     {
         label: 'Recaudación de tarifa',
-        icon: 1046,
+        icon: IconSysSales,
         rcIcon: FcSalesPerformance,
         to: 'collect',
         meta: ['ratecollect'],
@@ -121,7 +118,7 @@ export const menuModule = [
     },
     {
         label: 'Contabilidad',
-        icon: 1089,
+        icon: IconSysAccount,
         rcIcon: FcCalculator,
         to: 'acct',
         meta: ['accounting'],
@@ -146,7 +143,7 @@ export const menuModule = [
     },
     {
         label: 'Herramientas',
-        icon: 1090,
+        icon: IconSysTools,
         rcIcon: FcSupport,
         to: 'tools',
         meta: ['tools'],
@@ -165,7 +162,7 @@ export const menuModule = [
     },
     {
         label: 'Archivos',
-        icon: 1029,
+        icon: IconSysFiles,
         rcIcon: FcOpenedFolder,
         to: 'exp',
         meta: ['explorer'],
@@ -184,7 +181,7 @@ export const menuModule = [
     },
     {
         label: 'SIGA',
-        icon: 9000,
+        icon: IconSysSIGA,
         rcIcon: FcPuzzle,
         to: 'siga',
         meta: ['siga'],
@@ -203,7 +200,7 @@ export const menuModule = [
     },
     {
         label: 'Ajustes de sistema',
-        icon: 1060,
+        icon: IconSysConfig,
         rcIcon: FcSettings,
         to: 'sys',
         meta: ['system'],

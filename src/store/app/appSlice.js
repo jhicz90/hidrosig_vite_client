@@ -3,9 +3,15 @@ export const appSlice = createSlice({
     name: 'app',
     initialState: {
         sidebar: true,
-        toolbar: true,
-        toolbarActions: null,
-        cmkbar: false,
+        toolbar: {
+            show: false,
+            title: '',
+            actions: null
+        },
+        cmkbar: {
+            show: false,
+            search: '',
+        },
     },
     reducers: {
         setSidebar: (state, { payload }) => {
@@ -15,13 +21,19 @@ export const appSlice = createSlice({
             state.toolbar = payload
         },
         setToolbarActions: (state, { payload }) => {
-            state.toolbarActions = payload
+            state.toolbar.actions = payload
         },
         clearToolbarActions: (state) => {
-            state.toolbarActions = null
+            state.toolbar.actions = null
         },
         setCmkbar: (state, { payload }) => {
             state.cmkbar = payload
+        },
+        setCmkbarShow: (state, { payload }) => {
+            state.cmkbar.show = payload
+        },
+        setCmkbarSearch: (state, { payload }) => {
+            state.cmkbar.search = payload
         },
     }
 });
@@ -32,4 +44,6 @@ export const {
     setToolbarActions,
     clearToolbarActions,
     setCmkbar,
+    setCmkbarShow,
+    setCmkbarSearch,
 } = appSlice.actions

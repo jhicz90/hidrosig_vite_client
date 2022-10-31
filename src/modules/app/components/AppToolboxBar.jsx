@@ -3,12 +3,12 @@ import styled from 'styled-components'
 
 export const AppToolboxBar = () => {
 
-    const { toolbarActions } = useSelector(state => state.app)
+    const { toolbar: { title, actions } } = useSelector(state => state.app)
 
     return (
         <>
             {
-                !!toolbarActions
+                (!!actions && title === '')
                 &&
                 <div
                     className='rounded-0 shadow-none mb-3'
@@ -19,10 +19,10 @@ export const AppToolboxBar = () => {
                 >
                     <NavBarMain>
                         <NavBarInfo>
-                            Titulo o subtitulo de la página
+                            {title}
                         </NavBarInfo>
                         <NavBarTool>
-                            {toolbarActions}
+                            {actions}
                         </NavBarTool>
                     </NavBarMain>
                 </div>

@@ -61,7 +61,7 @@ const Sidebar = () => {
 }
 
 const NavItem = ({ item }) => {
-    const { label, icon, to, children } = item
+    const { label, icon: IconNav, to, children } = item
 
     if (children) {
         return <NavItemHeader item={item} />
@@ -73,8 +73,8 @@ const NavItem = ({ item }) => {
             to={to}
             className={({ isActive }) => isActive ? "active" : ""}
         >
-            {icon && <img src={imageSysGet(icon)} alt="img" width="24" height="24" />}
-            <span className={icon && "ms-2"}>{label}</span>
+            {item.icon && <IconNav />}
+            <span className={item.icon && "ms-2"}>{label}</span>
         </NavLink>
     )
 }
@@ -82,7 +82,7 @@ const NavItem = ({ item }) => {
 const NavItemHeader = ({ item }) => {
     const location = useLocation()
 
-    const { label, icon, to: headerToPath, children } = item
+    const { label, icon: IconNav, to: headerToPath, children } = item
     const [expanded, setExpand] = useState(
         location.pathname.includes(headerToPath)
     )
@@ -100,8 +100,8 @@ const NavItemHeader = ({ item }) => {
                         className={`has-sub ${expanded ? "active" : ""}`}
                         onClick={onExpandChange}
                     >
-                        {icon && <img src={imageSysGet(icon)} alt="img" width="24" height="24" />}
-                        <span className={icon && "ms-2"}>{label}</span>
+                        {item.icon && <IconNav />}
+                        <span className={item.icon && "ms-2"}>{label}</span>
                     </button>
 
                     {expanded && (

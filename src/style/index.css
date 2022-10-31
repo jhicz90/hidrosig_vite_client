@@ -110,6 +110,11 @@ body {
 	z-index: 500;
 }
 
+.command-palette img.icon-sys {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
 @media (prefers-color-scheme: dark) {
 	.command-palette .dark\:bg-gray-900 {
 		--tw-bg-opacity: 1;
@@ -299,9 +304,18 @@ body {
 
 /* Inverter Sidebar */
 
+.sidebar-app.sidebar-inverted nav a *:not(span),
+.sidebar-app.sidebar-inverted nav button *:not(span) {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
 .sidebar-app.sidebar-inverted nav a,
 .sidebar-app.sidebar-inverted nav button {
 	color: #9da9bb;
+	display: flex;
+	align-items: center;
+	justify-content: left;
 }
 
 .sidebar-app.sidebar-inverted nav a:hover {

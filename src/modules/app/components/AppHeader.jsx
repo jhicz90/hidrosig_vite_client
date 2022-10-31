@@ -6,8 +6,7 @@ import styled from 'styled-components'
 import { FaBell, FaEnvelope, FaSearch } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 
-import { logoutAuth } from '../../../store/actions'
-import { imageGet, imageSysGet } from '../../../helpers'
+import { logoutAuth, setCmkbarShow } from '../../../store/actions'
 
 import logoApp from '../../../assets/logo192.png'
 import { AvatarProfile } from '../../../components'
@@ -51,7 +50,7 @@ export const AppHeader = () => {
                     <div className='menu-search-input'>
                         <input type='text' className='form-control' placeholder='Buscar...' />
                     </div>
-                    <div className='menu-search-kbar dark-apple'>
+                    <div onClick={() => dispatch(setCmkbarShow(true))} className='menu-search-kbar dark-apple'>
                         <kbd>CTRL+K</kbd>
                     </div>
                 </div>

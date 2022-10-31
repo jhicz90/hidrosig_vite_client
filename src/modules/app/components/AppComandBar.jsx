@@ -1,20 +1,22 @@
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { MD5 } from 'crypto-js'
 import CommandPalette, { useHandleOpenCommandPalette, filterItems, renderJsonStructure } from 'react-cmdk'
 import { menuModule } from '../../../types'
 import { checkModules, comandModules } from '../../../helpers'
+import { setCmkbarShow } from '../../../store/actions'
 
 const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
 
 export const AppComandBar = () => {
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [open, setOpen] = useState(false)
     const [search, setSearch] = useState('')
     const [page, setPage] = useState('root')
 
+    const { cmkbar: { show } } = useSelector(state => state.app)
     const { modAccess: modules } = useSelector(state => state.auth)
     const actions = comandModules(modules.find(m => m === MD5(secretAccess).toString()) ? [...menuModule] : checkModules([...menuModule], modules))
 
@@ -27,7 +29,7 @@ export const AppComandBar = () => {
                     {
                         id: c.id,
                         children: c.label,
-                        icon: c.rcIcon,
+                        icon: c.icon,
                         showType: false,
                         closeOnSelect: c.children ? false : true,
                         onClick: () => {
@@ -45,13 +47,13 @@ export const AppComandBar = () => {
         search
     )
 
-    useHandleOpenCommandPalette(setOpen)
+    useHandleOpenCommandPalette((handle) => dispatch(setCmkbarShow(handle())))
 
     return (
         <CommandPalette
-            isOpen={open}
+            isOpen={show}
             onChangeOpen={(e) => {
-                setOpen(e)
+                dispatch(setCmkbarShow(e))
                 setPage('root')
             }}
             search={search}
@@ -73,7 +75,7 @@ export const AppComandBar = () => {
                                     {
                                         id: c.id,
                                         children: c.label,
-                                        icon: c.rcIcon,
+                                        icon: c.icon,
                                         showType: false,
                                         closeOnSelect: true,
                                         onClick: () => {
