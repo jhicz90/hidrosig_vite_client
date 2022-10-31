@@ -9,7 +9,7 @@ export const WebHeader = () => {
     const { uid } = useSelector(state => state.auth)
 
     return (
-        <Navbar fixed="top" bg="light" expand="md">
+        <Navbar fixed="top" bg="white" expand="md">
             <Container>
                 <Link to={`/web`} className="navbar-brand">
                     <img

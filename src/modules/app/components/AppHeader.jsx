@@ -114,21 +114,21 @@ export const AppHeader = () => {
 }
 
 const HeaderApp = styled.header`
-    border: none;
-    position: sticky;
-    top: 0;
-    padding: 0;
-    padding-left: 10px;
-    padding-right: 10px;
-    z-index: 900;
-    height: 60px;
+    align-items: center;
     background: #fff;
+    border: none;
+    box-shadow: 0 6px 6px rgb(0 18 25 / 10%);
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    height: 60px;
     justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 0;
+    position: sticky;
+    top: 0;
     transition: box-shadow 0.2s linear;
-    box-shadow: 0 6px 6px rgb(0 18 25 / 10%);
+    z-index: 900;
 
     & .mobile-toggler {
         margin-right: auto;

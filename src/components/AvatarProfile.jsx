@@ -65,8 +65,9 @@ const ProfileAvatar = styled.div`
         width: 120px;
         object-fit: contain;
         border-radius: 50%;
-        border: 0.25rem solid #fff;
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        border: 1px solid #fff;
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+        border-color: rgba(13,110, 253, 1)!important;
     }
 
     & label {
