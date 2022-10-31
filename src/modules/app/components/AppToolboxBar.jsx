@@ -1,26 +1,29 @@
-import { Card, Container } from 'react-bootstrap'
 import styled from 'styled-components'
 import { CreateBlock, CreatePettyCash } from '../../'
 
 export const AppToolboxBar = () => {
 
     return (
-        <Container>
-            <Card>
-                <Card.Body>
-                    <NavBarMain>
-                        <NavBarInfo>
-                            Titulo o subtitulo de la página
-                        </NavBarInfo>
-                        <NavBarTool>
-                            <CreateBlock />
-                            <CreatePettyCash />
-                            {/* Aqui van los botones de accion rapida */}
-                        </NavBarTool>
-                    </NavBarMain>
-                </Card.Body>
-            </Card>
-        </Container>
+        <div
+            className='rounded-0 shadow-none mb-3'
+            style={{
+                backgroundColor: '#fff3cd',
+                borderBottom: '1px solid #ffc107'
+            }}
+        >
+            <div className='p-3'>
+                <NavBarMain>
+                    <NavBarInfo>
+                        Titulo o subtitulo de la página
+                    </NavBarInfo>
+                    <NavBarTool>
+                        <CreateBlock />
+                        <CreatePettyCash />
+                        {/* Aqui van los botones de accion rapida */}
+                    </NavBarTool>
+                </NavBarMain>
+            </div>
+        </div>
     )
 }
 

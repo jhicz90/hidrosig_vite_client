@@ -116,9 +116,8 @@ export const AppHeader = () => {
 
 const HeaderApp = styled.header`
     border: none;
-    position: fixed;
-    left: 0;
-    right: 0;
+    position: sticky;
+    top: 0;
     padding: 0;
     padding-left: 10px;
     padding-right: 10px;

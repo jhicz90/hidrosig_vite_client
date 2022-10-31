@@ -2,19 +2,17 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import { ResourceUpload } from '../../../components'
-// import { ResourceUpload } from '../../components'
 import { AppComandBar, AppHeader, AppSidebar, AppToolboxBar } from '../components'
 
 export const Layout = () => {
     return (
         <RootApp className='root-app animate__animated animate__fadeIn'>
             <AppHeader />
-            <AppSidebar />
             <ContentApp className='content-app'>
+                <AppSidebar />
                 <AppToolboxBar />
                 <Outlet />
             </ContentApp>
-            {/* <ResourceUpload /> */}
             <AppComandBar />
             <ResourceUpload />
         </RootApp>
@@ -26,15 +24,15 @@ const RootApp = styled.div`
 `
 
 const ContentApp = styled.main`
-    padding-top: 60px;
+    /* padding-top: 60px; */
     margin-left: 220px;
     position: relative;
     min-height: 100%;
 
-    & .container,
+    /* & .container,
     & .container-fluid {
         margin: 20px auto;
-    }
+    } */
 
     @media (max-width: 1200px) {
         margin-left: 0;
