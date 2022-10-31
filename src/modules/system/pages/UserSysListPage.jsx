@@ -1,7 +1,25 @@
+import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
-import { UserSysList } from '../components'
+import { useDispatch } from 'react-redux'
+import { clearToolbarActions, setToolbarActions } from '../../../store/app'
+import { CreateUserSys, UserSysList } from '../components'
 
 export const UserSysListPage = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setToolbarActions(
+            <>
+                <CreateUserSys />
+            </>
+        ))
+
+        return () => {
+            dispatch(clearToolbarActions())
+        }
+    }, [dispatch])
+
     return (
         <div className='container'>
             <div className='row justify-content-center'>

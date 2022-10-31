@@ -3,6 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query'
 
 import { storeApi } from './'
 
+import { appSlice } from './app'
 import { authSlice } from './auth'
 import { occupationSlice } from './occupation'
 import { roleSlice } from './role'
@@ -21,6 +22,7 @@ import { voucherSlice } from './voucher'
 
 export const store = configureStore({
     reducer: {
+        app: appSlice.reducer,
         auth: authSlice.reducer,
         occupation: occupationSlice.reducer,
         role: roleSlice.reducer,

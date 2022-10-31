@@ -1,35 +1,41 @@
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { CreateBlock, CreatePettyCash } from '../../'
 
 export const AppToolboxBar = () => {
 
+    const { toolbarActions } = useSelector(state => state.app)
+
     return (
-        <div
-            className='rounded-0 shadow-none mb-3'
-            style={{
-                backgroundColor: '#fff3cd',
-                borderBottom: '1px solid #ffc107'
-            }}
-        >
-            <div className='p-3'>
-                <NavBarMain>
-                    <NavBarInfo>
-                        Titulo o subtitulo de la página
-                    </NavBarInfo>
-                    <NavBarTool>
-                        <CreateBlock />
-                        <CreatePettyCash />
-                        {/* Aqui van los botones de accion rapida */}
-                    </NavBarTool>
-                </NavBarMain>
-            </div>
-        </div>
+        <>
+            {
+                !!toolbarActions
+                &&
+                <div
+                    className='rounded-0 shadow-none mb-3'
+                    style={{
+                        backgroundColor: '#fff3cd',
+                        borderBottom: '1px solid #ffc107'
+                    }}
+                >
+                    <NavBarMain>
+                        <NavBarInfo>
+                            Titulo o subtitulo de la página
+                        </NavBarInfo>
+                        <NavBarTool>
+                            {toolbarActions}
+                        </NavBarTool>
+                    </NavBarMain>
+                </div>
+            }
+        </>
     )
 }
 
 const NavBarMain = styled.div`
     display: flex;
     justify-content: space-between;
+    padding: 1rem;
+    min-height: 70px;
 `
 
 const NavBarInfo = styled.div`

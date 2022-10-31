@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
 import validator from 'validator'
-import { setActivePettycash, startGetPettycash } from '../../../store/actions'
+import { clearToolbarActions, setActivePettycash, setToolbarActions, startGetPettycash } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
+import { CreateVoucher, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
 
 export const PettyCashActivePage = () => {
 
@@ -17,11 +17,19 @@ export const PettyCashActivePage = () => {
     useEffect(() => {
         if (validator.isMongoId(pettycashid)) {
             dispatch(startGetPettycash(pettycashid))
+            dispatch(setToolbarActions(
+                <>
+                    <CreateVoucher pettycash={active} />
+                </>
+            ))
         } else {
             navigate(-1)
         }
 
-        return () => dispatch(setActivePettycash(null))
+        return () => {
+            dispatch(setActivePettycash(null))
+            dispatch(clearToolbarActions())
+        }
     }, [pettycashid, dispatch])
 
     return (

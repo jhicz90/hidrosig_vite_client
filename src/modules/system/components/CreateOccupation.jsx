@@ -28,7 +28,7 @@ export const CreateOccupation = ({ typeButton = 1 }) => {
                     dispatch(startAddNewOccupation())
                 }}
             >
-                Nuevo ocupación
+                Nueva ocupación
             </Button>
             <Modal
                 show={!!activeNew}

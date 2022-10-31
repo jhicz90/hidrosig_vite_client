@@ -1,7 +1,25 @@
+import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
-import { OccupationList } from '../components'
+import { useDispatch } from 'react-redux'
+import { clearToolbarActions, setToolbarActions } from '../../../store/actions'
+import { CreateOccupation, OccupationList } from '../components'
 
 export const OccupationListPage = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setToolbarActions(
+            <>
+                <CreateOccupation />
+            </>
+        ))
+
+        return () => {
+            dispatch(clearToolbarActions())
+        }
+    }, [dispatch])
+
     return (
         <div className='container'>
             <div className='row justify-content-center'>

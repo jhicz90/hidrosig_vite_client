@@ -6,8 +6,8 @@ import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import validator from 'validator'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { setActiveUserSys, startGetUserSys } from '../../../store/actions'
-import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete } from '../components'
+import { clearToolbarActions, setActiveUserSys, setToolbarActions, startGetUserSys } from '../../../store/actions'
+import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete, CreateUserSys, CreateOccupation } from '../components'
 
 export const UserSysActivePage = () => {
 
@@ -19,11 +19,20 @@ export const UserSysActivePage = () => {
     useEffect(() => {
         if (validator.isMongoId(userid)) {
             dispatch(startGetUserSys(userid))
+            dispatch(setToolbarActions(
+                <>
+                    <CreateUserSys />
+                    <CreateOccupation />
+                </>
+            ))
         } else {
             navigate(-1)
         }
 
-        return () => dispatch(setActiveUserSys(null))
+        return () => {
+            dispatch(setActiveUserSys(null))
+            dispatch(clearToolbarActions())
+        }
     }, [userid, dispatch])
 
     return (

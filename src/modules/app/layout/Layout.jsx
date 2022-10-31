@@ -29,10 +29,10 @@ const ContentApp = styled.main`
     position: relative;
     min-height: 100%;
 
-    /* & .container,
+    & .container,
     & .container-fluid {
         margin: 20px auto;
-    } */
+    }
 
     @media (max-width: 1200px) {
         margin-left: 0;

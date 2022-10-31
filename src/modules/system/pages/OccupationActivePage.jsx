@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FiBarChart2, FiUsers } from 'react-icons/fi'
 import validator from 'validator'
-import { setActiveOccupation, startGetOccupation, } from '../../../store/actions'
+import { clearToolbarActions, setActiveOccupation, setToolbarActions, startGetOccupation, } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { OccupationModuleBanner, OccupationModuleDelete, OccupationModuleInformation, OccupationModuleLevel, OccupationModuleToUsers } from '../components'
 
@@ -18,11 +18,19 @@ export const OccupationActivePage = () => {
     useEffect(() => {
         if (validator.isMongoId(occupid)) {
             dispatch(startGetOccupation(occupid))
+            dispatch(setToolbarActions(
+                <>
+                    <button className='btn btn-neutral'>Agregar usuarios</button>
+                </>
+            ))
         } else {
             navigate(-1)
         }
 
-        return () => dispatch(setActiveOccupation(null))
+        return () => {
+            dispatch(setActiveOccupation(null))
+            dispatch(clearToolbarActions())
+        }
     }, [occupid, dispatch])
 
     return (

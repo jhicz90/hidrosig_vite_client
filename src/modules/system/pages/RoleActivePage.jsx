@@ -5,9 +5,9 @@ import { BsInfoCircle, BsShieldLock, BsTrash } from 'react-icons/bs'
 import { RiShieldUserLine } from 'react-icons/ri'
 import { FaBuffer } from 'react-icons/fa'
 import validator from 'validator'
-import { setActiveRole, startGetRole } from '../../../store/actions'
+import { clearToolbarActions, setActiveRole, setToolbarActions, startGetRole } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { RoleModuleBanner, RoleModuleDelete, RoleModuleInformation, RoleModuleLevel, RoleModuleModuleAccess, RoleModulePermissions } from '../components'
+import { CreateModule, CreatePermission, CreateRole, RoleModuleBanner, RoleModuleDelete, RoleModuleInformation, RoleModuleLevel, RoleModuleModuleAccess, RoleModulePermissions } from '../components'
 
 export const RoleActivePage = () => {
 
@@ -19,11 +19,20 @@ export const RoleActivePage = () => {
     useEffect(() => {
         if (validator.isMongoId(roleid)) {
             dispatch(startGetRole(roleid))
+            dispatch(setToolbarActions(
+                <>
+                    <CreatePermission />
+                    <CreateModule />
+                </>
+            ))
         } else {
             navigate(-1)
         }
 
-        return () => dispatch(setActiveRole(null))
+        return () => {
+            dispatch(setActiveRole(null))
+            dispatch(clearToolbarActions())
+        }
     }, [roleid, dispatch])
 
     return (
