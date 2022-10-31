@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Card, ListGroup } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
-import { useGetVouchersByPettyCashQuery } from '../../../store/actions'
+import { Button, ButtonGroup, Card, ListGroup } from 'react-bootstrap'
+import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
+import { startDeleteIdVoucher, startUpdateImageIdVoucher, startUploadResources, useGetVouchersByPettyCashQuery } from '../../../store/actions'
 import { Image, ImageLightbox, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
+import { CreateVoucher } from './CreateVoucher'
 import { imageGet } from '../../../helpers'
 
 export const PettyCashModuleVouchers = () => {
@@ -19,6 +20,7 @@ export const PettyCashModuleVouchers = () => {
 
 const PettyCashVoucher = () => {
 
+    const dispatch = useDispatch()
     const { active } = useSelector(state => state.pettycash)
     const { data: vouchersIn = [], isLoading } = useGetVouchersByPettyCashQuery({ pettycash: active._id, search: '' }, { refetchOnMountOrArgChange: true })
 
@@ -32,6 +34,19 @@ const PettyCashVoucher = () => {
         setOpenLightbox(true)
     }
 
+    const handleImageVoucher = (file, voucher) => {
+        dispatch(startUploadResources({
+            files: [file],
+            tags: ['comprobante', 'caja chica', `${voucher.serie}-${voucher.numReceipt}`],
+            multiple: false,
+            setArchive: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
+        }))
+    }
+
+    const handleDeleteVoucher = (voucher) => {
+        dispatch(startDeleteIdVoucher(voucher))
+    }
+
     return (
         <>
             <SettingBlock
@@ -39,11 +54,12 @@ const PettyCashVoucher = () => {
                 loading={isLoading}
                 action={
                     <SettingAction>
-                        <button className='btn btn-neutral'>Nuevo comprobante</button>
+                        <CreateVoucher pettycash={active} />
                     </SettingAction>
                 }
                 list={
                     <TableGrid
+                        style={{ borderRadius: '0 0 9px 9px' }}
                         renderEmpty={() => <strong className='mx-3 fs-5'>No ahi comprobantes asociadas a esta caja chica</strong>}
                         rows={vouchersIn}
                         columns={
@@ -66,7 +82,13 @@ const PettyCashVoucher = () => {
                                         item.numReceipt
                                 },
                                 {
+                                    label: 'MONTO',
+                                    renderCell: (item) =>
+                                        <span>{item.amountReceipt.toFixed(2)}</span>
+                                },
+                                {
                                     label: 'COMPROBANTES',
+                                    width: '200px',
                                     renderCell: (item) => {
                                         const imageData = item.images.map(({ fileName }) => ({
                                             src: imageGet(fileName, { size: 1000 }),
@@ -88,6 +110,36 @@ const PettyCashVoucher = () => {
                                                         />
                                                     )
                                                 }
+                                                {
+                                                    item.images.length < 4
+                                                    &&
+                                                    <>
+                                                        <input
+                                                            className='d-none'
+                                                            id={`input-upload-${item._id}`}
+                                                            type='file'
+                                                            multiple={false}
+                                                            accept='image/jpeg, image/png'
+                                                            onChange={(e) => handleImageVoucher(e.target.files[0], item)}
+                                                        />
+                                                        <label
+                                                            htmlFor={`input-upload-${item._id}`}
+                                                            className='btn btn-sm btn-neutral shadow-sm'
+                                                            variant='neutral'
+                                                            size='sm'
+                                                            style={{
+                                                                padding: 0,
+                                                                width: '30px',
+                                                                height: '30px',
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center'
+                                                            }}
+                                                        >
+                                                            <FaPlus />
+                                                        </label>
+                                                    </>
+                                                }
                                             </div>
                                         )
                                     }
@@ -104,17 +156,23 @@ const PettyCashVoucher = () => {
                                 },
                                 {
                                     label: 'ACCIÓN',
-                                    width: '100px',
+                                    width: '120px',
                                     pinRight: true,
                                     renderCell: (item) =>
-                                        <div className='btn-group'>
+                                        <ButtonGroup size='sm'>
                                             <Link
                                                 className='btn btn-neutral'
                                                 to={`/app/acct//${item._id}`}
                                             >
                                                 <FaPen />
                                             </Link>
-                                        </div>
+                                            <Button
+                                                onClick={() => handleDeleteVoucher(item)}
+                                                variant='danger'
+                                            >
+                                                <FaTrash />
+                                            </Button>
+                                        </ButtonGroup>
                                 }
                             ]
                         }

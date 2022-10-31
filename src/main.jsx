@@ -12,6 +12,7 @@ setDefaultLocale('es')
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-cmdk/dist/cmdk.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import '@sweetalert2/theme-bootstrap-4/bootstrap-4.min.css'
 import 'animate.css'
 import './style/index.css'
 

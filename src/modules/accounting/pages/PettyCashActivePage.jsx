@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { BsInfoCircle, BsReceipt } from 'react-icons/bs'
+import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
 import validator from 'validator'
 import { setActivePettycash, startGetPettycash } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { PettyCashModuleBanner, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
+import { PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
 
 export const PettyCashActivePage = () => {
 
@@ -47,13 +47,13 @@ export const PettyCashActivePage = () => {
                                         title: true,
                                         module: PettyCashModuleVouchers
                                     },
-                                    // {
-                                    //     id: 'deletepettycash',
-                                    //     icon: BsTrash,
-                                    //     name: 'Eliminar comisión',
-                                    //     title: true,
-                                    //     module: CommitteeModuleDelete
-                                    // }
+                                    {
+                                        id: 'deletepettycash',
+                                        icon: BsTrash,
+                                        name: 'Eliminar caja chica',
+                                        title: true,
+                                        module: PettyCashModuleDelete
+                                    }
                                 ]
                             }
                         >

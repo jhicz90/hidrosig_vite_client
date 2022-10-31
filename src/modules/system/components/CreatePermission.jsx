@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Modal, Button, Form } from 'react-bootstrap'
+import { Card, Modal, Button, Form, Offcanvas } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useAddNewPermMutation, useGetPermsGroupQuery } from '../../../store/actions'
 
@@ -31,16 +31,15 @@ export const CreatePermission = ({ typeButton = 1 }) => {
             >
                 Nuevo permiso
             </Button>
-            <Modal
+            <Offcanvas
                 show={showModal}
                 onHide={() => setShowModal(false)}
-                backdrop='static'
-                size='lg'
+                placement='end'
             >
-                <Modal.Header closeButton={!isLoading}>
-                    <Modal.Title>Crear permiso</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <Offcanvas.Header closeButton={!isLoading}>
+                    <Offcanvas.Title>Crear permiso</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
                     <Card.Body>
                         <form onSubmit={handleSubmit(handleSave)}>
                             <div className='row'>
@@ -131,8 +130,8 @@ export const CreatePermission = ({ typeButton = 1 }) => {
                             </div>
                         </form>
                     </Card.Body>
-                </Modal.Body>
-            </Modal>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }

@@ -2,7 +2,7 @@ import { CompactTable } from '@table-library/react-table-library/compact'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 
-export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoResults }) => {
+export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoResults, className = '', style = {} }) => {
     const theme = useTheme([
         getTheme(),
         {
@@ -20,20 +20,20 @@ export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoR
             `,
             BaseCell: `
                 ${columns.map((c, i) => {
-                    if (!c.pinRight) {
-                        return ''
-                    } else {
-                        return `
+                if (!c.pinRight) {
+                    return ''
+                } else {
+                    return `
                         &:nth-of-type(${i + 1}) {
                             right: 0px;
                             background-color: white;
                         }`
-                    }
-                })}
+                }
+            })}
 
                 padding: 9px 16px !important;
             `,
-            HeaderCell:`
+            HeaderCell: `
                 background-color: white !important;
             `
         }
@@ -42,7 +42,7 @@ export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoR
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
 
     return (
-        <div style={{ height: '400px' }}>
+        <div className={className} style={{ height: '400px', overflow: 'hidden', ...style }}>
             {
                 rows.length > 0
                     ?

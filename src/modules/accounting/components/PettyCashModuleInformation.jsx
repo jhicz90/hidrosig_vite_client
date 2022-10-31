@@ -43,6 +43,7 @@ export const PettyCashModuleInformation = () => {
                                     {...register('code', { required: true })}
                                     type='text'
                                     autoComplete='off'
+                                    readOnly
                                 />
                             </Form.Group>
                         </div>

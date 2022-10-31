@@ -111,24 +111,6 @@ export const startUpdateImageUserSys = (image) => {
     }
 }
 
-export const startUpdateCoverUserSys = ({ coverImage }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/cover/${_id}`,
-            data: { coverImage },
-            method: 'PUT'
-        })
-
-        if (resp.ok) {
-            dispatch(loadActiveUserSys(resp.usersys))
-        }
-    }
-}
-
-
 export const startUpdateStatusUserSys = (status) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys

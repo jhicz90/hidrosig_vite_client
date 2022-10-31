@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Card, Modal, Button, Form } from 'react-bootstrap'
+import { Card, Modal, Button, Form, Offcanvas } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useAddNewModuleMutation, useGetModulesGroupQuery } from '../../../store/actions'
 
@@ -20,7 +20,7 @@ export const CreateModule = ({ typeButton = 1 }) => {
             setShowModal(false)
         }
     }, [isSuccess])
-    
+
     return (
         <>
             <Button
@@ -31,16 +31,15 @@ export const CreateModule = ({ typeButton = 1 }) => {
             >
                 Nuevo módulo
             </Button>
-            <Modal
+            <Offcanvas
                 show={showModal}
                 onHide={() => setShowModal(false)}
-                backdrop='static'
-                size='lg'
+                placement='end'
             >
-                <Modal.Header closeButton={!isLoading}>
-                    <Modal.Title>Crear módulo</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <Offcanvas.Header closeButton={!isLoading}>
+                    <Offcanvas.Title>Crear módulo</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
                     <Card.Body>
                         <form onSubmit={handleSubmit(handleSave)}>
                             <div className='row'>
@@ -131,8 +130,8 @@ export const CreateModule = ({ typeButton = 1 }) => {
                             </div>
                         </form>
                     </Card.Body>
-                </Modal.Body>
-            </Modal>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }
