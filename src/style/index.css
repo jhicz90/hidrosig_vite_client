@@ -107,7 +107,7 @@ body {
 }
 
 .command-palette {
-	z-index: 500;
+	z-index: 1060;
 }
 
 .command-palette img.icon-sys {
@@ -120,6 +120,10 @@ body {
 		--tw-bg-opacity: 1;
 		background-color: rgb(17 24 39 / var(--tw-bg-opacity)) !important;
 	}
+}
+
+.modal-backdrop {
+	--bs-backdrop-bg: rgb(17 24 39 / 1);
 }
 
 /* LOADING */
