@@ -11,20 +11,22 @@ export const AppToolboxBar = () => {
                 (!!actions && title === '')
                 &&
                 <div
-                    className='rounded-0 shadow-none mb-3'
+                    className='rounded-0 shadow-none'
                     style={{
                         backgroundColor: '#fff3cd',
                         borderBottom: '1px solid #ffc107'
                     }}
                 >
-                    <NavBarMain>
-                        <NavBarInfo>
-                            {title}
-                        </NavBarInfo>
-                        <NavBarTool>
-                            {actions}
-                        </NavBarTool>
-                    </NavBarMain>
+                    <div className="container g-0">
+                        <NavBarMain>
+                            <NavBarInfo>
+                                {title}
+                            </NavBarInfo>
+                            <NavBarTool>
+                                {actions}
+                            </NavBarTool>
+                        </NavBarMain>
+                    </div>
                 </div>
             }
         </>

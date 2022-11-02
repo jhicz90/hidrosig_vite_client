@@ -29,8 +29,8 @@ const ContentApp = styled.main`
     position: relative;
     min-height: 100%;
 
-    & .container,
-    & .container-fluid {
+    & > .container,
+    & > .container-fluid {
         margin: 20px auto;
     }
 
