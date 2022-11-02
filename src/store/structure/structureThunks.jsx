@@ -3,127 +3,127 @@ import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
 import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork } from '../irrigationnetwork'
-import { addNewWaterSource, setActiveNewWaterSource, setActiveWaterSource, setSavingWaterSource, setSavingNewWaterSource } from './watersourceSlice'
+import { addNewStructure, setActiveNewStructure, setActiveStructure, setSavingStructure, setSavingNewStructure } from './structureSlice'
 
 const SwalReact = withReactContent(Swal)
 
-export const startAddNewWaterSource = () => {
+export const startAddNewStructure = () => {
     return async (dispatch) => {
 
-        dispatch(addNewWaterSource())
+        dispatch(addNewStructure())
 
         const resp = await fetchByToken({
-            endpoint: `watersource/create/new`
+            endpoint: `structure/create/new`
         })
 
-        dispatch(setSavingNewWaterSource(false))
+        dispatch(setSavingNewStructure(false))
 
         if (resp.ok) {
-            dispatch(setActiveNewWaterSource(resp.watersource))
+            dispatch(setActiveNewStructure(resp.structure))
         }
     }
 }
 
-export const startSaveNewWaterSource = () => {
+export const startSaveNewStructure = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNewWaterSource(true))
+        dispatch(setSavingNewStructure(true))
 
-        const { activeNew } = getState().watersource
+        const { activeNew } = getState().structure
 
-        const newWaterSource = {
+        const newStructure = {
             ...activeNew,
             junta: activeNew.junta !== null ? activeNew.junta._id : null,
         }
 
         const resp = await fetchByToken({
-            endpoint: `watersource/create/new`,
-            data: newWaterSource,
+            endpoint: `structure/create/new`,
+            data: newStructure,
             method: 'POST'
         })
 
-        dispatch(setSavingNewWaterSource(false))
+        dispatch(setSavingNewStructure(false))
 
         if (resp.ok) {
             dispatch(storeApi.util.invalidateTags(['Trrt']))
-            dispatch(setActiveNewWaterSource(null))
+            dispatch(setActiveNewStructure(null))
         }
     }
 }
 
-export const startGetWaterSource = (id) => {
+export const startGetStructure = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSavingWaterSource(true))
+        dispatch(setSavingStructure(true))
 
         const resp = await fetchByToken({
-            endpoint: `watersource/edit/${id}`
+            endpoint: `structure/edit/${id}`
         })
 
-        dispatch(setSavingWaterSource(false))
+        dispatch(setSavingStructure(false))
 
         if (resp.ok) {
-            dispatch(setActiveWaterSource(resp.watersource))
+            dispatch(setActiveStructure(resp.structure))
         }
     }
 }
 
-export const startUpdateWaterSource = () => {
+export const startUpdateStructure = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingWaterSource(true))
+        dispatch(setSavingStructure(true))
 
-        const { active } = getState().watersource
+        const { active } = getState().structure
         const { _id } = active
 
-        const updateWaterSource = {
+        const updateStructure = {
             ...active
         }
 
         const resp = await fetchByToken({
-            endpoint: `watersource/edit/${_id}`,
-            data: updateWaterSource,
+            endpoint: `structure/edit/${_id}`,
+            data: updateStructure,
             method: 'PUT'
         })
 
-        dispatch(setSavingWaterSource(false))
+        dispatch(setSavingStructure(false))
 
         if (resp.ok) {
-            dispatch(setActiveWaterSource(resp.watersource))
+            dispatch(setActiveStructure(resp.structure))
         }
     }
 }
 
-export const startUpdateDataWaterSourceInIrrigNet = (watersource) => {
+export const startUpdateDataStructureInIrrigNet = (structure) => {
     return async (dispatch, getState) => {
 
         dispatch(setActiveNodeLoadingIrrigationNetwork(true))
 
-        const { _id } = watersource
+        const { _id } = structure
 
-        const updateWaterSource = {
-            ...watersource
+        const updateStructure = {
+            ...structure
         }
 
         const resp = await fetchByToken({
-            endpoint: `watersource/edit/${_id}`,
-            data: updateWaterSource,
+            endpoint: `structure/edit/${_id}`,
+            data: updateStructure,
             method: 'PUT'
         })
 
         dispatch(setActiveNodeLoadingIrrigationNetwork(false))
 
         if (resp.ok) {
-            if (getState().activeNode.id === resp.watersource._id) {
-                dispatch(setActiveNodeDataIrrigationNetwork(resp.watersource))
+            if (getState().activeNode.id === resp.structure._id) {
+                dispatch(setActiveNodeDataIrrigationNetwork(resp.structure))
             }
         }
     }
 }
 
-export const startDeleteWaterSource = ({ navigate = null }) => {
+export const startDeleteStructure = ({ navigate = null }) => {
     return async (dispatch, getState) => {
-        const { active } = getState().watersource
+        const { active } = getState().structure
         const { _id, name } = active
 
         const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
@@ -164,46 +164,20 @@ export const startDeleteWaterSource = ({ navigate = null }) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSavingWaterSource(true))
+                dispatch(setSavingStructure(true))
 
                 const resp = await fetchByToken({
-                    endpoint: `watersource/delete/${_id}`,
+                    endpoint: `structure/delete/${_id}`,
                     method: 'DELETE'
                 })
 
-                dispatch(setSavingWaterSource(false))
+                dispatch(setSavingStructure(false))
 
                 if (resp.ok) {
                     navigate('/app/ambit/trrty')
-                    dispatch(setActiveWaterSource(null))
+                    dispatch(setActiveStructure(null))
                 }
             }
         })
-    }
-}
-
-export const searchWaterSource = async (search) => {
-    const resp = await fetchByToken({
-        endpoint: 'watersource/search',
-        params: { search }
-    })
-
-    if (resp.ok) {
-        return resp.docs
-    } else {
-        return []
-    }
-}
-
-export const searchWaterSourceByJunta = async (junta, search) => {
-    const resp = await fetchByToken({
-        endpoint: `watersource/search_by_junta/${junta}`,
-        params: { search }
-    })
-
-    if (resp.ok) {
-        return resp.docs
-    } else {
-        return []
     }
 }

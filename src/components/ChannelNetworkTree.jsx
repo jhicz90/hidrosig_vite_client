@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
-import { FaChevronDown, FaChevronRight, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
+import { FaChevronDown, FaChevronRight, FaRedoAlt, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
 import { InputSearch } from './InputSearch'
 import { searchIrrigationNetworkByJunta, setActiveNodeIrrigationNetwork, setNetIrrigExpIrrigationNetwork } from '../store/actions'
 import { childrenNode, treeNetIrrig } from '../helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
-export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) => {
+export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true, children }) => {
 
     const dispatch = useDispatch()
     const { activeAmbit, netIrrig, netIrrigExp, netIrrigChk } = useSelector(state => state.irrigationnetwork)
@@ -87,7 +87,7 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
                     }
                 }
             }
-            dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth }))
+            dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth, data: null, loading: false }))
         }
     }
 
@@ -107,6 +107,10 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
         }
     }
 
+    const handleReload = () => {
+        dispatch(searchIrrigationNetworkByJunta(activeAmbit))
+    }
+
     useEffect(() => {
         document.addEventListener('keydown', keyEvent)
         document.addEventListener('keyup', keyEvent)
@@ -121,6 +125,17 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
             <Form.Group as={Row} className='my-3 px-3' controlId='uChannel'>
                 <Col xs='auto'>
                     <InputSearch value={search} onChange={(e) => setSearch(e)} />
+                </Col>
+                <Col xs='auto'>
+                    <Button
+                        onClick={handleReload}
+                        variant='neutral'
+                    >
+                        <FaRedoAlt size={20} />
+                    </Button>
+                </Col>
+                <Col>
+                    {children}
                 </Col>
             </Form.Group>
             <div className='row my-3 px-3'>

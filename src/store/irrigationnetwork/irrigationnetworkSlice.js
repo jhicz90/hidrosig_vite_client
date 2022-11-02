@@ -8,7 +8,9 @@ export const irrigationnetworkSlice = createSlice({
         activeNode: {
             id: '',
             name: '',
-            depth: ''
+            depth: '',
+            data: null,
+            loading: false,
         },
         netIrrig: [],
         netIrrigExp: [],
@@ -20,6 +22,21 @@ export const irrigationnetworkSlice = createSlice({
         },
         setActiveNodeIrrigationNetwork: (state, { payload }) => {
             state.activeNode = payload
+        },
+        setActiveNodeDataIrrigationNetwork: (state, { payload }) => {
+            state.activeNode.data = payload
+        },
+        clearActiveNodeIrrigationNetwork: (state) => {
+            state.activeNode = {
+                id: '',
+                name: '',
+                depth: '',
+                data: null,
+                loading: false,
+            }
+        },
+        setActiveNodeLoadingIrrigationNetwork: (state, { payload }) => {
+            state.activeNode.loading = payload
         },
         setNetIrrigIrrigationNetwork: (state, { payload }) => {
             state.netIrrig = payload
@@ -47,4 +64,7 @@ export const {
     setNetIrrigChkIrrigationNetwork,
     setSavingIrrigationNetwork,
     setSavingNewIrrigationNetwork,
+    clearActiveNodeIrrigationNetwork,
+    setActiveNodeDataIrrigationNetwork,
+    setActiveNodeLoadingIrrigationNetwork,
 } = irrigationnetworkSlice.actions

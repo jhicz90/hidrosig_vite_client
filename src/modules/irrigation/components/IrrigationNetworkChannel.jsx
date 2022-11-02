@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Col, Form, Row } from 'react-bootstrap'
-import { FaPen, FaTimes, FaTrashAlt } from 'react-icons/fa'
+import { Col, Form, Row } from 'react-bootstrap'
 import { ChannelNetworkTree } from '../../../components'
+import { IrrigationNetworkActive } from './IrrigationNetworkActive'
 import { setActiveAmbitIrrigationNetwork, useGetJuntasQuery } from '../../../store/actions'
 
 export const IrrigationNetworkChannel = () => {
@@ -29,46 +29,11 @@ export const IrrigationNetworkChannel = () => {
                 </Col>
             </Form.Group>
             {
-                <div className="row">
-                    <div className="col-12">
-                        {
-                            activeNode.id !== '' &&
-                            <div className="input-group">
-                                {/* <CreateStructure classNameBtn="btn btn-neutral" icon={true} /> */}
-                                <button
-                                    // onClick={handleClickDelete}
-                                    className="btn btn-neutral ui-text-red">
-                                    <FaTrashAlt />
-                                </button>
-                                {/* {
-                                    activeNode.depth === 0
-                                    &&
-                                    <button
-                                        onClick={handleClickSee}
-                                        className="btn btn-neutral">
-                                        Ver
-                                    </button>
-                                } */}
-                                <Button
-                                    // onClick={handleClickSeeDetail}
-                                    variant='neutral'
-                                >
-                                    <FaPen />
-                                </Button>
-                                <span className="input-group-text">{activeNode.name}</span>
-                                <button
-                                    // onClick={handleClearNode}
-                                    className="btn btn-neutral ui-text-red">
-                                    <FaTimes />
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
-            {
                 (activeAmbit && activeAmbit !== '')
-                && <ChannelNetworkTree juntaId={activeAmbit} />
+                &&
+                <ChannelNetworkTree juntaId={activeAmbit}>
+                    <IrrigationNetworkActive />
+                </ChannelNetworkTree>
             }
         </>
     )
