@@ -88,6 +88,7 @@ export const startUpdateZone = () => {
         dispatch(setSavingZone(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Trrt']))
             dispatch(setActiveZone(resp.zone))
         }
     }

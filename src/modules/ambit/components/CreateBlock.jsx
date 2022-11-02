@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Card, Form, Modal } from 'react-bootstrap'
+import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewBlock, searchCommitteeByJunta, searchJunta, setActiveNewBlock, startAddNewBlock, startSaveNewBlock } from '../../../store/actions'
-import { imageGet } from '../../../helpers'
 import { OptionOrgz } from '../../../components'
 
 export const CreateBlock = ({ junta = null, committee = null, typeButton = 1 }) => {
@@ -28,21 +27,21 @@ export const CreateBlock = ({ junta = null, committee = null, typeButton = 1 }) 
             >
                 Nueva bloque
             </Button>
-            <Modal
+            <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewBlock(null))}
+                placement='end'
                 backdrop='static'
-                size='lg'
             >
-                <Modal.Header closeButton={!isSavingNew}>
-                    <Modal.Title>Crear bloque de riego</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <Offcanvas.Header closeButton={!isSavingNew}>
+                    <Offcanvas.Title>Crear bloque de riego</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
                     <Card.Body>
                         <CreateBlockStep juntaActive={junta} committeeActive={committee} />
                     </Card.Body>
-                </Modal.Body>
-            </Modal>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }

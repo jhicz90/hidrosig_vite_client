@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Card, Form, Modal } from 'react-bootstrap'
+import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewZone, searchJunta, setActiveNewZone, startAddNewZone, startSaveNewZone } from '../../../store/actions'
 import { imageGet } from '../../../helpers'
@@ -27,21 +27,21 @@ export const CreateZone = ({ junta = null, typeButton = 1 }) => {
             >
                 Nueva zona
             </Button>
-            <Modal
+            <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewZone(null))}
+                placement='end'
                 backdrop='static'
-                size='lg'
             >
-                <Modal.Header closeButton={!isSavingNew}>
-                    <Modal.Title>Crear zona</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <Offcanvas.Header closeButton={!isSavingNew}>
+                    <Offcanvas.Title>Crear zona</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
                     <Card.Body>
                         <CreateZoneStep juntaActive={junta} />
                     </Card.Body>
-                </Modal.Body>
-            </Modal>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }

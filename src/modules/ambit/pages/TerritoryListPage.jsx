@@ -1,10 +1,27 @@
+import { useEffect } from 'react'
 import { Card, Nav, Tab } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { BlockList, ZoneList } from '../components'
+import { clearToolbarActions, setToolbarActions } from '../../../store/actions'
+import { BlockList, CreateBlock, CreateZone, ZoneList } from '../components'
 
 export const TerritoryListPage = () => {
 
+    const dispatch = useDispatch()
     const { hash } = useLocation()
+
+    useEffect(() => {
+        dispatch(setToolbarActions(
+            <>
+                <CreateZone />
+                <CreateBlock />
+            </>
+        ))
+
+        return () => {
+            dispatch(clearToolbarActions())
+        }
+    }, [dispatch])
 
     return (
         <div className='container'>

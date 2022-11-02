@@ -210,7 +210,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
+            providesTags: ['Orgz', 'Trrt']
         }),
         getZonesByJunta: builder.query({
             query: ({ junta, search }) => ({
@@ -230,7 +230,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Trrt']
+            providesTags: ['Orgz', 'Trrt']
         }),
         getWaterSources: builder.query({
             query: (search) => ({
@@ -240,7 +240,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
+            providesTags: ['Orgz', 'Trrt']
         }),
         getWaterSourcesByJunta: builder.query({
             query: ({ junta, search }) => ({

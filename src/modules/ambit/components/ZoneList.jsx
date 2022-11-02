@@ -1,18 +1,21 @@
 import { useState } from 'react'
-import { Col, Form, Row } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { FcSearch } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { EditZone } from './EditZone'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
-import { useGetZonesQuery } from '../../../store/actions'
+import { startGetZone, useGetZonesQuery } from '../../../store/actions'
 
 export const ZoneList = () => {
 
+    const dispatch = useDispatch()
+    const { isSaving } = useSelector(state => state.zone)
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetZonesQuery(search)
 
     return (
         <>
+            <EditZone />
             <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
@@ -50,14 +53,15 @@ export const ZoneList = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <div className='btn-group'>
-                                    <Link
-                                        className='btn btn-neutral'
-                                        to={`/app/ambit/trrty/zone/${item._id}`}
+                                <ButtonGroup>
+                                    <Button
+                                        disabled={isSaving}
+                                        onClick={() => dispatch(startGetZone(item._id))}
+                                        variant='neutral'
                                     >
                                         <FaPen />
-                                    </Link>
-                                </div>
+                                    </Button>
+                                </ButtonGroup>
                         }
                     ]
                 }

@@ -89,6 +89,7 @@ export const startUpdateBlock = () => {
         dispatch(setSavingBlock(false))
 
         if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Trrt']))
             dispatch(setActiveBlock(resp.block))
         }
     }

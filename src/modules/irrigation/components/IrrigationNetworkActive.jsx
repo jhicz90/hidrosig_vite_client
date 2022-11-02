@@ -57,6 +57,7 @@ export const IrrigationNetworkActive = ({ typeButton = 1 }) => {
                 show={!!data}
                 onHide={() => dispatch(setActiveNodeDataIrrigationNetwork(null))}
                 placement='end'
+                backdrop='static'
             >
                 <Offcanvas.Header className='text-bg-primary' closeButton closeVariant='white'>
                     <Offcanvas.Title>Editar {depth === 0 ? 'fuente de agua' : 'estructura'}</Offcanvas.Title>
