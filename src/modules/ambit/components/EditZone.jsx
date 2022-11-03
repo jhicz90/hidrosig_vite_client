@@ -19,7 +19,7 @@ export const EditZone = () => {
             backdrop='static'
         >
             <Offcanvas.Header closeButton={!isSaving}>
-                <Offcanvas.Title>Bloque de riego - {active?.name}</Offcanvas.Title>
+                <Offcanvas.Title>Zona - {active?.name}</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <Card.Body>

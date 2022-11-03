@@ -45,7 +45,7 @@ export const storeApi = createApi({
     keepUnusedDataFor: 60,
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Acct'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Acct', 'Files'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),
@@ -257,6 +257,17 @@ export const storeApi = createApi({
                 url: `resource/browser/${folder}`,
             }),
             transformResponse: (response, meta, arg) => response.browser,
+            providesTags: ['Files']
+        }),
+        getResolutions: builder.query({
+            query: (search) => ({
+                url: `resolution/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Files']
         }),
         getPettyCashs: builder.query({
             query: (search) => ({
@@ -318,6 +329,7 @@ export const {
     useGetPermsQuery,
     useGetPettyCashsByUsrSysQuery,
     useGetPettyCashsQuery,
+    useGetResolutionsQuery,
     useGetRolesQuery,
     useGetUsrsSysQuery,
     useGetUsrSysByOccupQuery,

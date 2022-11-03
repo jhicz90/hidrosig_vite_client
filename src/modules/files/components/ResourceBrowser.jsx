@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Card } from 'react-bootstrap'
 import { FullFileBrowser, setChonkyDefaults } from 'chonky'
 import { ChonkyIconFA } from 'chonky-icon-fontawesome'
-import { FcFolder } from 'react-icons/fc'
-import { filesize } from 'filesize'
-import { prominent } from 'color.js'
-import { useGetBrowserQuery } from '../../../store/storeApi'
+import { useGetBrowserQuery } from '../../../store/actions'
 import { imageGet } from '../../../helpers'
-
-import backTransparent from '../../../assets/backTransparent.png'
+import { FileArchive, FolderArchive } from '../../../components'
 
 setChonkyDefaults({ iconComponent: ChonkyIconFA })
 
@@ -23,18 +19,21 @@ export const ResourceBrowser = () => {
     }))
 
     return (
-        <Card>
-            <Card.Body>
-                <FullFileBrowser files={browserFiles} folderChain={[{ id: 'xcv', name: 'Hans', isDir: true }]} />
-            </Card.Body>
-            <Card.Body>
-                <FileBrowser files={browserFiles} />
-            </Card.Body>
-        </Card>
+        // <Card>
+        //     <Card.Body>
+        //         <FullFileBrowser files={browserFiles} folderChain={[{ id: 'xcv', name: 'Hans', isDir: true }]} />
+        //     </Card.Body>
+        //     <Card.Body>
+
+        //     </Card.Body>
+        // </Card>
+        <Card.Body>
+            <FileBrowser files={browserFiles} />
+        </Card.Body>
     )
 }
 
-const FileBrowser = ({ files = [] }) => {
+export const FileBrowser = ({ files = [] }) => {
 
     const [selectedObjects, setSelectedObjects] = useState([])
 
@@ -54,7 +53,7 @@ const FileBrowser = ({ files = [] }) => {
                 files.map(f => {
                     if (f.isDir) {
                         return (
-                            <FolderComponent
+                            <FolderArchive
                                 key={f.fileName}
                                 folderName={f.name}
                                 action={() =>
@@ -67,7 +66,7 @@ const FileBrowser = ({ files = [] }) => {
                         )
                     } else {
                         return (
-                            <FileComponent
+                            <FileArchive
                                 key={f.fileName}
                                 fileName={f.name}
                                 thumbnailUrl={imageGet(f.name)}
@@ -95,149 +94,6 @@ const FileBrowser = ({ files = [] }) => {
             <FileComponent thumbnailUrl='https://picsum.photos/id/700/200/300' />
             <FileComponent thumbnailUrl='https://picsum.photos/id/800/200/300' />
             <FileComponent thumbnailUrl='https://picsum.photos/id/900/200/300' /> */}
-        </div>
-    )
-}
-
-const FolderComponent = ({ folderName = '', action = null, selected = false }) => {
-    return (
-        <div
-            onClick={action}
-            className="file"
-            style={{
-                boxShadow: `0 0 0 0.25rem ${selected ? '#0d6efd' : '#e9ecef'}`,
-                borderRadius: '0.375rem',
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#f0f0f0ad',
-                overflow: 'hidden',
-                width: '230px',
-                height: '230px',
-            }}
-        >
-            <div style={{
-                flexGrow: 1,
-                backgroundImage: 'url("http://localhost:4000/api/resource/image/sys/get/1022")',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'contain',
-                borderRadius: '0.375rem 0.375rem 0 0',
-            }} />
-            <div style={{
-                fontSize: '16px',
-                textAlign: 'center',
-                padding: '0.5rem',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                color: selected ? '#0d6efd' : 'inherit'
-            }}>
-                <span
-                    className='fw-semibold'
-                    style={{
-                        backgroundColor: 'transparent',
-                        textDecoration: 'none',
-                        padding: '2px 4px',
-                        borderRadius: '3px'
-                    }}>
-                    {folderName}
-                </span>
-            </div>
-        </div>
-    )
-}
-
-const FileComponent = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, action = null, selected = false }) => {
-
-    const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
-
-    useEffect(() => {
-        prominent(thumbnailUrl, { amount: 1 }).then(color => {
-            if (color[0] === 0 && color[1] === 0 && color[2] === 0) {
-                setBackColor(`url(${backTransparent})`)
-            } else {
-                setBackColor(`rgb(${color.join(',')})`)
-            }
-        })
-    }, [thumbnailUrl])
-
-    return (
-        <div
-            onClick={action}
-            className="file"
-            style={{
-                boxShadow: `0 0 0 0.25rem ${selected ? '#0d6efd' : '#e9ecef'}`,
-                borderRadius: '0.375rem',
-                display: 'flex',
-                flexDirection: 'column',
-                backgroundColor: '#f0f0f0ad',
-                overflow: 'hidden',
-                width: '230px',
-                height: '230px',
-            }}
-        >
-            <div style={{
-                flexGrow: 1,
-                display: 'flex',
-                background: backColor,
-                borderRadius: '0.375rem 0.375rem 0 0',
-            }} >
-                <div style={{
-                    flexGrow: 1,
-                    backgroundImage: `url("${thumbnailUrl}")`,
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'contain',
-                }} />
-            </div>
-            <div style={{
-                fontSize: '12px',
-                textAlign: 'center',
-                wordBreak: 'break-word',
-                padding: '0.5rem',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                maxHeight: '45px',
-                color: selected ? '#0d6efd' : 'inherit'
-            }}>
-                <span
-                    className='fw-semibold'
-                    style={{
-                        backgroundColor: 'transparent',
-                        textDecoration: 'none',
-                        padding: '2px 4px',
-                        borderRadius: '3px'
-                    }}>
-                    {fileName}
-                </span>
-            </div>
-            <div style={{
-                display: 'flex',
-                padding: '4px 6px',
-                fontSize: '10px',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                backgroundColor: 'white',
-                borderTop: '1px solid #e9ecef'
-            }}>
-                <span style={{
-                    backgroundColor: 'transparent',
-                    textDecoration: 'none',
-                    padding: '2px 4px',
-                    borderRadius: '3px'
-                }}>
-                    {filesize(sizeFile)}
-                </span>
-                <span style={{
-                    backgroundColor: 'transparent',
-                    textDecoration: 'none',
-                    padding: '2px 4px',
-                    borderRadius: '3px'
-                }}>
-                    10/10/2022
-                </span>
-            </div>
         </div>
     )
 }
