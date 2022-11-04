@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react'
 import { filesize } from 'filesize'
 import { prominent } from 'color.js'
+import moment from 'moment'
 
 import backTransparent from '../assets/backTransparent.png'
+import { imageGet } from '../helpers'
 
-export const FileArchive = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, action = null, selected = false }) => {
+export const FileArchive = ({ file = null, action = null, selected = false }) => {
+
+    const file_Resource = file.resource
+    const file_Name = file_Resource.fileName
+    const file_Name_Ext = `${file_Resource.fileName}.${file_Resource.format}`
+    const file_Size = file_Resource.bytes
+    const thumbnailUrl = imageGet(file_Name, { size: 200 })
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
@@ -65,8 +73,10 @@ export const FileArchive = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, ac
                         textDecoration: 'none',
                         padding: '2px 4px',
                         borderRadius: '3px'
-                    }}>
-                    {fileName}
+                    }}
+                    title={file_Name_Ext}
+                >
+                    {file_Name_Ext}
                 </span>
             </div>
             <div style={{
@@ -84,7 +94,7 @@ export const FileArchive = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, ac
                     padding: '2px 4px',
                     borderRadius: '3px'
                 }}>
-                    {filesize(sizeFile)}
+                    {filesize(file_Size)}
                 </span>
                 <span style={{
                     backgroundColor: 'transparent',
@@ -92,7 +102,7 @@ export const FileArchive = ({ fileName = '', thumbnailUrl = '', sizeFile = 0, ac
                     padding: '2px 4px',
                     borderRadius: '3px'
                 }}>
-                    10/10/2022
+                    {moment(file_Resource.updatedAt).format('L')}
                 </span>
             </div>
         </div>

@@ -1,12 +1,7 @@
 import { useState } from 'react'
 import { Card } from 'react-bootstrap'
-import { FullFileBrowser, setChonkyDefaults } from 'chonky'
-import { ChonkyIconFA } from 'chonky-icon-fontawesome'
 import { useGetBrowserQuery } from '../../../store/actions'
-import { imageGet } from '../../../helpers'
 import { FileArchive, FolderArchive } from '../../../components'
-
-setChonkyDefaults({ iconComponent: ChonkyIconFA })
 
 export const ResourceBrowser = () => {
 
@@ -19,14 +14,6 @@ export const ResourceBrowser = () => {
     }))
 
     return (
-        // <Card>
-        //     <Card.Body>
-        //         <FullFileBrowser files={browserFiles} folderChain={[{ id: 'xcv', name: 'Hans', isDir: true }]} />
-        //     </Card.Body>
-        //     <Card.Body>
-
-        //     </Card.Body>
-        // </Card>
         <Card.Body>
             <FileBrowser files={browserFiles} />
         </Card.Body>
@@ -36,7 +23,7 @@ export const ResourceBrowser = () => {
 export const FileBrowser = ({ files = [] }) => {
 
     const [selectedObjects, setSelectedObjects] = useState([])
-
+    
     return (
         <div style={{
             // display: 'grid',
@@ -54,7 +41,7 @@ export const FileBrowser = ({ files = [] }) => {
                     if (f.isDir) {
                         return (
                             <FolderArchive
-                                key={f.fileName}
+                                key={f.id}
                                 folderName={f.name}
                                 action={() =>
                                     selectedObjects.find(o => o.id === f.id)
@@ -67,10 +54,8 @@ export const FileBrowser = ({ files = [] }) => {
                     } else {
                         return (
                             <FileArchive
-                                key={f.fileName}
-                                fileName={f.name}
-                                thumbnailUrl={imageGet(f.name)}
-                                sizeFile={f.size}
+                                key={f.id}
+                                file={f}
                                 action={() =>
                                     selectedObjects.find(o => o.id === f.id)
                                         ? setSelectedObjects([...selectedObjects.filter(o => o.id !== f.id)])
