@@ -103,7 +103,7 @@ export const startUpdateInformationPettycash = ({ code, year, name, desc, receip
 
         const resp = await fetchByToken({
             endpoint: `pettycash/edit/${_id}`,
-            data: { code, year, name, desc, receipt, check, remainingAmount, oldBalance,  },
+            data: { code, year, name, desc, receipt, check, remainingAmount, oldBalance, startDeclaration },
             method: 'PUT'
         })
 

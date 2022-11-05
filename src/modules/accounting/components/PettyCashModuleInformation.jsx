@@ -89,8 +89,8 @@ export const PettyCashModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
-                            <div className='mb-3'>
-                                <label htmlFor='uStartDeclaration' className='form-label'>Fecha del comprobante</label>
+                            <Form.Group className='mb-3' controlId='uStartDeclaration'>
+                                <Form.Label>Fecha del comprobante</Form.Label>
                                 <Controller
                                     control={control}
                                     name='startDeclaration'
@@ -105,10 +105,10 @@ export const PettyCashModuleInformation = () => {
                                         />
                                     )}
                                 />
-                                <div className='form-text'>
+                                <Form.Text>
                                     La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.
-                                </div>
-                            </div>
+                                </Form.Text>
+                            </Form.Group>
                         </div>
                         <div className='col-12 col-md-6'>
                             <Form.Group className='mb-3' controlId='uReceipt'>

@@ -94,6 +94,43 @@ export const startUpdateVoucher = () => {
     }
 }
 
+export const startUpdateInformationVoucher = ({ voucherDay, cancelDay, typeReceipt, serie, numReceipt, socialReason, idSocialReason, nameSocialReason, concept, typeIncomeExpenses, amountReceipt }) => {
+    return async (dispatch, getState) => {
+
+        dispatch(setSavingVoucher(true))
+
+        const { active } = getState().voucher
+        const { _id } = active
+
+        const updateVoucher = {
+            voucherDay,
+            cancelDay,
+            typeReceipt,
+            serie,
+            numReceipt,
+            socialReason,
+            idSocialReason,
+            nameSocialReason,
+            concept,
+            typeIncomeExpenses,
+            amountReceipt,
+        }
+
+        const resp = await fetchByToken({
+            endpoint: `voucher/edit/${_id}`,
+            data: updateVoucher,
+            method: 'PUT'
+        })
+
+        dispatch(setSavingVoucher(false))
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(setActiveVoucher(resp.voucher))
+        }
+    }
+}
+
 export const startUpdateImageVoucher = (images) => {
     return async (dispatch, getState) => {
 
@@ -142,12 +179,12 @@ export const startDeleteVoucher = ({ navigate = null }) => {
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Eliminar caja chica</div>
+                    <div className='text-uppercase'>Eliminar comprobante</div>
                     <div className="fs-5 fw-bold text-info mt-1">{name}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta caja chica?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar este comprobante?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
                 </>,
             showCancelButton: true,

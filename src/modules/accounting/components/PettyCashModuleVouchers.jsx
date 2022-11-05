@@ -162,7 +162,7 @@ const PettyCashVoucher = () => {
                                         <ButtonGroup size='sm'>
                                             <Link
                                                 className='btn btn-neutral'
-                                                to={`/app/acct//${item._id}`}
+                                                to={`/app/acct/voucher/${item._id}`}
                                             >
                                                 <FaPen />
                                             </Link>

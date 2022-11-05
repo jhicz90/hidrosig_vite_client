@@ -135,8 +135,8 @@ export const menuModule = [
             },
             {
                 label: 'Recibos',
-                to: 'receipt',
-                meta: ['receipt'],
+                to: 'voucher',
+                meta: ['voucher'],
                 detail: 'Lista de comprobantes registrados en contabilidad.'
             }
         ]

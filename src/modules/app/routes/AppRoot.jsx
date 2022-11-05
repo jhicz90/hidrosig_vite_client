@@ -17,7 +17,8 @@ import {
     ResourceRoutes,
     TerritoryRoutes,
     IrrigationNetworkRoutes,
-    PettyCashRoutes
+    PettyCashRoutes,
+    VoucherRoutes
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -171,6 +172,7 @@ export const AppRoot = () => {
                     <Route path={`acct`}>
                         <Route path={`resume`} element={<>Hola somos el resumen de contabilidad</>} />
                         <Route path={`petty_cash/*`} element={<GuardRoute meta={['accounting']} component={PettyCashRoutes} />} />
+                        <Route path={`voucher/*`} element={<GuardRoute meta={['accounting']} component={VoucherRoutes} />} />
                     </Route>
                     <Route path={`exp/*`} element={<ResourceRoutes />} />
                     <Route path={`siga/*`} element={<SigaRoutes />} />

@@ -87,7 +87,7 @@ export const DatePicker = (props) => {
     return (
         <ReactDatePicker
             id={props.id || ''}
-            renderCustomHeader={DateHeader}
+            // renderCustomHeader={DateHeader}
             dateFormat={'dd/MM/yyyy'}
             selected={moment(props.value).toDate() || new Date()}
             minDate={props.minDate || null}
