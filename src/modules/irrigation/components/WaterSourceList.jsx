@@ -1,18 +1,21 @@
 import { useState } from 'react'
-import { Col, Form, Row } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { FcSearch } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { EditWaterSource } from './EditWaterSource'
 import { InputSearch, TableGrid, TimeAgo, TypeWaterSource } from '../../../components'
-import { useGetWaterSourcesQuery } from '../../../store/actions'
+import { startGetWaterSource, useGetWaterSourcesQuery } from '../../../store/actions'
 
 export const WaterSourceList = () => {
 
+    const dispatch = useDispatch()
+    const { isSaving } = useSelector(state => state.watersource)
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetWaterSourcesQuery(search)
 
     return (
         <>
+            <EditWaterSource />
             <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
@@ -52,14 +55,15 @@ export const WaterSourceList = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <div className='btn-group'>
-                                    <Link
-                                        className='btn btn-neutral'
-                                        to={`/app/schm/trrty/watersource/${item._id}`}
+                                <ButtonGroup>
+                                    <Button
+                                        disabled={isSaving}
+                                        onClick={() => dispatch(startGetWaterSource(item._id))}
+                                        variant='neutral'
                                     >
                                         <FaPen />
-                                    </Link>
-                                </div>
+                                    </Button>
+                                </ButtonGroup>
                         }
                     ]
                 }

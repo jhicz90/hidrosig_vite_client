@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { editActiveZone, searchJunta, setActiveZone, startUpdateZone } from '../../../store/actions'
@@ -18,13 +18,24 @@ export const EditZone = () => {
             placement='end'
             backdrop='static'
         >
-            <Offcanvas.Header closeButton={!isSaving}>
+            <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>Zona - {active?.name}</Offcanvas.Title>
             </Offcanvas.Header>
+            <Offcanvas.Header>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        disabled={isSaving}
+                        variant='success'
+                        type='submit'
+                        form='form-ambit-zone-edit'
+                        className='w-100'
+                    >
+                        Guardar cambios
+                    </Button>
+                </div>
+            </Offcanvas.Header>
             <Offcanvas.Body>
-                <Card.Body>
-                    <EditZoneStep />
-                </Card.Body>
+                <EditZoneStep />
             </Offcanvas.Body>
         </Offcanvas>
     )
@@ -33,7 +44,7 @@ export const EditZone = () => {
 const EditZoneStep = () => {
 
     const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.zone)
+    const { active } = useSelector(state => state.zone)
     const { register, control, handleSubmit, reset } = useForm()
 
     const handleSave = ({ name, code, desc, junta }) => {
@@ -53,7 +64,7 @@ const EditZoneStep = () => {
     }, [reset, active])
 
     return (
-        <form onSubmit={handleSubmit(handleSave)}>
+        <form id='form-ambit-zone-edit' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uCode'>
@@ -120,15 +131,6 @@ const EditZoneStep = () => {
                         />
                     </Form.Group>
                 </div>
-            </div>
-            <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    disabled={isSaving}
-                    variant='success'
-                    type='submit'
-                >
-                    Guardar
-                </Button>
             </div>
         </form>
     )

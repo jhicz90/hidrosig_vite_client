@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
+import { OptionOrgz } from '../../../components'
 import { editActiveNewZone, searchJunta, setActiveNewZone, startAddNewZone, startSaveNewZone } from '../../../store/actions'
-import { imageGet } from '../../../helpers'
 
 export const CreateZone = ({ junta = null, typeButton = 1 }) => {
 
@@ -33,13 +33,24 @@ export const CreateZone = ({ junta = null, typeButton = 1 }) => {
                 placement='end'
                 backdrop='static'
             >
-                <Offcanvas.Header closeButton={!isSavingNew}>
+                <Offcanvas.Header className='text-bg-primary' closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear zona</Offcanvas.Title>
                 </Offcanvas.Header>
+                <Offcanvas.Header>
+                    <div className='d-flex justify-content-end gap-2 w-100'>
+                        <Button
+                            disabled={isSavingNew}
+                            variant='primary'
+                            type='submit'
+                            form='form-ambit-zone-create'
+                            className='w-100'
+                        >
+                            Guardar nuevo
+                        </Button>
+                    </div>
+                </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <Card.Body>
-                        <CreateZoneStep juntaActive={junta} />
-                    </Card.Body>
+                    <CreateZoneStep juntaActive={junta} />
                 </Offcanvas.Body>
             </Offcanvas>
         </>
@@ -69,7 +80,7 @@ const CreateZoneStep = ({ juntaActive }) => {
     }, [reset, activeNew])
 
     return (
-        <form onSubmit={handleSubmit(handleSave)}>
+        <form id='form-ambit-zone-create' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uOrder'>
@@ -131,10 +142,7 @@ const CreateZoneStep = ({ juntaActive }) => {
                                             noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                             getOptionValue={e => e._id}
                                             getOptionLabel={e =>
-                                                <div className='d-flex'>
-                                                    <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                    <span className='ms-2 align-self-center'>{e.name}</span>
-                                                </div>
+                                                <OptionOrgz orgz={e} />
                                             }
                                         />
                                 }
@@ -143,14 +151,6 @@ const CreateZoneStep = ({ juntaActive }) => {
                     </div>
                 </div>
             }
-            <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    variant='success'
-                    type='submit'
-                >
-                    Guardar
-                </Button>
-            </div>
         </form>
     )
 }

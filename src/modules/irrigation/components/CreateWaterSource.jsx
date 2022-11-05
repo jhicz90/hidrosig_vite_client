@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Card, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Modal, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewWaterSource, searchJunta, setActiveNewWaterSource, startAddNewWaterSource, startSaveNewWaterSource } from '../../../store/actions'
 import { imageGet } from '../../../helpers'
@@ -27,19 +27,32 @@ export const CreateWaterSource = ({ junta = null, typeButton = 1 }) => {
             >
                 Nueva fuente de agua
             </Button>
-            <Modal
+            <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewWaterSource(null))}
                 backdrop='static'
                 size='lg'
             >
-                <Modal.Header closeButton={!isSavingNew}>
-                    <Modal.Title>Crear fuente de agua</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <Offcanvas.Header className='text-bg-primary' closeButton={!isSavingNew} closeVariant='white'>
+                    <Offcanvas.Title>Crear fuente de agua</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Header>
+                    <div className='d-flex justify-content-end gap-2 w-100'>
+                        <Button
+                            disabled={isSavingNew}
+                            variant='primary'
+                            type='submit'
+                            form='form-irrig-watersource-create'
+                            className='w-100'
+                        >
+                            Guardar nuevo
+                        </Button>
+                    </div>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
                     <CreateWaterSourceStep juntaActive={junta} />
-                </Modal.Body>
-            </Modal>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }
@@ -67,7 +80,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
     }, [reset, activeNew])
 
     return (
-        <form onSubmit={handleSubmit(handleSave)}>
+        <form form='form-irrig-watersource-create' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uName'>
@@ -149,14 +162,6 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
                     </div>
                 </div>
             }
-            <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    variant='success'
-                    type='submit'
-                >
-                    Guardar
-                </Button>
-            </div>
         </form>
     )
 }

@@ -1,25 +1,25 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveBlock, searchCommitteeByJunta, searchJunta, setActiveBlock, startUpdateBlock } from '../../../store/actions'
+import { editActiveWaterSource, searchJunta, setActiveWaterSource, startUpdateWaterSource } from '../../../store/actions'
 import { OptionOrgz } from '../../../components'
 
-export const EditBlock = () => {
+export const EditWaterSource = () => {
 
     const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.block)
+    const { active, isSaving } = useSelector(state => state.watersource)
 
     return (
         <Offcanvas
             show={!!active}
-            onHide={() => dispatch(setActiveBlock(null))}
+            onHide={() => dispatch(setActiveWaterSource(null))}
             placement='end'
             backdrop='static'
         >
             <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
-                <Offcanvas.Title>Bloque de riego - {active?.name}</Offcanvas.Title>
+                <Offcanvas.Title>Fuente de agua - {active?.name}</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Header>
                 <div className='d-flex justify-content-end gap-2 w-100'>
@@ -27,7 +27,7 @@ export const EditBlock = () => {
                         disabled={isSaving}
                         variant='success'
                         type='submit'
-                        form='form-ambit-block-edit'
+                        form='form-irrig-watersource-edit'
                         className='w-100'
                     >
                         Guardar cambios
@@ -35,29 +35,26 @@ export const EditBlock = () => {
                 </div>
             </Offcanvas.Header>
             <Offcanvas.Body>
-                <Card.Body>
-                    <EditBlockStep />
-                </Card.Body>
+                <EditWaterSourceStep />
             </Offcanvas.Body>
         </Offcanvas>
     )
 }
 
-const EditBlockStep = () => {
+const EditWaterSourceStep = () => {
 
     const dispatch = useDispatch()
-    const { active } = useSelector(state => state.block)
-    const { register, watch, setValue, control, handleSubmit, reset } = useForm()
+    const { active } = useSelector(state => state.watersource)
+    const { register, control, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ name, code, desc, junta, committee }) => {
-        dispatch(editActiveBlock({
+    const handleSave = ({ name, desc, junta, type }) => {
+        dispatch(editActiveWaterSource({
             name,
-            code,
             desc,
             junta,
-            committee,
+            type,
         }))
-        dispatch(startUpdateBlock())
+        dispatch(startUpdateWaterSource())
     }
 
     useEffect(() => {
@@ -67,9 +64,9 @@ const EditBlockStep = () => {
     }, [reset, active])
 
     return (
-        <form id='form-ambit-block-edit' onSubmit={handleSubmit(handleSave)}>
+        <form id='form-irrig-watersource-edit' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
-                <div className='col-12 col-md-6'>
+                <div className='col-12'>
                     <Form.Group className='mb-3' controlId='uName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
@@ -79,14 +76,24 @@ const EditBlockStep = () => {
                         />
                     </Form.Group>
                 </div>
-                <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uCode'>
-                        <Form.Label>Código</Form.Label>
-                        <Form.Control
-                            {...register('code', { required: true })}
-                            type='text'
+            </div>
+            <div className='row'>
+                <div className='col-12'>
+                    <Form.Group className='mb-3' controlId='uType'>
+                        <Form.Label>Tipo de fuente</Form.Label>
+                        <Form.Select
+                            {...register('type', { required: true })}
                             autoComplete='off'
-                        />
+                        >
+                            <option value={''}>Elija el tipo de fuente</option>
+                            <option value={1}>Agua de la red (Represas, canales)</option>
+                            <option value={2}>Aguas superficiales (Rios, Lagos)</option>
+                            <option value={3}>Agua de lluvia</option>
+                            <option value={4}>Agua subterránea</option>
+                            <option value={5}>Agua de mar desalada</option>
+                            <option value={6}>Aguas residuales urbanas depuradas</option>
+                            <option value={7}>Agua de drenaje</option>
+                        </Form.Select>
                     </Form.Group>
                 </div>
             </div>
@@ -105,17 +112,12 @@ const EditBlockStep = () => {
             </div>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uJunta'>
-                        <Form.Label>Junta de usuarios</Form.Label>
+                    <div className='mb-3'>
+                        <label htmlFor='uJunta' className='form-label'>Junta de usuarios</label>
                         <Controller
                             name='junta'
                             control={control}
-                            rules={{
-                                required: true,
-                                onChange: () => {
-                                    setValue('committee', null)
-                                }
-                            }}
+                            rules={{ required: true }}
                             render={
                                 ({ field }) =>
                                     <AsyncSelect
@@ -136,40 +138,7 @@ const EditBlockStep = () => {
                                     />
                             }
                         />
-                    </Form.Group>
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col'>
-                    <Form.Group className='mb-3' controlId='uCommittee'>
-                        <Form.Label>Comisión de usuarios</Form.Label>
-                        <Controller
-                            name='committee'
-                            control={control}
-                            rules={{ required: true }}
-                            render={
-                                ({ field }) =>
-                                    <AsyncSelect
-                                        {...field}
-                                        inputId='uCommittee'
-                                        classNamePrefix='rc-select'
-                                        isClearable
-                                        isDisabled={watch().junta === null}
-                                        loadOptions={async (e) => {
-                                            return await searchCommitteeByJunta(watch().junta._id, e)
-                                        }}
-                                        menuPlacement={'auto'}
-                                        placeholder={`Buscar...`}
-                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                        getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <OptionOrgz orgz={e} />
-                                        }
-                                    />
-                            }
-                        />
-                    </Form.Group>
+                    </div>
                 </div>
             </div>
         </form>

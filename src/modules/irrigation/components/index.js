@@ -1,3 +1,5 @@
 export * from './IrrigationNetworkChannel'
 export * from './WaterSourceList'
 export * from './IrrigationNetworkActive'
+export * from './CreateWaterSource'
+export * from './EditWaterSource'

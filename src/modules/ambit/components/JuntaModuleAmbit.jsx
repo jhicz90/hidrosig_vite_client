@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { Card, ListGroup } from 'react-bootstrap'
 import { useGetCommsByJuntaQuery, useGetWaterSourcesByJuntaQuery, useGetZonesByJuntaQuery } from '../../../store/actions'
 import { SettingAction, SettingBlock, TypeWaterSource } from '../../../components'
-import { CreateZone, CreateWaterSource, CreateCommittee } from '.'
+import { CreateZone, CreateCommittee } from '.'
+import { CreateWaterSource } from '../../'
 
 export const JuntaModuleAmbit = () => {
     return (

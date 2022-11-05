@@ -63,19 +63,19 @@ export const IrrigationNetworkActive = ({ typeButton = 1 }) => {
                     <Offcanvas.Title>Editar {depth === 0 ? 'fuente de agua' : 'estructura'}</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Header>
-                    <div className='d-flex justify-content-end gap-2'>
+                    <div className='d-flex justify-content-end gap-2 w-100'>
                         <Button
                             disabled={loading}
                             variant='success'
                             type='submit'
                             form='form-irrig-net-active'
+                            className='w-100'
                         >
                             Guardar
                         </Button>
                     </div>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <Card.Body>
                         <form id='form-irrig-net-active' onSubmit={handleSubmit(handleSave)}>
                             <div className='row'>
                                 <div className='col-12'>
@@ -278,7 +278,6 @@ export const IrrigationNetworkActive = ({ typeButton = 1 }) => {
                                     </>
                             }
                         </form>
-                    </Card.Body>
                 </Offcanvas.Body>
             </Offcanvas>
         </>
