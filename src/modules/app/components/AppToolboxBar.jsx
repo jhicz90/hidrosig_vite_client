@@ -30,8 +30,9 @@ export const AppToolboxBar = () => {
 const Toolbar = styled.div`
     background-color: #fff3cd;
     border-bottom: 1px solid #ffc107;
+    height: 70px !important;
 
-    & + .rcs-custom-scroll {
+    & + .scroll-content {
         height: calc(100vh - 130px) !important;
     }
 `
