@@ -17,11 +17,12 @@ export const FileArchive = ({ file = null, action = null, selected = false }) =>
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
     useEffect(() => {
-        prominent(thumbnailUrl, { amount: 1 }).then(color => {
-            if (color[0] === 0 && color[1] === 0 && color[2] === 0) {
+        prominent(thumbnailUrl, { amount: 3 }).then(colors => {
+            const randomPicked = Math.floor(Math.random() * colors.length)
+            if (colors[randomPicked][0] === 0 && colors[randomPicked][1] === 0 && colors[randomPicked][2] === 0) {
                 setBackColor(`url(${backTransparent})`)
             } else {
-                setBackColor(`rgb(${color.join(',')})`)
+                setBackColor(`rgb(${colors[randomPicked].join(',')})`)
             }
         })
     }, [thumbnailUrl])

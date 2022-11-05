@@ -10,13 +10,7 @@ export const AppToolboxBar = () => {
             {
                 (!!actions && title === '')
                 &&
-                <div
-                    className='rounded-0 shadow-none'
-                    style={{
-                        backgroundColor: '#fff3cd',
-                        borderBottom: '1px solid #ffc107'
-                    }}
-                >
+                <Toolbar>
                     <div className="container g-0">
                         <NavBarMain>
                             <NavBarInfo>
@@ -27,17 +21,26 @@ export const AppToolboxBar = () => {
                             </NavBarTool>
                         </NavBarMain>
                     </div>
-                </div>
+                </Toolbar>
             }
         </>
     )
 }
 
+const Toolbar = styled.div`
+    background-color: #fff3cd;
+    border-bottom: 1px solid #ffc107;
+
+    & + .rcs-custom-scroll {
+        height: calc(100vh - 130px) !important;
+    }
+`
+
 const NavBarMain = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 1rem;
-    min-height: 70px;
+    height: 70px;
 `
 
 const NavBarInfo = styled.div`

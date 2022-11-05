@@ -187,6 +187,8 @@ const HeaderApp = styled.header`
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     & .menu .menu-search {

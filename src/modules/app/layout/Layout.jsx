@@ -1,4 +1,5 @@
 import React from 'react'
+import CustomScroll from 'react-custom-scroll'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 import { ResourceUpload } from '../../../components'
@@ -11,7 +12,11 @@ export const Layout = () => {
             <ContentApp className='content-app'>
                 <AppSidebar />
                 <AppToolboxBar />
-                <Outlet />
+                <CustomScroll heightRelativeToParent='calc(100vh - 60px)' keepAtBottom={true}>
+                    <div className='scroll-content'>
+                        <Outlet />
+                    </div>
+                </CustomScroll>
             </ContentApp>
             <AppComandBar />
             <ResourceUpload />
@@ -20,18 +25,22 @@ export const Layout = () => {
 }
 
 const RootApp = styled.div`
-    /* height: 100vh; */
+    height: 100vh;
+    overflow: hidden;
 `
 
 const ContentApp = styled.main`
     /* padding-top: 60px; */
     margin-left: 220px;
     position: relative;
-    min-height: 100%;
+    /* min-height: 100%; */
+    display:flex;
+    flex-direction: column;
+    /* height: calc(100vh - 60px); */
+    /* overflow-y: scroll; */
 
-    & > .container,
-    & > .container-fluid {
-        margin: 20px auto;
+    & .scroll-content{
+        padding: 20px 0;
     }
 
     @media (max-width: 1200px) {
