@@ -172,15 +172,15 @@ export const startUpdateImageIdVoucher = (id, images) => {
 export const startDeleteVoucher = ({ navigate = null }) => {
     return async (dispatch, getState) => {
         const { active } = getState().voucher
-        const { _id, name } = active
+        const { _id, serie, numReceipt } = active
 
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+        const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true })
 
         SwalReact.fire({
             title:
                 <>
                     <div className='text-uppercase'>Eliminar comprobante</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{`${serie}-${numReceipt}`}</div>
                 </>,
             html:
                 <>
