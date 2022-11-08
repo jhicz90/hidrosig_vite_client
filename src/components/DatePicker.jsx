@@ -37,12 +37,16 @@ const DateHeader = ({
     prevMonthButtonDisabled,
     nextMonthButtonDisabled,
 }) => (
-    <div className='input-group'>
+    <div
+        className='input-group px-1 pb-1'
+    >
         <button
             style={{ border: '1px solid #ced4da' }}
-            className='btn btn-light ms-1'
+            className='btn btn-light'
             onClick={decreaseMonth}
-            disabled={prevMonthButtonDisabled}>
+            disabled={prevMonthButtonDisabled}
+            type='button'
+        >
             <BsChevronLeft />
         </button>
         <select
@@ -51,7 +55,7 @@ const DateHeader = ({
             onChange={({ target: { value } }) => changeYear(value)}
         >
             {
-                years(1900, new Date().getFullYear() + 10).map((option) => (
+                years(1900, new Date(date).getFullYear() + 1).map((option) => (
                     <option key={option} value={option}>
                         {option}
                     </option>
@@ -75,9 +79,11 @@ const DateHeader = ({
         </select>
         <button
             style={{ border: '1px solid #ced4da' }}
-            className='btn btn-light me-1'
+            className='btn btn-light'
             onClick={increaseMonth}
-            disabled={nextMonthButtonDisabled}>
+            disabled={nextMonthButtonDisabled}
+            type='button'
+        >
             <BsChevronRight />
         </button>
     </div>
@@ -87,7 +93,7 @@ export const DatePicker = (props) => {
     return (
         <ReactDatePicker
             id={props.id || ''}
-            // renderCustomHeader={DateHeader}
+            renderCustomHeader={DateHeader}
             dateFormat={'dd/MM/yyyy'}
             selected={moment(props.value).toDate() || new Date()}
             minDate={props.minDate || null}
