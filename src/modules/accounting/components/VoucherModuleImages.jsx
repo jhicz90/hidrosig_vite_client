@@ -62,9 +62,8 @@ const VoucherImages = () => {
                             htmlFor={`input-upload-${active._id}`}
                             className='btn btn-neutral text-primary text-decoration-none'
                         >
-                            Agregar
+                            Agregar imagen
                         </label>
-                        {/* <CreateVoucher pettycash={active} /> */}
                     </SettingAction>
                 }
                 list={
@@ -81,15 +80,29 @@ const VoucherImages = () => {
                         <div className='d-flex gap-2'>
                             {
                                 active.images.map((img, index) =>
-                                    <Image
+                                    <div
+                                        key={img._id}
                                         onClick={() => handleLightbox(imageData, index)}
-                                        key={img.fileName}
                                         className='rounded shadow-sm border border-light'
-                                        width={200}
-                                        height={200}
-                                        img={img.fileName}
-                                        resSize={200}
-                                    />
+                                        style={{
+                                            width: '200px',
+                                            height: '200px',
+                                            background: `url(${imageGet(img.fileName, { size: 200 })})`,
+                                            backgroundRepeat: 'no-repeat',
+                                            backgroundPosition: 'center',
+                                            backgroundSize: 'cover'
+                                        }}
+                                    >
+                                    </div>
+                                    // <Image
+                                    //     onClick={() => handleLightbox(imageData, index)}
+                                    //     key={img.fileName}
+                                    //     className='rounded shadow-sm border border-light'
+                                    //     width={200}
+                                    //     height={200}
+                                    //     img={img.fileName}
+                                    //     resSize={200}
+                                    // />
                                 )
                             }
                         </div>

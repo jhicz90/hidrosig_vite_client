@@ -28,6 +28,11 @@ const PettyCashVoucher = () => {
     const [imagesLightbox, setImagesLightbox] = useState([])
     const [indexImageLightbox, setIndexImageLightbox] = useState(0)
 
+    let amountTotal = 0
+    vouchersIn.forEach(voucher => {
+        amountTotal += voucher.amountReceipt
+    })
+
     const handleLightbox = (images, index) => {
         setImagesLightbox(images)
         setIndexImageLightbox(index)
@@ -71,15 +76,10 @@ const PettyCashVoucher = () => {
                                         item.typeReceipt
                                 },
                                 {
-                                    label: 'SERIE',
-                                    width: '80px',
+                                    label: 'COMPROBANTE',
+                                    width: '200px',
                                     renderCell: (item) =>
-                                        item.serie
-                                },
-                                {
-                                    label: 'N° COMPROBANTE',
-                                    renderCell: (item) =>
-                                        item.numReceipt
+                                        `${item.serie}-${item.numReceipt}`
                                 },
                                 {
                                     label: 'MONTO',
@@ -87,7 +87,7 @@ const PettyCashVoucher = () => {
                                         <span>{item.amountReceipt.toFixed(2)}</span>
                                 },
                                 {
-                                    label: 'COMPROBANTES',
+                                    label: 'IMAGENES',
                                     width: '200px',
                                     renderCell: (item) => {
                                         const imageData = item.images.map(({ fileName }) => ({
@@ -179,7 +179,7 @@ const PettyCashVoucher = () => {
                     />
                 }
             >
-                {vouchersIn.length}
+                {vouchersIn.length} - {`${amountTotal.toFixed(2)} / ${(Number(active.remainingAmount) + Number(active.oldBalance)).toFixed(2)}`}
             </SettingBlock>
             <ImageLightbox
                 galleryTitle={'Comprobantes'}

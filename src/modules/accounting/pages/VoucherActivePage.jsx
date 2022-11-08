@@ -1,76 +1,79 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
-import validator from 'validator'
+import { Navigate, useParams } from 'react-router-dom'
 import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FaImages } from 'react-icons/fa'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { VoucherModuleBanner, VoucherModuleDelete, VoucherModuleImages, VoucherModuleInformation } from '../components'
-import { clearToolbarActions, setActiveVoucher, setToolbarActions, startGetVoucher } from '../../../store/actions'
+import { clearToolbarActions, setActiveVoucher, setToolbarActions, startGetVoucher, useGetVoucherIdQuery } from '../../../store/actions'
 
 export const VoucherActivePage = () => {
 
     const { voucherid } = useParams()
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { data = null, isLoading, isError } = useGetVoucherIdQuery(voucherid)
     const { active } = useSelector(state => state.voucher)
 
     useEffect(() => {
-        if (validator.isMongoId(voucherid)) {
-            dispatch(startGetVoucher(voucherid))
+        if (!!data) {
+            dispatch(setActiveVoucher(data))
             dispatch(setToolbarActions(
                 <>
                     <button className='btn btn-neutral'>Exportar</button>
                 </>
             ))
-        } else {
-            navigate(-1)
         }
 
         return () => {
             dispatch(setActiveVoucher(null))
             dispatch(clearToolbarActions())
         }
-    }, [voucherid, dispatch])
+    }, [data])
+
+    if (isLoading) {
+        return <LoadingPage />
+    }
+
+    if (isError) {
+        return <Navigate to={-1} />
+    }
 
     return (
         <>
             {
                 !!active
-                    ?
-                    <div className='container'>
-                        <ModuleNav
-                            modules={
-                                [
-                                    {
-                                        id: 'infovoucher',
-                                        icon: BsInfoCircle,
-                                        name: 'Información básica',
-                                        title: true,
-                                        module: VoucherModuleInformation
-                                    },
-                                    {
-                                        id: 'imagesvoucher',
-                                        icon: FaImages,
-                                        name: 'Imagenes',
-                                        title: true,
-                                        module: VoucherModuleImages
-                                    },
-                                    {
-                                        id: 'deletevoucher',
-                                        icon: BsTrash,
-                                        name: 'Eliminar comprobante',
-                                        title: true,
-                                        module: VoucherModuleDelete
-                                    }
-                                ]
-                            }
-                        >
-                            <VoucherModuleBanner />
-                        </ModuleNav>
-                    </div>
-                    :
-                    <LoadingPage />
+                &&
+                <div className='container'>
+                    <ModuleNav
+                        modules={
+                            [
+                                {
+                                    id: 'infovoucher',
+                                    icon: BsInfoCircle,
+                                    name: 'Información básica',
+                                    title: true,
+                                    module: VoucherModuleInformation
+                                },
+                                {
+                                    id: 'imagesvoucher',
+                                    icon: FaImages,
+                                    name: 'Imagenes',
+                                    title: true,
+                                    module: VoucherModuleImages
+                                },
+                                {
+                                    id: 'deletevoucher',
+                                    icon: BsTrash,
+                                    name: 'Eliminar comprobante',
+                                    title: true,
+                                    module: VoucherModuleDelete
+                                }
+                            ]
+                        }
+                    >
+                        <VoucherModuleBanner />
+                    </ModuleNav>
+                </div>
             }
         </>
     )

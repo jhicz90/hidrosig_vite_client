@@ -269,6 +269,13 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Files']
         }),
+        getPettyCashId: builder.query({
+            query: (id) => ({
+                url: `pettycash/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.pettycash,
+            providesTags: ['Acct']
+        }),
         getPettyCashs: builder.query({
             query: (search) => ({
                 url: `pettycash/list`,
@@ -287,6 +294,13 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct']
+        }),
+        getVoucherId: builder.query({
+            query: (id) => ({
+                url: `voucher/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.voucher,
             providesTags: ['Acct']
         }),
         getVouchers: builder.query({
@@ -339,4 +353,6 @@ export const {
     useGetWaterSourcesQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
+    useGetPettyCashIdQuery,
+    useGetVoucherIdQuery,
 } = storeApi

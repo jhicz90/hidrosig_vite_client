@@ -11,7 +11,6 @@ export const CreateVoucher = ({ pettycash = null, typeButton = 1 }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.voucher)
-    const [step, setStep] = useState(1)
 
     useEffect(() => {
         return () => dispatch(setActiveNewVoucher(null))
@@ -146,6 +145,8 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                             <option value={'PL'}>Planilla</option>
                             <option value={'RC'}>Recibo</option>
                             <option value={'NC'}>Nota de contabilidad</option>
+                            <option value={'DJ'}>Declaración jurada</option>
+                            <option value={'PM'}>Planilla de movilidad</option>
                         </Form.Select>
                     </Form.Group>
                 </div>

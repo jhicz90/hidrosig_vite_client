@@ -107,6 +107,8 @@ export const VoucherModuleInformation = () => {
                                     <option value={'PL'}>Planilla</option>
                                     <option value={'RC'}>Recibo</option>
                                     <option value={'NC'}>Nota de contabilidad</option>
+                                    <option value={'DJ'}>Declaración jurada</option>
+                                    <option value={'PM'}>Planilla de movilidad</option>
                                 </Form.Select>
                             </Form.Group>
                         </div>
