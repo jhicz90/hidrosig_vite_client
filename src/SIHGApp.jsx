@@ -8,12 +8,7 @@ import { store } from './store'
 // H - Hidro
 // G - Grafico
 
-const baseUrl = import.meta.env.VITE_APP_API_URL
-
 const SIHGApp = () => {
-
-    console.log('LAS VARIABLES DE VITE ESTAN FUNCIONANDO', baseUrl)
-
     return (
         <Provider store={store}>
             <Router />
