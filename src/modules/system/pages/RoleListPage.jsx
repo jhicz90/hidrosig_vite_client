@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { clearToolbarActions, setToolbarActions } from '../../../store/actions'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 import { CreateRole, RoleList } from '../components'
 
 export const RoleListPage = () => {
@@ -9,6 +9,8 @@ export const RoleListPage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('ROLES DE USUARIOS'))
         dispatch(setToolbarActions(
             <>
                 <CreateRole />

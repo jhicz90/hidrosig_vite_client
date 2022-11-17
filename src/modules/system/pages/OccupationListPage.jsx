@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { clearToolbarActions, setToolbarActions } from '../../../store/actions'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 import { CreateOccupation, OccupationList } from '../components'
 
 export const OccupationListPage = () => {
@@ -9,6 +9,8 @@ export const OccupationListPage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('OCUPACIONES'))
         dispatch(setToolbarActions(
             <>
                 <CreateOccupation />

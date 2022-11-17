@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { clearToolbarActions, setToolbarActions } from '../../../store/app'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/app'
 import { CreatePettyCash, PettyCashList } from '../components'
 
 export const PettyCashListPage = () => {
@@ -9,6 +9,8 @@ export const PettyCashListPage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('CAJA CHICA'))
         dispatch(setToolbarActions(
             <>
                 <CreatePettyCash />

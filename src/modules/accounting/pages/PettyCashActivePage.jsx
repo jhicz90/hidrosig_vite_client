@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useParams } from 'react-router-dom'
 import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
-import { clearToolbarActions, setActivePettycash, setToolbarActions, startGetPettycash, useGetPettyCashIdQuery } from '../../../store/actions'
+import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, startGetPettycash, useGetPettyCashIdQuery } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { CreateVoucher, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
 
@@ -16,6 +16,9 @@ export const PettyCashActivePage = () => {
     useEffect(() => {
         if (!!data) {
             dispatch(setActivePettycash(data))
+
+            dispatch(clearToolbarActions())
+            dispatch(setToolbarTitle('CAJA CHICA'))
             dispatch(setToolbarActions(
                 <>
                     <CreateVoucher pettycash={data} />

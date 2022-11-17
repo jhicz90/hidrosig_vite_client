@@ -8,7 +8,7 @@ export const AppToolboxBar = () => {
     return (
         <>
             {
-                (!!actions && title === '')
+                (!!actions && title !== '')
                 &&
                 <Toolbar>
                     <div className="container g-0">
@@ -46,12 +46,14 @@ const Toolbar = styled.div`
 const NavBarMain = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 1rem;
     height: 70px;
 `
 
 const NavBarInfo = styled.div`
-    font-size: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: bold;
 `
 
 const NavBarTool = styled.div`

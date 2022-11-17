@@ -20,6 +20,9 @@ export const appSlice = createSlice({
         setToolbar: (state, { payload }) => {
             state.toolbar = payload
         },
+        setToolbarTitle: (state, { payload }) => {
+            state.toolbar.title = payload
+        },
         setToolbarActions: (state, { payload }) => {
             state.toolbar.actions = payload
         },
@@ -42,6 +45,7 @@ export const {
     setSidebar,
     setToolbar,
     setToolbarActions,
+    setToolbarTitle,
     clearToolbarActions,
     setCmkbar,
     setCmkbarShow,

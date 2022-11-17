@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { clearToolbarActions, setToolbarActions } from '../../../store/app'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/app'
 import { CreateUserSys, UserSysList } from '../components'
 
 export const UserSysListPage = () => {
@@ -9,6 +9,8 @@ export const UserSysListPage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('USUARIOS DE SISTEMA'))
         dispatch(setToolbarActions(
             <>
                 <CreateUserSys />

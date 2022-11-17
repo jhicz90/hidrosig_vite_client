@@ -5,7 +5,7 @@ import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FaImages } from 'react-icons/fa'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { VoucherModuleBanner, VoucherModuleDelete, VoucherModuleImages, VoucherModuleInformation } from '../components'
-import { clearToolbarActions, setActiveVoucher, setToolbarActions, startGetVoucher, useGetVoucherIdQuery } from '../../../store/actions'
+import { clearToolbarActions, setActiveVoucher, setToolbarActions, setToolbarTitle, startGetVoucher, useGetVoucherIdQuery } from '../../../store/actions'
 
 export const VoucherActivePage = () => {
 
@@ -17,6 +17,9 @@ export const VoucherActivePage = () => {
     useEffect(() => {
         if (!!data) {
             dispatch(setActiveVoucher(data))
+
+            dispatch(clearToolbarActions())
+            dispatch(setToolbarTitle('COMPROBANTE'))
             dispatch(setToolbarActions(
                 <>
                     <button className='btn btn-neutral'>Exportar</button>
