@@ -31,10 +31,16 @@ const Toolbar = styled.div`
     background-color: #fff3cd;
     border-bottom: 1px solid #ffc107;
     height: 70px !important;
+    position: sticky;
+    top: 60px;
+    z-index: 1;
 
-    & + .scroll-content {
-        height: calc(100vh - 130px) !important;
+    & + .scroll-content .sticky-mobile {
+        top: 150px;
     }
+    /* & + .scroll-content {
+        height: calc(100vh - 130px) !important;
+    } */
 `
 
 const NavBarMain = styled.div`

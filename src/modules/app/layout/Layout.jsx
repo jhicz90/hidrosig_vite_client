@@ -22,8 +22,8 @@ export const Layout = () => {
 }
 
 const RootApp = styled.div`
-    height: 100vh;
-    overflow: hidden;
+    /* height: 100vh;
+    overflow: hidden; */
 `
 
 const ContentApp = styled.main`
@@ -33,9 +33,9 @@ const ContentApp = styled.main`
     flex-direction: column;
 
     & .scroll-content{
-        overflow-y: scroll;
+        /* overflow-y: scroll; */
         padding: 20px 0;
-        height: calc(100vh - 60px);
+        /* height: calc(100vh - 60px); */
     }
 
     @media (max-width: 1200px) {
