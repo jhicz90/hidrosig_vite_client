@@ -5,13 +5,13 @@ import { BsInfoCircle, BsTrash } from 'react-icons/bs'
 import { FaImages } from 'react-icons/fa'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { VoucherModuleBanner, VoucherModuleDelete, VoucherModuleImages, VoucherModuleInformation } from '../components'
-import { clearToolbarActions, setActiveVoucher, setToolbarActions, setToolbarTitle, startGetVoucher, useGetVoucherIdQuery } from '../../../store/actions'
+import { clearToolbarActions, setActiveVoucher, setToolbarActions, setToolbarTitle, useGetVoucherByIdQuery } from '../../../store/actions'
 
 export const VoucherActivePage = () => {
 
     const { voucherid } = useParams()
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetVoucherIdQuery(voucherid)
+    const { data = null, isLoading, isError } = useGetVoucherByIdQuery(voucherid)
     const { active } = useSelector(state => state.voucher)
 
     useEffect(() => {

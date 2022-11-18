@@ -62,6 +62,7 @@ export const storeApi = createApi({
     //     }
     // }),
     endpoints: (builder) => ({
+        // USUARIOS DE SISTEMA
         getUsrsSys: builder.query({
             query: (search) => ({
                 url: `usersys/list`,
@@ -72,6 +73,25 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['UsrSys']
         }),
+        getUsrsSysByOccup: builder.query({
+            query: ({ id, search }) => ({
+                url: `occupation/list_usersys_in/${id}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['UsrSys', 'Occup']
+        }),
+        getUsrSysById: builder.query({
+            query: (id) => ({
+                url: `usersys/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.usersys,
+            providesTags: ['UsrSys']
+        }),
+        // USUARIOS DE SISTEMA
+        // OCUPACIONES
         getOccups: builder.query({
             query: (search) => ({
                 url: `occupation/list`,
@@ -82,16 +102,14 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Occup']
         }),
-        getUsrSysByOccup: builder.query({
-            query: ({ id, search }) => ({
-                url: `occupation/list_usersys_in/${id}`,
-                params: {
-                    search
-                }
+        getOccupById: builder.query({
+            query: (id) => ({
+                url: `occupation/edit/${id}`
             }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['UsrSys', 'Occup']
+            transformResponse: (response, meta, arg) => response.occupation,
+            providesTags: ['Occup']
         }),
+        // OCUPACIONES
         getRoles: builder.query({
             query: (search) => ({
                 url: `role/list`,
@@ -296,7 +314,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Acct']
         }),
-        getVoucherId: builder.query({
+        getVoucherById: builder.query({
             query: (id) => ({
                 url: `voucher/edit/${id}`,
             }),
@@ -338,21 +356,23 @@ export const {
     useGetJuntasQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
+    useGetOccupByIdQuery,
     useGetOccupsQuery,
     useGetPermsGroupQuery,
     useGetPermsQuery,
+    useGetPettyCashIdQuery,
     useGetPettyCashsByUsrSysQuery,
     useGetPettyCashsQuery,
     useGetResolutionsQuery,
     useGetRolesQuery,
+    useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,
-    useGetUsrSysByOccupQuery,
+    useGetUsrSysByIdQuery,
+    useGetVoucherByIdQuery,
     useGetVouchersByPettyCashQuery,
     useGetVouchersQuery,
     useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
-    useGetPettyCashIdQuery,
-    useGetVoucherIdQuery,
 } = storeApi

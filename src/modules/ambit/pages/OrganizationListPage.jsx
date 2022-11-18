@@ -1,12 +1,30 @@
-import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
-import { CommitteeList, JuntaList } from '../components'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
+import { CommitteeList, CreateCommittee, CreateJunta, JuntaList } from '../components'
 
 export const OrganizationListPage = () => {
 
+    const dispatch = useDispatch()
     const { hash } = useLocation()
     const { lvlAccess } = useSelector(state => state.auth)
+
+    useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('ORGANIZACIÓN'))
+        dispatch(setToolbarActions(
+            <>
+                {lvlAccess < 3 && <CreateJunta />}
+                <CreateCommittee />
+            </>
+        ))
+
+        return () => {
+            dispatch(clearToolbarActions())
+        }
+    }, [dispatch])
 
     return (
         <div className='container'>

@@ -1,15 +1,14 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Card, Col, Form, Row } from 'react-bootstrap'
-import { BsSearch } from 'react-icons/bs'
-import { useGetUsrSysByOccupQuery } from '../../../store/actions'
+import { Card } from 'react-bootstrap'
+import { useGetUsrsSysByOccupQuery } from '../../../store/actions'
 import { Avatar, InputSearch, TableGrid, TagStatus } from '../../../components'
 
 export const OccupationModuleToUsers = () => {
 
     const [search, setSearch] = useState('')
     const { active: { _id: occupId } } = useSelector(state => state.occupation)
-    const { data: usersSysIn = [], isFetching } = useGetUsrSysByOccupQuery({ id: occupId, search }, { refetchOnMountOrArgChange: true })
+    const { data: usersSysIn = [], isFetching } = useGetUsrsSysByOccupQuery({ id: occupId, search }, { refetchOnMountOrArgChange: true })
 
     return (
         <Card>

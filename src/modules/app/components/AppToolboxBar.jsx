@@ -28,8 +28,9 @@ export const AppToolboxBar = () => {
 }
 
 const Toolbar = styled.div`
-    background-color: #fff3cd;
-    border-bottom: 1px solid #ffc107;
+    background-color: #f5f8fa;
+    /* background-color: #fff3cd;
+    border-bottom: 1px solid #ffc107; */
     height: 70px !important;
     position: sticky;
     top: 60px;
