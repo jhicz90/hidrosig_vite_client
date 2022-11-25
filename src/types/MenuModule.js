@@ -157,6 +157,12 @@ export const menuModule = [
                 to: 'budget',
                 meta: ['budget'],
                 detail: 'Herramienta para elaborar fichas a partir de metrados y datos del proyecto a realizar.'
+            },
+            {
+                label: 'Diseño de estructuras',
+                to: 'design',
+                meta: ['design'],
+                detail: 'Herramienta para diseñar estructuras a partir de metrados o datos de la misma para exportar a AUTOCAD, IMAGEN o PDF.'
             }
         ]
     },
