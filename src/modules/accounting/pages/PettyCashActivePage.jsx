@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useParams } from 'react-router-dom'
 import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
-import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, startGetPettycash, useGetPettyCashIdQuery } from '../../../store/actions'
+import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { CreateVoucher, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
 
@@ -10,7 +10,7 @@ export const PettyCashActivePage = () => {
 
     const { pettycashid } = useParams()
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetPettyCashIdQuery(pettycashid)
+    const { data = null, isLoading, isError } = useGetPettyCashByIdQuery(pettycashid)
     const { active } = useSelector(state => state.pettycash)
 
     useEffect(() => {

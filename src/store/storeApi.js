@@ -110,6 +110,7 @@ export const storeApi = createApi({
             providesTags: ['Occup']
         }),
         // OCUPACIONES
+        // ROLES
         getRoles: builder.query({
             query: (search) => ({
                 url: `role/list`,
@@ -118,6 +119,13 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Role']
+        }),
+        getRoleById: builder.query({
+            query: (id) => ({
+                url: `role/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.role,
             providesTags: ['Role']
         }),
         getPerms: builder.query({
@@ -174,6 +182,8 @@ export const storeApi = createApi({
             }),
             invalidatesTags: ['Modl']
         }),
+        // ROLES
+        // JUNTA
         getJuntas: builder.query({
             query: (search) => ({
                 url: `junta/list`,
@@ -184,6 +194,13 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz']
         }),
+        getJuntaById: builder.query({
+            query: (id) => ({
+                url: `junta/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.junta,
+            providesTags: ['Orgz']
+        }),
         addNewJunta: builder.mutation({
             query: (newJunta) => ({
                 url: `junta/create/new`,
@@ -192,6 +209,8 @@ export const storeApi = createApi({
             }),
             invalidatesTags: ['Orgz']
         }),
+        // JUNTA
+        // COMMITTEE
         getComms: builder.query({
             query: (search) => ({
                 url: `committee/list`,
@@ -200,6 +219,13 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getCommById: builder.query({
+            query: (id) => ({
+                url: `committee/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.committee,
             providesTags: ['Orgz']
         }),
         getCommsByJunta: builder.query({
@@ -220,6 +246,7 @@ export const storeApi = createApi({
             }),
             invalidatesTags: ['Orgz']
         }),
+        // COMMITTEE
         getZones: builder.query({
             query: (search) => ({
                 url: `zone/list`,
@@ -287,13 +314,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Files']
         }),
-        getPettyCashId: builder.query({
-            query: (id) => ({
-                url: `pettycash/edit/${id}`,
-            }),
-            transformResponse: (response, meta, arg) => response.pettycash,
-            providesTags: ['Acct']
-        }),
+        // PETTYCASH
         getPettyCashs: builder.query({
             query: (search) => ({
                 url: `pettycash/list`,
@@ -302,6 +323,13 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct']
+        }),
+        getPettyCashById: builder.query({
+            query: (id) => ({
+                url: `pettycash/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.pettycash,
             providesTags: ['Acct']
         }),
         getPettyCashsByUsrSys: builder.query({
@@ -314,6 +342,8 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Acct']
         }),
+        // PETTYCASH
+        // VOUCHER
         getVoucherById: builder.query({
             query: (id) => ({
                 url: `voucher/edit/${id}`,
@@ -341,6 +371,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Acct']
         }),
+        // VOUCHER
     }),
 })
 
@@ -360,7 +391,7 @@ export const {
     useGetOccupsQuery,
     useGetPermsGroupQuery,
     useGetPermsQuery,
-    useGetPettyCashIdQuery,
+    useGetPettyCashByIdQuery,
     useGetPettyCashsByUsrSysQuery,
     useGetPettyCashsQuery,
     useGetResolutionsQuery,
@@ -375,4 +406,7 @@ export const {
     useGetWaterSourcesQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
+    useGetRoleByIdQuery,
+    useGetJuntaByIdQuery,
+    useGetCommByIdQuery,
 } = storeApi

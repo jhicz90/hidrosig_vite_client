@@ -46,13 +46,13 @@ export const TerritoryListPage = () => {
                             </Card.Header>
                             <Card.Body className='p-0'>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey='#zone' unmountOnExit>
+                                    <Tab.Pane eventKey='#zone'>
                                         <ZoneList />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey='#block' unmountOnExit>
+                                    <Tab.Pane eventKey='#block'>
                                         <BlockList />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey='#location' unmountOnExit>
+                                    <Tab.Pane eventKey='#location'>
                                         {/* <TerritoriesLocationList /> */}
                                     </Tab.Pane>
                                 </Tab.Content>
