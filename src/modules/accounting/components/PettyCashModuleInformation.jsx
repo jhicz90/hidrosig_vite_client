@@ -133,7 +133,7 @@ export const PettyCashModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='uEmail'>
+                            <Form.Group className='mb-3' controlId='uRemainingAmount'>
                                 <Form.Label>Monto del cheque (S/.)</Form.Label>
                                 <Form.Control
                                     {...register('remainingAmount', {
@@ -148,7 +148,7 @@ export const PettyCashModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='uEmail'>
+                            <Form.Group className='mb-3' controlId='uOldBalance'>
                                 <Form.Label>Saldo anterior (S/.)</Form.Label>
                                 <Form.Control
                                     {...register('oldBalance', {

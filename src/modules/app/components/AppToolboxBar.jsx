@@ -8,7 +8,7 @@ export const AppToolboxBar = () => {
     return (
         <>
             {
-                (!!actions && title !== '')
+                (!!actions || title !== '')
                 &&
                 <Toolbar>
                     <div className="container g-0">

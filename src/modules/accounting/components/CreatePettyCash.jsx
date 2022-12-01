@@ -74,7 +74,7 @@ export const CreatePettyCashStep = () => {
         <form onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uCode'>
+                    <Form.Group className='mb-3' controlId='pCode'>
                         <Form.Label>Código</Form.Label>
                         <Form.Control
                             {...register('code', { required: true })}
@@ -84,7 +84,7 @@ export const CreatePettyCashStep = () => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uYear'>
+                    <Form.Group className='mb-3' controlId='pYear'>
                         <Form.Label>Año</Form.Label>
                         <Form.Control
                             {...register('year', {
@@ -100,7 +100,7 @@ export const CreatePettyCashStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='pName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -112,7 +112,7 @@ export const CreatePettyCashStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='pDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -126,7 +126,7 @@ export const CreatePettyCashStep = () => {
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <div className='mb-3'>
-                        <label htmlFor='uStartDeclaration' className='form-label'>Fecha del comprobante</label>
+                        <label htmlFor='pStartDeclaration' className='form-label'>Fecha del comprobante</label>
                         <Controller
                             control={control}
                             name='startDeclaration'
@@ -135,7 +135,7 @@ export const CreatePettyCashStep = () => {
                                 field: { onChange, value },
                             }) => (
                                 <DatePicker
-                                    id='uStartDeclaration'
+                                    id='pStartDeclaration'
                                     value={value}
                                     onChange={onChange}
                                 />
@@ -147,7 +147,7 @@ export const CreatePettyCashStep = () => {
                     </div>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uReceipt'>
+                    <Form.Group className='mb-3' controlId='pReceipt'>
                         <Form.Label>Número de comprobante</Form.Label>
                         <Form.Control
                             {...register('receipt', { required: true })}
@@ -159,7 +159,7 @@ export const CreatePettyCashStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12 col-md-4'>
-                    <Form.Group className='mb-3' controlId='uDocId'>
+                    <Form.Group className='mb-3' controlId='pCheck'>
                         <Form.Label>Número de cheque</Form.Label>
                         <Form.Control
                             {...register('check', { required: true })}
@@ -169,7 +169,7 @@ export const CreatePettyCashStep = () => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-4'>
-                    <Form.Group className='mb-3' controlId='uEmail'>
+                    <Form.Group className='mb-3' controlId='pRemainingAmount'>
                         <Form.Label>Monto del cheque (S/.)</Form.Label>
                         <Form.Control
                             {...register('remainingAmount', {
@@ -184,7 +184,7 @@ export const CreatePettyCashStep = () => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-4'>
-                    <Form.Group className='mb-3' controlId='uEmail'>
+                    <Form.Group className='mb-3' controlId='pOldBalance'>
                         <Form.Label>Saldo anterior (S/.)</Form.Label>
                         <Form.Control
                             {...register('oldBalance', {

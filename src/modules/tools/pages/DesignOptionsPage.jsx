@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
+import { DesignGatePage } from './'
 
 export const DesignOptionsPage = () => {
 
@@ -18,6 +19,23 @@ export const DesignOptionsPage = () => {
         //         <CreateCommittee />
         //     </>
         // ))
+
+        // const data = async () => {
+        //     console.log(await fetchByToken({
+        //         endpoint: `tools/drawsluicegate`,
+        //         params: {
+        //             thickness: 0.15,
+        //             inputWidth: 0.6,
+        //             outputWidth: 0.4,
+        //             lengthStructure: 1.6,
+        //             gateWidth: 0.6,
+        //             bladeHeight: 1,
+        //             gateHeight: 1.6
+        //         }
+        //     }))
+        // }
+
+        // data()
 
         return () => {
             dispatch(clearToolbarActions())
@@ -46,7 +64,7 @@ export const DesignOptionsPage = () => {
                             <Card.Body className='p-0'>
                                 <Tab.Content>
                                     <Tab.Pane eventKey='#gate'>
-                                        <>Compuertas</>
+                                        <DesignGatePage />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey='#lock'>
                                         <>Retenes</>

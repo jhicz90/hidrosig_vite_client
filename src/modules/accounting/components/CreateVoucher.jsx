@@ -79,17 +79,17 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
         <form onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <div className='mb-3'>
-                        <label htmlFor='uVoucherDay' className='form-label'>Fecha del comprobante</label>
+                    <Form.Group className='mb-3' controlId='pVoucherDay'>
+                        <Form.Label>Fecha del comprobante</Form.Label>
                         <Controller
                             control={control}
-                            name='voucherDay'
+                            name='startDeclaration'
                             rules={{ required: true }}
                             render={({
                                 field: { onChange, value },
                             }) => (
                                 <DatePicker
-                                    id='uVoucherDay'
+                                    id='pVoucherDay'
                                     value={value}
                                     onChange={(e) => {
                                         if (moment(e).isBefore(pettycashActive?.startDeclaration || new Date())) {
@@ -102,38 +102,38 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                                 />
                             )}
                         />
-                        <div className='form-text'>
-                            La fecha descrita en el comprobante al momento de emitirlo.
-                        </div>
-                    </div>
+                        <Form.Text>
+                            La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.
+                        </Form.Text>
+                    </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <div className='mb-3'>
-                        <label htmlFor='uCancelDay' className='form-label'>Fecha de cancelación</label>
+                    <Form.Group className='mb-3' controlId='pCancelDay'>
+                        <Form.Label>Fecha de cancelación</Form.Label>
                         <Controller
                             control={control}
-                            name='cancelDay'
+                            name='startDeclaration'
                             rules={{ required: true }}
                             render={({
                                 field: { onChange, value },
                             }) => (
                                 <DatePicker
-                                    id='uCancelDay'
+                                    id='pCancelDay'
                                     minDate={moment(pettycashActive?.startDeclaration || new Date()).toDate()}
                                     value={value}
                                     onChange={onChange}
                                 />
                             )}
                         />
-                        <div className='form-text'>
+                        <Form.Text>
                             Fecha en que se hizo la cancelación del comprobante.
-                        </div>
-                    </div>
+                        </Form.Text>
+                    </Form.Group>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-12 col-md-4'>
-                    <Form.Group className='mb-3' controlId='uTypeReceipt'>
+                    <Form.Group className='mb-3' controlId='pTypeReceipt'>
                         <Form.Label>Tipo de comprobante</Form.Label>
                         <Form.Select
                             {...register('typeReceipt', { required: true })}
@@ -151,7 +151,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-4'>
-                    <Form.Group className='mb-3' controlId='uSerie'>
+                    <Form.Group className='mb-3' controlId='pSerie'>
                         <Form.Label>Serie</Form.Label>
                         <Form.Control
                             {...register('serie', { required: true })}
@@ -161,7 +161,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-4'>
-                    <Form.Group className='mb-3' controlId='uNumReceipt'>
+                    <Form.Group className='mb-3' controlId='pNumReceipt'>
                         <Form.Label>Número de comprobante</Form.Label>
                         <Form.Control
                             {...register('numReceipt', { required: true, min: 0.01 })}
@@ -176,7 +176,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
             <div className='row'>
                 <div className='col-12'>
                     <div className='mb-3'>
-                        <label htmlFor='uSocialReason' className='form-label'>Razón social</label>
+                        <label htmlFor='pSocialReason' className='form-label'>Razón social</label>
                         <Controller
                             name='socialReason'
                             control={control}
@@ -184,7 +184,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                             render={({ field }) =>
                                 <AsyncSelect
                                     {...field}
-                                    inputId='uSocialReason'
+                                    inputId='pSocialReason'
                                     classNamePrefix='rc-select'
                                     isClearable
                                     defaultOptions
@@ -203,11 +203,10 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uConcept'>
+                    <Form.Group className='mb-3' controlId='pConcept'>
                         <Form.Label>Concepto</Form.Label>
                         <Form.Control
-                            {...register('concept')}
-                            as='textarea'
+                            {...register('concept', { required: true, minLength: 4 })}
                             type='text'
                             autoComplete='off'
                         />
@@ -216,7 +215,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
             </div>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uTypeIncomeExpenses'>
+                    <Form.Group className='mb-3' controlId='pTypeIncomeExpenses'>
                         <Form.Label>Ingreso / egreso</Form.Label>
                         <Form.Select
                             {...register('typeIncomeExpenses', { required: true })}
@@ -228,7 +227,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uAmountReceipt'>
+                    <Form.Group className='mb-3' controlId='pAmountReceipt'>
                         <Form.Label>Importe rendido (S/.)</Form.Label>
                         <Form.Control
                             {...register('amountReceipt', {

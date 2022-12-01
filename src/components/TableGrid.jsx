@@ -21,13 +21,16 @@ export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoR
             BaseCell: `
                 ${columns.map((c, i) => {
                 if (!c.pinRight) {
-                    return ''
+                    return `
+                    right: inherit;
+                    `
                 } else {
                     return `
                         &:nth-of-type(${i + 1}) {
                             right: 0px;
                             background-color: white;
-                        }`
+                        }
+                    `
                 }
             })}
 

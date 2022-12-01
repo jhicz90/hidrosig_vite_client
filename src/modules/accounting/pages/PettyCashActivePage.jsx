@@ -19,11 +19,11 @@ export const PettyCashActivePage = () => {
 
             dispatch(clearToolbarActions())
             dispatch(setToolbarTitle('CAJA CHICA'))
-            dispatch(setToolbarActions(
-                <>
-                    <CreateVoucher pettycash={data} />
-                </>
-            ))
+            // dispatch(setToolbarActions(
+            //     <>
+            //         <CreateVoucher pettycash={data} />
+            //     </>
+            // ))
         }
 
         return () => {

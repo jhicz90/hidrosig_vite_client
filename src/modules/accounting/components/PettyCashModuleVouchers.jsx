@@ -87,6 +87,12 @@ const PettyCashVoucher = () => {
                                         <span>{item.amountReceipt.toFixed(2)}</span>
                                 },
                                 {
+                                    label: 'RAZÓN SOCIAL',
+                                    width: '300px',
+                                    renderCell: (item) =>
+                                        <span title={item.nameSocialReason}>{item.nameSocialReason}</span>
+                                },
+                                {
                                     label: 'IMAGENES',
                                     width: '200px',
                                     renderCell: (item) => {
