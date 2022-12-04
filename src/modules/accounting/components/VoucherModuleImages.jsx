@@ -24,9 +24,10 @@ const VoucherImages = () => {
     const [imagesLightbox, setImagesLightbox] = useState([])
     const [indexImageLightbox, setIndexImageLightbox] = useState(0)
 
-    const imageData = active.images.map(({ fileName }) => ({
-        src: imageGet(fileName, { size: 1000 }),
-        loading: 'lazy'
+    const imageData = active.images.map(({ metadata }) => ({
+        src: imageGet(metadata.url, { size: 1000 }),
+        loading: 'lazy',
+        alt: metadata.id
     }))
 
     const handleLightbox = (images, index) => {
@@ -79,15 +80,15 @@ const VoucherImages = () => {
                     >
                         <div className='d-flex gap-2'>
                             {
-                                active.images.map((img, index) =>
+                                active.images.map(({ metadata }, index) =>
                                     <div
-                                        key={img._id}
+                                        key={metadata.id}
                                         onClick={() => handleLightbox(imageData, index)}
                                         className='rounded shadow-sm border border-light'
                                         style={{
                                             width: '200px',
                                             height: '200px',
-                                            background: `url(${imageGet(img.fileName, { size: 200 })})`,
+                                            background: `url(${imageGet(metadata.url, { size: 200 })})`,
                                             backgroundRepeat: 'no-repeat',
                                             backgroundPosition: 'center',
                                             backgroundSize: 'cover'

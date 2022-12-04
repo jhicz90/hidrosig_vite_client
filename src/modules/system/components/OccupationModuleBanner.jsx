@@ -29,7 +29,7 @@ export const OccupationModuleBanner = () => {
 
     return (
         <div className='text-center'>
-            <AvatarProfile className='mb-3' avatarImg={data.image?.fileName} actionChange={handleChangeImage} />
+            <AvatarProfile className='mb-3' avatarImg={data.image?.metadata.url} actionChange={handleChangeImage} />
             <div className='fs-5 mb-0'>{data.name}</div>
             <span className='text-secondary fw-semibold'>Ocupación</span>
             <div className='row mt-3'>

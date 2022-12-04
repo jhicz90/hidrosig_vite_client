@@ -96,22 +96,23 @@ const PettyCashVoucher = () => {
                                     label: 'IMAGENES',
                                     width: '200px',
                                     renderCell: (item) => {
-                                        const imageData = item.images.map(({ fileName }) => ({
-                                            src: imageGet(fileName, { size: 1000 }),
-                                            loading: 'lazy'
+                                        const imageData = item.images.map(({ metadata }) => ({
+                                            src: imageGet(metadata.url, { size: 1000 }),
+                                            loading: 'lazy',
+                                            alt: metadata.id
                                         }))
 
                                         return (
                                             <div className='d-flex p-2 gap-2'>
                                                 {
-                                                    item.images.map((img, index) =>
+                                                    item.images.map(({ metadata }, index) =>
                                                         <Image
                                                             onClick={() => handleLightbox(imageData, index)}
-                                                            key={img.fileName}
+                                                            key={metadata.id}
                                                             className='rounded shadow-sm border border-light'
                                                             width={30}
                                                             height={30}
-                                                            img={img.fileName}
+                                                            img={metadata.url}
                                                             resSize={100}
                                                         />
                                                     )

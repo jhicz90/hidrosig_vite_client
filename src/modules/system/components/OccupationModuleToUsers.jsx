@@ -25,7 +25,7 @@ export const OccupationModuleToUsers = () => {
                                     <div className='d-flex align-items-center px-2 py-1'>
                                         <div className='flex-shrink-0 me-3'>
                                             <Avatar
-                                                img={item.image?.fileName}
+                                                img={item.image?.metadata.url}
                                                 noImgTxt={item.names}
                                                 circle={true}
                                                 width={40}
