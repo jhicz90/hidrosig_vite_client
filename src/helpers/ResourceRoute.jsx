@@ -6,9 +6,9 @@ export const imageGet = (path = '', options = { size: 0 }) => {
     let url = path
 
     if (typeof options.size === 'number' && options.size > 0) {
-        url = `${path.replace('image/upload', `image/upload/q_90,c_fit,w_${options.size},h_${options.size}`)}`
+        url = `${url.replace('image/upload', `image/upload/q_90,c_fit,w_${options.size},h_${options.size}`)}`
     }else {
-        url = `${path.replace('image/upload', `image/upload/q_90`)}`
+        url = `${url.replace('image/upload', `image/upload/q_90`)}`
     }
 
     return url

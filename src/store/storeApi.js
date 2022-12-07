@@ -297,6 +297,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
         }),
+        // FILES
         getBrowser: builder.query({
             query: (folder) => ({
                 url: `resource/browser/${folder}`,
@@ -304,9 +305,9 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.browser,
             providesTags: ['Files']
         }),
-        getResolutions: builder.query({
+        getDocuments: builder.query({
             query: (search) => ({
-                url: `resolution/list`,
+                url: `document/list`,
                 params: {
                     search
                 }
@@ -314,6 +315,7 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Files']
         }),
+        // FILES
         // PETTYCASH
         getPettyCashs: builder.query({
             query: (search) => ({
@@ -394,7 +396,7 @@ export const {
     useGetPettyCashByIdQuery,
     useGetPettyCashsByUsrSysQuery,
     useGetPettyCashsQuery,
-    useGetResolutionsQuery,
+    useGetDocumentsQuery,
     useGetRolesQuery,
     useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,

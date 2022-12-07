@@ -11,14 +11,16 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
     useEffect(() => {
-        prominent(imageGet(avatarImg), { amount: 3 }).then(colors => {
-            const randomPicked = Math.floor(Math.random() * colors.length)
-            if (colors[randomPicked][0] === 0 && colors[randomPicked][1] === 0 && colors[randomPicked][2] === 0) {
-                setBackColor(`rgb(255, 255, 255)`)
-            } else {
-                setBackColor(`rgb(${colors[randomPicked].join(',')})`)
-            }
-        })
+        if (avatarImg !== null) {
+            prominent(imageGet(avatarImg), { amount: 3 }).then(colors => {
+                const randomPicked = Math.floor(Math.random() * colors.length)
+                if (colors[randomPicked][0] === 0 && colors[randomPicked][1] === 0 && colors[randomPicked][2] === 0) {
+                    setBackColor(`rgb(255, 255, 255)`)
+                } else {
+                    setBackColor(`rgb(${colors[randomPicked].join(',')})`)
+                }
+            })
+        }
     }, [avatarImg])
 
     return (
@@ -34,7 +36,7 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
                 />
                 <img
                     className='avatar-img'
-                    src={avatarImg ? imageGet(avatarImg) : imageSysGet(noImg)}
+                    src={avatarImg !== null ? imageGet(avatarImg) : imageSysGet(noImg)}
                     style={{ background: backColor, width: size, height: size }}
                     alt={`avatar-image-${avatarImg}`}
                     loading={'lazy'}

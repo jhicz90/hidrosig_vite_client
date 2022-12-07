@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveBlock, searchCommitteeByJunta, searchJunta, setActiveBlock, startUpdateBlock } from '../../../store/actions'
-import { OptionOrgz } from '../../../components'
+import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchJunta, setActiveBlock, startUpdateBlock } from '../../../store/actions'
+import { OptionDocument, OptionOrgz } from '../../../components'
 
 export const EditBlock = () => {
 
@@ -49,13 +49,14 @@ const EditBlockStep = () => {
     const { active } = useSelector(state => state.block)
     const { register, watch, setValue, control, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ name, code, desc, junta, committee }) => {
+    const handleSave = ({ name, code, desc, junta, committee, resolution }) => {
         dispatch(editActiveBlock({
             name,
             code,
             desc,
             junta,
             committee,
+            resolution
         }))
         dispatch(startUpdateBlock())
     }
@@ -165,6 +166,37 @@ const EditBlockStep = () => {
                                         getOptionValue={e => e._id}
                                         getOptionLabel={e =>
                                             <OptionOrgz orgz={e} />
+                                        }
+                                    />
+                            }
+                        />
+                    </Form.Group>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col'>
+                    <Form.Group className='mb-3' controlId='uResolution'>
+                        <Form.Label>Resolución</Form.Label>
+                        <Controller
+                            name='resolution'
+                            control={control}
+                            rules={{ required: true }}
+                            render={
+                                ({ field }) =>
+                                    <AsyncSelect
+                                        {...field}
+                                        inputId='uResolution'
+                                        classNamePrefix='rc-select'
+                                        isClearable
+                                        defaultOptions
+                                        loadOptions={searchDocument}
+                                        menuPlacement={'auto'}
+                                        placeholder={`Buscar...`}
+                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                        getOptionValue={e => e._id}
+                                        getOptionLabel={e =>
+                                            <OptionDocument docm={e} />
                                         }
                                     />
                             }

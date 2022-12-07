@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card, Nav, Tab } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { DocumentBrowser, ResourceBrowser } from '../components'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
+import { CreateDocument, DocumentBrowser, ResourceBrowser } from '../components'
 
 export const ResourcesPage = () => {
 
+    const dispatch = useDispatch()
     const { hash } = useLocation()
+
+    useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('RECURSOS'))
+        dispatch(setToolbarActions(
+            <>
+                <CreateDocument />
+            </>
+        ))
+
+        return () => {
+            dispatch(clearToolbarActions())
+        }
+    }, [dispatch])
 
     return (
         <div className='container'>
@@ -26,7 +43,7 @@ export const ResourcesPage = () => {
                             <Card.Body className='p-0'>
                                 <Tab.Content>
                                     <Tab.Pane eventKey='#browser'>
-                                        <ResourceBrowser />
+                                        {/* <ResourceBrowser /> */}
                                     </Tab.Pane>
                                     <Tab.Pane eventKey='#docs'>
                                         <DocumentBrowser />

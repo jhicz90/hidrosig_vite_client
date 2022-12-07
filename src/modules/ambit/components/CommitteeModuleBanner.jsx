@@ -29,7 +29,7 @@ export const CommitteeModuleBanner = () => {
 
     return (
         <div className='text-center'>
-            <AvatarProfile className='mb-3' avatarImg={data.image?.fileName} />
+            <AvatarProfile className='mb-3' avatarImg={data.image?.metadata.url} />
             <div className='fs-5 mb-0'>{data.name}</div>
             <span className='text-secondary fw-semibold'>Comisión de usuarios</span>
             <div className='row mt-3'>

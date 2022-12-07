@@ -1,11 +1,10 @@
-import { imageGet } from '../helpers'
 import { Avatar } from './Avatar'
 
 export const OptionOrgz = ({ orgz = null }) => {
     return (
         <div className='d-flex p-1'>
             <Avatar
-                img={orgz.image?.fileName}
+                img={orgz.image?.metadata.url}
                 noImgTxt={orgz.name}
                 noImg={4003}
                 circle={true}

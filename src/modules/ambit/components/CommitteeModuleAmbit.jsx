@@ -4,7 +4,7 @@ import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { searchJunta, searchZoneByJunta, startUpdateAmbitCommittee } from '../../../store/actions'
-import { imageGet } from '../../../helpers'
+import { OptionOrgz } from '../../../components'
 
 export const CommitteeModuleAmbit = () => {
 
@@ -59,10 +59,7 @@ export const CommitteeModuleAmbit = () => {
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e =>
-                                                    <div className='d-flex'>
-                                                        <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                        <span className='ms-2 align-self-center'>{e.name}</span>
-                                                    </div>
+                                                    <OptionOrgz orgz={e} />
                                                 }
                                             />
                                     }
