@@ -177,3 +177,14 @@ export const startDeletePettycash = ({ navigate = null }) => {
         })
     }
 }
+
+export const startExportActivePettyCash = () => {
+    return async (dispatch, getState) => {
+        const { active } = getState().pettycash
+        const { _id } = active
+
+        await fetchByToken({
+            endpoint: `pettycash/export/${_id}`
+        })
+    }
+}

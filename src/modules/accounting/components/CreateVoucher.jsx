@@ -83,7 +83,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                         <Form.Label>Fecha del comprobante</Form.Label>
                         <Controller
                             control={control}
-                            name='startDeclaration'
+                            name='voucherDay'
                             rules={{ required: true }}
                             render={({
                                 field: { onChange, value },
@@ -112,7 +112,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                         <Form.Label>Fecha de cancelación</Form.Label>
                         <Controller
                             control={control}
-                            name='startDeclaration'
+                            name='cancelDay'
                             rules={{ required: true }}
                             render={({
                                 field: { onChange, value },
