@@ -1,42 +1,75 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveZone, searchJunta, setActiveZone, startUpdateZone } from '../../../store/actions'
-import { OptionOrgz } from '../../../components'
+import { editActiveZone, searchJunta, setActiveZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
+import { LoadingPage, OptionOrgz } from '../../../components'
 
 export const EditZone = () => {
 
+    const [show, setShow] = useState(true)
+    const { zoneid } = useParams()
+    const redirect = useNavigate()
     const dispatch = useDispatch()
+    const { data = null, isLoading, isError } = useGetZoneByIdQuery(zoneid)
     const { active, isSaving } = useSelector(state => state.zone)
+
+    useEffect(() => {
+        if (!!data) {
+            dispatch(setActiveZone(data))
+        }
+
+        return () => {
+            dispatch(setActiveZone(null))
+        }
+    }, [data])
+
+    if (isError) {
+        return <Navigate to={`/app/ambit/trrty#zone`} replace />
+    }
 
     return (
         <Offcanvas
-            show={!!active}
-            onHide={() => dispatch(setActiveZone(null))}
+            show={show}
+            onHide={() => setShow(false)}
+            onExited={() => redirect(`/app/ambit/trrty#zone`)}
             placement='end'
             backdrop='static'
         >
             <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
-                <Offcanvas.Title>Zona - {active?.name}</Offcanvas.Title>
+                <Offcanvas.Title>
+                    <div className='d-flex flex-column'>
+                        <span>Zona</span>
+                        <span>{active ? active?.name : 'Cargando...'}</span>
+                    </div>
+                </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSaving}
-                        variant='success'
-                        type='submit'
-                        form='form-ambit-zone-edit'
-                        className='w-100'
-                    >
-                        Guardar cambios
-                    </Button>
-                </div>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-                <EditZoneStep />
-            </Offcanvas.Body>
+            {
+                !!active
+                    ?
+                    <>
+                        <Offcanvas.Header>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSaving}
+                                    variant='success'
+                                    type='submit'
+                                    form='form-ambit-zone-edit'
+                                    className='w-100'
+                                >
+                                    Guardar cambios
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <EditZoneStep />
+                        </Offcanvas.Body>
+                    </>
+                    :
+                    <LoadingPage />
+            }
         </Offcanvas>
     )
 }

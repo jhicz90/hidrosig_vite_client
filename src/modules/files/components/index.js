@@ -1,3 +1,4 @@
-export * from './DocumentBrowser'
-export * from './ResourceBrowser'
 export * from './CreateDocument'
+export * from './DocumentBrowser'
+export * from './EditDocument'
+export * from './ResourceBrowser'

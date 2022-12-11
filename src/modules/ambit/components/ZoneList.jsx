@@ -1,21 +1,17 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { EditZone } from './EditZone'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
-import { startGetZone, useGetZonesQuery } from '../../../store/actions'
+import { useGetZonesQuery } from '../../../store/actions'
 
 export const ZoneList = () => {
 
-    const dispatch = useDispatch()
-    const { isSaving } = useSelector(state => state.zone)
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetZonesQuery(search)
 
     return (
         <>
-            <EditZone />
             <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
@@ -54,13 +50,12 @@ export const ZoneList = () => {
                             pinRight: true,
                             renderCell: (item) =>
                                 <ButtonGroup>
-                                    <Button
-                                        disabled={isSaving}
-                                        onClick={() => dispatch(startGetZone(item._id))}
-                                        variant='neutral'
+                                    <Link
+                                        className='btn btn-neutral'
+                                        to={`/app/ambit/trrty/edit/zone/${item._id}`}
                                     >
                                         <FaPen />
-                                    </Button>
+                                    </Link>
                                 </ButtonGroup>
                         }
                     ]

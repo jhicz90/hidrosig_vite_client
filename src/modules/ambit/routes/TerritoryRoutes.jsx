@@ -1,13 +1,15 @@
 import { Route, Routes } from 'react-router-dom'
+import { EditBlock, EditZone } from '..'
 import { GuardRoute } from '../../../guards'
 import { TerritoryListPage } from '../pages'
 
 export const TerritoryRoutes = () => {
     return (
         <Routes>
-            <Route index element={<GuardRoute meta={['territory']} component={TerritoryListPage} />} />
-            {/* <Route path={`/junta/:juntaid`} element={<GuardRoute meta={['organization']} component={JuntaActivePage} />} />
-            <Route path={`/comm/:commid`} element={<GuardRoute meta={['organization']} component={CommitteeActivePage} />} /> */}
+            <Route path={`/`} element={<GuardRoute meta={['territory']} component={TerritoryListPage} />} >
+                <Route path={`edit/zone/:zoneid`} element={<EditZone />} />
+                <Route path={`edit/block/:blockid`} element={<EditBlock />} />
+            </Route>
         </Routes>
     )
 }

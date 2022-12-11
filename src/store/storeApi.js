@@ -257,6 +257,13 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
         }),
+        getZoneById: builder.query({
+            query: (id) => ({
+                url: `zone/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.zone,
+            providesTags: ['Orgz', 'Trrt']
+        }),
         getZonesByJunta: builder.query({
             query: ({ junta, search }) => ({
                 url: `zone/search_by_junta/${junta}`,
@@ -275,6 +282,13 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Trrt']
+        }),
+        getBlockById: builder.query({
+            query: (id) => ({
+                url: `block/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.block,
             providesTags: ['Orgz', 'Trrt']
         }),
         getWaterSources: builder.query({
@@ -315,6 +329,31 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Files']
         }),
+        getDocumentById: builder.query({
+            query: (id) => ({
+                url: `document/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.document,
+            providesTags: ['Files']
+        }),
+        // addResource: builder.mutation({
+        //     query: (files) => {
+
+        //         const formData = new FormData()
+
+        //         files.forEach(item => {
+        //             formData.append('resources', item)
+        //         })
+
+        //         return {
+        //             method: 'POST',
+        //             data: formData,
+        //             url: `resource/up`,
+        //         }
+        //     },
+        //     transformResponse: (response, meta, arg) => response.document,
+        //     providesTags: ['Files']
+        // }),
         // FILES
         // PETTYCASH
         getPettyCashs: builder.query({
@@ -382,10 +421,15 @@ export const {
     useAddNewJuntaMutation,
     useAddNewModuleMutation,
     useAddNewPermMutation,
+    useGetBlockByIdQuery,
     useGetBlocksQuery,
     useGetBrowserQuery,
+    useGetCommByIdQuery,
     useGetCommsByJuntaQuery,
     useGetCommsQuery,
+    useGetDocumentByIdQuery,
+    useGetDocumentsQuery,
+    useGetJuntaByIdQuery,
     useGetJuntasQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
@@ -396,7 +440,7 @@ export const {
     useGetPettyCashByIdQuery,
     useGetPettyCashsByUsrSysQuery,
     useGetPettyCashsQuery,
-    useGetDocumentsQuery,
+    useGetRoleByIdQuery,
     useGetRolesQuery,
     useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,
@@ -406,9 +450,7 @@ export const {
     useGetVouchersQuery,
     useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
+    useGetZoneByIdQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
-    useGetRoleByIdQuery,
-    useGetJuntaByIdQuery,
-    useGetCommByIdQuery,
 } = storeApi

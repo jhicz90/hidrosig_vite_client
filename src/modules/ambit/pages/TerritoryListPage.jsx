@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 import { BlockList, CreateBlock, CreateZone, ZoneList } from '../components'
 
@@ -61,6 +61,7 @@ export const TerritoryListPage = () => {
                     </Card>
                 </div>
             </div>
+            <Outlet/>
         </div>
     )
 }

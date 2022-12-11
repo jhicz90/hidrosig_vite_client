@@ -5,7 +5,7 @@ import { LoadingPage, ModuleNav } from '../../../components'
 import { SystemSettings } from '../components'
 import { setSettings, startGetSystemSettings } from '../../../store/actions'
 
-export const SystemPage = () => {
+export const SettingsPage = () => {
 
     const dispatch = useDispatch()
     const { settings } = useSelector(state => state.system)

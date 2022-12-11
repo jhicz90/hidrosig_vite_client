@@ -1,44 +1,77 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchJunta, setActiveBlock, startUpdateBlock } from '../../../store/actions'
-import { OptionDocument, OptionOrgz } from '../../../components'
+import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchJunta, setActiveBlock, startUpdateBlock, useGetBlockByIdQuery } from '../../../store/actions'
+import { LoadingPage, OptionDocument, OptionOrgz } from '../../../components'
 
 export const EditBlock = () => {
 
+    const [show, setShow] = useState(true)
+    const { blockid } = useParams()
+    const redirect = useNavigate()
     const dispatch = useDispatch()
+    const { data = null, isLoading, isError } = useGetBlockByIdQuery(blockid)
     const { active, isSaving } = useSelector(state => state.block)
+
+    useEffect(() => {
+        if (!!data) {
+            dispatch(setActiveBlock(data))
+        }
+
+        return () => {
+            dispatch(setActiveBlock(null))
+        }
+    }, [data])
+
+    if (isError) {
+        return <Navigate to={`/app/ambit/trrty#block`} replace />
+    }
 
     return (
         <Offcanvas
-            show={!!active}
-            onHide={() => dispatch(setActiveBlock(null))}
+            show={show}
+            onHide={() => setShow(false)}
+            onExited={() => redirect(`/app/ambit/trrty#block`)}
             placement='end'
             backdrop='static'
         >
             <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
-                <Offcanvas.Title>Bloque de riego - {active?.name}</Offcanvas.Title>
+                <Offcanvas.Title>
+                    <div className='d-flex flex-column'>
+                        <span>Bloque de riego</span>
+                        <span>{active ? active?.name : 'Cargando...'}</span>
+                    </div>
+                </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSaving}
-                        variant='success'
-                        type='submit'
-                        form='form-ambit-block-edit'
-                        className='w-100'
-                    >
-                        Guardar cambios
-                    </Button>
-                </div>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-                <Card.Body>
-                    <EditBlockStep />
-                </Card.Body>
-            </Offcanvas.Body>
+            {
+                !!active
+                    ?
+                    <>
+                        <Offcanvas.Header>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSaving}
+                                    variant='success'
+                                    type='submit'
+                                    form='form-ambit-block-edit'
+                                    className='w-100'
+                                >
+                                    Guardar cambios
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <Card.Body>
+                                <EditBlockStep />
+                            </Card.Body>
+                        </Offcanvas.Body>
+                    </>
+                    :
+                    <LoadingPage />
+            }
         </Offcanvas>
     )
 }

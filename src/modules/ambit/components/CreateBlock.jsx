@@ -25,7 +25,7 @@ export const CreateBlock = ({ junta = null, committee = null, typeButton = 1 }) 
                     dispatch(startAddNewBlock())
                 }}
             >
-                Nueva bloque
+                Nuevo bloque
             </Button>
             <Offcanvas
                 show={!!activeNew}

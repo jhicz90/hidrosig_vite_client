@@ -93,19 +93,19 @@ export const startUpdateDocument = () => {
     }
 }
 
-export const startUpdateImageDocument = ({ image }) => {
+export const startUpdateDocsDocument = (docs) => {
     return async (dispatch, getState) => {
         const { active } = getState().document
         const { _id } = active
 
         const resp = await fetchByToken({
-            endpoint: `document/image/${_id}`,
-            data: { image },
+            endpoint: `document/docs/${_id}`,
+            data: { docs },
             method: 'PUT'
         })
 
         if (resp.ok) {
-            dispatch(setActiveDocument(resp.Document))
+            dispatch(setActiveDocument(resp.document))
         }
     }
 }

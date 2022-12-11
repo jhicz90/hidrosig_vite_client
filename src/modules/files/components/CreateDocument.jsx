@@ -33,7 +33,7 @@ export const CreateDocument = ({ typeButton = 1 }) => {
                 placement='end'
                 backdrop='static'
             >
-                <Offcanvas.Header closeButton={!isSavingNew}>
+                <Offcanvas.Header className='text-bg-primary' closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear documento</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Header>

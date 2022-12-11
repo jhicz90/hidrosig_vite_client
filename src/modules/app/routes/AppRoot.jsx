@@ -6,7 +6,7 @@ import { Layout } from '../layout'
 
 import { GuardRoute } from '../../../guards'
 
-import { DashboardPage, NotFoundPage, SysPageResume } from '../pages'
+import { DashboardPage, NotFoundPage } from '../pages'
 import {
     OrganizationRoutes,
     SigaRoutes,
@@ -180,17 +180,7 @@ export const AppRoot = () => {
                     <Route path={`tools/*`}>
                         <Route path={`design/*`} element={<GuardRoute meta={['tools']} component={DesignRoutes} />} />
                     </Route>
-                    <Route path={`sys`}>
-                        <Route path={`resume`} element={<SysPageResume />} />
-                        <Route path={`user_sys/*`} element={<GuardRoute meta={['system']} component={UserSysRoutes} />} />
-                        <Route path={`occup/*`} element={<GuardRoute meta={['system']} component={OccupationRoutes} />} />
-                        <Route path={`role/*`} element={<GuardRoute meta={['system']} component={RoleRoutes} />} />
-                        <Route path={`settings/*`} element={<GuardRoute meta={['system']} component={SystemRoutes} />} />
-                        {/* <Route path={`occup/:id`} element={<GuardRoute meta={['system', 'occupation']} component={OccupationEdit} />} />
-                        <Route path={`perms`} element={<GuardRoute meta={['system', 'permission']} component={ListOfPermission} />} />
-                        <Route path={`perms/:id`} element={<GuardRoute meta={['system', 'permission']} component={PermissionEdit} />} />
-                        <Route path={`settings`} element={<GuardRoute meta={['system', 'settings']} component={SystemEdit} />} /> */}
-                    </Route>
+                    <Route path={`sys/*`} element={<SystemRoutes />} />
                     <Route path={`*`} element={<NotFoundPage />} />
                 </Route>
             </Routes>

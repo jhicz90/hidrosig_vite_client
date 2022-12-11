@@ -1,21 +1,17 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { EditBlock } from './EditBlock'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
-import { startGetBlock, useGetBlocksQuery } from '../../../store/actions'
+import { useGetBlocksQuery } from '../../../store/actions'
 
 export const BlockList = () => {
 
-    const dispatch = useDispatch()
-    const { isSaving } = useSelector(state => state.block)
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetBlocksQuery(search)
 
     return (
         <>
-            <EditBlock />
             <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
@@ -66,13 +62,12 @@ export const BlockList = () => {
                             pinRight: true,
                             renderCell: (item) =>
                                 <ButtonGroup>
-                                    <Button
-                                        disabled={isSaving}
-                                        onClick={() => dispatch(startGetBlock(item._id))}
-                                        variant='neutral'
+                                    <Link
+                                        className='btn btn-neutral'
+                                        to={`/app/ambit/trrty/edit/block/${item._id}`}
                                     >
                                         <FaPen />
-                                    </Button>
+                                    </Link>
                                 </ButtonGroup>
                         }
                     ]
