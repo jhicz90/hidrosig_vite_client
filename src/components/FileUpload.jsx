@@ -10,14 +10,17 @@ export const FileUpload = ({ file }) => {
         <FileUploadStyle key={file.fileName}>
             <img src={previewResource(file.format, file.metadata?.url)} alt={file.fileName} />
             <div className='file-info'>
-                <div
+                <a
                     className='d-inline-block text-truncate'
                     style={{
                         maxWidth: '200px',
                         fontWeight: 'bold'
-                    }}>
+                    }}
+                    href={file.metadata?.url}
+                    target='_blank'
+                >
                     {file.fileName}
-                </div>
+                </a>
                 <small className='d-block'>Tamaño: {filesize(file.bytes !== undefined ? file.bytes : 0)}</small>
             </div>
             <Button
