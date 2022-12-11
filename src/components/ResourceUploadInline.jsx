@@ -87,7 +87,7 @@ export const ResourceUploadInline = ({ multiple = false, maxFiles = 4, accept = 
                             <>
                                 <Button
                                     onClick={handleUpload}
-                                    variant='success'
+                                    variant='secondary'
                                     className='w-100 mt-1'
                                 >Subir archivos</Button>
                                 <div className='resource-gallery mt-3'>

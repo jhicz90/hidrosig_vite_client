@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap'
 import styled from 'styled-components'
 import { IoCloseSharp } from 'react-icons/io5'
 import { imageSysGet } from '../helpers'
+import { IoMdTrash } from 'react-icons/io'
 
 export const FileUpload = ({ file }) => {
     return (
@@ -25,22 +26,16 @@ export const FileUpload = ({ file }) => {
                 size='sm'
                 className='d-flex align-items-center text-danger'
             >
-                <IoCloseSharp size={20} />
+                <IoMdTrash size={20} />
             </Button>
         </FileUploadStyle>
     )
 }
 
 const FileUploadStyle = styled.div`
-    border-radius: 2px;
-    border: 2px solid #ced4da4d;
-    border-radius: 6px;
-    background-color: rgb(255, 255, 255);
-    box-shadow: none;
     box-sizing: border-box;
-    padding: 8px;
+    padding: 4px;
     min-height: 40px;
-    margin-bottom: 8px;
     user-select: none;
     color: rgb(9, 30, 66);
     display: flex;

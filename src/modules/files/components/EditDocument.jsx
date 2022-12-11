@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Navigate, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { editActiveDocument, searchJunta, setActiveDocument, startUpdateDocsDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
@@ -198,11 +198,15 @@ const EditDocumentStep = () => {
                 <div className='col'>
                     <Form.Group className='mb-3' controlId='uDocs'>
                         <Form.Label>Documentos</Form.Label>
-                        {
-                            active.docs.map(doc =>
-                                <FileUpload key={doc.fileName} file={doc} />
-                            )
-                        }
+                        <ListGroup>
+                            {
+                                active.docs.map(doc =>
+                                    <ListGroup.Item key={doc.fileName}>
+                                        <FileUpload file={doc} />
+                                    </ListGroup.Item>
+                                )
+                            }
+                        </ListGroup>
                     </Form.Group>
                 </div>
             </div>
