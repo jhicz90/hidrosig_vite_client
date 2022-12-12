@@ -214,6 +214,7 @@ const EditDocumentStep = () => {
                 multiple={true}
                 accept='docs'
                 tags={['Documento', active.name]}
+                access={1}
                 actionUpload={(data) => dispatch(startUpdateDocsDocument(data))}
             />
         </>

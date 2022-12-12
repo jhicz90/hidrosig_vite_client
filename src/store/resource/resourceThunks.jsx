@@ -40,7 +40,7 @@ export const finishModalResource = () => {
     }
 }
 
-export const startUploadResources = ({ files, setArchive, tags, multiple }) => {
+export const startUploadResources = ({ files, setArchive = null, tags, multiple, access = 1, cloud = false }) => {
     return async (dispatch) => {
 
         let formData = new FormData()
@@ -50,6 +50,10 @@ export const startUploadResources = ({ files, setArchive, tags, multiple }) => {
         })
 
         formData.append('tags', JSON.stringify(tags))
+
+        formData.append('cloud', cloud)
+
+        formData.append('access_mode', access)
 
         const resp = await fetchUpFilesByToken({
             endpoint: 'resource/up',
