@@ -8,18 +8,14 @@ import { GuardRoute } from '../../../guards'
 
 import { DashboardPage, NotFoundPage } from '../pages'
 import {
-    OrganizationRoutes,
     SigaRoutes,
-    UserSysRoutes,
-    OccupationRoutes,
-    RoleRoutes,
     SystemRoutes,
     ResourceRoutes,
-    TerritoryRoutes,
     IrrigationNetworkRoutes,
     PettyCashRoutes,
     VoucherRoutes,
-    DesignRoutes
+    DesignRoutes,
+    AmbitRoutes
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -141,10 +137,7 @@ export const AppRoot = () => {
                 <Route path={`/`} element={<Layout />}>
                     <Route index element={<Navigate to={`/app/home`} />} />
                     <Route path={`home`} element={<DashboardPage />} />
-                    <Route path={`ambit`}>
-                        <Route path={`orgz/*`} element={<GuardRoute meta={['ambit']} component={OrganizationRoutes} />} />
-                        <Route path={`trrty/*`} element={<GuardRoute meta={['ambit']} component={TerritoryRoutes} />} />
-                    </Route>
+                    <Route path={`ambit/*`} element={<AmbitRoutes />} />
                     <Route path={`schm`}>
                         <Route path={`irrig/*`} element={<GuardRoute meta={['irrigschm']} component={IrrigationNetworkRoutes} />} />
                     </Route>
