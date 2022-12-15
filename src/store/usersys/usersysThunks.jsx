@@ -190,6 +190,36 @@ export const startUpdateInformationUserSys = ({ names, surnames, birthday, docid
     }
 }
 
+export const startUpdateOptionsUserSys = ({ upload, download, activity, organization, onlyOnline }) => {
+    return async (dispatch, getState) => {
+
+        dispatch(setSavingUserSys(true))
+
+        const { active } = getState().usersys
+        const { _id } = active
+
+        const updateUserSys = {
+            upload,
+            download,
+            activity,
+            organization,
+            onlyOnline
+        }
+
+        const resp = await fetchByToken({
+            endpoint: `usersys/options/${_id}`,
+            data: updateUserSys,
+            method: 'PUT'
+        })
+
+        dispatch(setSavingUserSys(false))
+
+        if (resp.ok) {
+            dispatch(setActiveUserSys(resp.usersys))
+        }
+    }
+}
+
 export const startUpdateEmailUserSys = ({ newEmail: email }) => {
     return async (dispatch, getState) => {
         const { active } = getState().usersys

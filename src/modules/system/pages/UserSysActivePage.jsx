@@ -6,7 +6,7 @@ import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { clearToolbarActions, setActiveUserSys, setToolbarActions, setToolbarTitle, useGetUsrSysByIdQuery } from '../../../store/actions'
-import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete, CreateUserSys, CreateOccupation } from '../components'
+import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete, CreateUserSys, CreateOccupation, UserSysModuleOptions } from '../components'
 
 export const UserSysActivePage = () => {
 
@@ -58,6 +58,13 @@ export const UserSysActivePage = () => {
                                     name: 'Información básica',
                                     title: true,
                                     module: UserSysModuleInformation
+                                },
+                                {
+                                    id: 'optionusersys',
+                                    icon: FiUser,
+                                    name: 'Opciones',
+                                    title: true,
+                                    module: UserSysModuleOptions
                                 },
                                 {
                                     id: 'emailusersys',
