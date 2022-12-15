@@ -12,23 +12,23 @@ export const structureSlice = createSlice({
             state.activeNew = null
             state.isSavingNew = true
         },
-        setActiveNewStructure: (state, action) => {
-            state.activeNew = action.payload
+        setActiveNewStructure: (state, { payload }) => {
+            state.activeNew = payload
         },
-        editActiveNewStructure: (state, action) => {
-            state.activeNew = { ...state.activeNew, ...action.payload }
+        editActiveNewStructure: (state, { payload }) => {
+            state.activeNew = { ...state.activeNew, ...payload }
         },
-        setActiveStructure: (state, action) => {
-            state.active = action.payload
+        setActiveStructure: (state, { payload }) => {
+            state.active = payload
         },
-        editActiveStructure: (state, action) => {
-            state.active = { ...state.active, ...action.payload }
+        editActiveStructure: (state, { payload }) => {
+            state.active = { ...state.active, ...payload }
         },
-        setSavingStructure: (state, action) => {
-            state.isSaving = action.payload
+        setSavingStructure: (state, { payload }) => {
+            state.isSaving = payload
         },
-        setSavingNewStructure: (state, action) => {
-            state.isSavingNew = action.payload
+        setSavingNewStructure: (state, { payload }) => {
+            state.isSavingNew = payload
         },
     }
 });

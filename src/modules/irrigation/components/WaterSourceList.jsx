@@ -1,21 +1,17 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { EditWaterSource } from './EditWaterSource'
 import { InputSearch, TableGrid, TimeAgo, TypeWaterSource } from '../../../components'
-import { startGetWaterSource, useGetWaterSourcesQuery } from '../../../store/actions'
+import { useGetWaterSourcesQuery } from '../../../store/actions'
 
 export const WaterSourceList = () => {
 
-    const dispatch = useDispatch()
-    const { isSaving } = useSelector(state => state.watersource)
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetWaterSourcesQuery(search)
 
     return (
         <>
-            <EditWaterSource />
             <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
@@ -56,13 +52,12 @@ export const WaterSourceList = () => {
                             pinRight: true,
                             renderCell: (item) =>
                                 <ButtonGroup>
-                                    <Button
-                                        disabled={isSaving}
-                                        onClick={() => dispatch(startGetWaterSource(item._id))}
-                                        variant='neutral'
+                                    <Link
+                                        className='btn btn-neutral'
+                                        to={`/app/schm/irrig/edit/watersource/${item._id}`}
                                     >
                                         <FaPen />
-                                    </Button>
+                                    </Link>
                                 </ButtonGroup>
                         }
                     ]

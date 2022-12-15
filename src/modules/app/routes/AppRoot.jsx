@@ -11,11 +11,11 @@ import {
     SigaRoutes,
     SystemRoutes,
     ResourceRoutes,
-    IrrigationNetworkRoutes,
     PettyCashRoutes,
     VoucherRoutes,
     DesignRoutes,
-    AmbitRoutes
+    AmbitRoutes,
+    IrrigationSchemeRoutes
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -138,9 +138,7 @@ export const AppRoot = () => {
                     <Route index element={<Navigate to={`/app/home`} />} />
                     <Route path={`home`} element={<DashboardPage />} />
                     <Route path={`ambit/*`} element={<AmbitRoutes />} />
-                    <Route path={`schm`}>
-                        <Route path={`irrig/*`} element={<GuardRoute meta={['irrigschm']} component={IrrigationNetworkRoutes} />} />
-                    </Route>
+                    <Route path={`schm/*`} element={<IrrigationSchemeRoutes />} />
                     {/* <Route path={`ambit`}>
                         <Route index element={<AmbitResume />} />
                         <Route path={`orgz`} element={<GuardRoute meta={['ambit', 'organization']} component={OrganizationList} />} />

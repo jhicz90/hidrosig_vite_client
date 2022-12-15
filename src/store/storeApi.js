@@ -45,7 +45,7 @@ export const storeApi = createApi({
     keepUnusedDataFor: 60,
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Acct', 'Files'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Acct', 'Files'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),
@@ -291,6 +291,13 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.block,
             providesTags: ['Orgz', 'Trrt']
         }),
+        getStructureById: builder.query({
+            query: (id) => ({
+                url: `structure/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.structure,
+            providesTags: ['Irrig']
+        }),
         getWaterSources: builder.query({
             query: (search) => ({
                 url: `watersource/list`,
@@ -299,7 +306,14 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Trrt']
+            providesTags: ['Orgz', 'Irrig']
+        }),
+        getWaterSourceById: builder.query({
+            query: (id) => ({
+                url: `watersource/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.watersource,
+            providesTags: ['Irrig']
         }),
         getWaterSourcesByJunta: builder.query({
             query: ({ junta, search }) => ({
@@ -309,7 +323,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Trrt']
+            providesTags: ['Orgz', 'Irrig']
         }),
         // FILES
         getBrowser: builder.query({
@@ -442,12 +456,14 @@ export const {
     useGetPettyCashsQuery,
     useGetRoleByIdQuery,
     useGetRolesQuery,
+    useGetStructureByIdQuery,
     useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,
     useGetUsrSysByIdQuery,
     useGetVoucherByIdQuery,
     useGetVouchersByPettyCashQuery,
     useGetVouchersQuery,
+    useGetWaterSourceByIdQuery,
     useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
     useGetZoneByIdQuery,

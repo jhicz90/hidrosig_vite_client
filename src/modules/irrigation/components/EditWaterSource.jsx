@@ -1,42 +1,77 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Offcanvas } from 'react-bootstrap'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveWaterSource, searchJunta, setActiveWaterSource, startUpdateWaterSource } from '../../../store/actions'
-import { OptionOrgz } from '../../../components'
+import { editActiveWaterSource, searchJunta, setActiveWaterSource, startUpdateWaterSource, useGetWaterSourceByIdQuery } from '../../../store/actions'
+import { LoadingPage, OptionOrgz } from '../../../components'
 
 export const EditWaterSource = () => {
 
+    const [show, setShow] = useState(true)
+    const { wsid } = useParams()
+    const redirect = useNavigate()
     const dispatch = useDispatch()
+    const { data = null, isLoading, isError } = useGetWaterSourceByIdQuery(wsid)
     const { active, isSaving } = useSelector(state => state.watersource)
+
+    useEffect(() => {
+        if (!!data) {
+            dispatch(setActiveWaterSource(data))
+        }
+
+        return () => {
+            dispatch(setActiveWaterSource(null))
+        }
+    }, [data])
+
+    if (isError) {
+        return <Navigate to={`/app/schm/irrig#source`} replace />
+    }
 
     return (
         <Offcanvas
-            show={!!active}
-            onHide={() => dispatch(setActiveWaterSource(null))}
+            show={show}
+            onHide={() => setShow(false)}
+            onExited={() => redirect(`/app/schm/irrig#source`)}
             placement='end'
             backdrop='static'
         >
             <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
-                <Offcanvas.Title>Fuente de agua - {active?.name}</Offcanvas.Title>
+                <Offcanvas.Title>
+                    <div className='d-flex flex-column'>
+                        <span>Fuente de agua</span>
+                        <span>{active ? active?.name : 'Cargando...'}</span>
+                    </div>
+                </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSaving}
-                        variant='success'
-                        type='submit'
-                        form='form-irrig-watersource-edit'
-                        className='w-100'
-                    >
-                        Guardar cambios
-                    </Button>
-                </div>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-                <EditWaterSourceStep />
-            </Offcanvas.Body>
+            {
+                !!active
+                    ?
+                    <>
+                        <Offcanvas.Header>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSaving}
+                                    variant='success'
+                                    type='submit'
+                                    form='form-irrig-watersource-edit'
+                                    className='w-100'
+                                >
+                                    Guardar cambios
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <Card.Body>
+                                <EditWaterSourceStep />
+                            </Card.Body>
+                        </Offcanvas.Body>
+                    </>
+                    :
+                    <LoadingPage />
+            }
         </Offcanvas>
     )
 }
@@ -67,7 +102,7 @@ const EditWaterSourceStep = () => {
         <form id='form-irrig-watersource-edit' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='pName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -79,7 +114,7 @@ const EditWaterSourceStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uType'>
+                    <Form.Group className='mb-3' controlId='pType'>
                         <Form.Label>Tipo de fuente</Form.Label>
                         <Form.Select
                             {...register('type', { required: true })}
@@ -99,7 +134,7 @@ const EditWaterSourceStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='pDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -113,7 +148,7 @@ const EditWaterSourceStep = () => {
             <div className='row'>
                 <div className='col'>
                     <div className='mb-3'>
-                        <label htmlFor='uJunta' className='form-label'>Junta de usuarios</label>
+                        <label htmlFor='pJunta' className='form-label'>Junta de usuarios</label>
                         <Controller
                             name='junta'
                             control={control}
@@ -122,7 +157,7 @@ const EditWaterSourceStep = () => {
                                 ({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uJunta'
+                                        inputId='pJunta'
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
