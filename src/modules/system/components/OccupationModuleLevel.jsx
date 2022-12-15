@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Card } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { startUpdateLevelOccupation, searchJunta, searchCommitteeByJunta } from '../../../store/actions'
-import { ListGroupOption, ListGroupOptionItem } from '../../../components'
-import { imageGet } from '../../../helpers'
+import { ListGroupOption, ListGroupOptionItem, OptionOrgz } from '../../../components'
 
 export const OccupationModuleLevel = () => {
 
@@ -87,10 +86,7 @@ export const OccupationModuleLevel = () => {
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e =>
-                                                    <div className='d-flex'>
-                                                        <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                        <span className='ms-2 align-self-center'>{e.name}</span>
-                                                    </div>
+                                                    <OptionOrgz orgz={e} />
                                                 }
                                             />
                                     }
@@ -124,10 +120,7 @@ export const OccupationModuleLevel = () => {
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e =>
-                                                    <div className='d-flex'>
-                                                        <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                        <span className='ms-2 align-self-center'>{e.name}</span>
-                                                    </div>
+                                                    <OptionOrgz orgz={e} />
                                                 }
                                             />
                                     }

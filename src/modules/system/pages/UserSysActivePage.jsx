@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsKey, BsShieldLock, BsTrash } from 'react-icons/bs'
-import { FiUser } from 'react-icons/fi'
+import { FiSettings, FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { clearToolbarActions, setActiveUserSys, setToolbarActions, setToolbarTitle, useGetUsrSysByIdQuery } from '../../../store/actions'
@@ -61,7 +61,7 @@ export const UserSysActivePage = () => {
                                 },
                                 {
                                     id: 'optionusersys',
-                                    icon: FiUser,
+                                    icon: FiSettings,
                                     name: 'Opciones',
                                     title: true,
                                     module: UserSysModuleOptions

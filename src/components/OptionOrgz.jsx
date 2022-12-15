@@ -5,6 +5,7 @@ export const OptionOrgz = ({ orgz = null }) => {
         <div className='d-flex p-1'>
             <Avatar
                 img={orgz.image?.metadata.url}
+                cloud={orgz.image?.cloud}
                 noImgTxt={orgz.name}
                 noImg={4003}
                 circle={true}

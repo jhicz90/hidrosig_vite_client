@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { imageGet, imageSysGet, upperCaseCatch } from '../helpers'
 
-export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 2010, nameTag = false, imgTag = '', noImgTag = 1085, tag = '', circle = false, size = 'none', width = 0, height = 0 }) => {
+export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 2010, nameTag = false, imgTag = '', noImgTag = 1085, tag = '', circle = false, cloud = false, size = 'none', width = 0, height = 0 }) => {
 
     const [wAvatar, setWAvatar] = useState(width)
     const [hAvatar, setHAvatar] = useState(height)
@@ -35,14 +35,14 @@ export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 201
                     ?
                     <img
                         className={`avatar ${circle ? "rounded-circle" : "rounded-2"} ${className}`}
-                        src={img !== '' ? imageGet(img) : imageSysGet(noImg)}
+                        src={img !== '' ? imageGet(img, { cloud }) : imageSysGet(noImg)}
                         width={wAvatar}
                         height={hAvatar}
                         alt={img}
                     />
                     :
                     <div className={`avatar ${circle ? "rounded-circle" : "rounded-2"} ${className}`} style={{ width: wAvatar, height: hAvatar }}>
-                        <span className='avatar-initials' style={{ fontSize:'80%',width: wAvatar, height: hAvatar }}>{nameTxt}</span>
+                        <span className='avatar-initials' style={{ fontSize: '80%', width: wAvatar, height: hAvatar }}>{nameTxt}</span>
                     </div>
             }
             {

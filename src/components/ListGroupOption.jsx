@@ -22,7 +22,7 @@ export const ListGroupOptionItem = forwardRef(({ labelTitle, labelDesc, valueOpt
                 ref={ref}
                 type='radio'
                 value={valueOption}
-                className='form-check-input position-absolute top-50 end-0 me-3 fs-5'
+                className='form-check-input position-absolute top-50 end-0 me-3 fs-5 d-none'
             />
             <label htmlFor={idRadioOption} className='form-label list-group-item py-3 pe-5'>
                 <strong className='fw-semibold'>{labelTitle}</strong>
@@ -39,7 +39,7 @@ const ListGroupRadio = styled(ListGroup)`
     width: auto !important;
 
     & .form-check-input {
-        z-index: 2;
+        /* z-index: 1; */
         margin-top: -0.6em;
     }
 

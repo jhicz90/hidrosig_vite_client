@@ -3,9 +3,8 @@ import { useSelector } from 'react-redux'
 import { Button, Card } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { ListGroupOption, ListGroupOptionItem } from '../../../components'
+import { ListGroupOption, ListGroupOptionItem, OptionOrgz } from '../../../components'
 import { searchJunta, searchCommitteeByJunta } from '../../../store/actions'
-import { imageGet } from '../../../helpers'
 
 export const RoleModuleLevel = () => {
 
@@ -87,10 +86,7 @@ export const RoleModuleLevel = () => {
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e =>
-                                                    <div className='d-flex'>
-                                                        <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                        <span className='ms-2 align-self-center'>{e.name}</span>
-                                                    </div>
+                                                    <OptionOrgz orgz={e} />
                                                 }
                                             />
                                     }
@@ -124,10 +120,7 @@ export const RoleModuleLevel = () => {
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 getOptionValue={e => e._id}
                                                 getOptionLabel={e =>
-                                                    <div className='d-flex'>
-                                                        <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                        <span className='ms-2 align-self-center'>{e.name}</span>
-                                                    </div>
+                                                    <OptionOrgz orgz={e} />
                                                 }
                                             />
                                     }
