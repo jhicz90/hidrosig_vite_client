@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { Button, ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import { startDeleteIdVoucher, startUpdateImageIdVoucher, startUploadResources, useGetVouchersByPettyCashQuery } from '../../../store/actions'
-import { Image, ImageLightbox, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
+import { Image, ImageLightbox, InputSearch, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
 import { CreateVoucher } from './CreateVoucher'
 import { imageGet } from '../../../helpers'
 
@@ -20,6 +20,7 @@ export const PettyCashModuleVouchers = () => {
 
 const PettyCashVoucher = () => {
 
+    const [filterSearch, setFilterSearch] = useState('')
     const dispatch = useDispatch()
     const { active } = useSelector(state => state.pettycash)
     const { data: vouchersIn = [], isLoading } = useGetVouchersByPettyCashQuery({ pettycash: active._id, search: '' }, { refetchOnMountOrArgChange: true })
@@ -63,127 +64,145 @@ const PettyCashVoucher = () => {
                     </SettingAction>
                 }
                 list={
-                    <TableGrid
-                        style={{ borderRadius: '0 0 9px 9px' }}
-                        renderEmpty={() => <strong className='mx-3 fs-5'>No ahi comprobantes asociadas a esta caja chica</strong>}
-                        rows={vouchersIn}
-                        columns={
-                            [
-                                {
-                                    label: 'TIPO',
-                                    width: '80px',
-                                    renderCell: (item) =>
-                                        item.typeReceipt
-                                },
-                                {
-                                    label: 'COMPROBANTE',
-                                    width: '200px',
-                                    renderCell: (item) =>
-                                        `${item.serie}-${item.numReceipt}`
-                                },
-                                {
-                                    label: 'MONTO',
-                                    renderCell: (item) =>
-                                        <span>{item.amountReceipt.toFixed(2)}</span>
-                                },
-                                {
-                                    label: 'RAZÓN SOCIAL',
-                                    width: '300px',
-                                    renderCell: (item) =>
-                                        <span title={item.nameSocialReason}>{item.nameSocialReason}</span>
-                                },
-                                {
-                                    label: 'IMAGENES',
-                                    width: '200px',
-                                    renderCell: (item) => {
-                                        const imageData = item.images.map(({ metadata }) => ({
-                                            src: imageGet(metadata.url, { size: 1000 }),
-                                            loading: 'lazy',
-                                            alt: metadata.id
-                                        }))
+                    <>
+                        <InputSearch className='my-3 px-3' value={filterSearch} onChange={(e) => setFilterSearch(e)} />
+                        <TableGrid
+                            style={{ borderRadius: '0 0 9px 9px' }}
+                            renderEmpty={() => <strong className='mx-3 fs-5'>No ahi comprobantes asociadas a esta caja chica</strong>}
+                            rows={
+                                vouchersIn.filter(v =>
+                                    v.serie.toLowerCase().includes(filterSearch.toLowerCase()) ||
+                                    v.numReceipt.toLowerCase().includes(filterSearch.toLowerCase()) ||
+                                    v.nameSocialReason.toLowerCase().includes(filterSearch.toLowerCase()) ||
+                                    v.idSocialReason.toLowerCase().includes(filterSearch.toLowerCase()) ||
+                                    v.concept.toLowerCase().includes(filterSearch.toLowerCase())
+                                )
+                            }
+                            columns={
+                                [
+                                    {
+                                        label: 'TIPO',
+                                        width: '80px',
+                                        renderCell: (item) =>
+                                            item.typeReceipt
+                                    },
+                                    {
+                                        label: 'CANCELADO',
+                                        width: '150px',
+                                        renderCell: (item) =>
+                                            <TimeAgo timestamp={item.cancelDay} />
+                                    },
+                                    {
+                                        label: 'COMPROBANTE',
+                                        width: '200px',
+                                        renderCell: (item) =>
+                                            `${item.serie}-${item.numReceipt}`
+                                    },
+                                    {
+                                        label: 'MONTO',
+                                        renderCell: (item) =>
+                                            <span>{item.amountReceipt.toFixed(2)}</span>
+                                    },
+                                    {
+                                        label: 'RAZÓN SOCIAL',
+                                        width: '300px',
+                                        renderCell: (item) =>
+                                            <span title={item.nameSocialReason}>{item.nameSocialReason}</span>
+                                    },
+                                    {
+                                        label: 'IMAGENES',
+                                        width: '200px',
+                                        renderCell: (item) => {
+                                            const imageData = item.images.map(({ cloud, metadata }) => ({
+                                                src: imageGet(metadata.url, { cloud, size: 1000 }),
+                                                loading: 'lazy',
+                                                alt: metadata.id
+                                            }))
 
-                                        return (
-                                            <div className='d-flex p-2 gap-2'>
-                                                {
-                                                    item.images.map(({ metadata }, index) =>
-                                                        <Image
-                                                            onClick={() => handleLightbox(imageData, index)}
-                                                            key={metadata.id}
-                                                            className='rounded shadow-sm border border-light'
-                                                            width={30}
-                                                            height={30}
-                                                            img={metadata.url}
-                                                            resSize={100}
-                                                        />
-                                                    )
-                                                }
-                                                {
-                                                    item.images.length < 4
-                                                    &&
-                                                    <>
-                                                        <input
-                                                            className='d-none'
-                                                            id={`input-upload-${item._id}`}
-                                                            type='file'
-                                                            multiple={false}
-                                                            accept='image/jpeg, image/png'
-                                                            onChange={(e) => handleImageVoucher(e.target.files[0], item)}
-                                                        />
-                                                        <label
-                                                            htmlFor={`input-upload-${item._id}`}
-                                                            className='btn btn-sm btn-neutral shadow-sm'
-                                                            variant='neutral'
-                                                            size='sm'
-                                                            style={{
-                                                                padding: 0,
-                                                                width: '30px',
-                                                                height: '30px',
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center'
-                                                            }}
-                                                        >
-                                                            <FaPlus />
-                                                        </label>
-                                                    </>
-                                                }
-                                            </div>
-                                        )
+                                            return (
+                                                <div className='d-flex p-2 gap-2'>
+                                                    {
+                                                        item.images.map(({ cloud, metadata }, index) =>
+                                                            <Image
+                                                                onClick={() => handleLightbox(imageData, index)}
+                                                                key={metadata.id}
+                                                                className='rounded shadow-sm border border-light'
+                                                                width={30}
+                                                                height={30}
+                                                                img={metadata.url}
+                                                                cloud={cloud}
+                                                                resSize={100}
+                                                            />
+                                                        )
+                                                    }
+                                                    {
+                                                        item.images.length < 4
+                                                        &&
+                                                        <>
+                                                            <input
+                                                                className='d-none'
+                                                                id={`input-upload-${item._id}`}
+                                                                type='file'
+                                                                multiple={false}
+                                                                accept='image/jpeg, image/png'
+                                                                onChange={(e) => handleImageVoucher(e.target.files[0], item)}
+                                                            />
+                                                            <label
+                                                                htmlFor={`input-upload-${item._id}`}
+                                                                className='btn btn-sm btn-neutral shadow-sm'
+                                                                variant='neutral'
+                                                                size='sm'
+                                                                style={{
+                                                                    padding: 0,
+                                                                    width: '30px',
+                                                                    height: '30px',
+                                                                    display: 'flex',
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center'
+                                                                }}
+                                                            >
+                                                                <FaPlus />
+                                                            </label>
+                                                        </>
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                    },
+                                    {
+                                        label: 'CREADO',
+                                        renderCell: (item) =>
+                                            <TimeAgo timestamp={item.createdAt} />
+                                    },
+                                    {
+                                        label: 'ACTUALIZADO',
+                                        renderCell: (item) =>
+                                            <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                    },
+                                    {
+                                        label: 'ACCIÓN',
+                                        width: '120px',
+                                        pinRight: true,
+                                        renderCell: (item) =>
+                                            <ButtonGroup size='sm'>
+                                                <Link
+                                                    className='btn btn-neutral'
+                                                    to={`/app/acct/voucher/${item._id}`}
+                                                >
+                                                    <FaPen />
+                                                </Link>
+                                                <Button
+                                                    onClick={() => handleDeleteVoucher(item)}
+                                                    variant='danger'
+                                                >
+                                                    <FaTrash />
+                                                </Button>
+                                            </ButtonGroup>
                                     }
-                                },
-                                {
-                                    label: 'CREADO',
-                                    renderCell: (item) =>
-                                        <TimeAgo timestamp={item.createdAt} />
-                                },
-                                {
-                                    label: 'ACTUALIZADO',
-                                    renderCell: (item) =>
-                                        <TimeAgo timestamp={item.updatedAt} timeago={true} />
-                                },
-                                {
-                                    label: 'ACCIÓN',
-                                    width: '120px',
-                                    pinRight: true,
-                                    renderCell: (item) =>
-                                        <ButtonGroup size='sm'>
-                                            <Link
-                                                className='btn btn-neutral'
-                                                to={`/app/acct/voucher/${item._id}`}
-                                            >
-                                                <FaPen />
-                                            </Link>
-                                            <Button
-                                                onClick={() => handleDeleteVoucher(item)}
-                                                variant='danger'
-                                            >
-                                                <FaTrash />
-                                            </Button>
-                                        </ButtonGroup>
-                                }
-                            ]
-                        }
-                    />
+                                ]
+                            }
+                        />
+                    </>
                 }
             >
                 {vouchersIn.length} - {`${amountTotal.toFixed(2)} / ${(Number(active.remainingAmount) + Number(active.oldBalance)).toFixed(2)}`}

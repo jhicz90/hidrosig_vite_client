@@ -1,14 +1,13 @@
 import { filesize } from 'filesize'
 import { Button } from 'react-bootstrap'
 import styled from 'styled-components'
-import { IoCloseSharp } from 'react-icons/io5'
-import { imageSysGet } from '../helpers'
+import { imageGet, imageSysGet } from '../helpers'
 import { IoMdTrash } from 'react-icons/io'
 
 export const FileUpload = ({ file }) => {
     return (
         <FileUploadStyle key={file.fileName}>
-            <img src={previewResource(file.format, file.metadata?.url)} alt={file.fileName} />
+            <img src={previewResource(file.format, file.metadata?.url, file.cloud)} alt={file.fileName} />
             <div className='file-info'>
                 <a
                     className='d-inline-block text-truncate'
@@ -59,13 +58,13 @@ const FileUploadStyle = styled.div`
     }
 `
 
-const previewResource = (type, file) => {
+const previewResource = (type, url, cloud) => {
     try {
         return ({
-            'jpeg': file,
-            'jpg': file,
-            'png': file,
-            'gif': file,
+            'jpeg': imageGet(url, { cloud }),
+            'jpg': imageGet(url, { cloud }),
+            'png': imageGet(url, { cloud }),
+            'gif': imageGet(url, { cloud }),
             'xlsx': imageSysGet(2007),
             'docx': imageSysGet(2008),
             'avi': imageSysGet('file_avi'),

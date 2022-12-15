@@ -85,12 +85,6 @@ export const AppHeader = () => {
                 <Dropdown className='menu-item dropdown-noarrow'>
                     <Dropdown.Toggle as='a' variant='light' className='menu-link'>
                         <div className='menu-img online'>
-                            {/* <img
-                                src={photoURL ? imageGet(photoURL) : imageSysGet(1069)}
-                                className='w-100 h-100 rounded-circle shadow'
-                                style={{ objectFit: 'contain' }}
-                                alt='usersys'
-                            /> */}
                             <AvatarProfile size='48px' avatarImg={photoURL} />
                         </div>
                         <div className='menu-text'>{displayName}</div>

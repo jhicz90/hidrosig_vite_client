@@ -7,10 +7,10 @@ import { useDebounce } from 'use-debounce'
 import { SYSCONST } from '../types'
 import { MiniLoader } from './MiniLoader'
 
-export const InputSearch = ({ className = '', value, onChange, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
+export const InputSearch = ({ className = '', value, onChange, debounce = 500, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
 
     const [valueInput, setValueInput] = useState(value)
-    const [valueDebounce] = useDebounce(valueInput, SYSCONST.searchDebounce)
+    const [valueDebounce] = useDebounce(valueInput, debounce <= 500 ? debounce : SYSCONST.searchDebounce)
 
     useEffect(() => {
         onChange(valueDebounce)
