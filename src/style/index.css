@@ -122,6 +122,23 @@ body {
 	}
 }
 
+.offcanvas-header {
+	color: #fff !important;
+	background-color: rgba(13, 110, 253, var(--bs-bg-opacity, 1)) !important;
+}
+
+.offcanvas-header + .offcanvas-header {
+	background-color: inherit !important;
+}
+
+.offcanvas-header + .offcanvas-header.offcanvas-primary {
+	background-color: navy !important;
+}
+
+.offcanvas-header + .offcanvas-header.offcanvas-success {
+	background-color: darkgreen !important;
+}
+
 .modal-backdrop {
 	--bs-backdrop-bg: rgb(17 24 39 / 1);
 }

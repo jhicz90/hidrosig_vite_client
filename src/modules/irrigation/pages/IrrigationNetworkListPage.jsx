@@ -1,10 +1,28 @@
-import { Card, Nav, Tab } from 'react-bootstrap'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
-import { IrrigationNetworkChannel, WaterSourceList } from '../components'
+import { Card, Nav, Tab } from 'react-bootstrap'
+import { CreateStructure, IrrigationNetworkChannel, WaterSourceList } from '../components'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 
 export const IrrigationNetworkListPage = () => {
 
+    const dispatch = useDispatch()
     const { hash } = useLocation()
+
+    useEffect(() => {
+        dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle('RED DE RIEGO'))
+        dispatch(setToolbarActions(
+            <>
+                <CreateStructure />
+            </>
+        ))
+
+        return () => {
+            dispatch(clearToolbarActions())
+        }
+    }, [dispatch])
 
     return (
         <>

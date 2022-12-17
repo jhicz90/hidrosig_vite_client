@@ -1,87 +1,68 @@
-import { useState, useEffect } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
-import { editActiveStructure, setActiveStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
-import { DatePicker, InputMask, LoadingPage } from '../../../components'
+import { Button, Form, Offcanvas } from 'react-bootstrap'
+import { editActiveNewStructure, setActiveNewStructure, startAddNewStructure, startSaveNewStructure } from '../../../store/actions'
+import { DatePicker, InputMask } from '../../../components'
 
-export const EditStructure = () => {
+export const CreateStructure = ({ typeButton = 1 }) => {
 
-    const [show, setShow] = useState(true)
-    const { strid } = useParams()
-    const redirect = useNavigate()
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetStructureByIdQuery(strid)
-    const { active, isSaving } = useSelector(state => state.structure)
+    const { activeNew, isSavingNew } = useSelector(state => state.structure)
 
     useEffect(() => {
-        if (!!data) {
-            dispatch(setActiveStructure(data))
-        }
-
-        return () => {
-            dispatch(setActiveStructure(null))
-        }
-    }, [data])
-
-    if (isError) {
-        return <Navigate to={`/app/schm/irrig#net`} replace />
-    }
+        return () => dispatch(setActiveNewStructure(null))
+    }, [dispatch])
 
     return (
-        <Offcanvas
-            show={show}
-            onHide={() => setShow(false)}
-            onExited={() => redirect(`/app/schm/irrig#net`)}
-            placement='end'
-        >
-            <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
-                <Offcanvas.Title>
-                    <div className='d-flex flex-column'>
-                        <span>Estructura</span>
-                        <span>{active ? active?.name : 'Cargando...'}</span>
+        <>
+            <Button
+                disabled={isSavingNew}
+                variant={typeButton === 1 ? 'neutral' : 'link'}
+                className='text-primary text-decoration-none'
+                onClick={() => {
+                    dispatch(startAddNewStructure())
+                }}
+            >
+                Nueva estructura
+            </Button>
+            <Offcanvas
+                show={!!activeNew}
+                onHide={() => dispatch(setActiveNewStructure(null))}
+                placement='end'
+            >
+                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                    <Offcanvas.Title>Crear estructura</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Header className='offcanvas-primary'>
+                    <div className='d-flex justify-content-end gap-2 w-100'>
+                        <Button
+                            disabled={isSavingNew}
+                            variant='primary'
+                            type='submit'
+                            form='form-irrig-structure-create'
+                            className='w-100'
+                        >
+                            Guardar nuevo
+                        </Button>
                     </div>
-                </Offcanvas.Title>
-            </Offcanvas.Header>
-            {
-                !!active
-                    ?
-                    <>
-                        <Offcanvas.Header className='offcanvas-success'>
-                            <div className='d-flex justify-content-end gap-2 w-100'>
-                                <Button
-                                    disabled={isSaving}
-                                    variant='success'
-                                    type='submit'
-                                    form='form-irrig-structure-edit'
-                                    className='w-100'
-                                >
-                                    Guardar cambios
-                                </Button>
-                            </div>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            <Card.Body>
-                                <EditStructureStep />
-                            </Card.Body>
-                        </Offcanvas.Body>
-                    </>
-                    :
-                    <LoadingPage />
-            }
-        </Offcanvas>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <CreateStructureStep />
+                </Offcanvas.Body>
+            </Offcanvas>
+        </>
     )
 }
 
-const EditStructureStep = () => {
+const CreateStructureStep = () => {
 
     const dispatch = useDispatch()
-    const { active } = useSelector(state => state.structure)
+    const { activeNew } = useSelector(state => state.structure)
     const { register, control, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ name, obs, status, dateCons, dateInvt, margin, progressive, longitude, efficiency, flow }) => {
-        dispatch(editActiveStructure({
+    const handleSave = ({ order, name, obs, status, dateCons, dateInvt, margin, progressive, longitude, efficiency, flow }) => {
+        dispatch(editActiveNewStructure({
             name,
             obs,
             status,
@@ -93,17 +74,33 @@ const EditStructureStep = () => {
             efficiency,
             flow
         }))
-        dispatch(startUpdateStructure())
+        dispatch(startSaveNewStructure())
     }
 
     useEffect(() => {
         reset({
-            ...active
+            ...activeNew
         })
-    }, [reset, active])
+    }, [reset, activeNew])
 
     return (
-        <form id='form-irrig-structure-edit' onSubmit={handleSubmit(handleSave)}>
+        <form id='form-irrig-structure-create' onSubmit={handleSubmit(handleSave)}>
+            <div className='row'>
+                <div className='col-12'>
+                    <Form.Group className='mb-3' controlId='pName'>
+                        <Form.Label>Tipo de estructura</Form.Label>
+                        <Form.Select
+                            {...register('order', { required: true })}
+                            autoComplete='off'
+                        >
+                            <option value={''}>Seleccione el tipo</option>
+                            {
+                                activeNew?.optionsOrder.map((o) => <option key={o._id} value={o._id}>{o.name}</option>)
+                            }
+                        </Form.Select>
+                    </Form.Group>
+                </div>
+            </div>
             <div className='row'>
                 <div className='col-12'>
                     <Form.Group className='mb-3' controlId='pName'>
@@ -269,18 +266,6 @@ const EditStructureStep = () => {
                             autoComplete='off'
                         />
                     </Form.Group>
-                </div>
-            </div>
-            <div className='row mb-3'>
-                <div className='col-12'>
-                    <Form.Label>Tramos</Form.Label>
-                    <ListGroup>
-                        {
-                            active.sections.map(sect =>
-                                <ListGroup.Item key={sect._id}>{sect.name}</ListGroup.Item>
-                            )
-                        }
-                    </ListGroup>
                 </div>
             </div>
         </form>

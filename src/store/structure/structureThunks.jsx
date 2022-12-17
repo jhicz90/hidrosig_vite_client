@@ -8,12 +8,14 @@ import { addNewStructure, setActiveNewStructure, setActiveStructure, setSavingSt
 const SwalReact = withReactContent(Swal)
 
 export const startAddNewStructure = () => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
+        const { activeNode: { id } } = getState().irrigationnetwork
 
         dispatch(addNewStructure())
 
         const resp = await fetchByToken({
-            endpoint: `structure/create/new`
+            endpoint: `structure/create/new`,
+            params: { parent: id }
         })
 
         dispatch(setSavingNewStructure(false))
@@ -33,7 +35,6 @@ export const startSaveNewStructure = () => {
 
         const newStructure = {
             ...activeNew,
-            junta: activeNew.junta !== null ? activeNew.junta._id : null,
         }
 
         const resp = await fetchByToken({
@@ -45,7 +46,7 @@ export const startSaveNewStructure = () => {
         dispatch(setSavingNewStructure(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Trrt']))
+            dispatch(storeApi.util.invalidateTags(['Irrig']))
             dispatch(setActiveNewStructure(null))
         }
     }

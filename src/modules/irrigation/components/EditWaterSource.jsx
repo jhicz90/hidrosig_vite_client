@@ -36,9 +36,8 @@ export const EditWaterSource = () => {
             onHide={() => setShow(false)}
             onExited={() => redirect(`/app/schm/irrig#source`)}
             placement='end'
-            backdrop='static'
         >
-            <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
+            <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>
                     <div className='d-flex flex-column'>
                         <span>Fuente de agua</span>
@@ -50,7 +49,7 @@ export const EditWaterSource = () => {
                 !!active
                     ?
                     <>
-                        <Offcanvas.Header>
+                        <Offcanvas.Header className='offcanvas-success'>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
                                     disabled={isSaving}
@@ -141,6 +140,7 @@ const EditWaterSourceStep = () => {
                             as='textarea'
                             type={'text'}
                             autoComplete='off'
+                            rows={6}
                         />
                     </Form.Group>
                 </div>

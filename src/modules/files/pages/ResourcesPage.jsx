@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { Card, Nav, Tab } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { Card, Nav, Tab } from 'react-bootstrap'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 import { CreateDocument, DocumentBrowser, ResourceBrowser } from '../components'
 

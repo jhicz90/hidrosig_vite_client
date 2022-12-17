@@ -1,3 +1,4 @@
+export * from './CreateStructure'
 export * from './CreateWaterSource'
 export * from './EditStructure'
 export * from './EditWaterSource'

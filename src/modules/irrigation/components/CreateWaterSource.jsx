@@ -30,13 +30,12 @@ export const CreateWaterSource = ({ junta = null, typeButton = 1 }) => {
             <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewWaterSource(null))}
-                backdrop='static'
-                size='lg'
+                placement='end'
             >
-                <Offcanvas.Header className='text-bg-primary' closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear fuente de agua</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Header>
+                <Offcanvas.Header className='offcanvas-primary'>
                     <div className='d-flex justify-content-end gap-2 w-100'>
                         <Button
                             disabled={isSavingNew}
