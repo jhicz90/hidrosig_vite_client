@@ -36,9 +36,8 @@ export const EditZone = () => {
             onHide={() => setShow(false)}
             onExited={() => redirect(`/app/ambit/trrty#zone`)}
             placement='end'
-            backdrop='static'
         >
-            <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
+            <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>
                     <div className='d-flex flex-column'>
                         <span>Zona</span>
@@ -50,7 +49,7 @@ export const EditZone = () => {
                 !!active
                     ?
                     <>
-                        <Offcanvas.Header>
+                        <Offcanvas.Header className='offcanvas-success'>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
                                     disabled={isSaving}

@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
+import { IoMdOpen, IoMdTrash } from 'react-icons/io'
 import { Controller, useForm } from 'react-hook-form'
 import { editActiveStructure, setActiveStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
-import { DatePicker, InputMask, LoadingPage } from '../../../components'
+import { DatePicker, Image, InputMask, LoadingPage } from '../../../components'
 
 export const EditStructure = () => {
 
@@ -277,12 +278,38 @@ const EditStructureStep = () => {
                     <ListGroup>
                         {
                             active.sections.map(sect =>
-                                <ListGroup.Item key={sect._id}>{sect.name}</ListGroup.Item>
+                                <ListGroup.Item key={sect._id}>
+                                    <div className="d-flex flex-wrap align-items-center">
+                                        <Image className="me-3" noImg={3024} size="sm" />
+                                        <div className="flex-grow-1">
+                                            <div className="d-block h6 mb-1">{sect.name}</div>
+                                            <p className="text-sm text-muted my-0">{`${sect.progressiveStart} - ${sect.progressiveEnd}`}</p>
+                                        </div>
+                                        <div className="flex-shrink-0">
+                                            <div className="btn-group">
+                                                <Button
+                                                    // to={`/app/schm/irrig/sect/${sect._id}`}
+                                                    variant='neutral-icon'
+                                                    className='text-primary'
+                                                >
+                                                    <IoMdOpen size={20} />
+                                                </Button>
+                                                <Button
+                                                    variant='neutral-icon'
+                                                    // onClick={() => dispatch(startDeleteSection(section._id, section.name))}
+                                                    className='text-danger'
+                                                >
+                                                    <IoMdTrash size={20} />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ListGroup.Item>
                             )
                         }
                     </ListGroup>
                 </div>
             </div>
-        </form>
+        </form >
     )
 }
