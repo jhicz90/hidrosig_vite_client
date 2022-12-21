@@ -38,6 +38,7 @@ export const EditVoucher = () => {
             show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect(urlBack)}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
@@ -298,11 +299,15 @@ const EditVoucherStep = () => {
                         <Form.Label>Imagenes</Form.Label>
                         <ListGroup>
                             {
-                                active.images.map(img =>
-                                    <ListGroup.Item key={img.fileName}>
-                                        <FileUpload file={img} />
-                                    </ListGroup.Item>
-                                )
+                                active.images.length > 0
+                                    ?
+                                    active.images.map(img =>
+                                        <ListGroup.Item key={img.fileName}>
+                                            <FileUpload file={img} />
+                                        </ListGroup.Item>
+                                    )
+                                    :
+                                    <ListGroup.Item>No ahi imagenes cargadas</ListGroup.Item>
                             }
                         </ListGroup>
                     </Form.Group>
