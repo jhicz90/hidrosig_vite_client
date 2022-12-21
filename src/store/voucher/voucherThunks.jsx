@@ -43,7 +43,7 @@ export const startSaveNewVoucher = () => {
         dispatch(setSavingNewVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
             dispatch(setActiveNewVoucher(null))
         }
     }
@@ -88,7 +88,7 @@ export const startUpdateVoucher = () => {
         dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
             dispatch(setActiveVoucher(resp.voucher))
         }
     }
@@ -125,7 +125,7 @@ export const startUpdateInformationVoucher = ({ voucherDay, cancelDay, typeRecei
         dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
             dispatch(setActiveVoucher(resp.voucher))
         }
     }
@@ -148,7 +148,7 @@ export const startUpdateImageVoucher = (images) => {
         dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
             dispatch(setActiveVoucher(resp.voucher))
         }
     }
@@ -164,7 +164,7 @@ export const startUpdateImageIdVoucher = (id, images) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
         }
     }
 }
@@ -222,7 +222,7 @@ export const startDeleteVoucher = ({ navigate = null }) => {
                 dispatch(setSavingVoucher(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct']))
+                    dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
                     navigate('/app/acct/petty_cash')
                     dispatch(setActiveVoucher(null))
                 }
@@ -283,7 +283,7 @@ export const startDeleteIdVoucher = (voucher) => {
                 dispatch(setSavingVoucher(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct']))
+                    dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
                 }
             }
         })

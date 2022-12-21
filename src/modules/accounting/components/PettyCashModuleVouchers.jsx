@@ -94,14 +94,15 @@ const PettyCashVoucher = () => {
                                     },
                                     {
                                         label: 'COMPROBANTE',
-                                        width: '200px',
+                                        width: '160px',
                                         renderCell: (item) =>
                                             `${item.serie}-${item.numReceipt}`
                                     },
                                     {
                                         label: 'MONTO',
+                                        width: '100px',
                                         renderCell: (item) =>
-                                            <span>{item.amountReceipt.toFixed(2)}</span>
+                                            <span className='d-block text-end'>{item.amountReceipt.toFixed(2)}</span>
                                     },
                                     {
                                         label: 'RAZÓN SOCIAL',

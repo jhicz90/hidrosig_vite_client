@@ -194,7 +194,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                     getOptionValue={e => e._id}
-                                    getOptionLabel={e => `${e.idSocialReason} - ${e.nameSocialReason}`}
+                                    getOptionLabel={e => <div><strong>{e.idSocialReason}</strong> - <i>{e.nameSocialReason}</i></div>}
                                 />
                             }
                         />

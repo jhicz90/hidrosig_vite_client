@@ -42,10 +42,10 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
 
 export const storeApi = createApi({
     reducerPath: 'storeApi',
-    keepUnusedDataFor: 60,
+    keepUnusedDataFor: 120,
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Acct', 'Files'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Acct - Ptty', 'Acct - Vchr', 'Files'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),
@@ -378,14 +378,14 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct']
+            providesTags: ['Acct - Ptty']
         }),
         getPettyCashById: builder.query({
             query: (id) => ({
                 url: `pettycash/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.pettycash,
-            providesTags: ['Acct']
+            providesTags: ['Acct - Ptty']
         }),
         getPettyCashsByUsrSys: builder.query({
             query: ({ usersys, search }) => ({
@@ -395,7 +395,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct']
+            providesTags: ['Acct - Ptty']
         }),
         // PETTYCASH
         // VOUCHER
@@ -404,7 +404,7 @@ export const storeApi = createApi({
                 url: `voucher/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.voucher,
-            providesTags: ['Acct']
+            providesTags: ['Acct - Vchr']
         }),
         getVouchers: builder.query({
             query: (search) => ({
@@ -414,7 +414,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct']
+            providesTags: ['Acct - Vchr']
         }),
         getVouchersByPettyCash: builder.query({
             query: ({ pettycash, search }) => ({
@@ -424,7 +424,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct']
+            providesTags: ['Acct - Vchr']
         }),
         // VOUCHER
     }),
