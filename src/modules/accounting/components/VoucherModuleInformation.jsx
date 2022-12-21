@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form'
 import moment from 'moment'
 import AsyncSelect from 'react-select/async'
 import { searchSocialReason, startUpdateInformationVoucher } from '../../../store/actions'
-import { DatePicker } from '../../../components'
+import { DatePicker, OptionSocialReason } from '../../../components'
 
 export const VoucherModuleInformation = () => {
 
@@ -157,7 +157,7 @@ export const VoucherModuleInformation = () => {
                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                             noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                             getOptionValue={e => e._id}
-                                            getOptionLabel={e => `${e.idSocialReason} - ${e.nameSocialReason}`}
+                                            getOptionLabel={e => <OptionSocialReason scr={e} />}
                                         />
                                     }
                                 />

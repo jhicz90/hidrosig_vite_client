@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Button, ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import { startDeleteIdVoucher, startUpdateImageIdVoucher, startUploadResources, useGetVouchersByPettyCashQuery } from '../../../store/actions'
@@ -22,6 +22,7 @@ const PettyCashVoucher = () => {
 
     const [filterSearch, setFilterSearch] = useState('')
     const dispatch = useDispatch()
+    const location = useLocation()
     const { active } = useSelector(state => state.pettycash)
     const { data: vouchersIn = [], isLoading } = useGetVouchersByPettyCashQuery({ pettycash: active._id, search: '' }, { refetchOnMountOrArgChange: true })
 
@@ -187,8 +188,9 @@ const PettyCashVoucher = () => {
                                         renderCell: (item) =>
                                             <ButtonGroup size='sm'>
                                                 <Link
-                                                    className='btn btn-neutral'
-                                                    to={`/app/acct/voucher/${item._id}`}
+                                                    className='btn btn-neutral-icon'
+                                                    to={`/app/acct/petty_cash/${active._id}/edit/voucher/${item._id}`}
+                                                    state={{ from: location }}
                                                 >
                                                     <FaPen />
                                                 </Link>

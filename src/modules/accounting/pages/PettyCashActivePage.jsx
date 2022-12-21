@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, useParams } from 'react-router-dom'
+import { Navigate, Outlet, useParams } from 'react-router-dom'
 import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
 import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
@@ -77,6 +77,7 @@ export const PettyCashActivePage = () => {
                     </ModuleNav>
                 </div>
             }
+            <Outlet />
         </>
     )
 }

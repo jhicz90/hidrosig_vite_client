@@ -143,6 +143,19 @@ body {
 	background-color: darkgreen !important;
 }
 
+.offcanvas-footer {
+	color: #fff !important;
+	background-color: rgba(13, 110, 253, var(--bs-bg-opacity, 1)) !important;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x);
+}
+
+.offcanvas-footer.offcanvas-danger {
+	background-color: darkred !important;
+}
+
 .modal-backdrop {
 	--bs-backdrop-bg: rgb(17 24 39 / 1);
 }

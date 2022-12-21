@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form'
 import moment from 'moment'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewVoucher, searchSocialReason, setActiveNewVoucher, startAddNewVoucher, startSaveNewVoucher } from '../../../store/actions'
-import { DatePicker } from '../../../components'
+import { DatePicker, OptionSocialReason } from '../../../components'
 
 export const CreateVoucher = ({ pettycash = null, typeButton = 1 }) => {
 
@@ -194,7 +194,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                     getOptionValue={e => e._id}
-                                    getOptionLabel={e => <div><strong>{e.idSocialReason}</strong> - <i>{e.nameSocialReason}</i></div>}
+                                    getOptionLabel={e => <OptionSocialReason scr={e} />}
                                 />
                             }
                         />

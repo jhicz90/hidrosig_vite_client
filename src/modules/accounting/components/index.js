@@ -1,5 +1,6 @@
 export * from './CreatePettyCash'
 export * from './CreateVoucher'
+export * from './EditVoucher'
 export * from './ExportPettyCash'
 export * from './PettyCashList'
 export * from './PettyCashModuleBanner'

@@ -169,7 +169,7 @@ export const startUpdateImageIdVoucher = (id, images) => {
     }
 }
 
-export const startDeleteVoucher = ({ navigate = null }) => {
+export const startDeleteVoucher = () => {
     return async (dispatch, getState) => {
         const { active } = getState().voucher
         const { _id, serie, numReceipt } = active
@@ -223,7 +223,7 @@ export const startDeleteVoucher = ({ navigate = null }) => {
 
                 if (resp.ok) {
                     dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
-                    navigate('/app/acct/petty_cash')
+                    // redirect()
                     dispatch(setActiveVoucher(null))
                 }
             }
