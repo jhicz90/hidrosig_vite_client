@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
-import { ResourceUpload } from '../../../components'
+import { FilesUploadModal } from '../../../components'
 import { AppComandBar, AppHeader, AppSidebar, AppToolboxBar } from '../components'
 
 export const Layout = () => {
@@ -16,7 +16,7 @@ export const Layout = () => {
                 </div>
             </ContentApp>
             <AppComandBar />
-            <ResourceUpload />
+            <FilesUploadModal />
         </RootApp>
     )
 }

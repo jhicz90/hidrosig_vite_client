@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
@@ -8,6 +8,7 @@ import { useGetDocumentsQuery } from '../../../store/actions'
 
 export const DocumentBrowser = () => {
 
+    const location = useLocation()
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetDocumentsQuery(search)
 
@@ -58,6 +59,7 @@ export const DocumentBrowser = () => {
                                     <Link
                                         className='btn btn-neutral'
                                         to={`/app/exp/resources/edit/doc/${item._id}`}
+                                        tate={{ from: location }}
                                     >
                                         <FaPen />
                                     </Link>

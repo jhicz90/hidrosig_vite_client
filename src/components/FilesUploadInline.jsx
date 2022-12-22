@@ -8,7 +8,7 @@ import { acceptFiles, msgFetchAlert, previewResource } from '../helpers'
 import { IoCloseSharp } from 'react-icons/io5'
 import { startUploadResources } from '../store/actions'
 
-export const ResourceUploadInline = ({ multiple = false, maxFiles = 4, accept = 'images', actionUpload = null, tags = [], cloud = false, access = 1 }) => {
+export const FilesUploadInline = ({ maxFiles = 4, accept = 'images', actionUpload = null, tags = [], cloud = false, access = 1 }) => {
 
     const dispatch = useDispatch()
     const [filesSelected, setFilesSelected] = useState([])
@@ -39,7 +39,7 @@ export const ResourceUploadInline = ({ multiple = false, maxFiles = 4, accept = 
         },
         maxFiles,
         accept: acceptFiles(accept),
-        multiple
+        multiple: maxFiles > 1
     })
 
     const handleUpload = () => {
@@ -47,10 +47,9 @@ export const ResourceUploadInline = ({ multiple = false, maxFiles = 4, accept = 
             dispatch(startUploadResources({
                 files: [...filesSelected],
                 tags: [...tags],
-                multiple,
                 cloud,
                 access,
-                setArchive: (data) => actionUpload(data)
+                setFiles: (data) => actionUpload(data)
             }))
         }
     }

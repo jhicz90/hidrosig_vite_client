@@ -2,70 +2,83 @@ import { createSlice } from '@reduxjs/toolkit'
 export const resourceSlice = createSlice({
     name: 'resource',
     initialState: {
-        modalResource: false,
-        modalFilesSelected: [],
-        modalInit: 9, // 1:Archivos de sistema, 3:Archivos subidos, 5:Archivos por subir
-        modalTags: [],
-        modalAccept: 'images',
-        modalMultiple: false,
-        modalLimit: 2,
-        modalTitle: 'Seleccione o suba archivos',
-        modalSetArchive: null
+        showUpload: false,
+        filesSelected: [],
+        initOptions: [true, true, true], // 1:Archivos de sistema, 2:Archivos subidos, 3:Archivos por subir
+        tags: [],
+        fileTypes: [],
+        groupTypes: 'images',
+        limit: 1,
+        maxSize: 1,
+        setFiles: null
     },
     reducers: {
         setModalResource: (state, { payload }) => {
-            state.modalResource = payload
+            state.showUpload = payload.showUpload || false
+            state.filesSelected = payload.filesSelected || []
+            state.initOptions = payload.initOptions || [true, true, true]
+            state.tags = payload.tags || []
+            state.fileTypes = payload.fileTypes || []
+            state.groupTypes = payload.groupTypes || ''
+            state.limit = payload.limit || 1
+            state.maxSize = payload.maxSize || 1
+            state.setFiles = payload.setFiles || null
         },
-        setModalFilesSelected: (state, { payload }) => {
-            state.modalFilesSelected = payload
+        setShowResource: (state, { payload }) => {
+            state.showUpload = payload
         },
-        addModalFilesSelected: (state, { payload }) => {
-            state.modalFilesSelected = [...state.modalFilesSelected, payload]
+        setFilesSelected: (state, { payload }) => {
+            state.filesSelected = payload
         },
-        setModalInit: (state, { payload }) => {
-            state.modalInit = payload
+        addFilesSelected: (state, { payload }) => {
+            state.filesSelected = [...state.filesSelected, payload]
         },
-        setModalTags: (state, { payload }) => {
-            state.modalTags = payload
+        setInitOptions: (state, { payload }) => {
+            state.initOptions = payload
         },
-        setModalAccept: (state, { payload }) => {
-            state.modalAccept = payload
+        setTags: (state, { payload }) => {
+            state.tags = payload
         },
-        setModalMultiple: (state, { payload }) => {
-            state.modalMultiple = payload
+        setFileTypes: (state, { payload }) => {
+            state.fileTypes = payload
         },
-        setModalLimit: (state, { payload }) => {
-            state.modalLimit = payload
+        setGroupTypes: (state, { payload }) => {
+            state.groupTypes = payload
         },
-        setModalTitle: (state, { payload }) => {
-            state.modalTitle = payload
+        setLimit: (state, { payload }) => {
+            state.limit = payload
         },
-        setModalSetArchive: (state, { payload }) => {
-            state.modalSetArchive = payload
+        setMaxSize: (state, { payload }) => {
+            state.maxSize = payload
         },
-        resetModalResource: (state) => {
-            state.modalResource = false
-            state.modalFilesSelected = []
-            state.modalInit = 9
-            state.modalTags = []
-            state.modalAccept = 'images'
-            state.modalMultiple = false
-            state.modalTitle = 'Seleccione o suba archivos'
-            state.modalSetArchive = null
+        setSetFiles: (state, { payload }) => {
+            state.setFiles = payload
+        },
+        resetResource: (state) => {
+            state.showUpload = false
+            state.filesSelected = []
+            state.initOptions = [true, true, true]
+            state.tags = []
+            state.fileTypes = []
+            state.groupTypes = 'images'
+            state.limit = 1
+            state.maxSize = 1
+            state.setFiles = null
         }
     }
 })
 
 export const {
-    addModalFilesSelected,
-    resetModalResource,
-    setModalAccept,
-    setModalFilesSelected,
-    setModalInit,
-    setModalLimit,
-    setModalMultiple,
     setModalResource,
-    setModalSetArchive,
-    setModalTags,
-    setModalTitle,
+    setShowResource,
+    setFilesSelected,
+    addFilesSelected,
+    setInitOptions,
+    setTags,
+    setFileTypes,
+    setGroupTypes,
+    setLimit,
+    setMaxSize,
+    setSetFiles,
+    resetResource,
 } = resourceSlice.actions

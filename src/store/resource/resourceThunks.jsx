@@ -1,46 +1,38 @@
 import { fetchUpFilesByToken } from '../../helpers'
-import {
-    resetModalResource,
-    setModalAccept,
-    setModalInit,
-    setModalLimit,
-    setModalMultiple,
-    setModalResource,
-    setModalSetArchive,
-    setModalTags,
-    setModalTitle
-} from './resourceSlice'
+import { resetResource, setModalResource, setShowResource } from './resourceSlice'
 
 export const startModalResource = ({
-    init = 9,
+    init = [true, true, true],
     tags = [],
-    accept = 'images',
-    multiple = false,
-    limit = 2,
-    title = 'Seleccione o suba archivos',
-    setArchive = null,
+    fileTypes = [],
+    groupTypes = '',
+    limit = 1,
+    maxSize = 1,
+    setFiles = null,
 }) => {
     return async (dispatch) => {
-        dispatch(resetModalResource())
-        dispatch(setModalInit(init))
-        dispatch(setModalTags(tags))
-        dispatch(setModalAccept(accept))
-        dispatch(setModalMultiple(multiple))
-        dispatch(setModalLimit(limit))
-        dispatch(setModalTitle(title))
-        dispatch(setModalSetArchive(setArchive))
-        dispatch(setModalResource(true))
+        dispatch(resetResource())
+        dispatch(setModalResource({
+            showUpload: true,
+            initOptions: init,
+            tags,
+            fileTypes,
+            groupTypes,
+            limit,
+            maxSize,
+            setFiles
+        }))
     }
 }
 
 export const finishModalResource = () => {
     return async (dispatch) => {
-        dispatch(setModalResource(false))
-        dispatch(resetModalResource())
+        dispatch(setShowResource(false))
+        dispatch(resetResource())
     }
 }
 
-export const startUploadResources = ({ files, setArchive = null, tags, multiple, access = 1, cloud = false }) => {
+export const startUploadResources = ({ files, setFiles = null, tags, access = 1, cloud = false }) => {
     return async (dispatch) => {
 
         let formData = new FormData()
@@ -55,16 +47,22 @@ export const startUploadResources = ({ files, setArchive = null, tags, multiple,
 
         formData.append('access_mode', access)
 
-        const resp = await fetchUpFilesByToken({
-            endpoint: 'resource/up',
-            data: formData
-        })
+
+        const resp = cloud
+            ? await fetchUpFilesByToken({
+                endpoint: 'resource/v1/up',
+                data: formData
+            })
+            : await fetchUpFilesByToken({
+                endpoint: 'resource/db/up',
+                data: formData
+            })
 
         if (resp.ok) {
-            if (!multiple) {
-                (setArchive && resp.files.length > 0) && setArchive(resp.files[0]._id)
-            } else {
-                (setArchive && resp.files.length > 0) && setArchive(resp.files.map(f => f._id))
+            if (setFiles && resp.files.length === 1) {
+                setFiles(resp.files[0]._id)
+            } else if (setFiles && resp.files.length > 1) {
+                setFiles(resp.files.map(f => f._id))
             }
         }
     }

@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react'
-import { useParams, Navigate, useNavigate } from 'react-router-dom'
+import { useParams, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveDocument, searchJunta, setActiveDocument, startUpdateDocsDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
-import { FileUpload, LoadingPage, OptionOrgz, ResourceUploadInline } from '../../../components'
+import { editActiveDocument, searchJunta, setActiveDocument, startModalResource, startUpdateDocsDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
+import { FilesUploadInline, FileUpload, LoadingPage, OptionOrgz } from '../../../components'
+import { IoMdCloudUpload } from 'react-icons/io'
 
 export const EditDocument = () => {
 
     const [show, setShow] = useState(true)
     const { docid } = useParams()
     const redirect = useNavigate()
+    const { state } = useLocation()
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetDocumentByIdQuery(docid)
     const { active, isSaving } = useSelector(state => state.document)
+    const urlBack = state?.from || '/app/exp/resources#docs'
 
     useEffect(() => {
         if (!!data) {
@@ -27,16 +30,16 @@ export const EditDocument = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={`/app/exp/resources#docs`} replace />
+        return <Navigate to={urlBack} replace />
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(`/app/exp/resources#docs`)}
+            onExited={() => redirect(urlBack)}
+            enforceFocus={false}
             placement='end'
-            backdrop='static'
         >
             <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>
@@ -91,6 +94,16 @@ const EditDocumentStep = () => {
             junta,
         }))
         dispatch(startUpdateDocument())
+    }
+
+    const handleUpload = () => {
+        dispatch(startModalResource({
+            tags: ['Documento', active.name],
+            groupTypes: 'docs',
+            limit: 3,
+            maxSize: 5,
+            setFiles: (data) => dispatch(startUpdateDocsDocument(data))
+        }))
     }
 
     useEffect(() => {
@@ -199,6 +212,9 @@ const EditDocumentStep = () => {
                     <Form.Group className='mb-3' controlId='uDocs'>
                         <Form.Label>Documentos</Form.Label>
                         <ListGroup>
+                            <ListGroup.Item onClick={handleUpload} className='d-flex align-items-center' action>
+                                Agregar documentos <IoMdCloudUpload className='ms-2' size={20} color='green' />
+                            </ListGroup.Item>
                             {
                                 active.docs.map(doc =>
                                     <ListGroup.Item key={doc.fileName}>
@@ -210,13 +226,6 @@ const EditDocumentStep = () => {
                     </Form.Group>
                 </div>
             </div>
-            <ResourceUploadInline
-                multiple={true}
-                accept='docs'
-                tags={['Documento', active.name]}
-                access={1}
-                actionUpload={(data) => dispatch(startUpdateDocsDocument(data))}
-            />
         </>
     )
 }
