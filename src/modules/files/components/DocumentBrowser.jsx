@@ -58,8 +58,8 @@ export const DocumentBrowser = () => {
                                 <ButtonGroup>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/exp/resources/edit/doc/${item._id}`}
-                                        tate={{ from: location }}
+                                        to={`./edit/doc/${item._id}`}
+                                        state={{ from: location }}
                                     >
                                         <FaPen />
                                     </Link>

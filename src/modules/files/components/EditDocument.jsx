@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveDocument, searchJunta, setActiveDocument, startModalResource, startUpdateDocsDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
+import { editActiveDocument, searchJunta, setActiveDocument, startDeleteDocument, startModalResource, startUpdateDocsDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
 import { FilesUploadInline, FileUpload, LoadingPage, OptionOrgz } from '../../../components'
 import { IoMdCloudUpload } from 'react-icons/io'
 
@@ -41,7 +41,7 @@ export const EditDocument = () => {
             enforceFocus={false}
             placement='end'
         >
-            <Offcanvas.Header className='text-bg-primary' closeButton={!isSaving} closeVariant='white'>
+            <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>
                     <div className='d-flex flex-column'>
                         <span>Documento</span>
@@ -53,7 +53,7 @@ export const EditDocument = () => {
                 !!active
                     ?
                     <>
-                        <Offcanvas.Header>
+                        <Offcanvas.Header className='offcanvas-success'>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
                                     disabled={isSaving}
@@ -71,6 +71,21 @@ export const EditDocument = () => {
                                 <EditDocumentStep />
                             </Card.Body>
                         </Offcanvas.Body>
+                        <div className='offcanvas-footer offcanvas-danger'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    onClick={() => {
+                                        dispatch(startDeleteDocument())
+                                    }}
+                                    disabled={isSaving}
+                                    variant='danger'
+                                    type='button'
+                                    className='w-100'
+                                >
+                                    Eliminar
+                                </Button>
+                            </div>
+                        </div>
                     </>
                     :
                     <LoadingPage />

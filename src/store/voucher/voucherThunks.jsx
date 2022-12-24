@@ -223,7 +223,6 @@ export const startDeleteVoucher = () => {
 
                 if (resp.ok) {
                     dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
-                    // redirect()
                     dispatch(setActiveVoucher(null))
                 }
             }

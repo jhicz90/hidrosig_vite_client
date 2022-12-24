@@ -78,7 +78,6 @@ export const EditVoucher = () => {
                                     disabled={isSaving}
                                     variant='danger'
                                     type='button'
-                                    form='form-accounting-voucher-edit'
                                     className='w-100'
                                 >
                                     Eliminar

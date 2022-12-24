@@ -180,7 +180,7 @@ export const startUpdateInformationDocument = ({ name, nameAbrev, nameLarge, nam
     }
 }
 
-export const startDeleteDocument = ({ navigate = null }) => {
+export const startDeleteDocument = () => {
     return async (dispatch, getState) => {
         const { active } = getState().document
         const { _id, name } = active
@@ -233,7 +233,6 @@ export const startDeleteDocument = ({ navigate = null }) => {
                 dispatch(setSavingDocument(false))
 
                 if (resp.ok) {
-                    navigate('/app/ambit/orgz')
                     dispatch(setActiveDocument(null))
                 }
             }
