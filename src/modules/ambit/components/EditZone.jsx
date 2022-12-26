@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveZone, searchJunta, setActiveZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
+import { editActiveZone, searchJunta, setActiveZone, startDeleteZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
 import { LoadingPage, OptionOrgz } from '../../../components'
 
 export const EditZone = () => {
@@ -12,9 +12,11 @@ export const EditZone = () => {
     const [show, setShow] = useState(true)
     const { zoneid } = useParams()
     const redirect = useNavigate()
+    const { state } = useLocation()
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetZoneByIdQuery(zoneid)
     const { active, isSaving } = useSelector(state => state.zone)
+    const urlBack = state?.from || '/app/exp/resources/docs'
 
     useEffect(() => {
         if (!!data) {
@@ -27,14 +29,15 @@ export const EditZone = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={`/app/ambit/trrty#zone`} replace />
+        return <Navigate to={urlBack} replace />
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(`/app/ambit/trrty#zone`)}
+            onExited={() => redirect(urlBack)}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
@@ -65,6 +68,21 @@ export const EditZone = () => {
                         <Offcanvas.Body>
                             <EditZoneStep />
                         </Offcanvas.Body>
+                        <div className='offcanvas-footer offcanvas-danger'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    onClick={() => {
+                                        dispatch(startDeleteZone())
+                                    }}
+                                    disabled={isSaving}
+                                    variant='danger'
+                                    type='button'
+                                    className='w-100'
+                                >
+                                    Eliminar
+                                </Button>
+                            </div>
+                        </div>
                     </>
                     :
                     <LoadingPage />

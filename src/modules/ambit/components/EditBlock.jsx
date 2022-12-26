@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchJunta, setActiveBlock, startUpdateBlock, useGetBlockByIdQuery } from '../../../store/actions'
+import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchJunta, setActiveBlock, startDeleteBlock, startUpdateBlock, useGetBlockByIdQuery } from '../../../store/actions'
 import { LoadingPage, OptionDocument, OptionOrgz } from '../../../components'
 
 export const EditBlock = () => {
@@ -12,9 +12,11 @@ export const EditBlock = () => {
     const [show, setShow] = useState(true)
     const { blockid } = useParams()
     const redirect = useNavigate()
+    const { state } = useLocation()
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetBlockByIdQuery(blockid)
     const { active, isSaving } = useSelector(state => state.block)
+    const urlBack = state?.from || '/app/exp/resources/docs'
 
     useEffect(() => {
         if (!!data) {
@@ -27,14 +29,15 @@ export const EditBlock = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={`/app/ambit/trrty#block`} replace />
+        return <Navigate to={urlBack} replace />
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(`/app/ambit/trrty#block`)}
+            onExited={() => redirect(urlBack)}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
@@ -67,6 +70,21 @@ export const EditBlock = () => {
                                 <EditBlockStep />
                             </Card.Body>
                         </Offcanvas.Body>
+                        <div className='offcanvas-footer offcanvas-danger'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    onClick={() => {
+                                        dispatch(startDeleteBlock())
+                                    }}
+                                    disabled={isSaving}
+                                    variant='danger'
+                                    type='button'
+                                    className='w-100'
+                                >
+                                    Eliminar
+                                </Button>
+                            </div>
+                        </div>
                     </>
                     :
                     <LoadingPage />

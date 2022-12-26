@@ -17,7 +17,7 @@ export const EditDocument = () => {
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetDocumentByIdQuery(docid)
     const { active, isSaving } = useSelector(state => state.document)
-    const urlBack = state?.from || '/app/exp/resources#docs'
+    const urlBack = state?.from || '/app/exp/resources/docs'
 
     useEffect(() => {
         if (!!data) {

@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { CreateDocument, DocumentBrowser, ResourceBrowser } from '../components'
+import { CreateDocument} from '../components'
 
 export const ResourcesPage = () => {
 
     const dispatch = useDispatch()
-    const { hash } = useLocation()
 
     useEffect(() => {
         dispatch(clearToolbarActions())
@@ -29,26 +28,19 @@ export const ResourcesPage = () => {
             <div className='row justify-content-center'>
                 <div className='col'>
                     <Card>
-                        <Tab.Container defaultActiveKey={hash === '' ? '#browser' : hash}>
+                        <Tab.Container>
                             <Card.Header>
                                 <Nav variant='tabs'>
                                     <Nav.Item>
-                                        <Nav.Link eventKey='#browser'>Explorador de archivos</Nav.Link>
+                                        <NavLink to={`browser`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Explorador de archivos</NavLink>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <Nav.Link eventKey='#docs'>Documentos</Nav.Link>
+                                        <NavLink to={`docs`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Documentos</NavLink>
                                     </Nav.Item>
                                 </Nav>
                             </Card.Header>
                             <Card.Body className='p-0'>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey='#browser'>
-                                        {/* <ResourceBrowser /> */}
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey='#docs'>
-                                        <DocumentBrowser />
-                                    </Tab.Pane>
-                                </Tab.Content>
+                                <Outlet />
                             </Card.Body>
                         </Tab.Container>
                     </Card>

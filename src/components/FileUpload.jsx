@@ -7,7 +7,7 @@ import { IoMdTrash } from 'react-icons/io'
 export const FileUpload = ({ file }) => {
     return (
         <FileUploadStyle key={file.fileName}>
-            <img src={previewResource(file.format, file.metadata?.url, file.cloud)} alt={file.fileName} />
+            <img src={previewResource(file.format, file.metadata?.url, file.cloud, 100)} alt={file.fileName} />
             <div className='file-info'>
                 <a
                     className='d-inline-block text-truncate'
@@ -58,13 +58,13 @@ const FileUploadStyle = styled.div`
     }
 `
 
-const previewResource = (type, url, cloud) => {
+const previewResource = (type, url, cloud, size = 0) => {
     try {
         return ({
-            'jpeg': imageGet(url, { cloud }),
-            'jpg': imageGet(url, { cloud }),
-            'png': imageGet(url, { cloud }),
-            'gif': imageGet(url, { cloud }),
+            'jpeg': imageGet(url, { cloud, size }),
+            'jpg': imageGet(url, { cloud, size }),
+            'png': imageGet(url, { cloud, size }),
+            'gif': imageGet(url, { cloud, size }),
             'xlsx': imageSysGet(2007),
             'docx': imageSysGet(2008),
             'avi': imageSysGet('file_avi'),

@@ -95,7 +95,7 @@ export const startUpdateBlock = () => {
     }
 }
 
-export const startDeleteBlock = ({ navigate = null }) => {
+export const startDeleteBlock = () => {
     return async (dispatch, getState) => {
         const { active } = getState().block
         const { _id, name } = active
@@ -148,7 +148,7 @@ export const startDeleteBlock = ({ navigate = null }) => {
                 dispatch(setSavingBlock(false))
 
                 if (resp.ok) {
-                    navigate('/app/ambit/trrty')
+                    dispatch(storeApi.util.invalidateTags(['Trrt']))
                     dispatch(setActiveBlock(null))
                 }
             }

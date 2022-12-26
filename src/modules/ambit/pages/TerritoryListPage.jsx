@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { BlockList, CreateBlock, CreateZone, ZoneList } from '../components'
+import { CreateBlock, CreateZone } from '../components'
 
 export const TerritoryListPage = () => {
 
     const dispatch = useDispatch()
-    const { hash } = useLocation()
 
     useEffect(() => {
         dispatch(clearToolbarActions())
@@ -31,39 +30,28 @@ export const TerritoryListPage = () => {
                 <div className='row justify-content-center'>
                     <div className='col'>
                         <Card>
-                            <Tab.Container defaultActiveKey={hash === '' ? '#zone' : hash}>
+                            <Tab.Container>
                                 <Card.Header>
                                     <Nav variant='tabs'>
                                         <Nav.Item>
-                                            <Nav.Link eventKey='#zone'>Zonas</Nav.Link>
+                                            <NavLink to={`zone`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Zonas</NavLink>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link eventKey='#block'>Bloques de riego</Nav.Link>
+                                            <NavLink to={`block`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Bloques de riego</NavLink>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link eventKey='#location'>Localidades</Nav.Link>
+                                            <NavLink to={`location`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Localidades</NavLink>
                                         </Nav.Item>
                                     </Nav>
                                 </Card.Header>
                                 <Card.Body className='p-0'>
-                                    <Tab.Content>
-                                        <Tab.Pane eventKey='#zone'>
-                                            <ZoneList />
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey='#block'>
-                                            <BlockList />
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey='#location'>
-                                            {/* <TerritoriesLocationList /> */}
-                                        </Tab.Pane>
-                                    </Tab.Content>
+                                    <Outlet />
                                 </Card.Body>
                             </Tab.Container>
                         </Card>
                     </div>
                 </div>
             </div>
-            <Outlet />
         </>
     )
 }

@@ -58,7 +58,7 @@ export const DocumentBrowser = () => {
                                 <ButtonGroup>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`./edit/doc/${item._id}`}
+                                        to={`./edit/${item._id}`}
                                         state={{ from: location }}
                                     >
                                         <FaPen />

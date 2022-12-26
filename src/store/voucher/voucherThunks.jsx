@@ -174,7 +174,7 @@ export const startDeleteVoucher = () => {
         const { active } = getState().voucher
         const { _id, serie, numReceipt } = active
 
-        const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true })
+        const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true, removeSymbols: false })
 
         SwalReact.fire({
             title:
@@ -193,7 +193,7 @@ export const startDeleteVoucher = () => {
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: `btn btn-warning`,
+                confirmButton: `btn btn-danger`,
                 cancelButton: `btn btn-neutral`
             },
             input: 'text',

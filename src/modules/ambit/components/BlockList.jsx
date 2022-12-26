@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
@@ -7,6 +7,7 @@ import { useGetBlocksQuery } from '../../../store/actions'
 
 export const BlockList = () => {
 
+    const location = useLocation()
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetBlocksQuery(search)
 
@@ -64,7 +65,8 @@ export const BlockList = () => {
                                 <ButtonGroup>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/ambit/trrty/edit/block/${item._id}`}
+                                        to={`./edit/${item._id}`}
+                                        state={{ from: location }}
                                     >
                                         <FaPen />
                                     </Link>
@@ -73,6 +75,7 @@ export const BlockList = () => {
                     ]
                 }
             />
+            <Outlet />
         </>
     )
 }

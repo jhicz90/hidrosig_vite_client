@@ -94,7 +94,7 @@ export const startUpdateZone = () => {
     }
 }
 
-export const startDeleteZone = ({ navigate = null }) => {
+export const startDeleteZone = () => {
     return async (dispatch, getState) => {
         const { active } = getState().zone
         const { _id, name } = active
@@ -118,7 +118,7 @@ export const startDeleteZone = ({ navigate = null }) => {
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: `btn btn-warning`,
+                confirmButton: `btn btn-danger`,
                 cancelButton: `btn btn-neutral`
             },
             input: 'text',
@@ -147,7 +147,7 @@ export const startDeleteZone = ({ navigate = null }) => {
                 dispatch(setSavingZone(false))
 
                 if (resp.ok) {
-                    navigate('/app/ambit/trrty')
+                    dispatch(storeApi.util.invalidateTags(['Trrt']))
                     dispatch(setActiveZone(null))
                 }
             }

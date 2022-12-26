@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
@@ -7,6 +7,7 @@ import { useGetZonesQuery } from '../../../store/actions'
 
 export const ZoneList = () => {
 
+    const location = useLocation()
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetZonesQuery(search)
 
@@ -52,7 +53,8 @@ export const ZoneList = () => {
                                 <ButtonGroup>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/ambit/trrty/edit/zone/${item._id}`}
+                                        to={`./edit/${item._id}`}
+                                        state={{ from: location }}
                                     >
                                         <FaPen />
                                     </Link>
@@ -61,6 +63,7 @@ export const ZoneList = () => {
                     ]
                 }
             />
+            <Outlet />
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { FaFaucet, FaTint, FaWater } from 'react-icons/fa'
+import { FaFaucet, FaQuestionCircle, FaTint, FaWater } from 'react-icons/fa'
 import { TypeWaterSource } from '../components'
 
 export const treeNetIrrig = (data, check = false) => {
@@ -20,7 +20,7 @@ export const treeNetIrrig = (data, check = false) => {
                     'L05': <FaWater color='black' />,
                     'L06': <FaWater color='purple' />,
                     'CP': <FaWater color='#6f42c1' />,
-                    'D01': <FaFaucet color='#432874' />,
+                    'DR': <FaFaucet color='#432874' />,
                 }[item.order] || <FaQuestionCircle />
                 // icon: {
                 //     0: <FaTint color='#0d6efd' />,
@@ -49,7 +49,7 @@ export const treeNetIrrig = (data, check = false) => {
                     'L05': <FaWater color='black' />,
                     'L06': <FaWater color='purple' />,
                     'CP': <FaWater color='#6f42c1' />,
-                    'D01': <FaFaucet color='#432874' />,
+                    'DR': <FaFaucet color='#432874' />,
                 }[item.order] || <FaQuestionCircle />
             }
         }

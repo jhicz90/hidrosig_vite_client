@@ -190,12 +190,12 @@ export const startDeleteDocument = () => {
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Eliminar document de usuarios</div>
+                    <div className='text-uppercase'>Eliminar documento</div>
                     <div className="fs-5 fw-bold text-info mt-1">{name}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar este documento?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
                 </>,
             showCancelButton: true,
@@ -204,7 +204,7 @@ export const startDeleteDocument = () => {
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: `btn btn-warning`,
+                confirmButton: `btn btn-danger`,
                 cancelButton: `btn btn-neutral`
             },
             input: 'text',
