@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { IoMdOpen, IoMdTrash } from 'react-icons/io'
@@ -12,9 +12,11 @@ export const EditStructure = () => {
     const [show, setShow] = useState(true)
     const { strid } = useParams()
     const redirect = useNavigate()
+    const { state } = useLocation()
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetStructureByIdQuery(strid)
     const { active, isSaving } = useSelector(state => state.structure)
+    const urlBack = state?.from || '/app/schm/irrig'
 
     useEffect(() => {
         if (!!data) {
@@ -27,14 +29,15 @@ export const EditStructure = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={`/app/schm/irrig#net`} replace />
+        return <Navigate to={urlBack} replace />
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(`/app/schm/irrig#net`)}
+            onExited={() => redirect(urlBack)}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>

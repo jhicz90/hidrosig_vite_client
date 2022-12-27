@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Outlet, useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
-import { CreateStructure, IrrigationNetworkChannel, WaterSourceList } from '../components'
+import { CreateStructure } from '../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 
 export const IrrigationNetworkListPage = () => {
@@ -25,38 +25,28 @@ export const IrrigationNetworkListPage = () => {
     }, [dispatch])
 
     return (
-        <>
-            <div className='container'>
-                <div className='row justify-content-center'>
-                    <div className='col'>
-                        <Card>
-                            <Tab.Container defaultActiveKey={hash === '' ? '#net' : hash}>
-                                <Card.Header>
-                                    <Nav variant='tabs'>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey='#net'>Red de riego</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey='#source'>Fuentes de agua</Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                </Card.Header>
-                                <Card.Body className='p-0'>
-                                    <Tab.Content>
-                                        <Tab.Pane eventKey='#net'>
-                                            <IrrigationNetworkChannel />
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey='#source'>
-                                            <WaterSourceList />
-                                        </Tab.Pane>
-                                    </Tab.Content>
-                                </Card.Body>
-                            </Tab.Container>
-                        </Card>
-                    </div>
+        <div className='container'>
+            <div className='row justify-content-center'>
+                <div className='col'>
+                    <Card>
+                        <Tab.Container defaultActiveKey={hash === '' ? '#net' : hash}>
+                            <Card.Header>
+                                <Nav variant='tabs'>
+                                    <Nav.Item>
+                                        <NavLink to={`net`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Red de riego</NavLink>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <NavLink to={`watersource`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Fuentes de agua</NavLink>
+                                    </Nav.Item>
+                                </Nav>
+                            </Card.Header>
+                            <Card.Body className='p-0'>
+                                <Outlet />
+                            </Card.Body>
+                        </Tab.Container>
+                    </Card>
                 </div>
             </div>
-            <Outlet />
-        </>
+        </div>
     )
 }

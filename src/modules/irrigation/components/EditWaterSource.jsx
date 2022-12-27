@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
@@ -12,9 +12,11 @@ export const EditWaterSource = () => {
     const [show, setShow] = useState(true)
     const { wsid } = useParams()
     const redirect = useNavigate()
+    const { state } = useLocation()
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetWaterSourceByIdQuery(wsid)
     const { active, isSaving } = useSelector(state => state.watersource)
+    const urlBack = state?.from || '/app/schm/irrig'
 
     useEffect(() => {
         if (!!data) {
@@ -27,14 +29,15 @@ export const EditWaterSource = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={`/app/schm/irrig#source`} replace />
+        return <Navigate to={urlBack} replace />
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(`/app/schm/irrig#source`)}
+            onExited={() => redirect(urlBack)}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>

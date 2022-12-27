@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { Outlet } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { ChannelNetworkTree } from '../../../components'
 import { IrrigationNetworkActive } from './IrrigationNetworkActive'
@@ -35,6 +36,7 @@ export const IrrigationNetworkChannel = () => {
                     <IrrigationNetworkActive />
                 </ChannelNetworkTree>
             }
+            <Outlet />
         </>
     )
 }
