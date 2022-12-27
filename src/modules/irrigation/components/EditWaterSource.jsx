@@ -4,7 +4,7 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveWaterSource, searchJunta, setActiveWaterSource, startUpdateWaterSource, useGetWaterSourceByIdQuery } from '../../../store/actions'
+import { editActiveWaterSource, searchJunta, setActiveWaterSource, startDeleteWaterSource, startUpdateWaterSource, useGetWaterSourceByIdQuery } from '../../../store/actions'
 import { LoadingPage, OptionOrgz } from '../../../components'
 
 export const EditWaterSource = () => {
@@ -70,6 +70,21 @@ export const EditWaterSource = () => {
                                 <EditWaterSourceStep />
                             </Card.Body>
                         </Offcanvas.Body>
+                        <div className='offcanvas-footer offcanvas-danger'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    onClick={() => {
+                                        dispatch(startDeleteWaterSource())
+                                    }}
+                                    disabled={isSaving}
+                                    variant='danger'
+                                    type='button'
+                                    className='w-100'
+                                >
+                                    Eliminar
+                                </Button>
+                            </div>
+                        </div>
                     </>
                     :
                     <LoadingPage />

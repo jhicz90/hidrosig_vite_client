@@ -121,7 +121,7 @@ export const startUpdateDataWaterSourceInIrrigNet = (watersource) => {
     }
 }
 
-export const startDeleteWaterSource = ({ navigate = null }) => {
+export const startDeleteWaterSource = () => {
     return async (dispatch, getState) => {
         const { active } = getState().watersource
         const { _id, name } = active
@@ -145,7 +145,7 @@ export const startDeleteWaterSource = ({ navigate = null }) => {
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: `btn btn-warning`,
+                confirmButton: `btn btn-danger`,
                 cancelButton: `btn btn-neutral`
             },
             input: 'text',
@@ -174,7 +174,6 @@ export const startDeleteWaterSource = ({ navigate = null }) => {
                 dispatch(setSavingWaterSource(false))
 
                 if (resp.ok) {
-                    navigate('/app/ambit/trrty')
                     dispatch(setActiveWaterSource(null))
                 }
             }

@@ -1,4 +1,4 @@
-export const normalizeText = (str = '', { lowerCase = false, removeSpaces = false, removeSymbols = true }) => {
+export const normalizeText = (str = '', { lowerCase = false, removeSpaces = false, removeSymbols = false }) => {
     str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
     lowerCase === true && (str = str.toLowerCase())

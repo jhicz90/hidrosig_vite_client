@@ -185,7 +185,7 @@ export const startDeleteDocument = () => {
         const { active } = getState().document
         const { _id, name } = active
 
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true, removeSymbols: true })
 
         SwalReact.fire({
             title:

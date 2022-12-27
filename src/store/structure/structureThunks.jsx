@@ -122,7 +122,7 @@ export const startUpdateDataStructureInIrrigNet = (structure) => {
     }
 }
 
-export const startDeleteStructure = ({ navigate = null }) => {
+export const startDeleteStructure = () => {
     return async (dispatch, getState) => {
         const { active } = getState().structure
         const { _id, name } = active
@@ -132,12 +132,12 @@ export const startDeleteStructure = ({ navigate = null }) => {
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Eliminar fuente de agua</div>
+                    <div className='text-uppercase'>Eliminar estructura</div>
                     <div className="fs-5 fw-bold text-info mt-1">{name}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta fuente de agua?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
                 </>,
             showCancelButton: true,
@@ -146,7 +146,7 @@ export const startDeleteStructure = ({ navigate = null }) => {
             allowOutsideClick: false,
             icon: 'question',
             customClass: {
-                confirmButton: `btn btn-warning`,
+                confirmButton: `btn btn-danger`,
                 cancelButton: `btn btn-neutral`
             },
             input: 'text',
@@ -175,7 +175,6 @@ export const startDeleteStructure = ({ navigate = null }) => {
                 dispatch(setSavingStructure(false))
 
                 if (resp.ok) {
-                    navigate('/app/ambit/trrty')
                     dispatch(setActiveStructure(null))
                 }
             }

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { IoMdOpen, IoMdTrash } from 'react-icons/io'
 import { Controller, useForm } from 'react-hook-form'
-import { editActiveStructure, setActiveStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
+import { editActiveStructure, setActiveStructure, startDeleteStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
 import { DatePicker, Image, InputMask, LoadingPage } from '../../../components'
 
 export const EditStructure = () => {
@@ -70,6 +70,21 @@ export const EditStructure = () => {
                                 <EditStructureStep />
                             </Card.Body>
                         </Offcanvas.Body>
+                        <div className='offcanvas-footer offcanvas-danger'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    onClick={() => {
+                                        dispatch(startDeleteStructure())
+                                    }}
+                                    disabled={isSaving}
+                                    variant='danger'
+                                    type='button'
+                                    className='w-100'
+                                >
+                                    Eliminar
+                                </Button>
+                            </div>
+                        </div>
                     </>
                     :
                     <LoadingPage />
