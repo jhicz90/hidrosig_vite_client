@@ -424,7 +424,7 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Vchr']
+            providesTags: ['Acct - Ptty', 'Acct - Vchr']
         }),
         // VOUCHER
     }),

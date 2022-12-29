@@ -43,7 +43,7 @@ export const startSaveNewPettycash = () => {
         dispatch(setSavingNewPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
             dispatch(setActiveNewPettycash(null))
         }
     }
@@ -87,7 +87,7 @@ export const startUpdatePettycash = () => {
         dispatch(setSavingPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
             dispatch(setActivePettycash(resp.pettycash))
         }
     }
@@ -110,13 +110,13 @@ export const startUpdateInformationPettycash = ({ code, year, name, desc, receip
         dispatch(setSavingPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct']))
+            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
             dispatch(setActivePettycash(resp.pettycash))
         }
     }
 }
 
-export const startDeletePettycash = ({ navigate = null }) => {
+export const startDeletePettycash = () => {
     return async (dispatch, getState) => {
         const { active } = getState().pettycash
         const { _id, name } = active
@@ -169,8 +169,7 @@ export const startDeletePettycash = ({ navigate = null }) => {
                 dispatch(setSavingPettycash(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct']))
-                    navigate('/app/acct/petty_cash')
+                    dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
                     dispatch(setActivePettycash(null))
                 }
             }
