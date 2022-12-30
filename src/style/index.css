@@ -19,6 +19,10 @@ body {
 	cursor: pointer;
 }
 
+a.uppy-Dashboard-poweredBy {
+	display: none;
+}
+
 .dropdown.dropdown-noarrow .dropdown-toggle::after {
 	display: none;
 }

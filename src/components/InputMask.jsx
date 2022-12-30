@@ -6,7 +6,7 @@ export const InputMask = (props) => {
             id={props.id || ''}
             mask={props.mask}
             maskPlaceholder={props.maskPlaceholder}
-            value={props.value}
+            value={props.value || 0}
             onChange={props.onChange}
             className='form-control'
         />

@@ -113,7 +113,7 @@ const EditDocumentStep = () => {
 
     const handleUpload = () => {
         dispatch(startModalResource({
-            tags: ['Documento', active.name],
+            tags: ['documento', active.name],
             groupTypes: 'docs',
             limit: 3,
             maxSize: 5,
@@ -132,7 +132,7 @@ const EditDocumentStep = () => {
             <form id='form-file-document-edit' onSubmit={handleSubmit(handleSave)}>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uName'>
+                        <Form.Group className='mb-3' controlId='pName'>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
                                 {...register('name', { required: true })}
@@ -144,7 +144,7 @@ const EditDocumentStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uType'>
+                        <Form.Group className='mb-3' controlId='pType'>
                             <Form.Label>Tipo de documento</Form.Label>
                             <Form.Select
                                 {...register('type', { required: true })}
@@ -167,7 +167,7 @@ const EditDocumentStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uDesc'>
+                        <Form.Group className='mb-3' controlId='pDesc'>
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control
                                 {...register('desc')}
@@ -180,7 +180,7 @@ const EditDocumentStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uSigner'>
+                        <Form.Group className='mb-3' controlId='pSigner'>
                             <Form.Label>Persona o institución que firma el documento</Form.Label>
                             <Form.Control
                                 {...register('signer', { required: true })}
@@ -192,7 +192,7 @@ const EditDocumentStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col'>
-                        <Form.Group className='mb-3' controlId='uJunta'>
+                        <Form.Group className='mb-3' controlId='pJunta'>
                             <Form.Label>Junta de usuarios</Form.Label>
                             <Controller
                                 name='junta'
@@ -202,7 +202,7 @@ const EditDocumentStep = () => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='uJunta'
+                                            inputId='pJunta'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
@@ -224,7 +224,7 @@ const EditDocumentStep = () => {
             </form>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uDocs'>
+                    <Form.Group className='mb-3' controlId='pDocs'>
                         <Form.Label>Documentos</Form.Label>
                         <ListGroup>
                             <ListGroup.Item onClick={handleUpload} className='d-flex align-items-center' action>

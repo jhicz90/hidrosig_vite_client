@@ -9,6 +9,7 @@ export const authSlice = createSlice({
         photoURL: null,
         lvlAccess: 0,
         modAccess: [],
+        options: {},
         tokenIat: null,
         tokenExp: null,
         token: null
@@ -22,6 +23,7 @@ export const authSlice = createSlice({
             state.photoURL = payload.image
             state.lvlAccess = payload.access
             state.modAccess = payload.modules
+            state.options = payload.options
             state.tokenIat = payload.iat
             state.tokenExp = payload.exp
             state.token = payload.token
@@ -34,6 +36,7 @@ export const authSlice = createSlice({
             state.photoURL = null
             state.lvlAccess = 0
             state.modAccess = []
+            state.options = {}
             state.tokenIat = null
             state.tokenExp = null
             state.token = null

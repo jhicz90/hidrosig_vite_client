@@ -63,6 +63,7 @@ const CreateStructureStep = () => {
 
     const handleSave = ({ order, name, obs, status, dateCons, dateInvt, margin, progressive, longitude, efficiency, flow }) => {
         dispatch(editActiveNewStructure({
+            order,
             name,
             obs,
             status,

@@ -5,7 +5,8 @@ import { Button, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
-import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
+import { IoMdAddCircleOutline } from 'react-icons/io'
+import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteVoucher, startModalResource, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
 import { DatePicker, FileUpload, LoadingPage, OptionSocialReason } from '../../../components'
 
 export const EditVoucher = () => {
@@ -115,6 +116,16 @@ const EditVoucherStep = () => {
         dispatch(startUpdateVoucher())
     }
 
+    const handleAddImage = () => {
+        dispatch(startModalResource({
+            tags: ['comprobante', `${active.serie}-${active.numReceipt}`],
+            groupTypes: 'images',
+            limit: 1,
+            maxSize: 5,
+            setFiles: (data) => dispatch(startUpdateImageVoucher(data))
+        }))
+    }
+
     useEffect(() => {
         reset({
             ...active
@@ -126,7 +137,7 @@ const EditVoucherStep = () => {
             <form id='form-accounting-voucher-edit' onSubmit={handleSubmit(handleSave)}>
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uVoucherDay'>
+                        <Form.Group className='mb-3' controlId='pVoucherDay'>
                             <Form.Label>Fecha del comprobante</Form.Label>
                             <Controller
                                 control={control}
@@ -155,7 +166,7 @@ const EditVoucherStep = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uCancelDay'>
+                        <Form.Group className='mb-3' controlId='pCancelDay'>
                             <Form.Label>Fecha de cancelación</Form.Label>
                             <Controller
                                 control={control}
@@ -180,7 +191,7 @@ const EditVoucherStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-4'>
-                        <Form.Group className='mb-3' controlId='uTypeReceipt'>
+                        <Form.Group className='mb-3' controlId='pTypeReceipt'>
                             <Form.Label>Tipo de comprobante</Form.Label>
                             <Form.Select
                                 {...register('typeReceipt', { required: true })}
@@ -198,7 +209,7 @@ const EditVoucherStep = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-4'>
-                        <Form.Group className='mb-3' controlId='uSerie'>
+                        <Form.Group className='mb-3' controlId='pSerie'>
                             <Form.Label>Serie</Form.Label>
                             <Form.Control
                                 {...register('serie', { required: true })}
@@ -208,7 +219,7 @@ const EditVoucherStep = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-4'>
-                        <Form.Group className='mb-3' controlId='uNumReceipt'>
+                        <Form.Group className='mb-3' controlId='pNumReceipt'>
                             <Form.Label>Número</Form.Label>
                             <Form.Control
                                 {...register('numReceipt', { required: true, min: 0.01 })}
@@ -222,7 +233,7 @@ const EditVoucherStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uSocialReason'>
+                        <Form.Group className='mb-3' controlId='pSocialReason'>
                             <Form.Label>Razón social</Form.Label>
                             <Controller
                                 name='socialReason'
@@ -231,7 +242,7 @@ const EditVoucherStep = () => {
                                 render={({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uSocialReason'
+                                        inputId='pSocialReason'
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
@@ -251,7 +262,7 @@ const EditVoucherStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uConcept'>
+                        <Form.Group className='mb-3' controlId='pConcept'>
                             <Form.Label>Concepto</Form.Label>
                             <Form.Control
                                 {...register('concept')}
@@ -264,7 +275,7 @@ const EditVoucherStep = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uTypeIncomeExpenses'>
+                        <Form.Group className='mb-3' controlId='pTypeIncomeExpenses'>
                             <Form.Label>Ingreso / egreso</Form.Label>
                             <Form.Select
                                 {...register('typeIncomeExpenses', { required: true })}
@@ -276,7 +287,7 @@ const EditVoucherStep = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uAmountReceipt'>
+                        <Form.Group className='mb-3' controlId='pAmountReceipt'>
                             <Form.Label>Importe rendido (S/.)</Form.Label>
                             <Form.Control
                                 {...register('amountReceipt', {
@@ -294,19 +305,18 @@ const EditVoucherStep = () => {
             </form>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uImages'>
+                    <Form.Group className='mb-3' controlId='pImages'>
                         <Form.Label>Imagenes</Form.Label>
                         <ListGroup>
+                            <ListGroup.Item onClick={handleAddImage} className='d-flex align-items-center' action>
+                                Agregar imagen <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
+                            </ListGroup.Item>
                             {
-                                active.images.length > 0
-                                    ?
-                                    active.images.map(img =>
-                                        <ListGroup.Item key={img.fileName}>
-                                            <FileUpload file={img} />
-                                        </ListGroup.Item>
-                                    )
-                                    :
-                                    <ListGroup.Item>No ahi imagenes cargadas</ListGroup.Item>
+                                active.images.map(img =>
+                                    <ListGroup.Item key={img.fileName}>
+                                        <FileUpload file={img} />
+                                    </ListGroup.Item>
+                                )
                             }
                         </ListGroup>
                     </Form.Group>

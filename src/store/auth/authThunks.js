@@ -14,11 +14,11 @@ export const checkingAuthentication = ({ userpass, password, remenber }) => {
 
         if (!resp.ok) return dispatch(logout())
 
-        const { uid, names, image, access, modules, iat, exp, token } = resp
+        const { uid, names, image, access, modules, options, iat, exp, token } = resp
 
         localStorage.setItem('token', token)
 
-        dispatch(login({ uid, names, image, access, modules, iat, exp, token }))
+        dispatch(login({ uid, names, image, access, modules, options, iat, exp, token }))
     }
 }
 
@@ -32,11 +32,11 @@ export const checkingToken = () => {
 
         if (!resp.ok) return dispatch(logout())
 
-        const { uid, names, image, access, modules, iat, exp, token } = resp
+        const { uid, names, image, access, modules, options, iat, exp, token } = resp
 
         localStorage.setItem('token', token)
 
-        dispatch(login({ uid, names, image, access, modules, iat, exp, token }))
+        dispatch(login({ uid, names, image, access, modules, options, iat, exp, token }))
     }
 }
 

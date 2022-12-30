@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import { Button, ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
-import { startDeleteIdVoucher, startUpdateImageIdVoucher, startUploadResources, useGetVouchersByPettyCashQuery } from '../../../store/actions'
+import { startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetVouchersByPettyCashQuery } from '../../../store/actions'
 import { Image, ImageLightbox, InputSearch, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
 import { CreateVoucher } from './CreateVoucher'
 import { imageGet } from '../../../helpers'
@@ -41,12 +41,22 @@ const PettyCashVoucher = () => {
         setOpenLightbox(true)
     }
 
-    const handleImageVoucher = (file, voucher) => {
-        dispatch(startUploadResources({
-            files: [file],
-            tags: ['comprobante', 'caja chica', `${voucher.serie}-${voucher.numReceipt}`],
-            multiple: false,
-            setArchive: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
+    // const handleImageVoucher = (file, voucher) => {
+    //     dispatch(startUploadResources({
+    //         files: [file],
+    //         tags: ['comprobante', 'caja chica', `${voucher.serie}-${voucher.numReceipt}`],
+    //         multiple: false,
+    //         setArchive: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
+    //     }))
+    // }
+
+    const handleImageVoucher = (voucher) => {
+        dispatch(startModalResource({
+            tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
+            groupTypes: 'images',
+            limit: 1,
+            maxSize: 5,
+            setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
         }))
     }
 
@@ -140,32 +150,46 @@ const PettyCashVoucher = () => {
                                                     {
                                                         item.images.length < 4
                                                         &&
-                                                        <>
-                                                            <input
-                                                                className='d-none'
-                                                                id={`input-upload-${item._id}`}
-                                                                type='file'
-                                                                multiple={false}
-                                                                accept='image/jpeg, image/png'
-                                                                onChange={(e) => handleImageVoucher(e.target.files[0], item)}
-                                                            />
-                                                            <label
-                                                                htmlFor={`input-upload-${item._id}`}
-                                                                className='btn btn-sm btn-neutral shadow-sm'
-                                                                variant='neutral'
-                                                                size='sm'
-                                                                style={{
-                                                                    padding: 0,
-                                                                    width: '30px',
-                                                                    height: '30px',
-                                                                    display: 'flex',
-                                                                    justifyContent: 'center',
-                                                                    alignItems: 'center'
-                                                                }}
-                                                            >
-                                                                <FaPlus />
-                                                            </label>
-                                                        </>
+                                                        <button
+                                                            onClick={() => handleImageVoucher(item)}
+                                                            className='btn btn-sm btn-neutral shadow-sm'
+                                                            style={{
+                                                                padding: 0,
+                                                                width: '30px',
+                                                                height: '30px',
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center'
+                                                            }}
+                                                        >
+                                                            <FaPlus />
+                                                        </button>
+                                                        // <>
+                                                        //     <input
+                                                        //         className='d-none'
+                                                        //         id={`input-upload-${item._id}`}
+                                                        //         type='file'
+                                                        //         multiple={false}
+                                                        //         accept='image/jpeg, image/png'
+                                                        //         onChange={(e) => handleImageVoucher(e.target.files[0], item)}
+                                                        //     />
+                                                        //     <label
+                                                        //         htmlFor={`input-upload-${item._id}`}
+                                                        //         className='btn btn-sm btn-neutral shadow-sm'
+                                                        //         variant='neutral'
+                                                        //         size='sm'
+                                                        //         style={{
+                                                        //             padding: 0,
+                                                        //             width: '30px',
+                                                        //             height: '30px',
+                                                        //             display: 'flex',
+                                                        //             justifyContent: 'center',
+                                                        //             alignItems: 'center'
+                                                        //         }}
+                                                        //     >
+                                                        //         <FaPlus />
+                                                        //     </label>
+                                                        // </>
                                                     }
                                                 </div>
                                             )
