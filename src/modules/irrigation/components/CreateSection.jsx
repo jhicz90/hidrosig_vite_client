@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
+import AsyncSelect from 'react-select/async'
 import { Button, Form, FormCheck, InputGroup, Modal, Nav, Tab } from 'react-bootstrap'
-import { editActiveNewSection, setActiveNewSection, startAddNewSection, startSaveNewSection } from '../../../store/actions'
+import { IoMdAddCircleOutline } from 'react-icons/io'
+import { editActiveNewSection, searchRugosity, setActiveNewSection, startAddNewSection, startSaveNewSection, useGetCalcPropertiesQuery } from '../../../store/actions'
 import { DatePicker, InputMask } from '../../../components'
 import { pDistance } from '../../../helpers'
 
-export const CreateSection = ({ typeButton = 1 }) => {
+export const CreateSection = ({ className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.section)
@@ -18,22 +20,21 @@ export const CreateSection = ({ typeButton = 1 }) => {
 
     return (
         <>
-            <Button
+            <button
                 disabled={isSavingNew}
-                variant={typeButton === 1 ? 'neutral' : 'link'}
-                className='text-primary text-decoration-none'
+                className={className}
                 onClick={() => {
                     setStep(0)
                     dispatch(startAddNewSection())
                 }}
             >
-                Nuevo tramo
-            </Button>
+                {children || <>Agregar tramo <IoMdAddCircleOutline className='ms-2' size={20} color='green' /></>} 
+            </button>
             <Modal
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewSection(null))}
                 backdrop='static'
-                size='lg'
+                size='xl'
             >
                 <Modal.Header closeButton={!isSavingNew}>
                     <Modal.Title>Crear tramo</Modal.Title>
@@ -66,7 +67,7 @@ export const CreateSection = ({ typeButton = 1 }) => {
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button variant='neutral' type='button' onClick={() => setStep(Number(step) - 1)}>Atrás</Button>
-                                <Button variant='neutral' type='submit' form='form-irrig-section-create-2'>Guardar</Button>
+                                <Button disabled={isSavingNew} variant='neutral' type='submit' form='form-irrig-section-create-2'>Guardar</Button>
                             </Modal.Footer>
                         </Tab.Pane>
                     </Tab.Content>
@@ -250,22 +251,36 @@ const EditSectionStep2 = ({ next }) => {
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.section)
     const { register, control, handleSubmit, reset, watch } = useForm()
+    const { data } = useGetCalcPropertiesQuery({
+        type: activeNew?.type || 1,
+        mayorBasis: watch('mayorBasis'),
+        minorBasis: watch('minorBasis'),
+        height: watch('height'),
+        tight: watch('tight'),
+        slope: watch('slope'),
+        diameter: watch('diameter'),
+        coated: watch('mayorBasis'),
+        leftSlopeThickness: watch('leftSlopeThickness'),
+        rightSlopeThickness: watch('rightSlopeThickness'),
+        grade: watch('grade'),
+        rugosity: watch('rugosity')?.value || 0,
+    })
 
-    const handleSave = () => {
-        next()
-        // dispatch(editActiveStructure({
-        //     name,
-        //     obs,
-        //     status,
-        //     dateCons,
-        //     dateInvt,
-        //     margin,
-        //     progressive,
-        //     longitude,
-        //     efficiency,
-        //     flow
-        // }))
-        // dispatch(startUpdateStructure())
+    const handleSave = ({ mayorBasis, minorBasis, height, tight, slope, diameter, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => {
+        dispatch(editActiveNewSection({
+            mayorBasis,
+            minorBasis,
+            height,
+            tight,
+            slope,
+            diameter,
+            leftSlopeThickness,
+            rightSlopeThickness,
+            grade,
+            rugosity,
+            idRugosity: rugosity ? rugosity._id : ''
+        }))
+        dispatch(startSaveNewSection())
     }
 
     useEffect(() => {
@@ -278,7 +293,7 @@ const EditSectionStep2 = ({ next }) => {
         <>
             <form id='form-irrig-section-create-2' onSubmit={handleSubmit(handleSave)}>
                 <div className='row'>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pMayorBasis'>
                             <Form.Label>Base mayor</Form.Label>
                             <Form.Control
@@ -290,9 +305,9 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pMinorBasis'>
-                            <Form.Label>Base mayor</Form.Label>
+                            <Form.Label>Base menor</Form.Label>
                             <Form.Control
                                 {...register('minorBasis', { required: true, setValueAs: v => Number(v) })}
                                 type='number'
@@ -302,9 +317,7 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
-                </div>
-                <div className='row'>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pHeight'>
                             <Form.Label>Altura (H)</Form.Label>
                             <Form.Control
@@ -316,7 +329,7 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pTight'>
                             <Form.Label>Tirante (Y)</Form.Label>
                             <Form.Control
@@ -330,7 +343,7 @@ const EditSectionStep2 = ({ next }) => {
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pHeight'>
                             <Form.Label>Talud (Z)</Form.Label>
                             <Form.Control
@@ -342,7 +355,7 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pTight'>
                             <Form.Label>Diametro (D)</Form.Label>
                             <Form.Control
@@ -354,9 +367,7 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
-                </div>
-                <div className='row'>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pLeftSlopeThickness'>
                             <Form.Label>Revest. Talud Izq.</Form.Label>
                             <Form.Control
@@ -369,7 +380,7 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pRightSlopeThickness'>
                             <Form.Label>Revest. Talud Der.</Form.Label>
                             <Form.Control
@@ -384,15 +395,46 @@ const EditSectionStep2 = ({ next }) => {
                     </div>
                 </div>
                 <div className='row'>
-                    <div className='col-12 col-md-6'>
+                    <div className='col-12 col-md-3'>
                         <Form.Group className='mb-3' controlId='pGrade'>
                             <Form.Label>Pendiente (S)</Form.Label>
                             <Form.Control
                                 {...register('grade', { required: true, setValueAs: v => Number(v) })}
                                 type='number'
                                 min={0}
-                                step={0.01}
+                                step={0.0001}
                                 autoComplete='off'
+                            />
+                        </Form.Group>
+                    </div>
+                    <div className='col-12 col-md-9'>
+                        <Form.Group className='mb-3' controlId='pRugosity'>
+                            <Form.Label>Rugosidad</Form.Label>
+                            <Controller
+                                name='rugosity'
+                                control={control}
+                                rules={{ required: true }}
+                                render={({ field }) =>
+                                    <AsyncSelect
+                                        {...field}
+                                        inputId='pRugosity'
+                                        classNamePrefix='rc-select'
+                                        isClearable
+                                        defaultOptions
+                                        cacheOptions
+                                        loadOptions={searchRugosity}
+                                        menuPlacement={'auto'}
+                                        placeholder={`Buscar...`}
+                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                        getOptionValue={e => e._id}
+                                        getOptionLabel={e =>
+                                            <div>
+                                                <strong>{e.name}</strong> - <i>{e.value}</i>
+                                            </div>
+                                        }
+                                    />
+                                }
                             />
                         </Form.Group>
                     </div>

@@ -427,6 +427,16 @@ export const storeApi = createApi({
             providesTags: ['Acct - Ptty', 'Acct - Vchr']
         }),
         // VOUCHER
+        // RED DE RIEGO
+        getCalcProperties: builder.query({
+            query: ({ type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => ({
+                url: `structure/cpprop`,
+                params: { type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }
+            }),
+            transformResponse: (response, meta, arg) => response.cpprop,
+            providesTags: ['Irrig']
+        }),
+        // RED DE RIEGO
     }),
 })
 
@@ -438,6 +448,7 @@ export const {
     useGetBlockByIdQuery,
     useGetBlocksQuery,
     useGetBrowserQuery,
+    useGetCalcPropertiesQuery,
     useGetCommByIdQuery,
     useGetCommsByJuntaQuery,
     useGetCommsQuery,
