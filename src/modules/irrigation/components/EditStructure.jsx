@@ -302,10 +302,7 @@ const EditStructureStep = () => {
                     <Form.Group className='mb-3' controlId='pSections'>
                         <Form.Label>Tramos</Form.Label>
                         <ListGroup>
-                            {/* <ListGroup.Item onClick={handleAddSection} className='d-flex align-items-center' action>
-                                Agregar tramos <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
-                            </ListGroup.Item> */}
-                            <CreateSection />
+                            <CreateSection className='list-group-item list-group-item-action d-flex align-items-center' />
                             {
                                 active.sections.map(sect =>
                                     <ListGroup.Item key={sect._id}>

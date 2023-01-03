@@ -22,7 +22,7 @@ export const startAddNewSection = () => {
         dispatch(setSavingNewSection(false))
 
         if (resp.ok) {
-            dispatch(setActiveNewSection(resp.section))
+            dispatch(setActiveNewSection({ ...resp.section, structureId: _id }))
         }
     }
 }
@@ -153,5 +153,18 @@ export const startDeleteSection = () => {
                 }
             }
         })
+    }
+}
+
+export const searchRugosity = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: 'rugosity/list',
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
     }
 }
