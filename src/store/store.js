@@ -22,6 +22,7 @@ import { resourceSlice } from './resource'
 import { pettycashSlice } from './pettycash'
 import { voucherSlice } from './voucher'
 import { documentSlice } from './document'
+import { geoobjectSlice } from './geoobject'
 
 export const store = configureStore({
     reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
         committee: committeeSlice.reducer,
         zone: zoneSlice.reducer,
         block: blockSlice.reducer,
+        geoobject: geoobjectSlice.reducer,
         watersource: watersourceSlice.reducer,
         structure: structureSlice.reducer,
         section: sectionSlice.reducer,

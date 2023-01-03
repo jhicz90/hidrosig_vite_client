@@ -9,6 +9,8 @@ registerLocale('es', es)
 setDefaultLocale('es')
 
 // ESTILOS
+import 'leaflet/dist/leaflet.css'
+import 'leaflet-draw/dist/leaflet.draw.css'
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-cmdk/dist/cmdk.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
