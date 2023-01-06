@@ -115,3 +115,12 @@ export const childrenNode = (data) => {
 
     return [data.value, ...childrenArray(data)]
 }
+
+export const formatLatLng = (latlng = []) => {
+    if (Array.isArray(latlng)) {
+        return latlng.map(ll => formatLatLng(ll))
+    } else {
+        const data = [latlng.lat, latlng.lng]
+        return data
+    }
+}
