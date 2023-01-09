@@ -76,3 +76,18 @@ export const startReportSigaIrrigationScheduling = () => {
         })
     }
 }
+
+export const startReportSigaUserRegistry = () => {
+    return async (dispatch, getState) => {
+        const { reportCommittee, reportRate, netIrrigChk } = getState().siga
+
+        await fetchByToken({
+            endpoint: `siga/userregistry`,
+            params: {
+                comm: reportCommittee,
+                rate: reportRate,
+                net: netIrrigChk,
+            }
+        })
+    }
+}
