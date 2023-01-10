@@ -9,10 +9,7 @@ export const startSaveNewGeometry = () => {
         const { featureCollection } = getState().geoobject
 
         const newGeometryCollection = {
-            geometryCollection: featureCollection.map(f => ({
-                type: f.typeGeoObj,
-                coordinates: f.coordGeoObj,
-            }))
+            geometryCollection: featureCollection
         }
 
         const resp = await fetchByToken({

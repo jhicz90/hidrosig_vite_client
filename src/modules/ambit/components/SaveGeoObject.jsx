@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { startSaveNewGeometry } from '../../../store/actions'
@@ -10,13 +9,13 @@ export const SaveGeoObject = () => {
 
     return (
         <Button
-            disabled={isSavingNew || featureCollection.length === 0}
+            disabled={isSavingNew || featureCollection?.features.length === 0}
             variant='primary'
             onClick={() => {
                 dispatch(startSaveNewGeometry())
             }}
         >
-            Guardar objeto
+            Guardar
         </Button>
     )
 }

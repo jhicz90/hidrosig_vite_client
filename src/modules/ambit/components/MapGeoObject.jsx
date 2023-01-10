@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ControlUiMap } from '../../../types'
-import { formatLatLng, randomColor } from '../../../helpers'
-import { addNewGeometry, deleteGeometryById } from '../../../store/actions'
+import { formatLatLng, randomColor, typeGeoData } from '../../../helpers'
+import { addNewGeometry, deleteGeometryById, editFeatureCollection } from '../../../store/actions'
 
 import L from 'leaflet'
-import { MapContainer, TileLayer, FeatureGroup, ZoomControl, Polygon, Polyline, Marker } from 'react-leaflet'
+import { MapContainer, TileLayer, FeatureGroup, ZoomControl, Polygon, Polyline, Marker, useMap } from 'react-leaflet'
 import { EditControl } from 'react-leaflet-draw'
 
 delete L.Icon.Default.prototype._getIconUrl
@@ -23,10 +23,6 @@ L.Icon.Default.mergeOptions({
 L.drawLocal = ControlUiMap
 
 export const MapGeoObject = () => {
-
-    const dispatch = useDispatch()
-    const { featureCollection } = useSelector(state => state.geoobject)
-
     return (
         <div className='container-fluid g-0'>
             <div className='row g-0'>
@@ -40,27 +36,21 @@ export const MapGeoObject = () => {
                                         url={`http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}`}
                                     />
                                     <ZoomControl zoomInTitle='Acercar' zoomOutTitle='Alejar' />
-                                    <FeatureGroup>
+                                    <EditControlMap />
+                                    {/* <FeatureGroup>
                                         <EditControl
                                             position='topright'
                                             draw={{
-                                                // rectangle: {
-                                                //     shapeOptions: {
-                                                //         color: '#ffffff'
-                                                //     }
-                                                // },
                                                 rectangle: false,
                                                 circle: false,
-                                                // polygon: false,
                                                 circlemarker: false,
                                             }}
                                             onEdited={e => console.log(e)}
                                             onCreated={e => {
-                                                console.log('NUEVO', e)
                                                 dispatch(addNewGeometry({
                                                     id: e.layer._leaflet_id,
                                                     type: e.layerType,
-                                                    typeGeoObj: 'LineString',
+                                                    typeGeoObj: typeGeoData(e.layerType),
                                                     coord: e.layer._latlngs,
                                                     coordGeoObj: formatLatLng(e.layer._latlngs || [])
                                                 }))
@@ -69,7 +59,7 @@ export const MapGeoObject = () => {
                                                 dispatch(deleteGeometryById(Object.getOwnPropertyNames(e.layers._layers)))
                                             }}
                                         />
-                                        {/* {
+                                        {
                                             featureCollection.length > 0
                                             &&
                                             featureCollection.map((sh, i) => {
@@ -98,8 +88,8 @@ export const MapGeoObject = () => {
                                                     return null
                                                 }
                                             })
-                                        } */}
-                                    </FeatureGroup>
+                                        }
+                                    </FeatureGroup> */}
                                 </MapContainer>
                             </div>
                         </div>
@@ -107,5 +97,58 @@ export const MapGeoObject = () => {
                 </div>
             </div>
         </div>
+    )
+}
+
+export const EditControlMap = () => {
+
+    const ref = useRef(null)
+    const dispatch = useDispatch()
+    const { featureCollection } = useSelector(state => state.geoobject)
+
+    useEffect(() => {
+        if (featureCollection?.features.length === 0) {
+            ref.current?.clearLayers()
+        } else if (ref.current?.getLayers().length === 0 && featureCollection) {
+            L.geoJSON(featureCollection).eachLayer((layer) => {
+                if (
+                    layer instanceof L.Polyline ||
+                    layer instanceof L.Polygon ||
+                    layer instanceof L.Point
+                ) {
+                    ref.current?.addLayer(layer)
+                    // if (layer?.feature?.properties.radius && ref.current) {
+                    //     new L.Circle(layer.feature.geometry.coordinates.slice().reverse(), {
+                    //         radius: layer.feature?.properties.radius,
+                    //     }).addTo(ref.current)
+                    // } else {
+                    //     ref.current?.addLayer(layer)
+                    // }
+                }
+            })
+        }
+    }, [featureCollection])
+
+    const handleChange = (e) => {
+        const geo = ref.current?.toGeoJSON()
+        if (geo?.type === 'FeatureCollection') {
+            dispatch(editFeatureCollection(geo))
+        }
+    }
+
+    return (
+        <FeatureGroup ref={ref}>
+            <EditControl
+                position='topright'
+                onEdited={handleChange}
+                onCreated={handleChange}
+                onDeleted={handleChange}
+                draw={{
+                    rectangle: false,
+                    circle: false,
+                    circlemarker: false,
+                }}
+            />
+        </FeatureGroup>
     )
 }

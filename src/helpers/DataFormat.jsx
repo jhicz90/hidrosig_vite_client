@@ -124,3 +124,15 @@ export const formatLatLng = (latlng = []) => {
         return data
     }
 }
+
+export const typeGeoData = (type = '') => {
+    const geoData = {
+        'marker': 'Point',
+        'circle': 'Point',
+        'circlemarker': 'Point',
+        'polyline': 'LineString',
+        'polygon': 'Polygon',
+        'rectangle': 'Polygon',
+    }[type] || ''
+    return geoData
+}
