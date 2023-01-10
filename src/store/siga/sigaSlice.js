@@ -7,7 +7,7 @@ export const sigaSlice = createSlice({
         reportRate: '',
         reportDateStart: null,
         reportDateEnd: null,
-        reportList: ['Eficiencia de cobranza', 'Reporte de deudas', 'Programación de riego'],
+        reportList: ['Eficiencia de cobranza', 'Reporte de deudas', 'Programación de riego', 'Padrón de usuarios para volumen'],
         listCommittee: [],
         listRate: [],
         searchIrrig: '',

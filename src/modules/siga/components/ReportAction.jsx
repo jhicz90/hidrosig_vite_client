@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { startReportSigaCollectEfficiency, startReportSigaIrrigationScheduling } from '../../../store/actions'
+import { startReportSigaCollectEfficiency, startReportSigaIrrigationScheduling, startReportSigaUserRegistry } from '../../../store/actions'
 
 export const ReportAction = () => {
 
@@ -13,6 +13,8 @@ export const ReportAction = () => {
             dispatch(startReportSigaCollectEfficiency())
         } else if (report === 'Programación de riego') {
             dispatch(startReportSigaIrrigationScheduling())
+        } else if (report === 'Padrón de usuarios para volumen') {
+            dispatch(startReportSigaUserRegistry())
         }
     }
 
