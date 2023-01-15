@@ -298,6 +298,13 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.structure,
             providesTags: ['Irrig']
         }),
+        getSectionById: builder.query({
+            query: (id) => ({
+                url: `section/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.section,
+            providesTags: ['Irrig']
+        }),
         getWaterSources: builder.query({
             query: (search) => ({
                 url: `watersource/list`,
@@ -467,6 +474,7 @@ export const {
     useGetPettyCashsQuery,
     useGetRoleByIdQuery,
     useGetRolesQuery,
+    useGetSectionByIdQuery,
     useGetStructureByIdQuery,
     useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,

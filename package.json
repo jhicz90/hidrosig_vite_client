@@ -53,6 +53,7 @@
         "react-spinners": "^0.13.7",
         "react-spring-lightbox": "^1.7.1",
         "react-switch": "^7.0.0",
+        "react-use-wizard": "^2.2.1",
         "styled-components": "^5.3.6",
         "sweetalert2": "^11.6.16",
         "sweetalert2-react-content": "^5.0.7",

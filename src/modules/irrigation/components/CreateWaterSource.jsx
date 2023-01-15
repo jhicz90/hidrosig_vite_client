@@ -4,9 +4,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Modal, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewWaterSource, searchJunta, setActiveNewWaterSource, startAddNewWaterSource, startSaveNewWaterSource } from '../../../store/actions'
-import { imageGet } from '../../../helpers'
+import { OptionOrgz } from '../../../components'
 
-export const CreateWaterSource = ({ junta = null, typeButton = 1 }) => {
+export const CreateWaterSource = ({ junta = null, className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.watersource)
@@ -17,7 +17,7 @@ export const CreateWaterSource = ({ junta = null, typeButton = 1 }) => {
 
     return (
         <>
-            <Button
+            {/* <Button
                 disabled={isSavingNew}
                 variant={typeButton === 1 ? 'neutral' : 'link'}
                 className='text-primary text-decoration-none'
@@ -26,7 +26,14 @@ export const CreateWaterSource = ({ junta = null, typeButton = 1 }) => {
                 }}
             >
                 Nueva fuente de agua
-            </Button>
+            </Button> */}
+            <button
+                disabled={isSavingNew}
+                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
+                onClick={() => dispatch(startAddNewWaterSource())}
+            >
+                {children || 'Nueva fuente de agua'}
+            </button>
             <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewWaterSource(null))}
@@ -148,12 +155,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                             noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                             getOptionValue={e => e._id}
-                                            getOptionLabel={e =>
-                                                <div className='d-flex'>
-                                                    <img src={imageGet(e.image)} alt={e._id} width={32} />
-                                                    <span className='ms-2 align-self-center'>{e.name}</span>
-                                                </div>
-                                            }
+                                            getOptionLabel={e => <OptionOrgz orgz={e} />}
                                         />
                                 }
                             />

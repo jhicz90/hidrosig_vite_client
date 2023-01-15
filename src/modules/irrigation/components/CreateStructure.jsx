@@ -5,7 +5,7 @@ import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { editActiveNewStructure, setActiveNewStructure, startAddNewStructure, startSaveNewStructure } from '../../../store/actions'
 import { DatePicker, InputMask } from '../../../components'
 
-export const CreateStructure = ({ typeButton = 1 }) => {
+export const CreateStructure = ({ className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.structure)
@@ -16,16 +16,13 @@ export const CreateStructure = ({ typeButton = 1 }) => {
 
     return (
         <>
-            <Button
+            <button
                 disabled={isSavingNew}
-                variant={typeButton === 1 ? 'neutral' : 'link'}
-                className='text-primary text-decoration-none'
-                onClick={() => {
-                    dispatch(startAddNewStructure())
-                }}
+                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
+                onClick={() => dispatch(startAddNewStructure())}
             >
-                Nueva estructura
-            </Button>
+                {children || 'Nueva estructura'}
+            </button>
             <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewStructure(null))}
@@ -59,7 +56,11 @@ const CreateStructureStep = () => {
 
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.structure)
-    const { register, control, handleSubmit, reset } = useForm()
+    const { register, control, handleSubmit, reset } = useForm({
+        defaultValues: {
+            progressive: '000+000.00'
+        }
+    })
 
     const handleSave = ({ order, name, obs, status, dateCons, dateInvt, margin, progressive, longitude, efficiency, flow }) => {
         dispatch(editActiveNewStructure({
@@ -210,14 +211,12 @@ const CreateStructureStep = () => {
                             name='progressive'
                             rules={{ required: true }}
                             render={({
-                                field: { onChange, value },
+                                field,
                             }) => (
                                 <InputMask
-                                    id='pProgressive'
                                     mask='999+999.99'
                                     maskPlaceholder='000+000.00'
-                                    value={value}
-                                    onChange={onChange}
+                                    {...field}
                                 />
                             )}
                         />

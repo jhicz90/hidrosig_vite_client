@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
-import { CreateStructure } from '../components'
+import { CreateStructure, CreateWaterSource } from '../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 
 export const IrrigationNetworkListPage = () => {
@@ -16,6 +16,7 @@ export const IrrigationNetworkListPage = () => {
         dispatch(setToolbarActions(
             <>
                 <CreateStructure />
+                <CreateWaterSource />
             </>
         ))
 

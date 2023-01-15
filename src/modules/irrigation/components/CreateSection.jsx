@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { Button, Form, FormCheck, InputGroup, Modal, Nav, Tab } from 'react-bootstrap'
+import { useWizard } from 'react-use-wizard'
+import { Button, Form, FormCheck, InputGroup, Offcanvas } from 'react-bootstrap'
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { editActiveNewSection, searchRugosity, setActiveNewSection, startAddNewSection, startSaveNewSection, useGetCalcPropertiesQuery } from '../../../store/actions'
-import { DatePicker, InputMask } from '../../../components'
-import { pDistance } from '../../../helpers'
+import { InputMask, WizardStep } from '../../../components'
+import { pDistance, pProgressive } from '../../../helpers'
 
 export const CreateSection = ({ className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.section)
-    const [step, setStep] = useState(0)
 
     useEffect(() => {
         return () => dispatch(setActiveNewSection(null))
@@ -22,66 +22,73 @@ export const CreateSection = ({ className = '', children }) => {
         <>
             <button
                 disabled={isSavingNew}
-                className={className}
-                onClick={() => {
-                    setStep(0)
-                    dispatch(startAddNewSection())
-                }}
+                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
+                onClick={() => dispatch(startAddNewSection())}
             >
-                {children || <>Agregar tramo <IoMdAddCircleOutline className='ms-2' size={20} color='green' /></>} 
+                {children || <>Agregar tramo <IoMdAddCircleOutline className='ms-2' size={20} color='green' /></>}
             </button>
-            <Modal
+            <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewSection(null))}
-                backdrop='static'
-                size='xl'
+                enforceFocus={false}
+                placement='end'
             >
-                <Modal.Header closeButton={!isSavingNew}>
-                    <Modal.Title>Crear tramo</Modal.Title>
-                </Modal.Header>
-                <Tab.Container
-                    activeKey={step}
-                    mountOnEnter
-                    unmountOnExit
-                >
-                    <Nav variant='tabs' justify className='px-3 mt-1'>
-                        <Nav.Item>
-                            <Nav.Link eventKey={0}>Información básica</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey={1}>Propiedades del canal</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                    <Tab.Content>
-                        <Tab.Pane eventKey={0}>
-                            <Modal.Body>
-                                <EditSectionStep1 next={() => setStep(Number(step) + 1)} />
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant='neutral' type='submit' form='form-irrig-section-create-1'>Siguiente</Button>
-                            </Modal.Footer>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey={1}>
-                            <Modal.Body>
-                                <EditSectionStep2 next={() => dispatch(startSaveNewSection())} />
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant='neutral' type='button' onClick={() => setStep(Number(step) - 1)}>Atrás</Button>
-                                <Button disabled={isSavingNew} variant='neutral' type='submit' form='form-irrig-section-create-2'>Guardar</Button>
-                            </Modal.Footer>
-                        </Tab.Pane>
-                    </Tab.Content>
-                </Tab.Container>
-            </Modal>
+                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                    <Offcanvas.Title>Crear tramo</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Header className='flex-column'>
+                    <div className='container-fluid'>
+                        <div className='row mb-1'>
+                            <div className='col-12'>
+                                <div className='input-group'>
+                                    <span className='input-group-text col-6'>Estructura</span>
+                                    <input value={activeNew?.limitStructure.structureName || ''} readOnly type='text' className='form-control col-6' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='row mb-1'>
+                            <div className='col-12'>
+                                <div className='input-group'>
+                                    <span className='input-group-text col-6'>Total de tramos</span>
+                                    <input value={activeNew?.limitStructure.countSections || 0} readOnly type='text' className='form-control col-6' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='row mb-1'>
+                            <div className='col-12'>
+                                <div className='input-group'>
+                                    <span className='input-group-text col-6'>Longitud acumulada</span>
+                                    <input value={activeNew?.limitStructure.distanceTotal || 0} readOnly type='text' className='form-control col-6' />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='row mb-1'>
+                            <div className='col-12'>
+                                <div className='input-group'>
+                                    <span className='input-group-text col-6'>Longitud restante</span>
+                                    <input value={activeNew?.limitStructure.limit || 0} readOnly type='text' className='form-control col-6' />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <WizardStep>
+                        <EditSectionStep1 />
+                        <EditSectionStep2 />
+                    </WizardStep>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }
 
-const EditSectionStep1 = ({ next }) => {
+const EditSectionStep1 = () => {
 
+    const { nextStep } = useWizard()
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.section)
-    const { register, control, handleSubmit, reset, watch } = useForm({
+    const { register, control, handleSubmit, reset, watch, setFocus, setValue } = useForm({
         defaultValues: {
             progressiveStart: '000+000.00',
             progressiveEnd: '000+000.00'
@@ -89,17 +96,26 @@ const EditSectionStep1 = ({ next }) => {
     })
 
     const handleSave = ({ name, status, type, workCapacity, coatedType, coated, progressiveStart, progressiveEnd }) => {
-        dispatch(editActiveNewSection({
-            name,
-            status,
-            type,
-            workCapacity,
-            coatedType,
-            coated,
-            progressiveStart,
-            progressiveEnd,
-        }))
-        next()
+        if (pDistance(watch('progressiveEnd')) - pDistance(watch('progressiveStart')) > 0) {
+            if (pDistance(watch('progressiveEnd')) - pDistance(watch('progressiveStart')) > Number(activeNew.limitStructure.limit)) {
+                setValue('progressiveStart', '000+000.00')
+                setValue('progressiveEnd', pProgressive(activeNew.limitStructure.limit))
+            } else {
+                dispatch(editActiveNewSection({
+                    name,
+                    status,
+                    type,
+                    workCapacity,
+                    coatedType,
+                    coated,
+                    progressiveStart,
+                    progressiveEnd,
+                }))
+                nextStep()
+            }
+        } else {
+            setFocus('progressiveEnd')
+        }
     }
 
     useEffect(() => {
@@ -110,7 +126,7 @@ const EditSectionStep1 = ({ next }) => {
 
     return (
         <>
-            <form id='form-irrig-section-create-1' onSubmit={handleSubmit(handleSave)}>
+            <form onSubmit={handleSubmit(handleSave)}>
                 <div className='row'>
                     <div className='col-12'>
                         <Form.Group className='mb-3' controlId='pName'>
@@ -201,14 +217,12 @@ const EditSectionStep1 = ({ next }) => {
                                     name='progressiveStart'
                                     rules={{ required: true }}
                                     render={({
-                                        field: { onChange, value },
+                                        field,
                                     }) => (
                                         <InputMask
-                                            id='pProgressiveStart'
                                             mask='999+999.99'
                                             maskPlaceholder='000+000.00'
-                                            value={value}
-                                            onChange={onChange}
+                                            {...field}
                                         />
                                     )}
                                 />
@@ -217,14 +231,12 @@ const EditSectionStep1 = ({ next }) => {
                                     name='progressiveEnd'
                                     rules={{ required: true }}
                                     render={({
-                                        field: { onChange, value },
+                                        field,
                                     }) => (
                                         <InputMask
-                                            id='pProgressiveEnd'
                                             mask='999+999.99'
                                             maskPlaceholder='000+000.00'
-                                            value={value}
-                                            onChange={onChange}
+                                            {...field}
                                         />
                                     )}
                                 />
@@ -241,16 +253,27 @@ const EditSectionStep1 = ({ next }) => {
                         </Form.Group>
                     </div>
                 </div>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        variant='outline-primary'
+                        type='submit'
+                        className='w-100'
+                    >
+                        Siguiente
+                    </Button>
+                </div>
             </form>
         </>
     )
 }
 
-const EditSectionStep2 = ({ next }) => {
+const EditSectionStep2 = () => {
 
+    const { previousStep } = useWizard()
     const dispatch = useDispatch()
-    const { activeNew } = useSelector(state => state.section)
+    const { activeNew, isSavingNew } = useSelector(state => state.section)
     const { register, control, handleSubmit, reset, watch } = useForm()
+
     const { data } = useGetCalcPropertiesQuery({
         type: activeNew?.type || 1,
         mayorBasis: watch('mayorBasis'),
@@ -264,23 +287,25 @@ const EditSectionStep2 = ({ next }) => {
         rightSlopeThickness: watch('rightSlopeThickness'),
         grade: watch('grade'),
         rugosity: watch('rugosity')?.value || 0,
-    })
+    }, { skip: !watch('rugosity') })
 
     const handleSave = ({ mayorBasis, minorBasis, height, tight, slope, diameter, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => {
-        dispatch(editActiveNewSection({
-            mayorBasis,
-            minorBasis,
-            height,
-            tight,
-            slope,
-            diameter,
-            leftSlopeThickness,
-            rightSlopeThickness,
-            grade,
-            rugosity,
-            idRugosity: rugosity ? rugosity._id : ''
-        }))
-        dispatch(startSaveNewSection())
+        if (data?.froudeNumber < 1) {
+            dispatch(editActiveNewSection({
+                mayorBasis,
+                minorBasis,
+                height,
+                tight,
+                slope,
+                diameter,
+                leftSlopeThickness,
+                rightSlopeThickness,
+                grade,
+                rugosity,
+                idRugosity: rugosity ? rugosity._id : ''
+            }))
+            dispatch(startSaveNewSection())
+        }
     }
 
     useEffect(() => {
@@ -356,7 +381,7 @@ const EditSectionStep2 = ({ next }) => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pTight'>
+                        <Form.Group className='mb-3' controlId='pDiameter'>
                             <Form.Label>Diametro (D)</Form.Label>
                             <Form.Control
                                 {...register('diameter', { required: true, setValueAs: v => Number(v) })}
@@ -438,6 +463,37 @@ const EditSectionStep2 = ({ next }) => {
                             />
                         </Form.Group>
                     </div>
+                </div>
+                <div className='row'>
+                    <div className='col-12'>
+                        <InputGroup className='mb-3'>
+                            <InputGroup.Text>Tipo de flujo:</InputGroup.Text>
+                            <Form.Control
+                                readOnly
+                                type='text'
+                                className={data?.froudeNumber === 1 ? 'text-warning' : data?.froudeNumber < 1 ? 'text-success' : 'text-danger'}
+                                value={data?.typeFlow || 'Faltan datos'}
+                            />
+                        </InputGroup>
+                    </div>
+                </div>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        onClick={() => previousStep()}
+                        variant='outline-secondary'
+                        type='button'
+                        className='w-100'
+                    >
+                        Regresar
+                    </Button>
+                    <Button
+                        disabled={isSavingNew}
+                        variant='primary'
+                        type='submit'
+                        className='w-100'
+                    >
+                        Guardar
+                    </Button>
                 </div>
             </form>
         </>

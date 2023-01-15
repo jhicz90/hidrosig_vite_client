@@ -1,14 +1,14 @@
+import { forwardRef } from 'react'
 import ReactInputMask from 'react-input-mask'
 
-export const InputMask = (props) => {
+export const InputMask = forwardRef((props, ref) => {
     return (
         <ReactInputMask
-            id={props.id || ''}
+            ref={ref}
             mask={props.mask}
             maskPlaceholder={props.maskPlaceholder}
-            value={props.value || 0}
-            onChange={props.onChange}
             className='form-control'
+            {...props}
         />
     )
-}
+})

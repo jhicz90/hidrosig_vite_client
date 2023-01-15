@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
 import { IrrigationNetworkListPage } from '../pages'
-import { EditStructure, EditWaterSource, IrrigationNetworkChannel, WaterSourceList } from '..'
+import { EditSection, EditStructure, EditWaterSource, IrrigationNetworkChannel, WaterSourceList } from '..'
 
 export const IrrigationNetworkRoutes = () => {
     return (
@@ -9,7 +9,9 @@ export const IrrigationNetworkRoutes = () => {
             <Route path={`/`} element={<GuardRoute meta={['network']} component={IrrigationNetworkListPage} />} >
                 <Route index element={<Navigate to={`net`} />} />
                 <Route path={`net`} element={<IrrigationNetworkChannel />} >
-                    <Route path={`edit/:strid`} element={<EditStructure />} />
+                    <Route path={`edit/:strid`} element={<EditStructure />} >
+                        <Route path={`sect/:secid`} element={<EditSection />} />
+                    </Route>
                 </Route>
                 <Route path={`watersource`} element={<WaterSourceList />} >
                     <Route path={`edit/:wsid`} element={<EditWaterSource />} />

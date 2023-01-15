@@ -127,16 +127,16 @@ a.uppy-Dashboard-poweredBy {
 }
 
 .offcanvas {
-	--bs-offcanvas-width: 500px;
+	--bs-offcanvas-width: 600px;
 }
 
 .offcanvas-header {
 	color: #fff !important;
-	background-color: rgba(13, 110, 253, var(--bs-bg-opacity, 1)) !important;
+	background-color: rgba(13, 110, 253, 1) !important;
 }
 
 .offcanvas-header + .offcanvas-header {
-	background-color: inherit !important;
+	background-color: rgba(0, 0, 0, 0.03) !important;
 }
 
 .offcanvas-header + .offcanvas-header.offcanvas-primary {
@@ -149,7 +149,7 @@ a.uppy-Dashboard-poweredBy {
 
 .offcanvas-footer {
 	color: #fff !important;
-	background-color: rgba(13, 110, 253, var(--bs-bg-opacity, 1)) !important;
+	background-color: rgba(13, 110, 253, 1) !important;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -160,8 +160,32 @@ a.uppy-Dashboard-poweredBy {
 	background-color: darkred !important;
 }
 
+.modal {
+	--bs-modal-border-radius: 10px;
+}
+
+.modal .nav.nav-tabs,
+.offcanvas .nav.nav-tabs {
+	background-color: rgba(0, 0, 0, 0.03);
+}
+
+.modal-header {
+	color: #fff !important;
+	background-color: rgba(13, 110, 253, 1) !important;
+}
+
 .modal-backdrop {
 	--bs-backdrop-bg: rgb(17 24 39 / 1);
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+	box-shadow: inset 1px 25px 11px -32px #0d6efd;
+}
+
+.nav-link:focus,
+.nav-link:hover {
+	background-color: rgba(0, 0, 0, 0.02);
 }
 
 .rcs-custom-scroll .rcs-inner-handle {

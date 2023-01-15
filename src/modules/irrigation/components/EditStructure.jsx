@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
-import { IoMdAddCircleOutline, IoMdOpen, IoMdTrash } from 'react-icons/io'
+import { IoMdOpen, IoMdTrash } from 'react-icons/io'
 import { Controller, useForm } from 'react-hook-form'
 import { CreateSection } from './CreateSection'
-import { editActiveStructure, setActiveStructure, startDeleteStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
-import { DatePicker, Image, InputMask, LoadingPage } from '../../../components'
+import { editActiveStructure, setActiveStructure, startDeleteIdSection, startDeleteStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
+import { DatePicker, Image, InputMask, LinkBack, LoadingPage } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
 export const EditStructure = () => {
 
     const [show, setShow] = useState(true)
+
     const { strid } = useParams()
-    const redirect = useNavigate()
-    const { state } = useLocation()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig/net')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetStructureByIdQuery(strid)
     const { active, isSaving } = useSelector(state => state.structure)
-    const urlBack = state?.from || '/app/schm/irrig'
 
     useEffect(() => {
         if (!!data) {
@@ -30,23 +31,20 @@ export const EditStructure = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={urlBack} replace />
+        redirectEscape()
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(urlBack)}
+            onExited={() => redirect()}
             enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>
-                    <div className='d-flex flex-column'>
-                        <span>Estructura</span>
-                        <span>{active ? active?.name : 'Cargando...'}</span>
-                    </div>
+                    {active ? `Estructura - ${active?.name}` : 'Cargando...'}
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
@@ -96,9 +94,14 @@ export const EditStructure = () => {
 
 const EditStructureStep = () => {
 
+    const { state } = useLocation()
     const dispatch = useDispatch()
     const { active } = useSelector(state => state.structure)
-    const { register, control, handleSubmit, reset } = useForm()
+    const { register, control, handleSubmit, reset } = useForm({
+        defaultValues: {
+            progressive: '000+000.00'
+        }
+    })
 
     const handleSave = ({ name, obs, status, dateCons, dateInvt, margin, progressive, longitude, efficiency, flow }) => {
         dispatch(editActiveStructure({
@@ -114,10 +117,6 @@ const EditStructureStep = () => {
             flow
         }))
         dispatch(startUpdateStructure())
-    }
-
-    const handleAddSection = () => {
-        console.log('Agregar tramo')
     }
 
     useEffect(() => {
@@ -237,14 +236,12 @@ const EditStructureStep = () => {
                                 name='progressive'
                                 rules={{ required: true }}
                                 render={({
-                                    field: { onChange, value },
+                                    field,
                                 }) => (
                                     <InputMask
-                                        id='pProgressive'
                                         mask='999+999.99'
                                         maskPlaceholder='000+000.00'
-                                        value={value}
-                                        onChange={onChange}
+                                        {...field}
                                     />
                                 )}
                             />
@@ -306,24 +303,24 @@ const EditStructureStep = () => {
                             {
                                 active.sections.map(sect =>
                                     <ListGroup.Item key={sect._id}>
-                                        <div className="d-flex flex-wrap align-items-center">
-                                            <Image className="me-3" noImg={3024} size="sm" />
-                                            <div className="flex-grow-1">
-                                                <div className="d-block h6 mb-1">{sect.name}</div>
-                                                <p className="text-sm text-muted my-0">{`${sect.progressiveStart} - ${sect.progressiveEnd}`}</p>
+                                        <div className='d-flex flex-wrap align-items-center'>
+                                            <Image className='me-3' noImg={3024} size='sm' />
+                                            <div className='flex-grow-1'>
+                                                <div className='d-block h6 mb-1'>{sect.name}</div>
+                                                <p className='text-sm text-muted my-0'>{`${sect.progressiveStart} - ${sect.progressiveEnd}`}</p>
                                             </div>
-                                            <div className="flex-shrink-0">
-                                                <div className="btn-group">
-                                                    <Button
-                                                        // to={`/app/schm/irrig/sect/${sect._id}`}
-                                                        variant='neutral-icon'
-                                                        className='text-primary'
+                                            <div className='flex-shrink-0'>
+                                                <div className='btn-group'>
+                                                    <LinkBack
+                                                        className='btn btn-neutral-icon text-primary'
+                                                        to={`./sect/${sect._id}`}
+                                                        state={state}
                                                     >
                                                         <IoMdOpen size={20} />
-                                                    </Button>
+                                                    </LinkBack>
                                                     <Button
+                                                        onClick={() => dispatch(startDeleteIdSection(sect))}
                                                         variant='neutral-icon'
-                                                        // onClick={() => dispatch(startDeleteSection(section._id, section.name))}
                                                         className='text-danger'
                                                     >
                                                         <IoMdTrash size={20} />
@@ -338,6 +335,7 @@ const EditStructureStep = () => {
                     </Form.Group>
                 </div>
             </div>
+            <Outlet />
         </>
     )
 }
