@@ -26,3 +26,16 @@ export const startSaveNewGeometry = () => {
         }
     }
 }
+
+export const searchGeoObject = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: 'geoobject/list',
+        params: { search, geoobj: 1 }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
+    }
+}

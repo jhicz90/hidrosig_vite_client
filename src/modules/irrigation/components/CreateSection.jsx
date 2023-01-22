@@ -6,7 +6,7 @@ import { useWizard } from 'react-use-wizard'
 import { Button, Form, FormCheck, InputGroup, Offcanvas } from 'react-bootstrap'
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { editActiveNewSection, searchRugosity, setActiveNewSection, startAddNewSection, startSaveNewSection, useGetCalcPropertiesQuery } from '../../../store/actions'
-import { InputMask, WizardStep } from '../../../components'
+import { InputMask, OptionRugosity, WizardStep } from '../../../components'
 import { pDistance, pProgressive } from '../../../helpers'
 
 export const CreateSection = ({ className = '', children }) => {
@@ -444,6 +444,7 @@ const EditSectionStep2 = () => {
                                         {...field}
                                         inputId='pRugosity'
                                         classNamePrefix='rc-select'
+                                        menuPosition='fixed'
                                         isClearable
                                         defaultOptions
                                         cacheOptions
@@ -453,11 +454,7 @@ const EditSectionStep2 = () => {
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                         getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <div>
-                                                <strong>{e.name}</strong> - <i>{e.value}</i>
-                                            </div>
-                                        }
+                                        getOptionLabel={e => <OptionRugosity rug={e} />}
                                     />
                                 }
                             />
