@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { editActiveNewDocument, searchJunta, setActiveNewDocument, startAddNewDocument, startSaveNewDocument } from '../../../store/actions'
 import { OptionOrgz } from '../../../components'
 
-export const CreateDocument = ({ typeButton = 1 }) => {
+export const CreateDocument = ({ className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.document)
@@ -17,26 +17,22 @@ export const CreateDocument = ({ typeButton = 1 }) => {
 
     return (
         <>
-            <Button
+            <button
                 disabled={isSavingNew}
-                variant={typeButton === 1 ? 'neutral' : 'link'}
-                className='text-primary text-decoration-none'
-                onClick={() => {
-                    dispatch(startAddNewDocument())
-                }}
+                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
+                onClick={() => dispatch(startAddNewDocument())}
             >
-                Nuevo documento
-            </Button>
+                {children || 'Nuevo documento'}
+            </button>
             <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewDocument(null))}
                 placement='end'
-                backdrop='static'
             >
-                <Offcanvas.Header className='text-bg-primary' closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear documento</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Header>
+                <Offcanvas.Header className='offcanvas-primary'>
                     <div className='d-flex justify-content-end gap-2 w-100'>
                         <Button
                             disabled={isSavingNew}

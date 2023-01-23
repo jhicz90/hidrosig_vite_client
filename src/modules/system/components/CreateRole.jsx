@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -11,7 +11,6 @@ export const CreateRole = ({ className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.role)
-    const [step, setStep] = useState(1)
 
     useEffect(() => {
         return () => dispatch(setActiveNewRole(null))
