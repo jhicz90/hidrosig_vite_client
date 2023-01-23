@@ -74,8 +74,8 @@ export const CreateSection = ({ className = '', children }) => {
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <WizardStep>
-                        <EditSectionStep1 />
-                        <EditSectionStep2 />
+                        <CreateSectionStep1 />
+                        <CreateSectionStep2 />
                     </WizardStep>
                 </Offcanvas.Body>
             </Offcanvas>
@@ -83,7 +83,7 @@ export const CreateSection = ({ className = '', children }) => {
     )
 }
 
-const EditSectionStep1 = () => {
+const CreateSectionStep1 = () => {
 
     const { nextStep } = useWizard()
     const dispatch = useDispatch()
@@ -267,7 +267,7 @@ const EditSectionStep1 = () => {
     )
 }
 
-const EditSectionStep2 = () => {
+const CreateSectionStep2 = () => {
 
     const { previousStep } = useWizard()
     const dispatch = useDispatch()
@@ -439,23 +439,24 @@ const EditSectionStep2 = () => {
                                 name='rugosity'
                                 control={control}
                                 rules={{ required: true }}
-                                render={({ field }) =>
-                                    <AsyncSelect
-                                        {...field}
-                                        inputId='pRugosity'
-                                        classNamePrefix='rc-select'
-                                        menuPosition='fixed'
-                                        isClearable
-                                        defaultOptions
-                                        cacheOptions
-                                        loadOptions={searchRugosity}
-                                        menuPlacement={'auto'}
-                                        placeholder={`Buscar...`}
-                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                        getOptionValue={e => e._id}
-                                        getOptionLabel={e => <OptionRugosity rug={e} />}
-                                    />
+                                render={
+                                    ({ field }) =>
+                                        <AsyncSelect
+                                            {...field}
+                                            inputId='pRugosity'
+                                            classNamePrefix='rc-select'
+                                            menuPosition='fixed'
+                                            isClearable
+                                            defaultOptions
+                                            cacheOptions
+                                            loadOptions={searchRugosity}
+                                            menuPlacement={'auto'}
+                                            placeholder={`Buscar...`}
+                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                            getOptionValue={e => e._id}
+                                            getOptionLabel={e => <OptionRugosity rug={e} />}
+                                        />
                                 }
                             />
                         </Form.Group>

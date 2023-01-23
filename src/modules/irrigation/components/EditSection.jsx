@@ -94,7 +94,10 @@ export const EditSection = () => {
         >
             <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
                 <Offcanvas.Title>
-                    {active ? `Tramo - ${active?.name}` : 'Cargando...'}
+                    <div className='d-flex flex-column'>
+                        <span>Tramo</span>
+                        <span>{active ? active?.name : 'Cargando...'}</span>
+                    </div>
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {

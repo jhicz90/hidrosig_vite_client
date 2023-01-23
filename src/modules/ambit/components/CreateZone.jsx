@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { OptionOrgz } from '../../../components'
 import { editActiveNewZone, searchJunta, setActiveNewZone, startAddNewZone, startSaveNewZone } from '../../../store/actions'
 
-export const CreateZone = ({ junta = null, typeButton = 1 }) => {
+export const CreateZone = ({ junta = null, className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.zone)
@@ -17,26 +17,22 @@ export const CreateZone = ({ junta = null, typeButton = 1 }) => {
 
     return (
         <>
-            <Button
+            <button
                 disabled={isSavingNew}
-                variant={typeButton === 1 ? 'neutral' : 'link'}
-                className='text-primary text-decoration-none'
-                onClick={() => {
-                    dispatch(startAddNewZone())
-                }}
+                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
+                onClick={() => dispatch(startAddNewZone())}
             >
-                Nueva zona
-            </Button>
+                {children || 'Nueva zona'}
+            </button>
             <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewZone(null))}
                 placement='end'
-                backdrop='static'
             >
-                <Offcanvas.Header className='text-bg-primary' closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear zona</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Header>
+                <Offcanvas.Header className='offcanvas-primary'>
                     <div className='d-flex justify-content-end gap-2 w-100'>
                         <Button
                             disabled={isSavingNew}

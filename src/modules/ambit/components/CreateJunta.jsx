@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { setActiveNewJunta, startAddNewJunta, editActiveNewJunta, startSaveNewJunta } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
 
-export const CreateJunta = ({ typeButton = 1 }) => {
+export const CreateJunta = ({ className = '', children }) => {
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.junta)
@@ -16,29 +16,38 @@ export const CreateJunta = ({ typeButton = 1 }) => {
 
     return (
         <>
-            <Button
+            <button
                 disabled={isSavingNew}
-                variant={typeButton === 1 ? 'neutral' : 'link'}
-                className='text-primary text-decoration-none'
-                onClick={() => {
-                    dispatch(startAddNewJunta())
-                }}
+                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
+                onClick={() => dispatch(startAddNewJunta())}
             >
-                Nueva junta
-            </Button>
-            <Modal
+                {children || 'Nueva junta'}
+            </button>
+            <Offcanvas
                 show={!!activeNew}
                 onHide={() => dispatch(setActiveNewJunta(null))}
-                backdrop='static'
-                size='lg'
+                placement='end'
             >
-                <Modal.Header closeButton={!isSavingNew}>
-                    <Modal.Title>Crear junta de usuarios</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                    <Offcanvas.Title>Crear junta de usuarios</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Header className='offcanvas-primary'>
+                    <div className='d-flex justify-content-end gap-2 w-100'>
+                        <Button
+                            disabled={isSavingNew}
+                            variant='primary'
+                            type='submit'
+                            form='form-ambit-junta-create'
+                            className='w-100'
+                        >
+                            Guardar nuevo
+                        </Button>
+                    </div>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
                     <CreateJuntaStep />
-                </Modal.Body>
-            </Modal>
+                </Offcanvas.Body>
+            </Offcanvas>
         </>
     )
 }
@@ -69,7 +78,7 @@ export const CreateJuntaStep = () => {
     }, [reset, activeNew])
 
     return (
-        <form onSubmit={handleSubmit(handleNext)}>
+        <form id='form-ambit-junta-create' onSubmit={handleSubmit(handleNext)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <Form.Group className='mb-3' controlId='uName'>
@@ -158,15 +167,6 @@ export const CreateJuntaStep = () => {
                         />
                     </Form.Group>
                 </div>
-            </div>
-            <div className='d-flex justify-content-end gap-2'>
-                <Button
-                    disabled={isSavingNew}
-                    variant='success'
-                    type='submit'
-                >
-                    Guardar
-                </Button>
             </div>
         </form>
     )
