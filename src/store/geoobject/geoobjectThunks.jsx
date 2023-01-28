@@ -27,10 +27,10 @@ export const startSaveNewGeometry = () => {
     }
 }
 
-export const searchGeoObject = async (search) => {
+export const searchGeoObject = async (search, geoobj = 1) => {
     const resp = await fetchByToken({
         endpoint: 'geoobject/list',
-        params: { search, geoobj: 1 }
+        params: { search, geoobj }
     })
 
     if (resp.ok) {

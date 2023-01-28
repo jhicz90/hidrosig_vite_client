@@ -1,22 +1,44 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchJunta, setActiveBlock, startDeleteBlock, startUpdateBlock, useGetBlockByIdQuery } from '../../../store/actions'
-import { LoadingPage, OptionDocument, OptionOrgz } from '../../../components'
+import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchGeoObject, searchJunta, setActiveBlock, startDeleteBlock, startUpdateBlock, useGetBlockByIdQuery } from '../../../store/actions'
+import { LoadingPage, LocationMap, OptionDocument, OptionGeometry, OptionOrgz } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
 export const EditBlock = () => {
 
     const [show, setShow] = useState(true)
+    const { register, control, handleSubmit, reset, watch, setFocus, setValue } = useForm()
+
     const { blockid } = useParams()
-    const redirect = useNavigate()
-    const { state } = useLocation()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/block')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetBlockByIdQuery(blockid)
     const { active, isSaving } = useSelector(state => state.block)
-    const urlBack = state?.from || '/app/exp/resources/docs'
+
+    const handleChange = ({ name, code, desc, junta, committee, resolution, geometry }) => {
+        dispatch(editActiveBlock({
+            name,
+            code,
+            desc,
+            junta,
+            committee,
+            resolution,
+            geometry,
+            idGeometry: geometry ? geometry._id : ''
+        }))
+        dispatch(startUpdateBlock())
+    }
+
+    useEffect(() => {
+        reset({
+            ...active
+        })
+    }, [reset, active])
 
     useEffect(() => {
         if (!!data) {
@@ -29,14 +51,14 @@ export const EditBlock = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={urlBack} replace />
+        redirectEscape()
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(urlBack)}
+            onExited={() => redirect()}
             enforceFocus={false}
             placement='end'
         >
@@ -65,11 +87,32 @@ export const EditBlock = () => {
                                 </Button>
                             </div>
                         </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            <Card.Body>
-                                <EditBlockStep />
-                            </Card.Body>
-                        </Offcanvas.Body>
+                        <Tab.Container
+                            defaultActiveKey={0}
+                            mountOnEnter={true}
+                            unmountOnExit={true}
+                        >
+                            <Nav variant='tabs' justify className='px-3 pt-1'>
+                                <Nav.Item>
+                                    <Nav.Link eventKey={0}>Información básica</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey={1}>Zona geográfica</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                            <Offcanvas.Body>
+                                <form id='form-ambit-block-edit' onSubmit={handleSubmit(handleChange)}>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey={0}>
+                                            <EditBlockStep1 register={register} control={control} watch={watch} setValue={setValue} />
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={1}>
+                                            <EditBlockStep2 control={control} watch={watch} />
+                                        </Tab.Pane>
+                                    </Tab.Content>
+                                </form>
+                            </Offcanvas.Body>
+                        </Tab.Container>
                         <div className='offcanvas-footer offcanvas-danger'>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
@@ -93,35 +136,12 @@ export const EditBlock = () => {
     )
 }
 
-const EditBlockStep = () => {
-
-    const dispatch = useDispatch()
-    const { active } = useSelector(state => state.block)
-    const { register, watch, setValue, control, handleSubmit, reset } = useForm()
-
-    const handleSave = ({ name, code, desc, junta, committee, resolution }) => {
-        dispatch(editActiveBlock({
-            name,
-            code,
-            desc,
-            junta,
-            committee,
-            resolution
-        }))
-        dispatch(startUpdateBlock())
-    }
-
-    useEffect(() => {
-        reset({
-            ...active
-        })
-    }, [reset, active])
-
+const EditBlockStep1 = ({ register, control, watch, setValue }) => {
     return (
-        <form id='form-ambit-block-edit' onSubmit={handleSubmit(handleSave)}>
+        <>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='pName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -131,7 +151,7 @@ const EditBlockStep = () => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uCode'>
+                    <Form.Group className='mb-3' controlId='pCode'>
                         <Form.Label>Código</Form.Label>
                         <Form.Control
                             {...register('code', { required: true })}
@@ -143,7 +163,7 @@ const EditBlockStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='pDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -156,7 +176,7 @@ const EditBlockStep = () => {
             </div>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uJunta'>
+                    <Form.Group className='mb-3' controlId='pJunta'>
                         <Form.Label>Junta de usuarios</Form.Label>
                         <Controller
                             name='junta'
@@ -171,7 +191,7 @@ const EditBlockStep = () => {
                                 ({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uJunta'
+                                        inputId='pJunta'
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
@@ -181,9 +201,7 @@ const EditBlockStep = () => {
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                         getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <OptionOrgz orgz={e} />
-                                        }
+                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
                                     />
                             }
                         />
@@ -192,7 +210,7 @@ const EditBlockStep = () => {
             </div>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uCommittee'>
+                    <Form.Group className='mb-3' controlId='pCommittee'>
                         <Form.Label>Comisión de usuarios</Form.Label>
                         <Controller
                             name='committee'
@@ -202,21 +220,19 @@ const EditBlockStep = () => {
                                 ({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uCommittee'
+                                        inputId='pCommittee'
                                         classNamePrefix='rc-select'
                                         isClearable
-                                        isDisabled={watch().junta === null}
+                                        isDisabled={watch('junta') === null}
                                         loadOptions={async (e) => {
-                                            return await searchCommitteeByJunta(watch().junta._id, e)
+                                            return await searchCommitteeByJunta(watch('junta')._id, e)
                                         }}
                                         menuPlacement={'auto'}
                                         placeholder={`Buscar...`}
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                         getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <OptionOrgz orgz={e} />
-                                        }
+                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
                                     />
                             }
                         />
@@ -225,7 +241,7 @@ const EditBlockStep = () => {
             </div>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uResolution'>
+                    <Form.Group className='mb-3' controlId='pResolution'>
                         <Form.Label>Resolución</Form.Label>
                         <Controller
                             name='resolution'
@@ -235,7 +251,7 @@ const EditBlockStep = () => {
                                 ({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uResolution'
+                                        inputId='pResolution'
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
@@ -245,15 +261,58 @@ const EditBlockStep = () => {
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                         getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <OptionDocument docm={e} />
-                                        }
+                                        getOptionLabel={e => <OptionDocument docm={e} />}
                                     />
                             }
                         />
                     </Form.Group>
                 </div>
             </div>
-        </form>
+        </>
+    )
+}
+
+const EditBlockStep2 = ({ control, watch }) => {
+    return (
+        <>
+            <div className='row'>
+                <div className='col-12'>
+                    <Form.Group className='mb-3' controlId='pGeometry'>
+                        <Form.Label>Área geográfica</Form.Label>
+                        <Controller
+                            name='geometry'
+                            control={control}
+                            render={({ field }) =>
+                                <AsyncSelect
+                                    {...field}
+                                    inputId='pGeometry'
+                                    classNamePrefix='rc-select'
+                                    menuPosition='absolute'
+                                    isClearable
+                                    defaultOptions
+                                    cacheOptions
+                                    loadOptions={
+                                        async (e) => {
+                                            return await searchGeoObject(e, 3)
+                                        }
+                                    }
+                                    menuPlacement={'auto'}
+                                    placeholder={`Buscar...`}
+                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                    getOptionValue={e => e._id}
+                                    getOptionLabel={e => <OptionGeometry geo={e} />}
+                                />
+                            }
+                        />
+                    </Form.Group>
+                </div>
+            </div>
+            {
+                !!watch('geometry')
+                &&
+                <LocationMap data={watch('geometry')?.geometry.features || []} view={watch('geometry')?.view || {}} />
+            }
+        </>
     )
 }

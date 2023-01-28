@@ -168,7 +168,7 @@ export const CreateRoleStep2 = () => {
                             name='junta'
                             control={control}
                             rules={{
-                                required: watch().levelRole > 1,
+                                required: Number(watch('levelRole')) > 1,
                                 onChange: () => {
                                     setValue('committee', null)
                                 }
@@ -181,7 +181,7 @@ export const CreateRoleStep2 = () => {
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
-                                        isDisabled={watch().levelRole < 2 || lvlAccess > 1}
+                                        isDisabled={Number(watch('levelRole')) < 2 || lvlAccess > 1}
                                         loadOptions={searchJunta}
                                         menuPlacement={'auto'}
                                         placeholder={`Buscar...`}
@@ -202,7 +202,7 @@ export const CreateRoleStep2 = () => {
                         <Controller
                             name='committee'
                             control={control}
-                            rules={{ required: watch().levelRole === 3 }}
+                            rules={{ required: Number(watch('levelRole')) === 3 }}
                             render={
                                 ({ field }) =>
                                     <AsyncSelect
@@ -211,10 +211,12 @@ export const CreateRoleStep2 = () => {
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
-                                        isDisabled={watch().levelRole < 3}
-                                        loadOptions={async (e) => {
-                                            return await searchCommitteeByJunta(watch().junta._id, e)
-                                        }}
+                                        isDisabled={Number(watch('levelRole')) < 3}
+                                        loadOptions={
+                                            async (e) => {
+                                                return await searchCommitteeByJunta(watch('junta')._id, e)
+                                            }
+                                        }
                                         menuPlacement={'auto'}
                                         placeholder={`Buscar...`}
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}

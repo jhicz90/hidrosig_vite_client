@@ -1,22 +1,42 @@
 import { useState, useEffect } from 'react'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveZone, searchJunta, setActiveZone, startDeleteZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
-import { LoadingPage, OptionOrgz } from '../../../components'
+import { editActiveZone, searchGeoObject, searchJunta, setActiveZone, startDeleteZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
+import { LoadingPage, LocationMap, OptionGeometry, OptionOrgz } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
 export const EditZone = () => {
 
     const [show, setShow] = useState(true)
+    const { register, control, handleSubmit, reset, watch } = useForm()
+
     const { zoneid } = useParams()
-    const redirect = useNavigate()
-    const { state } = useLocation()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/zone')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetZoneByIdQuery(zoneid)
     const { active, isSaving } = useSelector(state => state.zone)
-    const urlBack = state?.from || '/app/exp/resources/docs'
+
+    const handleChange = ({ name, code, desc, junta, geometry }) => {
+        dispatch(editActiveZone({
+            name,
+            code,
+            desc,
+            junta,
+            geometry,
+            idGeometry: geometry ? geometry._id : ''
+        }))
+        dispatch(startUpdateZone())
+    }
+
+    useEffect(() => {
+        reset({
+            ...active
+        })
+    }, [reset, active])
 
     useEffect(() => {
         if (!!data) {
@@ -29,14 +49,14 @@ export const EditZone = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={urlBack} replace />
+        redirectEscape()
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(urlBack)}
+            onExited={() => redirect()}
             enforceFocus={false}
             placement='end'
         >
@@ -65,9 +85,32 @@ export const EditZone = () => {
                                 </Button>
                             </div>
                         </Offcanvas.Header>
-                        <Offcanvas.Body>
-                            <EditZoneStep />
-                        </Offcanvas.Body>
+                        <Tab.Container
+                            defaultActiveKey={0}
+                            mountOnEnter={true}
+                            unmountOnExit={true}
+                        >
+                            <Nav variant='tabs' justify className='px-3 pt-1'>
+                                <Nav.Item>
+                                    <Nav.Link eventKey={0}>Información básica</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey={1}>Zona geográfica</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                            <Offcanvas.Body>
+                                <form id='form-ambit-zone-edit' onSubmit={handleSubmit(handleChange)}>
+                                    <Tab.Content>
+                                        <Tab.Pane eventKey={0}>
+                                            <EditZoneStep1 register={register} control={control} />
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey={1}>
+                                            <EditZoneStep2 control={control} watch={watch} />
+                                        </Tab.Pane>
+                                    </Tab.Content>
+                                </form>
+                            </Offcanvas.Body>
+                        </Tab.Container>
                         <div className='offcanvas-footer offcanvas-danger'>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
@@ -91,33 +134,12 @@ export const EditZone = () => {
     )
 }
 
-const EditZoneStep = () => {
-
-    const dispatch = useDispatch()
-    const { active } = useSelector(state => state.zone)
-    const { register, control, handleSubmit, reset } = useForm()
-
-    const handleSave = ({ name, code, desc, junta }) => {
-        dispatch(editActiveZone({
-            name,
-            code,
-            desc,
-            junta,
-        }))
-        dispatch(startUpdateZone())
-    }
-
-    useEffect(() => {
-        reset({
-            ...active
-        })
-    }, [reset, active])
-
+const EditZoneStep1 = ({ register, control }) => {
     return (
-        <form id='form-ambit-zone-edit' onSubmit={handleSubmit(handleSave)}>
+        <>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uCode'>
+                    <Form.Group className='mb-3' controlId='pCode'>
                         <Form.Label>Orden</Form.Label>
                         <Form.Control
                             {...register('order', { required: true })}
@@ -128,7 +150,7 @@ const EditZoneStep = () => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='pName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -140,7 +162,7 @@ const EditZoneStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='pDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -153,7 +175,7 @@ const EditZoneStep = () => {
             </div>
             <div className='row'>
                 <div className='col'>
-                    <Form.Group className='mb-3' controlId='uJunta'>
+                    <Form.Group className='mb-3' controlId='pJunta'>
                         <Form.Label>Junta de usuarios</Form.Label>
                         <Controller
                             name='junta'
@@ -163,7 +185,7 @@ const EditZoneStep = () => {
                                 ({ field }) =>
                                     <AsyncSelect
                                         {...field}
-                                        inputId='uJunta'
+                                        inputId='pJunta'
                                         classNamePrefix='rc-select'
                                         isClearable
                                         defaultOptions
@@ -173,15 +195,58 @@ const EditZoneStep = () => {
                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                         noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                         getOptionValue={e => e._id}
-                                        getOptionLabel={e =>
-                                            <OptionOrgz orgz={e} />
-                                        }
+                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
                                     />
                             }
                         />
                     </Form.Group>
                 </div>
             </div>
-        </form>
+        </>
+    )
+}
+
+const EditZoneStep2 = ({ control, watch }) => {
+    return (
+        <>
+            <div className='row'>
+                <div className='col-12'>
+                    <Form.Group className='mb-3' controlId='pGeometry'>
+                        <Form.Label>Área geográfica</Form.Label>
+                        <Controller
+                            name='geometry'
+                            control={control}
+                            render={({ field }) =>
+                                <AsyncSelect
+                                    {...field}
+                                    inputId='pGeometry'
+                                    classNamePrefix='rc-select'
+                                    menuPosition='absolute'
+                                    isClearable
+                                    defaultOptions
+                                    cacheOptions
+                                    loadOptions={
+                                        async (e) => {
+                                            return await searchGeoObject(e, 3)
+                                        }
+                                    }
+                                    menuPlacement={'auto'}
+                                    placeholder={`Buscar...`}
+                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                    getOptionValue={e => e._id}
+                                    getOptionLabel={e => <OptionGeometry geo={e} />}
+                                />
+                            }
+                        />
+                    </Form.Group>
+                </div>
+            </div>
+            {
+                !!watch('geometry')
+                &&
+                <LocationMap data={watch('geometry')?.geometry.features || []} view={watch('geometry')?.view || {}} />
+            }
+        </>
     )
 }

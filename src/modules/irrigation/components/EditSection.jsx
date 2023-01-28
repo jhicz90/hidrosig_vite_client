@@ -7,7 +7,7 @@ import AsyncSelect from 'react-select/async'
 import { editActiveSection, searchGeoObject, searchRugosity, setActiveSection, startUpdateSection, useGetCalcPropertiesQuery, useGetSectionByIdQuery } from '../../../store/actions'
 import { InputMask, LoadingPage, LocationMap, OptionGeometry, OptionRugosity } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { pDistance, pProgressive } from '../../../helpers'
+import { pDistance } from '../../../helpers'
 
 export const EditSection = () => {
 
@@ -528,7 +528,11 @@ const EditSectionStep3 = ({ control, watch }) => {
                                     isClearable
                                     defaultOptions
                                     cacheOptions
-                                    loadOptions={searchGeoObject}
+                                    loadOptions={
+                                        async (e) => {
+                                            return await searchGeoObject(e, 1)
+                                        }
+                                    }
                                     menuPlacement={'auto'}
                                     placeholder={`Buscar...`}
                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
