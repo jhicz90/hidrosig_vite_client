@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { FcSearch } from 'react-icons/fc'
 import { useGetCommsQuery } from '../../../store/actions'
 import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
 

@@ -89,7 +89,7 @@ const CreateStructureStep = () => {
         <form id='form-irrig-structure-create' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pName'>
+                    <Form.Group className='mb-3' controlId='newOrder'>
                         <Form.Label>Tipo de estructura</Form.Label>
                         <Form.Select
                             {...register('order', { required: true })}
@@ -105,7 +105,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pName'>
+                    <Form.Group className='mb-3' controlId='newName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -117,7 +117,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pObs'>
+                    <Form.Group className='mb-3' controlId='newObs'>
                         <Form.Label>Observación</Form.Label>
                         <Form.Control
                             {...register('obs')}
@@ -131,7 +131,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pStatus'>
+                    <Form.Group className='mb-3' controlId='newStatus'>
                         <Form.Label>Estado de la estructura</Form.Label>
                         <Form.Select
                             {...register('status', { required: true })}
@@ -148,7 +148,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pDateCons'>
+                    <Form.Group className='mb-3' controlId='newDateCons'>
                         <Form.Label>Fecha de construccion</Form.Label>
                         <Controller
                             control={control}
@@ -158,7 +158,7 @@ const CreateStructureStep = () => {
                                 field: { onChange, value },
                             }) => (
                                 <DatePicker
-                                    id='pDateCons'
+                                    id='newDateCons'
                                     value={value}
                                     onChange={onChange}
                                 />
@@ -169,7 +169,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pDateInvt'>
+                    <Form.Group className='mb-3' controlId='newDateInvt'>
                         <Form.Label>Fecha de inventario</Form.Label>
                         <Controller
                             control={control}
@@ -179,7 +179,7 @@ const CreateStructureStep = () => {
                                 field: { onChange, value },
                             }) => (
                                 <DatePicker
-                                    id='pDateInvt'
+                                    id='newDateInvt'
                                     value={value}
                                     onChange={onChange}
                                 />
@@ -190,7 +190,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pMargin'>
+                    <Form.Group className='mb-3' controlId='newMargin'>
                         <Form.Label>Margen</Form.Label>
                         <Form.Select
                             {...register('margin', { required: true })}
@@ -204,7 +204,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pProgressive'>
+                    <Form.Group className='mb-3' controlId='newProgressive'>
                         <Form.Label>Progresiva</Form.Label>
                         <Controller
                             control={control}
@@ -225,7 +225,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pLongitude'>
+                    <Form.Group className='mb-3' controlId='newLongitude'>
                         <Form.Label>Longitud (metros)</Form.Label>
                         <Form.Control
                             {...register('longitude', {
@@ -242,7 +242,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pEfficiency'>
+                    <Form.Group className='mb-3' controlId='newEfficiency'>
                         <Form.Label>Eficiencia (%)</Form.Label>
                         <Form.Control
                             {...register('efficiency', { required: true })}
@@ -256,7 +256,7 @@ const CreateStructureStep = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pFlow'>
+                    <Form.Group className='mb-3' controlId='newFlow'>
                         <Form.Label>Caudal (m3/seg)</Form.Label>
                         <Form.Control
                             {...register('flow', { required: true })}

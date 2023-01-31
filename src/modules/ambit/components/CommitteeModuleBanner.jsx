@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
 import { AvatarProfile } from '../../../components'
-import { startUpdateStatusCommittee } from '../../../store/actions'
+import { startUpdateImageCommittee, startUpdateStatusCommittee } from '../../../store/actions'
 
 export const CommitteeModuleBanner = () => {
 
@@ -18,18 +18,13 @@ export const CommitteeModuleBanner = () => {
         dispatch(startUpdateStatusCommittee(ck))
     }
 
-    // const handleChangeImage = () => {
-    //     dispatch(startModalResource({
-    //         title: 'Cambiar imagen del usuario',
-    //         tags: ['usuario', 'perfil'],
-    //         accept: 'images',
-    //         setArchive: (data) => dispatch(startUpdateActiveJuntaImage({ image: data }))
-    //     }))
-    // }
+    const handleChangeImage = (e) => {
+        dispatch(startUpdateImageCommittee(e))
+    }
 
     return (
         <div className='text-center'>
-            <AvatarProfile className='mb-3' avatarImg={data.image?.metadata.url} />
+            <AvatarProfile className='mb-3' avatarImg={data.image?.metadata.url} actionChange={handleChangeImage} />
             <div className='fs-5 mb-0'>{data.name}</div>
             <span className='text-secondary fw-semibold'>Comisión de usuarios</span>
             <div className='row mt-3'>

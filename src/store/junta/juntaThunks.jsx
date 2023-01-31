@@ -92,7 +92,7 @@ export const startUpdateJunta = () => {
     }
 }
 
-export const startUpdateImageJunta = ({ image }) => {
+export const startUpdateImageJunta = (image) => {
     return async (dispatch, getState) => {
         const { active } = getState().junta
         const { _id } = active
@@ -104,7 +104,7 @@ export const startUpdateImageJunta = ({ image }) => {
         })
 
         if (resp.ok) {
-            dispatch(setActiveJunta(resp.Junta))
+            dispatch(setActiveJunta(resp.junta))
         }
     }
 }
@@ -150,7 +150,7 @@ export const startUpdateStatusJunta = (status) => {
                 dispatch(setSavingJunta(false))
 
                 if (resp.ok) {
-                    dispatch(setActiveJunta(resp.Junta))
+                    dispatch(setActiveJunta(resp.junta))
                 }
             }
         })

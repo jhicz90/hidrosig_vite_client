@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
 import { AvatarProfile } from '../../../components'
-import { startUpdateImageUserSys, startUpdateStatusUserSys, startUploadResources } from '../../../store/actions'
+import { startUpdateImageUserSys, startUpdateStatusUserSys } from '../../../store/actions'
 
 export const UserSysModuleBanner = () => {
 
@@ -18,13 +18,8 @@ export const UserSysModuleBanner = () => {
         dispatch(startUpdateStatusUserSys(ck))
     }
 
-    const handleChangeImage = (file) => {
-        dispatch(startUploadResources({
-            files: [file],
-            tags: ['usuario', 'perfil'],
-            multiple: false,
-            setArchive: (data) => dispatch(startUpdateImageUserSys(data))
-        }))
+    const handleChangeImage = (e) => {
+        dispatch(startUpdateImageUserSys(e))
     }
 
     return (

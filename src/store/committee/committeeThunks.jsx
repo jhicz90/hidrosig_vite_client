@@ -94,7 +94,7 @@ export const startUpdateCommittee = () => {
     }
 }
 
-export const startUpdateImageCommittee = ({ image }) => {
+export const startUpdateImageCommittee = (image) => {
     return async (dispatch, getState) => {
         const { active } = getState().committee
         const { _id } = active
@@ -106,7 +106,7 @@ export const startUpdateImageCommittee = ({ image }) => {
         })
 
         if (resp.ok) {
-            dispatch(setActiveCommittee(resp.Committee))
+            dispatch(setActiveCommittee(resp.committee))
         }
     }
 }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 import { CommitteeList, CreateCommittee, CreateJunta, JuntaList } from '../components'
@@ -31,33 +31,26 @@ export const OrganizationListPage = () => {
             <div className='row justify-content-center'>
                 <div className='col'>
                     {
-                        lvlAccess === 3
+                        lvlAccess >= 2
                             ?
                             <Card className='pb-3'>
                                 <CommitteeList />
                             </Card>
                             :
                             <Card>
-                                <Tab.Container defaultActiveKey={hash === '' ? '#junta' : hash}>
+                                <Tab.Container>
                                     <Card.Header>
                                         <Nav variant='tabs'>
                                             <Nav.Item>
-                                                <Nav.Link eventKey='#junta'>Junta</Nav.Link>
+                                                <NavLink to={`junta`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Junta</NavLink>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link eventKey='#comm'>Comisiones</Nav.Link>
+                                                <NavLink to={`comm`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Comisiones</NavLink>
                                             </Nav.Item>
                                         </Nav>
                                     </Card.Header>
                                     <Card.Body className='p-0'>
-                                        <Tab.Content>
-                                            <Tab.Pane eventKey='#junta'>
-                                                <JuntaList />
-                                            </Tab.Pane>
-                                            <Tab.Pane eventKey='#comm'>
-                                                <CommitteeList />
-                                            </Tab.Pane>
-                                        </Tab.Content>
+                                        <Outlet />
                                     </Card.Body>
                                 </Tab.Container>
                             </Card>

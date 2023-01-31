@@ -76,7 +76,7 @@ export const CreateCommitteeStep1 = () => {
             <form id='form-ambit-committee-create-1' onSubmit={handleSubmit(handleNext)}>
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uName'>
+                        <Form.Group className='mb-3' controlId='newName'>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
                                 {...register('name', {
@@ -91,7 +91,7 @@ export const CreateCommitteeStep1 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uNameAbrev'>
+                        <Form.Group className='mb-3' controlId='newNameAbrev'>
                             <Form.Label>Nombre abreviado</Form.Label>
                             <Form.Control
                                 {...register('nameAbrev', { required: true })}
@@ -103,7 +103,7 @@ export const CreateCommitteeStep1 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uNameLarge'>
+                        <Form.Group className='mb-3' controlId='newNameLarge'>
                             <Form.Label>Nombre largo o juridico</Form.Label>
                             <Form.Control
                                 {...register('nameLarge', {
@@ -118,7 +118,7 @@ export const CreateCommitteeStep1 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uNameLargeAbrev'>
+                        <Form.Group className='mb-3' controlId='newNameLargeAbrev'>
                             <Form.Label>Nombre largo abreviado</Form.Label>
                             <Form.Control
                                 {...register('nameLargeAbrev', { required: true })}
@@ -130,7 +130,7 @@ export const CreateCommitteeStep1 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='uDesc'>
+                        <Form.Group className='mb-3' controlId='newDesc'>
                             <Form.Label>Descripción</Form.Label>
                             <Form.Control
                                 {...register('desc')}
@@ -143,7 +143,7 @@ export const CreateCommitteeStep1 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uDocId'>
+                        <Form.Group className='mb-3' controlId='newDocId'>
                             <Form.Label>Código de identidad o RUC</Form.Label>
                             <Form.Control
                                 {...register('docid', { required: true, minLength: 8 })}
@@ -153,7 +153,7 @@ export const CreateCommitteeStep1 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uEmail'>
+                        <Form.Group className='mb-3' controlId='newEmail'>
                             <Form.Label>Correo electrónico</Form.Label>
                             <Form.Control
                                 {...register('email', { required: true })}
@@ -237,7 +237,7 @@ export const CreateCommitteeStep2 = ({ juntaActive }) => {
                 }
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='uOrder'>
+                        <Form.Group className='mb-3' controlId='newOrder'>
                             <Form.Label>Orden</Form.Label>
                             <Form.Control
                                 {...register('order', { required: true })}
@@ -250,8 +250,8 @@ export const CreateCommitteeStep2 = ({ juntaActive }) => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <div className='mb-3'>
-                            <label htmlFor='zone' className='form-label'>Zona</label>
+                        <Form.Group className='mb-3' controlId='newZone'>
+                            <Form.Label>Zona</Form.Label>
                             <Controller
                                 name='zone'
                                 control={control}
@@ -260,12 +260,12 @@ export const CreateCommitteeStep2 = ({ juntaActive }) => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='zone'
+                                            inputId='newZone'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
                                             loadOptions={async (e) => {
-                                                return await searchZoneByJunta(juntaActive ? juntaActive._id : watch().junta._id, e)
+                                                return await searchZoneByJunta(juntaActive ? juntaActive._id : watch('junta')._id, e)
                                             }}
                                             menuPlacement={'auto'}
                                             placeholder={`Buscar...`}
@@ -279,7 +279,7 @@ export const CreateCommitteeStep2 = ({ juntaActive }) => {
                             <Form.Text muted>
                                 Area o zonas que conforma el ámbito de la junta de usuarios.
                             </Form.Text>
-                        </div>
+                        </Form.Group>
                     </div>
                 </div>
                 <div className='d-flex justify-content-end gap-2 w-100'>

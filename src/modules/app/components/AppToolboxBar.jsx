@@ -52,7 +52,7 @@ const Toolbar = styled.div.attrs(props => ({
     height: 70px !important;
     position: sticky;
     top: 60px;
-    z-index: 1;
+    z-index: 500;
     transition: box-shadow 0.2s linear;
 
     & + .scroll-content .sticky-mobile {

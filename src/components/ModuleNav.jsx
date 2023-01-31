@@ -19,6 +19,7 @@ export const ModuleNav = ({ modules = [], children }) => {
                             scrollTargetIds={modules.map(m => m.id)}
                             activeNavClass='active'
                             scrollDuration={100}
+                            offset={-90}
                         >
                             <ul className='spy-nav'>
                                 {

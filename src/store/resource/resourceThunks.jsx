@@ -1,5 +1,5 @@
 import { fetchUpFilesByToken } from '../../helpers'
-import { resetResource, setModalResource, setShowResource } from './resourceSlice'
+import { resetResource, setFileTypes, setGroupTypes, setInitOptions, setLimit, setMaxSize, setModalResource, setSetFiles, setShowResource, setTags } from './resourceSlice'
 
 export const startModalResource = ({
     init = [true, true, true],
@@ -46,7 +46,6 @@ export const startUploadResources = ({ files, setFiles = null, tags, access = 1,
         formData.append('cloud', cloud)
 
         formData.append('access_mode', access)
-
 
         const resp = cloud
             ? await fetchUpFilesByToken({

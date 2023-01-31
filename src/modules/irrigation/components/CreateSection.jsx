@@ -129,7 +129,7 @@ const CreateSectionStep1 = () => {
             <form onSubmit={handleSubmit(handleSave)}>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='pName'>
+                        <Form.Group className='mb-3' controlId='newName'>
                             <Form.Label>Nombre</Form.Label>
                             <Form.Control
                                 {...register('name', { required: true })}
@@ -141,7 +141,7 @@ const CreateSectionStep1 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='pStatus'>
+                        <Form.Group className='mb-3' controlId='newStatus'>
                             <Form.Label>Estado</Form.Label>
                             <Form.Select
                                 {...register('status', { required: true })}
@@ -156,7 +156,7 @@ const CreateSectionStep1 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-6'>
-                        <Form.Group className='mb-3' controlId='pType'>
+                        <Form.Group className='mb-3' controlId='newType'>
                             <Form.Label>Tipo de estructura</Form.Label>
                             <Form.Select
                                 {...register('type', { required: true })}
@@ -172,7 +172,7 @@ const CreateSectionStep1 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='pWorkCapacity'>
+                        <Form.Group className='mb-3' controlId='newWorkCapacity'>
                             <Form.Label>Capacidad de trabajo</Form.Label>
                             <Form.Select
                                 {...register('workCapacity', { required: true })}
@@ -190,7 +190,7 @@ const CreateSectionStep1 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12'>
-                        <Form.Group className='mb-3' controlId='pCoatedType'>
+                        <Form.Group className='mb-3' controlId='newCoatedType'>
                             <Form.Label>Tipo de revestimiento</Form.Label>
                             <Form.Select
                                 {...register('coatedType', { required: true })}
@@ -203,7 +203,7 @@ const CreateSectionStep1 = () => {
                                 <option value={5}>Talud izquierdo y solera</option>
                                 <option value={6}>Total</option>
                             </Form.Select>
-                            <FormCheck id='pCoated' {...register('coated')} label='¿La estructura esta revestida?' />
+                            <FormCheck id='newCoated' {...register('coated')} label='¿La estructura esta revestida?' />
                         </Form.Group>
                     </div>
                 </div>
@@ -319,7 +319,7 @@ const CreateSectionStep2 = () => {
             <form id='form-irrig-section-create-2' onSubmit={handleSubmit(handleSave)}>
                 <div className='row'>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pMayorBasis'>
+                        <Form.Group className='mb-3' controlId='newMayorBasis'>
                             <Form.Label>Base mayor</Form.Label>
                             <Form.Control
                                 {...register('mayorBasis', { required: true, setValueAs: v => Number(v) })}
@@ -331,7 +331,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pMinorBasis'>
+                        <Form.Group className='mb-3' controlId='newMinorBasis'>
                             <Form.Label>Base menor</Form.Label>
                             <Form.Control
                                 {...register('minorBasis', { required: true, setValueAs: v => Number(v) })}
@@ -343,7 +343,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pHeight'>
+                        <Form.Group className='mb-3' controlId='newHeight'>
                             <Form.Label>Altura (H)</Form.Label>
                             <Form.Control
                                 {...register('height', { required: true, setValueAs: v => Number(v) })}
@@ -355,7 +355,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pTight'>
+                        <Form.Group className='mb-3' controlId='newTight'>
                             <Form.Label>Tirante (Y)</Form.Label>
                             <Form.Control
                                 {...register('tight', { required: true, setValueAs: v => Number(v) })}
@@ -369,7 +369,7 @@ const CreateSectionStep2 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pHeight'>
+                        <Form.Group className='mb-3' controlId='newHeight'>
                             <Form.Label>Talud (Z)</Form.Label>
                             <Form.Control
                                 {...register('slope', { required: true, setValueAs: v => Number(v) })}
@@ -381,7 +381,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pDiameter'>
+                        <Form.Group className='mb-3' controlId='newDiameter'>
                             <Form.Label>Diametro (D)</Form.Label>
                             <Form.Control
                                 {...register('diameter', { required: true, setValueAs: v => Number(v) })}
@@ -393,7 +393,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pLeftSlopeThickness'>
+                        <Form.Group className='mb-3' controlId='newLeftSlopeThickness'>
                             <Form.Label>Revest. Talud Izq.</Form.Label>
                             <Form.Control
                                 disabled={!watch('coated')}
@@ -406,7 +406,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pRightSlopeThickness'>
+                        <Form.Group className='mb-3' controlId='newRightSlopeThickness'>
                             <Form.Label>Revest. Talud Der.</Form.Label>
                             <Form.Control
                                 disabled={!watch('coated')}
@@ -421,7 +421,7 @@ const CreateSectionStep2 = () => {
                 </div>
                 <div className='row'>
                     <div className='col-12 col-md-3'>
-                        <Form.Group className='mb-3' controlId='pGrade'>
+                        <Form.Group className='mb-3' controlId='newGrade'>
                             <Form.Label>Pendiente (S)</Form.Label>
                             <Form.Control
                                 {...register('grade', { required: true, setValueAs: v => Number(v) })}
@@ -433,7 +433,7 @@ const CreateSectionStep2 = () => {
                         </Form.Group>
                     </div>
                     <div className='col-12 col-md-9'>
-                        <Form.Group className='mb-3' controlId='pRugosity'>
+                        <Form.Group className='mb-3' controlId='newRugosity'>
                             <Form.Label>Rugosidad</Form.Label>
                             <Controller
                                 name='rugosity'
@@ -443,7 +443,7 @@ const CreateSectionStep2 = () => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='pRugosity'
+                                            inputId='newRugosity'
                                             classNamePrefix='rc-select'
                                             menuPosition='fixed'
                                             isClearable

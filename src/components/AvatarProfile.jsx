@@ -1,14 +1,27 @@
 import { useState, useEffect, useId } from 'react'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { prominent } from 'color.js'
 import { FaPen } from 'react-icons/fa'
 import { imageGet, imageSysGet } from '../helpers'
+import { startModalResource } from '../store/actions'
 
 export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px' }) => {
 
     const inputUploadImage = useId()
+    const dispatch = useDispatch()
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
+
+    const handleChangeImage = () => {
+        dispatch(startModalResource({
+            tags: ['perfil'],
+            groupTypes: 'images',
+            limit: 1,
+            maxSize: 5,
+            setFiles: actionChange
+        }))
+    }
 
     useEffect(() => {
         if (avatarImg !== null) {
@@ -26,14 +39,6 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
     return (
         <div className='text-center'>
             <ProfileAvatar className={`${className}`} style={{ width: size, height: size }}>
-                <input
-                    className='d-none'
-                    id={inputUploadImage}
-                    type='file'
-                    multiple={false}
-                    accept='image/jpeg, image/png'
-                    onChange={(e) => actionChange(e.target.files[0])}
-                />
                 <img
                     className='avatar-img'
                     src={avatarImg !== null ? imageGet(avatarImg) : imageSysGet(noImg)}
@@ -45,11 +50,16 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
                     !!actionChange
                     &&
                     <div className='d-block cursor-pointer'>
-                        <label
-                            htmlFor={inputUploadImage}
-                            className='position-absolute bottom-0 end-0 m-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center'>
+                        <button
+                            onClick={handleChangeImage}
+                            className='position-absolute bottom-0 end-0 m-0 bg-primary rounded-circle border border-primary text-white d-flex align-items-center justify-content-center'
+                            style={{
+                                width: '40px',
+                                height: '40px'
+                            }}
+                        >
                             <FaPen />
-                        </label>
+                        </button>
                     </div>
                 }
             </ProfileAvatar>

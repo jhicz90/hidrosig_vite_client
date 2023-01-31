@@ -22,7 +22,7 @@ export const CreateBlock = ({ junta = null, committee = null, className = '', ch
                 className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
                 onClick={() => dispatch(startAddNewBlock())}
             >
-                {children || 'Nueva zona'}
+                {children || 'Nuevo bloque'}
             </button>
             <Offcanvas
                 show={!!activeNew}
@@ -80,7 +80,7 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
         <form id='form-ambit-block-create' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='newName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -90,7 +90,7 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uCode'>
+                    <Form.Group className='mb-3' controlId='newCode'>
                         <Form.Label>Código</Form.Label>
                         <Form.Control
                             {...register('code', { required: true })}
@@ -102,7 +102,7 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='newDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -118,8 +118,8 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                 &&
                 <div className='row'>
                     <div className='col'>
-                        <div className='mb-3'>
-                            <label htmlFor='uJunta' className='form-label'>Junta de usuarios</label>
+                        <Form.Group className='mb-3' controlId='newJunta'>
+                            <Form.Label>Junta de usuarios</Form.Label>
                             <Controller
                                 name='junta'
                                 control={control}
@@ -128,7 +128,7 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='uJunta'
+                                            inputId='newJunta'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
@@ -138,13 +138,11 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                             noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                             getOptionValue={e => e._id}
-                                            getOptionLabel={e =>
-                                                <OptionOrgz orgz={e} />
-                                            }
+                                            getOptionLabel={e => <OptionOrgz orgz={e} />}
                                         />
                                 }
                             />
-                        </div>
+                        </Form.Group>
                     </div>
                 </div>
             }
@@ -153,8 +151,8 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                 &&
                 <div className='row'>
                     <div className='col'>
-                        <div className='mb-3'>
-                            <label htmlFor='uCommittee' className='form-label'>Comisiones</label>
+                        <Form.Group className='mb-3' controlId='newCommittee'>
+                            <Form.Label>Comisiones</Form.Label>
                             <Controller
                                 name='committee'
                                 control={control}
@@ -163,13 +161,13 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='uCommittee'
+                                            inputId='newCommittee'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
                                             isDisabled={watch().junta === null}
                                             loadOptions={async (e) => {
-                                                return await searchCommitteeByJunta(committeeActive ? committeeActive._id : watch().junta._id, e)
+                                                return await searchCommitteeByJunta(committeeActive ? committeeActive._id : watch('junta')._id, e)
                                             }}
                                             menuPlacement={'auto'}
                                             placeholder={`Buscar...`}
@@ -182,10 +180,10 @@ const CreateBlockStep = ({ juntaActive, committeeActive }) => {
                                         />
                                 }
                             />
-                        </div>
+                        </Form.Group>
                     </div>
                 </div>
             }
-        </form>
+        </form >
     )
 }

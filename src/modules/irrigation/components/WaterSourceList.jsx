@@ -55,7 +55,7 @@ export const WaterSourceList = () => {
                                 <ButtonGroup>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/schm/irrig/watersource/edit/${item._id}`}
+                                        to={`./edit/${item._id}`}
                                         state={{ from: location }}
                                     >
                                         <FaPen />

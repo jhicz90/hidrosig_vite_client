@@ -17,16 +17,6 @@ export const CreateWaterSource = ({ junta = null, className = '', children }) =>
 
     return (
         <>
-            {/* <Button
-                disabled={isSavingNew}
-                variant={typeButton === 1 ? 'neutral' : 'link'}
-                className='text-primary text-decoration-none'
-                onClick={() => {
-                    dispatch(startAddNewWaterSource())
-                }}
-            >
-                Nueva fuente de agua
-            </Button> */}
             <button
                 disabled={isSavingNew}
                 className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
@@ -89,7 +79,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
         <form form='form-irrig-watersource-create' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='newName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -99,7 +89,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uType'>
+                    <Form.Group className='mb-3' controlId='newType'>
                         <Form.Label>Tipo de fuente</Form.Label>
                         <Form.Select
                             {...register('type', { required: true })}
@@ -119,7 +109,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='newDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -135,8 +125,8 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
                 &&
                 <div className='row'>
                     <div className='col'>
-                        <div className='mb-3'>
-                            <label htmlFor='uJunta' className='form-label'>Junta de usuarios</label>
+                        <Form.Group className='mb-3' controlId='newJunta'>
+                            <Form.Label>Junta de usuarios</Form.Label>
                             <Controller
                                 name='junta'
                                 control={control}
@@ -145,7 +135,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='uJunta'
+                                            inputId='newJunta'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
@@ -159,7 +149,7 @@ const CreateWaterSourceStep = ({ juntaActive }) => {
                                         />
                                 }
                             />
-                        </div>
+                        </Form.Group>
                     </div>
                 </div>
             }

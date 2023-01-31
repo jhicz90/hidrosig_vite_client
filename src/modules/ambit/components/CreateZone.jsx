@@ -79,7 +79,7 @@ const CreateZoneStep = ({ juntaActive }) => {
         <form id='form-ambit-zone-create' onSubmit={handleSubmit(handleSave)}>
             <div className='row'>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uOrder'>
+                    <Form.Group className='mb-3' controlId='newOrder'>
                         <Form.Label>Orden</Form.Label>
                         <Form.Control
                             {...register('orden', { required: true })}
@@ -89,7 +89,7 @@ const CreateZoneStep = ({ juntaActive }) => {
                     </Form.Group>
                 </div>
                 <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='uName'>
+                    <Form.Group className='mb-3' controlId='newName'>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control
                             {...register('name', { required: true })}
@@ -101,7 +101,7 @@ const CreateZoneStep = ({ juntaActive }) => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='uDesc'>
+                    <Form.Group className='mb-3' controlId='newDesc'>
                         <Form.Label>Descripción</Form.Label>
                         <Form.Control
                             {...register('desc')}
@@ -117,8 +117,8 @@ const CreateZoneStep = ({ juntaActive }) => {
                 &&
                 <div className='row'>
                     <div className='col'>
-                        <div className='mb-3'>
-                            <label htmlFor='junta' className='form-label'>Junta de usuarios</label>
+                        <Form.Group className='mb-3' controlId='newJunta'>
+                            <Form.Label>Razón social</Form.Label>
                             <Controller
                                 name='junta'
                                 control={control}
@@ -127,7 +127,7 @@ const CreateZoneStep = ({ juntaActive }) => {
                                     ({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='junta'
+                                            inputId='newJunta'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
@@ -143,10 +143,10 @@ const CreateZoneStep = ({ juntaActive }) => {
                                         />
                                 }
                             />
-                        </div>
+                        </Form.Group>
                     </div>
                 </div>
             }
-        </form>
+        </form >
     )
 }

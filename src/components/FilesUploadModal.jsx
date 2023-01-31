@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
 import { Image } from './Image'
-import { finishModalResource } from '../store/actions'
+import { finishModalResource, startUploadResources } from '../store/actions'
 
 //UPPY
 import Uppy from '@uppy/core'
@@ -41,7 +41,11 @@ export const FilesUploadModal = () => {
     }, [showUpload, fileTypes, groupTypes, limit, maxSize])
 
     uppy.on('complete', (result) => {
-        console.log(result.successful)
+        if (!!result.successful) {
+            const files = result.successful.map(f => f.data)
+            dispatch(startUploadResources({ files, setFiles, tags }))
+        }
+        // console.log(result.successful)
         // const url = result.successful[0].uploadURL
         // store.dispatch({
         //   type: 'SET_USER_AVATAR_URL',
@@ -62,7 +66,7 @@ export const FilesUploadModal = () => {
                 uppy.close({ reason: 'unmount' })
             }}
         >
-            <Modal.Header closeButton style={{ backgroundColor: 'gold' }}>
+            <Modal.Header closeButton closeVariant='white' style={{ backgroundColor: 'gold' }}>
                 <Modal.Title>Subir archivos</Modal.Title>
             </Modal.Header>
             <Modal.Body>
