@@ -20,7 +20,7 @@ import '@uppy/webcam/dist/style.css'
 export const FilesUploadModal = () => {
 
     const dispatch = useDispatch()
-    const { showUpload, tags, fileTypes, groupTypes, limit, maxSize, setFiles } = useSelector(state => state.resource)
+    const { showUpload, tags, fileTypes, groupTypes, limit, maxSize, setFiles, uploading } = useSelector(state => state.resource)
     const { options } = useSelector(state => state.auth)
     const [typeUpload, setTypeUpload] = useState(true)
 
@@ -109,6 +109,7 @@ export const FilesUploadModal = () => {
                 }
             </Modal.Body>
             <Dashboard
+                hideUploadButton={uploading}
                 width='auto'
                 note={'Solo se permiten 3 archivos, con peso no mayores a 2 MB'}
                 uppy={uppy}

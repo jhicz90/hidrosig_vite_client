@@ -10,7 +10,8 @@ export const resourceSlice = createSlice({
         groupTypes: 'images',
         limit: 1,
         maxSize: 1,
-        setFiles: null
+        setFiles: null,
+        uploading: false,
     },
     reducers: {
         setModalResource: (state, { payload }) => {
@@ -23,6 +24,7 @@ export const resourceSlice = createSlice({
             state.limit = payload.limit || 1
             state.maxSize = payload.maxSize || 1
             state.setFiles = payload.setFiles || null
+            state.uploading = payload.uploading || false
         },
         setShowResource: (state, { payload }) => {
             state.showUpload = payload
@@ -54,6 +56,9 @@ export const resourceSlice = createSlice({
         setSetFiles: (state, { payload }) => {
             state.setFiles = payload
         },
+        setUploading: (state, { payload }) => {
+            state.uploading = payload
+        },
         resetResource: (state) => {
             state.showUpload = false
             state.filesSelected = []
@@ -64,6 +69,7 @@ export const resourceSlice = createSlice({
             state.limit = 1
             state.maxSize = 1
             state.setFiles = null
+            state.uploading = false
         }
     }
 })
@@ -80,5 +86,6 @@ export const {
     setLimit,
     setMaxSize,
     setSetFiles,
+    setUploading,
     resetResource,
 } = resourceSlice.actions
