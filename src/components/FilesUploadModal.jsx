@@ -111,7 +111,7 @@ export const FilesUploadModal = () => {
             <Dashboard
                 hideUploadButton={uploading}
                 width='auto'
-                note={'Solo se permiten 3 archivos, con peso no mayores a 2 MB'}
+                note={`Solo se permiten ${limit} archivos, con peso no mayores a 2 MB`}
                 uppy={uppy}
                 locale={Spanish}
                 plugins={['Webcam', 'ImageEditor']}

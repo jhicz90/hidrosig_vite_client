@@ -51,13 +51,17 @@ const PettyCashVoucher = () => {
     // }
 
     const handleImageVoucher = (voucher) => {
-        dispatch(startModalResource({
-            tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
-            groupTypes: 'images',
-            limit: 1,
-            maxSize: 5,
-            setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
-        }))
+        if (voucher.images.length < 4) {
+            const limit = 4 - voucher.images.length
+
+            dispatch(startModalResource({
+                tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
+                groupTypes: 'images',
+                limit,
+                maxSize: 10,
+                setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
+            }))
+        }
     }
 
     const handleDeleteVoucher = (voucher) => {

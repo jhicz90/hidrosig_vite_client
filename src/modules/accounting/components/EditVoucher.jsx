@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteVoucher, startModalResource, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
+import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
 import { DatePicker, FileUpload, LoadingPage, OptionSocialReason } from '../../../components'
 
 export const EditVoucher = () => {
@@ -117,13 +117,19 @@ const EditVoucherStep = () => {
     }
 
     const handleAddImage = () => {
+        const limit = 4 - active.images.length
+
         dispatch(startModalResource({
             tags: ['comprobante', `${active.serie}-${active.numReceipt}`],
             groupTypes: 'images',
-            limit: 1,
-            maxSize: 5,
+            limit,
+            maxSize: 10,
             setFiles: (data) => dispatch(startUpdateImageVoucher(data))
         }))
+    }
+
+    const handleDeleteImageVoucher = (imageId) => {
+        dispatch(startDeleteImageVoucher(imageId))
     }
 
     useEffect(() => {
@@ -314,7 +320,7 @@ const EditVoucherStep = () => {
                             {
                                 active.images.map(img =>
                                     <ListGroup.Item key={img.fileName}>
-                                        <FileUpload file={img} />
+                                        <FileUpload file={img} actionDelete={() => handleDeleteImageVoucher(img._id)} />
                                     </ListGroup.Item>
                                 )
                             }

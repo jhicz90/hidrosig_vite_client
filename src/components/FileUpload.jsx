@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { imageGet, imageSysGet } from '../helpers'
 import { IoMdTrash } from 'react-icons/io'
 
-export const FileUpload = ({ file }) => {
+export const FileUpload = ({ file, actionDelete = null }) => {
     return (
         <FileUploadStyle key={file.fileName}>
             <img src={previewResource(file.format, file.metadata?.url, file.cloud, 100)} alt={file.fileName} />
@@ -23,7 +23,7 @@ export const FileUpload = ({ file }) => {
                 <small className='d-block'>Tamaño: {filesize(file.bytes !== undefined ? file.bytes : 0)}</small>
             </div>
             <Button
-                onClick={() => console.log('SE ELIMINO')}
+                onClick={() => actionDelete()}
                 variant='outline-light'
                 size='sm'
                 className='d-flex align-items-center text-danger'
