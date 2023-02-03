@@ -4,8 +4,8 @@ export const OptionOrgz = ({ orgz = null }) => {
     return (
         <div className='d-flex p-1'>
             <Avatar
-                img={orgz.image?.metadata.url}
-                cloud={orgz.image?.cloud}
+                img={orgz?.image?.metadata?.url || ''}
+                cloud={orgz?.image?.cloud || false}
                 noImgTxt={orgz.name}
                 noImg={4003}
                 circle={true}

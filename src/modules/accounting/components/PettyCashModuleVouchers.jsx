@@ -147,7 +147,7 @@ const PettyCashVoucher = () => {
                                                                 height={30}
                                                                 img={metadata.url}
                                                                 cloud={cloud}
-                                                                resSize={100}
+                                                                resSize={30}
                                                             />
                                                         )
                                                     }

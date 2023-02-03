@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Switch from 'react-switch'
+import { filesize } from 'filesize'
 import { Image } from './Image'
 import { finishModalResource, startUploadResources } from '../store/actions'
 
@@ -111,7 +112,7 @@ export const FilesUploadModal = () => {
             <Dashboard
                 hideUploadButton={uploading}
                 width='auto'
-                note={`Solo se permiten ${limit} archivos, con peso no mayores a 2 MB`}
+                note={`Solo se permiten ${limit} archivos, con peso no mayores a ${filesize(maxSize * 1000000)}`}
                 uppy={uppy}
                 locale={Spanish}
                 plugins={['Webcam', 'ImageEditor']}
