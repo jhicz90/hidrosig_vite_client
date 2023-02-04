@@ -23,7 +23,7 @@ export const FilesUploadModal = () => {
     const dispatch = useDispatch()
     const { showUpload, tags, fileTypes, groupTypes, limit, maxSize, setFiles, uploading } = useSelector(state => state.resource)
     const { options } = useSelector(state => state.auth)
-    const [typeUpload, setTypeUpload] = useState(true)
+    const [typeUpload, setTypeUpload] = useState(options.typeUploadResource === 1 ? false : true)
 
     const allowedFileTypes = fileTypes > 0 ? fileTypes : acceptFiles(groupTypes)
 
@@ -44,7 +44,7 @@ export const FilesUploadModal = () => {
     uppy.on('complete', (result) => {
         if (!!result.successful) {
             const files = result.successful.map(f => f.data)
-            dispatch(startUploadResources({ files, setFiles, tags }))
+            dispatch(startUploadResources({ files, setFiles, tags, cloud: typeUpload }))
         }
         // console.log(result.successful)
         // const url = result.successful[0].uploadURL
@@ -72,38 +72,39 @@ export const FilesUploadModal = () => {
             </Modal.Header>
             <Modal.Body>
                 {
-                    options.resource.upload === 1
+                    options.typeUploadResource === 1
                     &&
                     <div className='d-flex align-items-center gap-2 h-100 text-dark'>
                         <Image noImg={1092} width={25} height={25} /> Base de datos
                     </div>
                 }
                 {
-                    options.resource.upload === 2
+                    options.typeUploadResource === 2
                     &&
                     <div className='d-flex align-items-center gap-2 h-100 text-dark'>
                         <Image noImg={1091} width={25} height={25} /> Cloudinary
                     </div>
                 }
                 {
-                    options.resource.upload === 3
+                    options.typeUploadResource === 3
                     &&
                     <Switch
                         checked={typeUpload}
+                        onChange={(e) => setTypeUpload(e)}
                         handleDiameter={30}
                         height={40}
                         width={80}
                         activeBoxShadow='0 0 0 2px #2684ff'
-                        onColor='#198754'
-                        offColor='#0d6efd'
+                        onColor='#FFC107'
+                        offColor='#198754'
                         checkedIcon={
-                            <div className='d-flex justify-content-center align-items-center text-white h-100'>
-                                <Image noImg={1092} width={25} height={25} />
+                            <div className='d-flex justify-content-center align-items-center text-black h-100'>
+                                <Image noImg={1091} width={25} height={25} />
                             </div>
                         }
                         uncheckedIcon={
-                            <div className='d-flex justify-content-center align-items-center text-black h-100'>
-                                <Image noImg={1091} width={25} height={25} />
+                            <div className='d-flex justify-content-center align-items-center text-white h-100'>
+                                <Image noImg={1092} width={25} height={25} />
                             </div>
                         }
                     />

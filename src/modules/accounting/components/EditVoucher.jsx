@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
+import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageIdVoucher, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
 import { DatePicker, FileUpload, LoadingPage, OptionSocialReason } from '../../../components'
 
 export const EditVoucher = () => {
@@ -116,16 +116,18 @@ const EditVoucherStep = () => {
         dispatch(startUpdateVoucher())
     }
 
-    const handleAddImage = () => {
-        const limit = 4 - active.images.length
+    const handleAddImage = (voucher) => {
+        if (voucher.images.length < 4) {
+            const limit = 4 - voucher.images.length
 
-        dispatch(startModalResource({
-            tags: ['comprobante', `${active.serie}-${active.numReceipt}`],
-            groupTypes: 'images',
-            limit,
-            maxSize: 10,
-            setFiles: (data) => dispatch(startUpdateImageVoucher(data))
-        }))
+            dispatch(startModalResource({
+                tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
+                groupTypes: 'images',
+                limit,
+                maxSize: 10,
+                setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
+            }))
+        }
     }
 
     const handleDeleteImageVoucher = (imageId) => {
@@ -314,7 +316,7 @@ const EditVoucherStep = () => {
                     <Form.Group className='mb-3' controlId='pImages'>
                         <Form.Label>Imagenes</Form.Label>
                         <ListGroup>
-                            <ListGroup.Item onClick={handleAddImage} className='d-flex align-items-center' action>
+                            <ListGroup.Item onClick={() => handleAddImage(active)} className='d-flex align-items-center' action>
                                 Agregar imagen <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
                             </ListGroup.Item>
                             {
