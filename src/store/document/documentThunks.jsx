@@ -110,51 +110,33 @@ export const startUpdateDocsDocument = (docs) => {
     }
 }
 
-export const startUpdateStatusDocument = (status) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().document
-        const { _id, name, status: statusDocument } = active
+export const startUpdateDocsIdDocument = (id, docs) => {
+    return async (dispatch) => {
 
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Estado</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
-                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta document de usuarios se actualizaran.</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: statusDocument ? 'Desactivar' : 'Activar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: statusDocument ? 'btn btn-warning' : 'btn btn-success',
-                cancelButton: 'btn btn-neutral'
-            },
-            buttonsStyling: false,
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-
-                dispatch(setSavingDocument(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `document/status/${_id}`,
-                    data: { status },
-                    method: 'PUT'
-                })
-
-                dispatch(setSavingDocument(false))
-
-                if (resp.ok) {
-                    dispatch(setActiveDocument(resp.Document))
-                }
-            }
+        const resp = await fetchByToken({
+            endpoint: `document/docs/${id}`,
+            data: { docs },
+            method: 'PUT'
         })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Files']))
+        }
+    }
+}
+
+export const startDeleteFileDocument = (id, fileId) => {
+    return async (dispatch) => {
+
+        const resp = await fetchByToken({
+            endpoint: `document/docs/${id}`,
+            data: { docs: [fileId] },
+            method: 'DELETE'
+        })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Files']))
+        }
     }
 }
 

@@ -51,7 +51,7 @@ export const EditStructure = () => {
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
-                !!active
+                (!!active && !isLoading)
                     ?
                     <>
                         <Offcanvas.Header className='offcanvas-success'>

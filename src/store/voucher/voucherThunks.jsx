@@ -169,21 +169,14 @@ export const startUpdateImageIdVoucher = (id, images) => {
     }
 }
 
-export const startDeleteImageVoucher = (imageId) => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingVoucher(true))
-
-        const { active } = getState().voucher
-        const { _id } = active
+export const startDeleteImageVoucher = (id, imageId) => {
+    return async (dispatch, ) => {
 
         const resp = await fetchByToken({
-            endpoint: `voucher/image/${_id}`,
+            endpoint: `voucher/image/${id}`,
             data: { images: [imageId] },
             method: 'DELETE'
         })
-
-        dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
             dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))

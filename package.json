@@ -30,6 +30,7 @@
         "filesize": "^10.0.6",
         "html-react-parser": "^3.0.4",
         "human-interval": "^2.0.1",
+        "keen-slider": "^6.8.5",
         "leaflet": "^1.9.3",
         "makerjs": "^0.17.2",
         "moment": "^2.29.4",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -7,18 +7,19 @@ import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import { IoMdAddCircleOutline } from 'react-icons/io'
 import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageIdVoucher, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
-import { DatePicker, FileUpload, LoadingPage, OptionSocialReason } from '../../../components'
+import { DatePicker, FileImageSlider, LoadingPage, OptionSocialReason } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
 export const EditVoucher = () => {
 
     const [show, setShow] = useState(true)
+
     const { voucherid } = useParams()
-    const redirect = useNavigate()
-    const { state } = useLocation()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetVoucherByIdQuery(voucherid)
     const { active, isSaving } = useSelector(state => state.voucher)
-    const urlBack = state?.from || '/app/acct/petty_cash'
 
     useEffect(() => {
         if (!!data) {
@@ -31,14 +32,14 @@ export const EditVoucher = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={urlBack} replace />
+        redirectEscape()
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(urlBack)}
+            onExited={() => redirect()}
             enforceFocus={false}
             placement='end'
         >
@@ -51,7 +52,7 @@ export const EditVoucher = () => {
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
-                !!active
+                (!!active && !isLoading)
                     ?
                     <>
                         <Offcanvas.Header className='offcanvas-success'>
@@ -131,7 +132,7 @@ const EditVoucherStep = () => {
     }
 
     const handleDeleteImageVoucher = (imageId) => {
-        dispatch(startDeleteImageVoucher(imageId))
+        dispatch(startDeleteImageVoucher(active._id, imageId))
     }
 
     useEffect(() => {
@@ -319,13 +320,9 @@ const EditVoucherStep = () => {
                             <ListGroup.Item onClick={() => handleAddImage(active)} className='d-flex align-items-center' action>
                                 Agregar imagen <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
                             </ListGroup.Item>
-                            {
-                                active.images.map(img =>
-                                    <ListGroup.Item key={img.fileName}>
-                                        <FileUpload file={img} actionDelete={() => handleDeleteImageVoucher(img._id)} />
-                                    </ListGroup.Item>
-                                )
-                            }
+                            <ListGroup.Item className='bg-light'>
+                                <FileImageSlider images={active.images} actionDelete={handleDeleteImageVoucher} />
+                            </ListGroup.Item>
                         </ListGroup>
                     </Form.Group>
                 </div>

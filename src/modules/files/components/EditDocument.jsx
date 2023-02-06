@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react'
-import { useParams, Navigate, useNavigate, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { editActiveDocument, searchJunta, setActiveDocument, startDeleteDocument, startModalResource, startUpdateDocsDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
-import { FilesUploadInline, FileUpload, LoadingPage, OptionOrgz } from '../../../components'
 import { IoMdCloudUpload } from 'react-icons/io'
+import { editActiveDocument, searchJunta, setActiveDocument, startDeleteDocument, startDeleteFileDocument, startModalResource, startUpdateDocsIdDocument, startUpdateDocument, useGetDocumentByIdQuery } from '../../../store/actions'
+import { FileUploadSlider, LoadingPage, OptionOrgz } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
 export const EditDocument = () => {
 
     const [show, setShow] = useState(true)
+
     const { docid } = useParams()
-    const redirect = useNavigate()
-    const { state } = useLocation()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/exp/resources/docs')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetDocumentByIdQuery(docid)
     const { active, isSaving } = useSelector(state => state.document)
-    const urlBack = state?.from || '/app/exp/resources/docs'
 
     useEffect(() => {
         if (!!data) {
@@ -30,14 +31,14 @@ export const EditDocument = () => {
     }, [data])
 
     if (isError) {
-        return <Navigate to={urlBack} replace />
+        redirectEscape()
     }
 
     return (
         <Offcanvas
             show={show}
             onHide={() => setShow(false)}
-            onExited={() => redirect(urlBack)}
+            onExited={() => redirect()}
             enforceFocus={false}
             placement='end'
         >
@@ -50,7 +51,7 @@ export const EditDocument = () => {
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
-                !!active
+                (!!active && !isLoading)
                     ?
                     <>
                         <Offcanvas.Header className='offcanvas-success'>
@@ -97,7 +98,7 @@ export const EditDocument = () => {
 const EditDocumentStep = () => {
 
     const dispatch = useDispatch()
-    const { active } = useSelector(state => state.document)
+    const { active, isSaving } = useSelector(state => state.document)
     const { register, control, handleSubmit, reset } = useForm()
 
     const handleSave = ({ name, desc, type, signer, junta }) => {
@@ -111,14 +112,18 @@ const EditDocumentStep = () => {
         dispatch(startUpdateDocument())
     }
 
-    const handleUpload = () => {
+    const handleAddDocument = (document) => {
         dispatch(startModalResource({
-            tags: ['documento', active.name],
+            tags: ['documento', document.name],
             groupTypes: 'docs',
             limit: 3,
-            maxSize: 5,
-            setFiles: (data) => dispatch(startUpdateDocsDocument(data))
+            maxSize: 10,
+            setFiles: (data) => dispatch(startUpdateDocsIdDocument(document._id, data))
         }))
+    }
+
+    const handleDeleteFileDocument = (fileId) => {
+        dispatch(startDeleteFileDocument(active._id, fileId))
     }
 
     useEffect(() => {
@@ -225,16 +230,12 @@ const EditDocumentStep = () => {
                     <Form.Group className='mb-3' controlId='pDocs'>
                         <Form.Label>Documentos</Form.Label>
                         <ListGroup>
-                            <ListGroup.Item onClick={handleUpload} className='d-flex align-items-center' action>
+                            <ListGroup.Item disabled={isSaving} onClick={handleAddDocument} className='d-flex align-items-center' action>
                                 Agregar documentos <IoMdCloudUpload className='ms-2' size={20} color='green' />
                             </ListGroup.Item>
-                            {
-                                active.docs.map(doc =>
-                                    <ListGroup.Item key={doc.fileName}>
-                                        <FileUpload file={doc} />
-                                    </ListGroup.Item>
-                                )
-                            }
+                            <ListGroup.Item className='bg-light'>
+                                <FileUploadSlider files={active.docs} actionDelete={handleDeleteFileDocument} />
+                            </ListGroup.Item>
                         </ListGroup>
                     </Form.Group>
                 </div>
