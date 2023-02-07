@@ -177,13 +177,26 @@ export const startDeletePettycash = () => {
     }
 }
 
-export const startExportActivePettyCash = () => {
+export const startExportExcelActivePettyCash = () => {
     return async (dispatch, getState) => {
+
         const { active } = getState().pettycash
         const { _id } = active
 
         await fetchByToken({
-            endpoint: `pettycash/export/${_id}`
+            endpoint: `pettycash/export/excel/${_id}`
+        })
+    }
+}
+
+export const startExportPdfActivePettyCash = () => {
+    return async (dispatch, getState) => {
+
+        const { active } = getState().pettycash
+        const { _id } = active
+
+        await fetchByToken({
+            endpoint: `pettycash/export/pdf/${_id}`
         })
     }
 }

@@ -4,7 +4,7 @@ import { Navigate, Outlet, useParams } from 'react-router-dom'
 import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
 import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { ExportPettyCash, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
+import { ExportExcelPettyCash, ExportPdfPettyCash, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
 
 export const PettyCashActivePage = () => {
 
@@ -21,7 +21,8 @@ export const PettyCashActivePage = () => {
             dispatch(setToolbarTitle('CAJA CHICA'))
             dispatch(setToolbarActions(
                 <>
-                    <ExportPettyCash />
+                    <ExportExcelPettyCash />
+                    <ExportPdfPettyCash />
                 </>
             ))
         }

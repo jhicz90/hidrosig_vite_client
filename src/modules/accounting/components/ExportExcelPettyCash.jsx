@@ -1,13 +1,13 @@
 import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { startExportActivePettyCash } from '../../../store/actions'
+import { startExportExcelActivePettyCash } from '../../../store/actions'
 
-export const ExportPettyCash = ({ typeButton = 1 }) => {
+export const ExportExcelPettyCash = ({ typeButton = 1 }) => {
 
     const dispatch = useDispatch()
 
     const handleExport = () => {
-        dispatch(startExportActivePettyCash())
+        dispatch(startExportExcelActivePettyCash())
     }
 
     return (
@@ -16,7 +16,7 @@ export const ExportPettyCash = ({ typeButton = 1 }) => {
             className='text-decoration-none'
             onClick={handleExport}
         >
-            Exportar
+            Exportar 
         </Button>
     )
 }
