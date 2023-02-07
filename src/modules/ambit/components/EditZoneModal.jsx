@@ -1,24 +1,16 @@
-import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { editActiveZone, searchGeoObject, searchJunta, setActiveZone, startDeleteZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
 import { LoadingPage, LocationMap, OptionGeometry, OptionOrgz } from '../../../components'
-import { useNavigateState } from '../../../hooks'
 
-export const EditZone = () => {
-
-    const [show, setShow] = useState(true)
-    const { register, control, handleSubmit, reset, watch } = useForm()
-
-    const { zoneid } = useParams()
-    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/zone')
+export const EditZoneModal = () => {
 
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetZoneByIdQuery(zoneid)
     const { active, isSaving } = useSelector(state => state.zone)
+    const { register, control, handleSubmit, reset, watch } = useForm()
 
     const handleChange = ({ name, code, desc, junta, geometry }) => {
         dispatch(editActiveZone({
@@ -38,25 +30,10 @@ export const EditZone = () => {
         })
     }, [reset, active])
 
-    useEffect(() => {
-        if (!!data) {
-            dispatch(setActiveZone(data))
-        }
-
-        return () => {
-            dispatch(setActiveZone(null))
-        }
-    }, [data])
-
-    if (isError) {
-        redirectEscape()
-    }
-
     return (
         <Offcanvas
-            show={show}
-            onHide={() => setShow(false)}
-            onExited={() => redirect()}
+            show={!!active}
+            onHide={() => dispatch(setActiveZone(null))}
             enforceFocus={false}
             placement='end'
         >
