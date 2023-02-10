@@ -6,7 +6,7 @@ import { Layout } from '../layout'
 
 import { GuardRoute } from '../../../guards'
 
-import { DashboardPage, NotFoundPage } from '../pages'
+import { DashboardPage, PageError404, PageError500 } from '../pages'
 import {
     SigaRoutes,
     SystemRoutes,
@@ -172,7 +172,9 @@ export const AppRoot = () => {
                         <Route path={`design/*`} element={<GuardRoute meta={['tools']} component={DesignRoutes} />} />
                     </Route>
                     <Route path={`sys/*`} element={<SystemRoutes />} />
-                    <Route path={`*`} element={<NotFoundPage />} />
+                    <Route path={`err404`} element={<PageError404 />} />
+                    <Route path={`err500`} element={<PageError500 />} />
+                    <Route path={`*`} element={<PageError404 />} />
                 </Route>
             </Routes>
         </>

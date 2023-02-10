@@ -38,7 +38,7 @@ export const PettyCashActivePage = () => {
     }
 
     if (isError) {
-        return <Navigate to={-1} />
+        return <Navigate to={`/app/err404`} />
     }
 
     return (
