@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { MapGeoObject, NewGeoObject } from '..'
+import { ImportGeoObject, MapGeoObject, NewGeoObject } from '..'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 import { SaveGeoObject } from '../components/SaveGeoObject'
 
@@ -15,6 +15,7 @@ export const MapGeographicPage = () => {
             <>
                 <NewGeoObject />
                 <SaveGeoObject />
+                <ImportGeoObject />
             </>
         ))
 

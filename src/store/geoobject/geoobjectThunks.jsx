@@ -1,5 +1,5 @@
 import { fetchByToken } from '../../helpers'
-import { clearFeatureCollection, setSavingNewGeometry } from './geoobjectSlice'
+import { addNewGeometrys, clearFeatureCollection, setSavingNewGeometry } from './geoobjectSlice'
 
 export const startSaveNewGeometry = () => {
     return async (dispatch, getState) => {
@@ -37,5 +37,20 @@ export const searchGeoObject = async (search, geoobj = 1) => {
         return resp.docs
     } else {
         return []
+    }
+}
+
+export const startImportShapes = (fileName) => {
+    return async (dispatch, getState) => {
+        const resp = await fetchByToken({
+            endpoint: `geoobject/import/shp`,
+            data: { filename: fileName },
+            method: 'POST'
+        })
+
+        if (resp.ok) {
+            console.log(resp.shapes)
+            dispatch(addNewGeometrys(resp.shapes))
+        }
     }
 }

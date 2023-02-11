@@ -11,7 +11,10 @@ export const geoobjectSlice = createSlice({
     },
     reducers: {
         addNewGeometry: (state, { payload }) => {
-            state.featureCollection.features = [...state.featureCollection, payload]
+            state.featureCollection.features = [...state.featureCollection.features, payload]
+        },
+        addNewGeometrys: (state, { payload }) => {
+            state.featureCollection.features = [...state.featureCollection.features, ...payload]
         },
         deleteGeometryById: (state, { payload }) => {
             state.featureCollection = state.featureCollection.features.filter(f => !payload.includes(f.id.toString()))
@@ -36,6 +39,7 @@ export const geoobjectSlice = createSlice({
 
 export const {
     addNewGeometry,
+    addNewGeometrys,
     clearFeatureCollection,
     deleteGeometryById,
     editFeatureCollection,

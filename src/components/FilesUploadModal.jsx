@@ -25,7 +25,7 @@ export const FilesUploadModal = () => {
     const { options } = useSelector(state => state.auth)
     const [typeUpload, setTypeUpload] = useState(options.typeUploadResource === 1 ? false : true)
 
-    const allowedFileTypes = fileTypes > 0 ? fileTypes : acceptFiles(groupTypes)
+    const allowedFileTypes = fileTypes.length > 0 ? fileTypes : acceptFiles(groupTypes)
 
     const uppy = useMemo(() => {
         return new Uppy({

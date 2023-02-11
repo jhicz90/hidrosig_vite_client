@@ -3,14 +3,18 @@ export const resourceSlice = createSlice({
     name: 'resource',
     initialState: {
         showUpload: false,
+        showUploadTemp: false,
         filesSelected: [],
         initOptions: [true, true, true], // 1:Archivos de sistema, 2:Archivos subidos, 3:Archivos por subir
         tags: [],
         fileTypes: [],
+        fileTypesTemp: [],
         groupTypes: 'images',
+        groupTypesTemp: 'images',
         limit: 1,
         maxSize: 1,
         setFiles: null,
+        setFilesTemp: null,
         uploading: false,
     },
     reducers: {
@@ -26,8 +30,17 @@ export const resourceSlice = createSlice({
             state.setFiles = payload.setFiles || null
             state.uploading = payload.uploading || false
         },
+        setModalResourceTemp: (state, { payload }) => {
+            state.showUploadTemp = payload.showUploadTemp || false
+            state.fileTypesTemp = payload.fileTypesTemp || []
+            state.groupTypesTemp = payload.groupTypesTemp || ''
+            state.setFilesTemp = payload.setFilesTemp || null
+        },
         setShowResource: (state, { payload }) => {
             state.showUpload = payload
+        },
+        setShowResourceTemp: (state, { payload }) => {
+            state.showUploadTemp = payload
         },
         setFilesSelected: (state, { payload }) => {
             state.filesSelected = payload
@@ -44,8 +57,14 @@ export const resourceSlice = createSlice({
         setFileTypes: (state, { payload }) => {
             state.fileTypes = payload
         },
+        setFileTypesTemp: (state, { payload }) => {
+            state.fileTypesTemp = payload
+        },
         setGroupTypes: (state, { payload }) => {
             state.groupTypes = payload
+        },
+        setGroupTypesTemp: (state, { payload }) => {
+            state.groupTypesTemp = payload
         },
         setLimit: (state, { payload }) => {
             state.limit = payload
@@ -55,6 +74,9 @@ export const resourceSlice = createSlice({
         },
         setSetFiles: (state, { payload }) => {
             state.setFiles = payload
+        },
+        setSetFilesTemp: (state, { payload }) => {
+            state.setFilesTemp = payload
         },
         setUploading: (state, { payload }) => {
             state.uploading = payload
@@ -70,22 +92,33 @@ export const resourceSlice = createSlice({
             state.maxSize = 1
             state.setFiles = null
             state.uploading = false
-        }
+        },
+        resetResourceTemp: (state) => {
+            state.showUploadTemp = false
+            state.fileTypesTemp = []
+            state.groupTypesTemp = 'images'
+        },
     }
 })
 
 export const {
-    setModalResource,
-    setShowResource,
-    setFilesSelected,
     addFilesSelected,
-    setInitOptions,
-    setTags,
+    resetResource,
+    resetResourceTemp,
+    setFilesSelected,
     setFileTypes,
+    setFileTypesTemp,
     setGroupTypes,
+    setGroupTypesTemp,
+    setInitOptions,
     setLimit,
     setMaxSize,
+    setModalResource,
+    setModalResourceTemp,
     setSetFiles,
+    setSetFilesTemp,
+    setShowResource,
+    setShowResourceTemp,
+    setTags,
     setUploading,
-    resetResource,
 } = resourceSlice.actions

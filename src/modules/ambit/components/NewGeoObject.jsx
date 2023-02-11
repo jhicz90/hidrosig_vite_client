@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { clearFeatureCollection } from '../../../store/actions'
 
 export const NewGeoObject = () => {
