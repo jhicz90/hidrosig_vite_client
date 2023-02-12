@@ -7,6 +7,8 @@ import { menuModule } from '../../../types'
 import { checkModules, comandModules } from '../../../helpers'
 import { setCmkbarShow } from '../../../store/actions'
 
+import 'react-cmdk/dist/cmdk.css'
+
 const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
 
 export const AppComandBar = () => {

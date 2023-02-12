@@ -1,5 +1,5 @@
 import { fetchByToken } from '../../helpers'
-import { addNewGeometrys, clearFeatureCollection, setSavingNewGeometry } from './geoobjectSlice'
+import { addNewGeometrys, clearFeatureCollection, setFeatureCollection, setSavingNewGeometry } from './geoobjectSlice'
 
 export const startSaveNewGeometry = () => {
     return async (dispatch, getState) => {
@@ -49,8 +49,7 @@ export const startImportShapes = (fileName) => {
         })
 
         if (resp.ok) {
-            console.log(resp.shapes)
-            dispatch(addNewGeometrys(resp.shapes))
+            dispatch(setFeatureCollection(resp.shapes))
         }
     }
 }

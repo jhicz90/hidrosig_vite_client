@@ -70,7 +70,7 @@ const acceptFiles = (type) => {
             'images': ['image/*'],
             'videos': ['video/*'],
             'docs': ['.docx', '.xlsx', '.pdf'],
-            'geodata': ['.shp', '.dbf'],
+            'geodata': ['.shp', '.dbf', '.kml'],
             'word': ['.docx'],
             'excel': ['.xlsx']
         }[type])

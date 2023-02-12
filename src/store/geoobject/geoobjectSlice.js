@@ -16,6 +16,9 @@ export const geoobjectSlice = createSlice({
         addNewGeometrys: (state, { payload }) => {
             state.featureCollection.features = [...state.featureCollection.features, ...payload]
         },
+        setFeatureCollection: (state, { payload }) => {
+            state.featureCollection = payload
+        },
         deleteGeometryById: (state, { payload }) => {
             state.featureCollection = state.featureCollection.features.filter(f => !payload.includes(f.id.toString()))
         },
@@ -45,4 +48,5 @@ export const {
     editFeatureCollection,
     setSavingGeometry,
     setSavingNewGeometry,
+    setFeatureCollection,
 } = geoobjectSlice.actions

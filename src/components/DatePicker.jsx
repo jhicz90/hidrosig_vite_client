@@ -1,6 +1,12 @@
 import moment from 'moment'
-import ReactDatePicker from 'react-datepicker'
+import ReactDatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker'
+import { es } from 'date-fns/locale'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
+
+import 'react-datepicker/dist/react-datepicker.css'
+
+registerLocale('es', es)
+setDefaultLocale('es')
 
 const years = (init = 1900, end = new Date().getFullYear(), options = { step: 1 }) => {
     let range = []
