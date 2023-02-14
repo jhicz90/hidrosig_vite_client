@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet, useParams } from 'react-router-dom'
-import { BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
+import { BsImageFill, BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
 import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
-import { ExportExcelPettyCash, ExportPdfPettyCash, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
+import { ExportExcelPettyCash, ExportPdfPettyCash, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleImages, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
 
 export const PettyCashActivePage = () => {
 
@@ -56,6 +56,13 @@ export const PettyCashActivePage = () => {
                                     name: 'Información básica',
                                     title: true,
                                     module: PettyCashModuleInformation
+                                },
+                                {
+                                    id: 'imagespettycash',
+                                    icon: BsImageFill,
+                                    name: 'Imagenes',
+                                    title: true,
+                                    module: PettyCashModuleImages
                                 },
                                 {
                                     id: 'voucherpettycash',

@@ -29,7 +29,7 @@ export const FileImageSlider = ({ images = [], actionDelete = null }) => {
                     <FileImageStyle ref={sliderRef} className='keen-slider'>
                         {
                             images.map(image =>
-                                <div className='keen-slider__slide shadow rounded'>
+                                <div key={image._id} className='keen-slider__slide shadow rounded'>
                                     <img className='img-fluid' src={previewImageResource(image.format, image.metadata?.url, image.cloud, 400)} alt={image.fileName} />
                                     <div
                                         style={{

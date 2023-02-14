@@ -118,9 +118,11 @@ const EditVoucherStep = () => {
     }
 
     const handleAddImage = (voucher) => {
-        if (voucher.images.length < 4) {
-            const limit = 4 - voucher.images.length
 
+        const images = voucher?.images?.length || 0
+        const limit = 4 - images
+
+        if (images < 4) {
             dispatch(startModalResource({
                 tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
                 groupTypes: 'images',

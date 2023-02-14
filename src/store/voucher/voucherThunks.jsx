@@ -170,7 +170,7 @@ export const startUpdateImageIdVoucher = (id, images) => {
 }
 
 export const startDeleteImageVoucher = (id, imageId) => {
-    return async (dispatch, ) => {
+    return async (dispatch) => {
 
         const resp = await fetchByToken({
             endpoint: `voucher/image/${id}`,

@@ -116,6 +116,36 @@ export const startUpdateInformationPettycash = ({ code, year, name, desc, receip
     }
 }
 
+export const startUpdateImageIdPettyCash = (id, images) => {
+    return async (dispatch) => {
+
+        const resp = await fetchByToken({
+            endpoint: `pettycash/image/${id}`,
+            data: { images },
+            method: 'PUT'
+        })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+        }
+    }
+}
+
+export const startDeleteImagePettyCash = (id, imageId) => {
+    return async (dispatch) => {
+
+        const resp = await fetchByToken({
+            endpoint: `pettycash/image/${id}`,
+            data: { images: [imageId] },
+            method: 'DELETE'
+        })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+        }
+    }
+}
+
 export const startDeletePettycash = () => {
     return async (dispatch, getState) => {
         const { active } = getState().pettycash
