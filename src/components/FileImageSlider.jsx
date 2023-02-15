@@ -31,15 +31,7 @@ export const FileImageSlider = ({ images = [], actionDelete = null }) => {
                             images.map(image =>
                                 <div key={image._id} className='keen-slider__slide shadow rounded'>
                                     <img className='img-fluid' src={previewImageResource(image.format, image.metadata?.url, image.cloud, 400)} alt={image.fileName} />
-                                    <div
-                                        style={{
-                                            position: 'absolute',
-                                            bottom: '20px',
-                                            left: '20px',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                        }}
-                                    >
+                                    <div className='slider__slide_info'>
                                         <small
                                             className='d-inline-block text-truncate'
                                             style={{ maxWidth: '150px' }}
@@ -54,11 +46,11 @@ export const FileImageSlider = ({ images = [], actionDelete = null }) => {
                                         onClick={() => actionDelete(image._id)}
                                         variant='neutral'
                                         size='sm'
-                                        className='d-flex align-items-center text-danger border-danger'
+                                        className='slider__slide_btn d-flex align-items-center text-danger border-danger'
                                         style={{
                                             position: 'absolute',
-                                            bottom: '20px',
-                                            right: '20px'
+                                            bottom: '10px',
+                                            right: '10px'
                                         }}
                                     >
                                         <IoMdTrash size={20} />
@@ -78,5 +70,32 @@ const FileImageStyle = styled.div`
         margin-bottom: 20px;
         height: 300px;
         background-color: white;
+
+        & img {
+            background-color: transparent;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+
+        & .slider__slide_info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(100, 100, 100, 0.3);
+            padding: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 6px;
+        }
+
+        & .slider__slide_btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
     }
 `
