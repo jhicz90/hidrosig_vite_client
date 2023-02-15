@@ -1,3 +1,4 @@
+import { toast } from 'react-hot-toast'
 import { fetchUpFilesByToken } from '../../helpers'
 import { resetResource, resetResourceTemp, setFileTypes, setGroupTypes, setInitOptions, setLimit, setMaxSize, setModalResource, setModalResourceTemp, setSetFiles, setShowResource, setShowResourceTemp, setTags, setUploading } from './resourceSlice'
 
@@ -72,6 +73,8 @@ export const startUploadResources = ({ files, setFiles = null, tags, access = 1,
 
         formData.append('access_mode', access)
 
+        const toastLoading = toast.loading('Subiendo archivos...')
+
         const resp = cloud
             ? await fetchUpFilesByToken({
                 endpoint: 'resource/v1/up',
@@ -81,6 +84,8 @@ export const startUploadResources = ({ files, setFiles = null, tags, access = 1,
                 endpoint: 'resource/db/up',
                 data: formData
             })
+
+        toast.dismiss(toastLoading)
 
         if (resp.ok) {
             if (setFiles && resp.files.length === 1) {
@@ -103,10 +108,14 @@ export const startUploadTempResources = ({ files, setFilesTemp = null }) => {
             formData.append('temp', item)
         })
 
+        const toastLoading = toast.loading('Subiendo archivos...')
+
         const resp = await fetchUpFilesByToken({
             endpoint: 'resource/temp/up',
             data: formData
         })
+
+        toast.dismiss(toastLoading)
 
         if (resp.ok) {
             if (setFilesTemp && resp.filesTemp.length === 1) {
