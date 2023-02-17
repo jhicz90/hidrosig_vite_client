@@ -122,6 +122,36 @@ export const startUpdateDataStructureInIrrigNet = (structure) => {
     }
 }
 
+export const startUpdateImageIdStructure = (id, images) => {
+    return async (dispatch) => {
+
+        const resp = await fetchByToken({
+            endpoint: `structure/image/${id}`,
+            data: { images },
+            method: 'PUT'
+        })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Irrig']))
+        }
+    }
+}
+
+export const startDeleteImageStructure = (id, imageId) => {
+    return async (dispatch) => {
+
+        const resp = await fetchByToken({
+            endpoint: `structure/image/${id}`,
+            data: { images: [imageId] },
+            method: 'DELETE'
+        })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags(['Irrig']))
+        }
+    }
+}
+
 export const startDeleteStructure = () => {
     return async (dispatch, getState) => {
         const { active } = getState().structure

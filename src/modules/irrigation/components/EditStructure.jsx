@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
-import { IoMdOpen, IoMdTrash } from 'react-icons/io'
+import { IoMdAddCircleOutline, IoMdOpen, IoMdTrash } from 'react-icons/io'
 import { Controller, useForm } from 'react-hook-form'
 import { CreateSection } from './CreateSection'
-import { editActiveStructure, setActiveStructure, startDeleteIdSection, startDeleteStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
-import { DatePicker, Image, InputMask, LinkBack, LoadingPage } from '../../../components'
+import { editActiveStructure, setActiveStructure, startDeleteIdSection, startDeleteImageStructure, startDeleteStructure, startModalResource, startUpdateImageIdStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
+import { DatePicker, FileImageSlider, Image, InputMask, LinkBack, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const EditStructure = () => {
@@ -120,6 +120,26 @@ const EditStructureStep = () => {
             flow
         }))
         dispatch(startUpdateStructure())
+    }
+
+    const handleAddImage = (structure) => {
+
+        const images = structure?.images?.length || 0
+        const limit = 4 - images
+
+        if (images < 4) {
+            dispatch(startModalResource({
+                tags: ['estructura', `${structure.name}`],
+                groupTypes: 'images',
+                limit,
+                maxSize: 10,
+                setFiles: (data) => dispatch(startUpdateImageIdStructure(structure._id, data))
+            }))
+        }
+    }
+
+    const handleDeleteImageStructure = (imageId) => {
+        dispatch(startDeleteImageStructure(active._id, imageId))
     }
 
     useEffect(() => {
@@ -334,6 +354,21 @@ const EditStructureStep = () => {
                                     </ListGroup.Item>
                                 )
                             }
+                        </ListGroup>
+                    </Form.Group>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col'>
+                    <Form.Group className='mb-3' controlId='pImages'>
+                        <Form.Label>Imagenes</Form.Label>
+                        <ListGroup>
+                            <ListGroup.Item onClick={() => handleAddImage(active)} className='d-flex align-items-center' action>
+                                Agregar imagen <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
+                            </ListGroup.Item>
+                            <ListGroup.Item className='bg-light'>
+                                <FileImageSlider images={active.images} actionDelete={handleDeleteImageStructure} />
+                            </ListGroup.Item>
                         </ListGroup>
                     </Form.Group>
                 </div>
