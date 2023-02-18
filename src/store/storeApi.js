@@ -443,19 +443,17 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.cpprop,
             providesTags: ['Irrig']
         }),
-        getRugosity: builder.query({
+        addRugosity: builder.mutation({
+            query: (rugosity) => ({
+                url: `rugosity/create/new`,
+                method: 'post',
+                data: rugosity
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        getRugositys: builder.query({
             query: (search) => ({
                 url: `rugosity/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Irrig']
-        }),
-        getOrderChannel: builder.query({
-            query: (search) => ({
-                url: `orderchannel/list`,
                 params: {
                     search
                 }
@@ -468,7 +466,48 @@ export const storeApi = createApi({
                 url: `rugosity/edit/${id}`,
                 method: 'put',
                 data: rugosity
-            })
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        deleteRugosity: builder.mutation({
+            query: (id) => ({
+                url: `rugosity/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        addOrderChannel: builder.mutation({
+            query: (orderchannel) => ({
+                url: `orderchannel/create/new`,
+                method: 'post',
+                data: orderchannel
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        getOrderChannels: builder.query({
+            query: (search) => ({
+                url: `orderchannel/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
+        updateOrderChannel: builder.mutation({
+            query: ({ id, orderchannel }) => ({
+                url: `orderchannel/edit/${id}`,
+                method: 'put',
+                data: orderchannel
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        deleteOrderChannel: builder.mutation({
+            query: (id) => ({
+                url: `orderchannel/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Irrig']
         }),
         // RED DE RIEGO
     }),
@@ -479,6 +518,10 @@ export const {
     useAddNewJuntaMutation,
     useAddNewModuleMutation,
     useAddNewPermMutation,
+    useAddOrderChannelMutation,
+    useAddRugosityMutation,
+    useDeleteOrderChannelMutation,
+    useDeleteRugosityMutation,
     useGetBlockByIdQuery,
     useGetBlocksQuery,
     useGetBrowserQuery,
@@ -494,7 +537,7 @@ export const {
     useGetModulesQuery,
     useGetOccupByIdQuery,
     useGetOccupsQuery,
-    useGetOrderChannelQuery,
+    useGetOrderChannelsQuery,
     useGetPermsGroupQuery,
     useGetPermsQuery,
     useGetPettyCashByIdQuery,
@@ -502,7 +545,7 @@ export const {
     useGetPettyCashsQuery,
     useGetRoleByIdQuery,
     useGetRolesQuery,
-    useGetRugosityQuery,
+    useGetRugositysQuery,
     useGetSectionByIdQuery,
     useGetStructureByIdQuery,
     useGetUsrsSysByOccupQuery,
@@ -517,5 +560,6 @@ export const {
     useGetZoneByIdQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
+    useUpdateOrderChannelMutation,
     useUpdateRugosityMutation,
 } = storeApi
