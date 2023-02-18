@@ -1,20 +1,18 @@
-import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 export const useNavigateState = (url = '') => {
 
-  const { state } = useLocation()
-  const navigate = useNavigate()
-  const { from } = state
+    const location = useLocation()
+    const navigate = useNavigate()
+    const { state } = location
+    
+    const redirect = () => {
+        navigate(state.from || url, { state: state?.from?.state || null })
+    }
 
-  const redirect = () => {
-    navigate(from || url, { state: { from: from?.state?.from || null } })
-  }
+    const redirectEscape = () => {
+        navigate(`/app/err404`, { state: { from: location || null } })
+    }
 
-  const redirectEscape = () => {
-    navigate(from || url, { replace: true, state: { from: from?.state?.from || null } })
-  }
-
-
-  return [state, redirect, redirectEscape]
+    return [state, redirect, redirectEscape]
 }

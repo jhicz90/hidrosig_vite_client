@@ -443,6 +443,33 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.cpprop,
             providesTags: ['Irrig']
         }),
+        getRugosity: builder.query({
+            query: (search) => ({
+                url: `rugosity/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
+        getOrderChannel: builder.query({
+            query: (search) => ({
+                url: `orderchannel/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
+        updateRugosity: builder.mutation({
+            query: ({ id, rugosity }) => ({
+                url: `rugosity/edit/${id}`,
+                method: 'put',
+                data: rugosity
+            })
+        }),
         // RED DE RIEGO
     }),
 })
@@ -467,6 +494,7 @@ export const {
     useGetModulesQuery,
     useGetOccupByIdQuery,
     useGetOccupsQuery,
+    useGetOrderChannelQuery,
     useGetPermsGroupQuery,
     useGetPermsQuery,
     useGetPettyCashByIdQuery,
@@ -474,6 +502,7 @@ export const {
     useGetPettyCashsQuery,
     useGetRoleByIdQuery,
     useGetRolesQuery,
+    useGetRugosityQuery,
     useGetSectionByIdQuery,
     useGetStructureByIdQuery,
     useGetUsrsSysByOccupQuery,
@@ -488,4 +517,5 @@ export const {
     useGetZoneByIdQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
+    useUpdateRugosityMutation,
 } = storeApi

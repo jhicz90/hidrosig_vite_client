@@ -1,16 +1,19 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { clearToolbarActions } from '../../../store/actions'
+import { Link, useLocation } from 'react-router-dom'
+import { ButtonGroup } from 'react-bootstrap'
+import { clearToolbarActions, setToolbarTitle } from '../../../store/actions'
 
 import ocThinking from '../../../assets/oc-thinking.svg'
 
 export const PageError404 = () => {
 
+    const { state } = useLocation()
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(clearToolbarActions())
+        dispatch(setToolbarTitle(''))
     })
 
     return (
@@ -26,7 +29,14 @@ export const PageError404 = () => {
                     <div className='col-sm-6 col-lg-4 text-center text-sm-start'>
                         <h1 className='display-1 mb-0'>404</h1>
                         <p className='lead'>Lo siento, la página que estabas viendo no puede ser encontrada, o simplemente ocurrio un error.</p>
-                        <Link to={`/app`} className='btn btn-primary'>Regresar al INICIO</Link>
+                        <ButtonGroup>
+                            <Link to={`/app`} className='btn btn-success'>Ir a INICIO</Link>
+                            {
+                                !!state
+                                &&
+                                <Link to={state?.from} state={state?.from?.state || null} className='btn btn-warning'>Intentar regresar</Link>
+                            }
+                        </ButtonGroup>
                     </div>
                 </div>
             </div>

@@ -101,7 +101,7 @@ export const EditSection = () => {
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
-                !!active
+                (!!active && !isLoading)
                     ?
                     <>
                         <Offcanvas.Header className='offcanvas-success'>

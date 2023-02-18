@@ -5,10 +5,13 @@ import { BsImageFill, BsInfoCircle, BsReceipt, BsTrash } from 'react-icons/bs'
 import { clearToolbarActions, setActivePettycash, setToolbarActions, setToolbarTitle, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, ModuleNav } from '../../../components'
 import { ExportExcelPettyCash, ExportPdfPettyCash, PettyCashModuleBanner, PettyCashModuleDelete, PettyCashModuleImages, PettyCashModuleInformation, PettyCashModuleVouchers } from '../components'
+import { useNavigateState } from '../../../hooks'
 
 export const PettyCashActivePage = () => {
 
     const { pettycashid } = useParams()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetPettyCashByIdQuery(pettycashid)
     const { active } = useSelector(state => state.pettycash)
@@ -38,7 +41,7 @@ export const PettyCashActivePage = () => {
     }
 
     if (isError) {
-        return <Navigate to={`/app/err404`} />
+        redirectEscape()
     }
 
     return (

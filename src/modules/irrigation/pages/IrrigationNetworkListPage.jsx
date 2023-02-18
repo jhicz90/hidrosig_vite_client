@@ -37,7 +37,10 @@ export const IrrigationNetworkListPage = () => {
                                         <NavLink to={`net`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Red de riego</NavLink>
                                     </Nav.Item>
                                     <Nav.Item>
-                                        <NavLink to={`watersource`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Fuentes de agua</NavLink>
+                                        <NavLink to={`ws`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Fuentes de agua</NavLink>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <NavLink to={`var`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Variables</NavLink>
                                     </Nav.Item>
                                 </Nav>
                             </Card.Header>
