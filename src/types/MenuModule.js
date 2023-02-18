@@ -87,12 +87,6 @@ export const menuModule = [
                 meta: ['sector'],
                 detail: 'Los sectores de riego son zonas a cargo de los delegados o algún usuario que se encargan de la distribución del recurso hídrico.'
             },
-            {
-                label: 'Variables',
-                to: 'var',
-                meta: ['variables'],
-                detail: 'Se registran las variables o constantes que se usan en los cálculos de la eficiencia o clasificación de las estructuras.'
-            }
         ]
     },
     {
