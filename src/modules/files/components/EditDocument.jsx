@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -9,11 +8,10 @@ import { editActiveDocument, searchJunta, setActiveDocument, startDeleteDocument
 import { FileUploadSlider, LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditDocument = () => {
+export const EditDocument = ({ docid }) => {
 
     const [show, setShow] = useState(true)
 
-    const { docid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/exp/resources/docs')
 
     const dispatch = useDispatch()

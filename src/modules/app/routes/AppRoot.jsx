@@ -1,5 +1,6 @@
 import React, { useLayoutEffect } from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import validator from 'validator'
+import { Route, Routes, Navigate, useSearchParams } from 'react-router-dom'
 // import socketClient from 'socket.io-client'
 
 import { Layout } from '../layout'
@@ -15,6 +16,13 @@ import {
     ModuleSigaRoutes,
     ModuleSystemRoutes,
     ModuleAccountingRoutes,
+    EditVoucher,
+    EditDocument,
+    EditStructure,
+    EditSection,
+    EditWaterSource,
+    EditZone,
+    EditBlock,
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -133,7 +141,15 @@ export const AppRoot = () => {
     return (
         <>
             <Routes>
-                <Route path={`/`} element={<Layout />}>
+                <Route
+                    path={`/`}
+                    element={
+                        <>
+                            <Layout />
+                            <ModalRoutes />
+                        </>
+                    }
+                >
                     <Route index element={<Navigate to={`/app/home`} />} />
                     <Route path={`home`} element={<DashboardPage />} />
                     <Route path={`ambit/*`} element={<ModuleAmbitRoutes />} />
@@ -150,6 +166,51 @@ export const AppRoot = () => {
                     <Route path={`*`} element={<PageError404 />} />
                 </Route>
             </Routes>
+        </>
+    )
+}
+
+const ModalRoutes = () => {
+    const [searchParams] = useSearchParams()
+    const { w, id } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                w === 'zone' && validator.isMongoId(id)
+                &&
+                <EditZone zoneid={id} />
+            }
+            {
+                w === 'block' && validator.isMongoId(id)
+                &&
+                <EditBlock blockid={id} />
+            }
+            {
+                w === 'structure' && validator.isMongoId(id)
+                &&
+                <EditStructure strid={id} />
+            }
+            {
+                w === 'section' && validator.isMongoId(id)
+                &&
+                <EditSection secid={id} />
+            }
+            {
+                w === 'watersource' && validator.isMongoId(id)
+                &&
+                <EditWaterSource wsid={id} />
+            }
+            {
+                w === 'voucher' && validator.isMongoId(id)
+                &&
+                <EditVoucher voucherid={id} />
+            }
+            {
+                w === 'document' && validator.isMongoId(id)
+                &&
+                <EditDocument docid={id} />
+            }
         </>
     )
 }

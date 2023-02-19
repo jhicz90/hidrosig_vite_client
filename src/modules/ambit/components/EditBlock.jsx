@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -8,12 +7,11 @@ import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchGeoObjec
 import { LoadingPage, LocationMap, OptionDocument, OptionGeometry, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditBlock = () => {
+export const EditBlock = ({ blockid }) => {
 
     const [show, setShow] = useState(true)
     const { register, control, handleSubmit, reset, watch, setFocus, setValue } = useForm()
 
-    const { blockid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/block')
 
     const dispatch = useDispatch()

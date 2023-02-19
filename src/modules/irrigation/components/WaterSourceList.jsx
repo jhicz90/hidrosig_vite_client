@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { InputSearch, TableGrid, TimeAgo, TypeWaterSource } from '../../../components'
+import { InputSearch, LinkBack, TableGrid, TimeAgo, TypeWaterSource } from '../../../components'
 import { useGetWaterSourcesQuery } from '../../../store/actions'
 
 export const WaterSourceList = () => {
 
-    const location = useLocation()
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetWaterSourcesQuery(search)
 
@@ -53,19 +51,17 @@ export const WaterSourceList = () => {
                             pinRight: true,
                             renderCell: (item) =>
                                 <ButtonGroup>
-                                    <Link
+                                    <LinkBack
                                         className='btn btn-neutral'
-                                        to={`./edit/${item._id}`}
-                                        state={{ from: location }}
+                                        to={`?w=watersource&id=${item._id}`}
                                     >
                                         <FaPen />
-                                    </Link>
+                                    </LinkBack>
                                 </ButtonGroup>
                         }
                     ]
                 }
             />
-            <Outlet />
         </>
     )
 }

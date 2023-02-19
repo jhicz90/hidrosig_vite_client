@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
 import { docTypes } from '../../../types'
 import { useGetDocumentsQuery } from '../../../store/actions'
 
 export const DocumentBrowser = () => {
 
-    const location = useLocation()
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetDocumentsQuery(search)
 
@@ -56,19 +54,17 @@ export const DocumentBrowser = () => {
                             pinRight: true,
                             renderCell: (item) =>
                                 <ButtonGroup>
-                                    <Link
+                                    <LinkBack
                                         className='btn btn-neutral'
-                                        to={`./edit/${item._id}`}
-                                        state={{ from: location }}
+                                        to={`?w=document&id=${item._id}`}
                                     >
                                         <FaPen />
-                                    </Link>
+                                    </LinkBack>
                                 </ButtonGroup>
                         }
                     ]
                 }
             />
-            <Outlet />
         </>
     )
 }

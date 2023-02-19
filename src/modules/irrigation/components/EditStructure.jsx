@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { IoMdAddCircleOutline, IoMdOpen, IoMdTrash } from 'react-icons/io'
@@ -9,11 +8,10 @@ import { editActiveStructure, setActiveStructure, startDeleteIdSection, startDel
 import { DatePicker, FileImageSlider, Image, InputMask, LinkBack, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditStructure = () => {
+export const EditStructure = ({ strid }) => {
 
     const [show, setShow] = useState(true)
 
-    const { strid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig/net')
 
     const dispatch = useDispatch()
@@ -97,7 +95,6 @@ export const EditStructure = () => {
 
 const EditStructureStep = () => {
 
-    const { state } = useLocation()
     const dispatch = useDispatch()
     const { active } = useSelector(state => state.structure)
     const { register, control, handleSubmit, reset } = useForm({
@@ -336,8 +333,7 @@ const EditStructureStep = () => {
                                                 <div className='btn-group'>
                                                     <LinkBack
                                                         className='btn btn-neutral-icon text-primary'
-                                                        to={`./sect/${sect._id}`}
-                                                        state={state}
+                                                        to={`?w=section&id=${sect._id}`}
                                                     >
                                                         <IoMdOpen size={20} />
                                                     </LinkBack>
@@ -373,7 +369,6 @@ const EditStructureStep = () => {
                     </Form.Group>
                 </div>
             </div>
-            <Outlet />
         </>
     )
 }

@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
 import { Button, ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import { startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetVouchersByPettyCashQuery } from '../../../store/actions'
-import { Image, ImageLightbox, InputSearch, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
+import { Image, ImageLightbox, InputSearch, LinkBack, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
 import { CreateVoucher } from './CreateVoucher'
 import { imageGet } from '../../../helpers'
 
@@ -22,7 +21,6 @@ const PettyCashVoucher = () => {
 
     const [filterSearch, setFilterSearch] = useState('')
     const dispatch = useDispatch()
-    const location = useLocation()
     const { active } = useSelector(state => state.pettycash)
     const { data: vouchersIn = [], isLoading } = useGetVouchersByPettyCashQuery({ pettycash: active._id, search: '' }, { refetchOnMountOrArgChange: true })
 
@@ -215,13 +213,12 @@ const PettyCashVoucher = () => {
                                         pinRight: true,
                                         renderCell: (item) =>
                                             <ButtonGroup size='sm'>
-                                                <Link
+                                                <LinkBack
                                                     className='btn btn-neutral-icon'
-                                                    to={`/app/acct/petty_cash/${active._id}/edit/voucher/${item._id}`}
-                                                    state={{ from: location }}
+                                                    to={`?w=voucher&id=${item._id}`}
                                                 >
                                                     <FaPen />
-                                                </Link>
+                                                </LinkBack>
                                                 <Button
                                                     onClick={() => handleDeleteVoucher(item)}
                                                     variant='danger'

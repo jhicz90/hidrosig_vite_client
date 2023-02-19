@@ -15,11 +15,7 @@ export const IrrigationNetworkRoutes = () => {
                             <IrrigationNetworkChannel />
                         </GuardRoute>
                     }
-                >
-                    <Route path={`edit/:strid`} element={<EditStructure />} >
-                        <Route path={`sect/:secid`} element={<EditSection />} />
-                    </Route>
-                </Route>
+                />
                 <Route
                     path={`ws`}
                     element={

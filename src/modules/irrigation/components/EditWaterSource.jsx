@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
@@ -8,11 +7,10 @@ import { editActiveWaterSource, searchJunta, setActiveWaterSource, startDeleteWa
 import { LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditWaterSource = () => {
+export const EditWaterSource = ({ wsid }) => {
 
     const [show, setShow] = useState(true)
 
-    const { wsid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig/ws')
 
     const dispatch = useDispatch()

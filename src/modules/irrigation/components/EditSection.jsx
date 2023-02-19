@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, FormCheck, InputGroup, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -9,7 +8,7 @@ import { InputMask, LoadingPage, LocationMap, OptionGeometry, OptionRugosity } f
 import { useNavigateState } from '../../../hooks'
 import { pDistance } from '../../../helpers'
 
-export const EditSection = () => {
+export const EditSection = ({ secid }) => {
 
     const [show, setShow] = useState(true)
     const { register, control, handleSubmit, reset, watch, setFocus } = useForm({
@@ -19,7 +18,6 @@ export const EditSection = () => {
         }
     })
 
-    const { secid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig/net')
 
     const dispatch = useDispatch()

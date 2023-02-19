@@ -1,11 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 
-export const LinkBack = ({ to, state, ...props }) => {
+export const LinkBack = ({ to, ...props }) => {
 
-    let location = useLocation()
-    location = { ...location, state }
+    const location = useLocation()
 
     return (
-        <Link to={to} {...props} state={{ from: location }} />
+        <Link to={to} state={{ from: location }} {...props} />
     )
 }

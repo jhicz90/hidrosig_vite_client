@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
 import { ResourcesPage } from '../pages'
-import { DocumentBrowser, EditDocument } from '..'
+import { DocumentBrowser } from '..'
 
 export const ResourceRoutes = () => {
     return (
@@ -23,9 +23,7 @@ export const ResourceRoutes = () => {
                             <DocumentBrowser />
                         </GuardRoute>
                     }
-                >
-                    <Route path={`edit/:docid`} element={<EditDocument />} />
-                </Route>
+                />
             </Route>
         </Routes>
     )

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -8,12 +7,11 @@ import { editActiveZone, searchGeoObject, searchJunta, setActiveZone, startDelet
 import { LoadingPage, LocationMap, OptionGeometry, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditZone = () => {
+export const EditZone = ({ zoneid }) => {
 
     const [show, setShow] = useState(true)
     const { register, control, handleSubmit, reset, watch } = useForm()
 
-    const { zoneid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/zone')
 
     const dispatch = useDispatch()
