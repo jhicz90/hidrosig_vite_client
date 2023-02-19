@@ -6,19 +6,38 @@ import { EditSection, EditStructure, EditWaterSource, IrrigationNetworkChannel, 
 export const IrrigationNetworkRoutes = () => {
     return (
         <Routes>
-            <Route path={`/`} element={<GuardRoute meta={['network']} component={IrrigationNetworkListPage} />} >
+            <Route element={<IrrigationNetworkListPage />}>
                 <Route index element={<Navigate to={`net`} />} />
-                <Route path={`net`} element={<IrrigationNetworkChannel />} >
+                <Route
+                    path={`net`}
+                    element={
+                        <GuardRoute meta={['irrigation_network']}>
+                            <IrrigationNetworkChannel />
+                        </GuardRoute>
+                    }
+                >
                     <Route path={`edit/:strid`} element={<EditStructure />} >
                         <Route path={`sect/:secid`} element={<EditSection />} />
                     </Route>
                 </Route>
-                <Route path={`ws`} element={<WaterSourceList />} >
+                <Route
+                    path={`ws`}
+                    element={
+                        <GuardRoute meta={['watersource']}>
+                            <WaterSourceList />
+                        </GuardRoute>
+                    }
+                >
                     <Route path={`edit/:wsid`} element={<EditWaterSource />} />
                 </Route>
-                <Route path={`var`} element={<VariableList />}>
-
-                </Route>
+                <Route
+                    path={`var`}
+                    element={
+                        <GuardRoute meta={['irrigation_variables']}>
+                            <VariableList />
+                        </GuardRoute>
+                    }
+                />
             </Route>
         </Routes>
     )

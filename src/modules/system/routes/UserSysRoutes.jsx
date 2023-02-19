@@ -5,8 +5,22 @@ import { UserSysActivePage, UserSysListPage } from '../pages'
 export const UserSysRoutes = () => {
     return (
         <Routes>
-            <Route index element={<GuardRoute meta={['usersys']} component={UserSysListPage} />} />
-            <Route path={`/:userid`} element={<GuardRoute meta={['usersys']} component={UserSysActivePage} />} />
+            <Route
+                index
+                element={
+                    <GuardRoute meta={['user_management']}>
+                        <UserSysListPage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`/:userid`}
+                element={
+                    <GuardRoute meta={['user_management']}>
+                        <UserSysActivePage />
+                    </GuardRoute>
+                }
+            />
         </Routes>
     )
 }

@@ -8,14 +8,13 @@ import { GuardRoute } from '../../../guards'
 
 import { DashboardPage, PageError404, PageError500 } from '../pages'
 import {
-    SigaRoutes,
-    SystemRoutes,
-    ResourceRoutes,
-    PettyCashRoutes,
-    VoucherRoutes,
+    ModuleAmbitRoutes,
     DesignRoutes,
-    AmbitRoutes,
-    IrrigationSchemeRoutes
+    ModuleIrrigationRoutes,
+    ModuleFilesRoutes,
+    ModuleSigaRoutes,
+    ModuleSystemRoutes,
+    ModuleAccountingRoutes,
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -137,41 +136,15 @@ export const AppRoot = () => {
                 <Route path={`/`} element={<Layout />}>
                     <Route index element={<Navigate to={`/app/home`} />} />
                     <Route path={`home`} element={<DashboardPage />} />
-                    <Route path={`ambit/*`} element={<AmbitRoutes />} />
-                    <Route path={`schm/*`} element={<IrrigationSchemeRoutes />} />
-                    {/* <Route path={`ambit`}>
-                        <Route index element={<AmbitResume />} />
-                        <Route path={`orgz`} element={<GuardRoute meta={['ambit', 'organization']} component={OrganizationList} />} />
-                        <Route path={`orgz/junta/:id`} element={<GuardRoute meta={['ambit', 'organization']} component={JuntaEdit} />} />
-                        <Route path={`orgz/comm/:id`} element={<GuardRoute meta={['ambit', 'organization']} component={CommitteeEdit} />} />
-                        <Route path={`trrty`} element={<GuardRoute meta={['ambit', 'territory']} component={TerritoryList} />} />
-                        <Route path={`trrty/zone/:id`} element={<GuardRoute meta={['ambit', 'territory']} component={ZoneEdit} />} />
-                        <Route path={`trrty/block/:id`} element={<GuardRoute meta={['ambit', 'territory']} component={BlockEdit} />} />
-                        <Route path={`geoobj`} element={<GuardRoute meta={['ambit', 'geographic']} component={GeoObjectList} />} />
-                        <Route path={`geoobj/new`} element={<GuardRoute meta={['ambit', 'geographic']} component={GeoObjectNew} />} />
-                    </Route>
-                    <Route path={`user_reg`}>
-                        <Route index element={<AppUserRegResume />} />
-                        <Route path={`user_farm`} element={<GuardRoute meta={['userreg', 'userfarm']} component={UserFarmList} />} />
-                    </Route>
-                    <Route path={`schm`}>
-                        <Route path={`irrig`} element={<GuardRoute meta={['irrigschm', 'irrignet']} component={IrrigationNetworkList} />} />
-                        <Route path={`irrig/strtr/:id`} element={<GuardRoute meta={['irrigschm', 'irrignet']} component={StructureEdit} />} />
-                        <Route path={`irrig/sect/:id`} element={<GuardRoute meta={['irrigschm', 'irrignet']} component={SectionEdit} />} />
-                        <Route path={`irrig/wtsrc/:id`} element={<GuardRoute meta={['irrigschm', 'irrignet']} component={WaterSourceEdit} />} />
-                        <Route path={`var`} element={<GuardRoute meta={['irrigschm', 'variables']} component={VariableList} />} />
-                    </Route>*/}
-                    <Route path={`acct`}>
-                        <Route path={`resume`} element={<>Hola somos el resumen de contabilidad</>} />
-                        <Route path={`petty_cash/*`} element={<GuardRoute meta={['accounting']} component={PettyCashRoutes} />} />
-                        <Route path={`voucher/*`} element={<GuardRoute meta={['accounting']} component={VoucherRoutes} />} />
-                    </Route>
-                    <Route path={`exp/*`} element={<ResourceRoutes />} />
-                    <Route path={`siga/*`} element={<SigaRoutes />} />
+                    <Route path={`ambit/*`} element={<ModuleAmbitRoutes />} />
+                    <Route path={`schm/*`} element={<ModuleIrrigationRoutes />} />
+                    <Route path={`acct/*`} element={<ModuleAccountingRoutes />} />
+                    <Route path={`files/*`} element={<ModuleFilesRoutes />} />
+                    <Route path={`siga/*`} element={<ModuleSigaRoutes />} />
                     <Route path={`tools/*`}>
                         <Route path={`design/*`} element={<GuardRoute meta={['tools']} component={DesignRoutes} />} />
                     </Route>
-                    <Route path={`sys/*`} element={<SystemRoutes />} />
+                    <Route path={`sys/*`} element={<ModuleSystemRoutes />} />
                     <Route path={`err404`} element={<PageError404 />} />
                     <Route path={`err500`} element={<PageError500 />} />
                     <Route path={`*`} element={<PageError404 />} />

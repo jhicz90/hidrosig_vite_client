@@ -5,13 +5,41 @@ import { CommitteeActivePage, JuntaActivePage, OrganizationListPage, JuntaList, 
 export const OrganizationRoutes = () => {
     return (
         <Routes>
-            <Route path={`/`} element={<GuardRoute meta={['organization']} component={OrganizationListPage} />} >
+            <Route element={<OrganizationListPage />}>
                 <Route index element={<Navigate to={`junta`} />} />
-                <Route path={`junta`} element={<JuntaList />} />
-                <Route path={`comm`} element={<CommitteeList />} />
+                <Route
+                    path={`junta`}
+                    element={
+                        <GuardRoute meta={['organization_junta']}>
+                            <JuntaList />
+                        </GuardRoute>
+                    }
+                />
+                <Route
+                    path={`comm`}
+                    element={
+                        <GuardRoute meta={['organization_comm']}>
+                            <CommitteeList />
+                        </GuardRoute>
+                    }
+                />
             </Route>
-            <Route path={`junta/:juntaid`} element={<JuntaActivePage />} />
-            <Route path={`comm/:commid`} element={<CommitteeActivePage />} />
+            <Route
+                path={`junta/:juntaid`}
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <JuntaActivePage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`comm/:commid`}
+                element={
+                    <GuardRoute meta={['organization_comm']}>
+                        <CommitteeActivePage />
+                    </GuardRoute>
+                }
+            />
         </Routes>
     )
 }

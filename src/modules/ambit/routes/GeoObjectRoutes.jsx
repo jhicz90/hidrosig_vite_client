@@ -5,7 +5,14 @@ import { MapGeographicPage } from '..'
 export const GeoObjectRoutes = () => {
     return (
         <Routes>
-            <Route path={`/`} element={<GuardRoute meta={['geographic']} component={MapGeographicPage} />} />
+            <Route
+                index
+                element={
+                    <GuardRoute meta={['geographic_design']}>
+                        <MapGeographicPage />
+                    </GuardRoute>
+                }
+            />
         </Routes>
     )
 }

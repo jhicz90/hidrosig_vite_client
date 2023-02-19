@@ -6,7 +6,14 @@ export const DesignRoutes = () => {
     return (
         <>
             <Routes>
-                <Route path={`/`} element={<GuardRoute meta={['design']} component={DesignOptionsPage} />} />
+                <Route
+                    index
+                    element={
+                        <GuardRoute meta={['design']}>
+                            <DesignOptionsPage />
+                        </GuardRoute>
+                    }
+                />
             </Routes>
         </>
     )

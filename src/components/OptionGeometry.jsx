@@ -20,7 +20,7 @@ export const OptionGeometry = ({ geo = null }) => {
                         Subido por:
                     </div>
                     <div className="col-10">
-                        {`${geo.createdBy.names} ${geo.createdBy.surnames}`}
+                        {!!geo.createdBy ? `${geo.createdBy?.names} ${geo.createdBy?.surnames}` : 'No puede especificar el usuario o ya no existe'}
                     </div>
                 </div>
                 <div className="row">

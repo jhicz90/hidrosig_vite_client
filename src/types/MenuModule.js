@@ -164,7 +164,7 @@ export const menuModule = [
         label: 'Archivos',
         icon: IconSysFiles,
         rcIcon: FcOpenedFolder,
-        to: 'exp',
+        to: 'files',
         meta: ['explorer'],
         children: [
             {
@@ -173,7 +173,7 @@ export const menuModule = [
             },
             {
                 label: 'Recursos',
-                to: 'resources',
+                to: 'res',
                 meta: ['resources'],
                 detail: 'Lista de los recursos o archivos del sistema, además podra subir o editar dichos archivos según el tipo de archivo.'
             }

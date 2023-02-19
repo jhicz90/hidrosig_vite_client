@@ -1,2 +1,2 @@
 export * from './IrrigationNetworkRoutes'
-export * from './IrrigationSchemeRoutes'
+export * from './ModuleIrrigationRoutes'

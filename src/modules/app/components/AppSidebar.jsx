@@ -51,7 +51,7 @@ const Sidebar = () => {
 
     const { modAccess: modules } = useSelector(state => state.auth)
 
-    const menu = modules.find(m => m === MD5(secretAccess).toString()) ? menuModule : checkModules(menuModule, modules)
+    const menu = modules.find(m => m.key === MD5(secretAccess).toString()) ? menuModule : checkModules(menuModule, modules)
 
     return (
         <nav>

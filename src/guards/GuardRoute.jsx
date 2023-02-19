@@ -4,17 +4,17 @@ import { MD5 } from 'crypto-js'
 
 const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
 
-export const GuardRoute = ({ meta = [], component: RouteComponent }) => {
+export const GuardRoute = ({ meta = [], children }) => {
 
     const { modAccess: modules } = useSelector(state => state.auth)
-    const access = meta.filter(m => modules.find(acc => acc === m))
+    const access = modules.filter(m => meta.find(me => m.key === MD5(me).toString()))
 
-    if (modules.find(m => m === MD5(secretAccess).toString())) {
-        return <RouteComponent />
+    if (modules.find(m => m.key === MD5(secretAccess).toString())) {
+        return children
     }
 
-    if (access.length === meta.length) {
-        return <RouteComponent />
+    if (access.find(acc => acc.view === true)?.view) {
+        return children
     }
 
     return <Navigate to={-1} replace />

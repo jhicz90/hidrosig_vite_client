@@ -5,12 +5,26 @@ import { EditBlock, EditZone, ZoneList, TerritoryListPage, BlockList } from '..'
 export const TerritoryRoutes = () => {
     return (
         <Routes>
-            <Route path={`/`} element={<GuardRoute meta={['territory']} component={TerritoryListPage} />} >
+            <Route element={<TerritoryListPage />} >
                 <Route index element={<Navigate to={`zone`} />} />
-                <Route path={`zone`} element={<ZoneList />} >
+                <Route
+                    path={`zone`}
+                    element={
+                        <GuardRoute meta={['ambit_zones']}>
+                            <ZoneList />
+                        </GuardRoute>
+                    }
+                >
                     <Route path={`edit/:zoneid`} element={<EditZone />} />
                 </Route>
-                <Route path={`block`} element={<BlockList />} >
+                <Route
+                    path={`block`}
+                    element={
+                        <GuardRoute meta={['ambit_blocks']}>
+                            <BlockList />
+                        </GuardRoute>
+                    }
+                >
                     <Route path={`edit/:blockid`} element={<EditBlock />} />
                 </Route>
             </Route>

@@ -23,7 +23,7 @@ export const IrrigationNetworkActive = ({ typeButton = 1 }) => {
                         className='text-primary text-decoration-none'
                         onClick={() => {
                             if (depth === 0) {
-                                navigate(`/app/schm/irrig/watersource/edit/${id}`, { state: { from: location } })
+                                navigate(`/app/schm/irrig/ws/edit/${id}`, { state: { from: location } })
                             } else {
                                 navigate(`/app/schm/irrig/net/edit/${id}`, { state: { from: location } })
                             }

@@ -5,8 +5,22 @@ import { OccupationActivePage, OccupationListPage } from '../pages'
 export const OccupationRoutes = () => {
     return (
         <Routes>
-            <Route path={`/`} element={<GuardRoute meta={['occupation']} component={OccupationListPage} />} />
-            <Route path={`/:occupid`} element={<GuardRoute meta={['occupation']} component={OccupationActivePage} />} />
+            <Route
+                index
+                element={
+                    <GuardRoute meta={['occupation']}>
+                        <OccupationListPage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`/:occupid`}
+                element={
+                    <GuardRoute meta={['occupation']}>
+                        <OccupationActivePage />
+                    </GuardRoute>
+                }
+            />
         </Routes>
     )
 }
