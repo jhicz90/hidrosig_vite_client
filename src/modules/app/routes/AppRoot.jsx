@@ -159,7 +159,9 @@ export const AppRoot = () => {
                     element={
                         <>
                             <Layout />
-                            <ModalRoutes />
+                            <CreatePettyCash />
+                            <CreateVoucher />
+                            <EditVoucher />
                         </>
                     }
                 >
@@ -249,21 +251,6 @@ const ModalRoutes = () => {
                 w === 'watersource_edit' && validator.isMongoId(id)
                 &&
                 <EditWaterSource wsid={id} />
-            }
-            {
-                w === 'pettycash_create' && id === 'new'
-                &&
-                <CreatePettyCash />
-            }
-            {
-                w === 'voucher_create' && id === 'new'
-                &&
-                <CreateVoucher />
-            }
-            {
-                w === 'voucher_edit' && validator.isMongoId(id)
-                &&
-                <EditVoucher voucherid={id} />
             }
             {
                 w === 'document_create' && id === 'new'

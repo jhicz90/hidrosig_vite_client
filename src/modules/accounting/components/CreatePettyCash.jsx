@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
@@ -8,47 +9,55 @@ import { useNavigateState } from '../../../hooks'
 
 export const CreatePettyCash = () => {
 
-    const [show, setShow] = useState(true)
-
+    const [show, setShow] = useState(false)
+    const [searchParams] = useSearchParams()
+    const { w } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.pettycash)
 
     useEffect(() => {
-        dispatch(startAddNewPettycash())
+        if (w === 'pettycash_create') {
+            setShow(true)
+            dispatch(startAddNewPettycash())
+        }
+
         return () => dispatch(setActiveNewPettycash(null))
-    }, [dispatch])
+    }, [dispatch, w])
 
     return (
         <Offcanvas
-            show={show && !!activeNew}
+            show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear caja chica</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-accounting-pettycash-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreatePettyCashStep />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-accounting-pettycash-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreatePettyCashStep />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }

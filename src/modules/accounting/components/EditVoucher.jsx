@@ -1,33 +1,42 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
+import validator from 'validator'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageIdVoucher, startUpdateImageVoucher, startUpdateVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
+import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageIdVoucher, startUpdateVoucher, useLazyGetVoucherByIdQuery } from '../../../store/actions'
 import { DatePicker, FileImageSlider, LoadingPage, OptionSocialReason } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditVoucher = ({ voucherid }) => {
+export const EditVoucher = () => {
 
-    const [show, setShow] = useState(true)
-
+    const [show, setShow] = useState(false)
+    const [searchParams] = useSearchParams()
+    const { w, id } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetVoucherByIdQuery(voucherid)
+    const [trigger, { data = null, isLoading, isError }] = useLazyGetVoucherByIdQuery()
     const { active, isSaving } = useSelector(state => state.voucher)
+
+    useEffect(() => {
+        if (w === 'voucher_edit' && validator.isMongoId(id)) {
+            setShow(true)
+            trigger(id)
+        }
+
+        return () => dispatch(setActiveVoucher(null))
+    }, [w, id])
 
     useEffect(() => {
         if (!!data) {
             dispatch(setActiveVoucher(data))
         }
 
-        return () => {
-            dispatch(setActiveVoucher(null))
-        }
+        return () => dispatch(setActiveVoucher(null))
     }, [data])
 
     if (isError) {
@@ -68,7 +77,7 @@ export const EditVoucher = ({ voucherid }) => {
                             </div>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            <EditVoucherStep />
+                            <EditVoucherStep  />
                         </Offcanvas.Body>
                         <div className='offcanvas-footer offcanvas-danger'>
                             <div className='d-flex justify-content-end gap-2 w-100'>

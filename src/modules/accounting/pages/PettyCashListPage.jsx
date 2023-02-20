@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/app'
-import { CreatePettyCash, PettyCashList } from '../components'
+import { LinkBack } from '../../../components'
+import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
+import { PettyCashList } from '../components'
 
 export const PettyCashListPage = () => {
 
@@ -13,7 +14,7 @@ export const PettyCashListPage = () => {
         dispatch(setToolbarTitle('CAJA CHICA'))
         dispatch(setToolbarActions(
             <>
-                <CreatePettyCash />
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=pettycash_create`}>Nueva caja chica</LinkBack>
             </>
         ))
 

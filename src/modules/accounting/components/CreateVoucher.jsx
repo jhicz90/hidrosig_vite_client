@@ -1,56 +1,66 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import moment from 'moment'
+import validator from 'validator'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewVoucher, searchSocialReason, setActiveNewVoucher, startAddNewVoucher, startSaveNewVoucher } from '../../../store/actions'
 import { DatePicker, LoadingPage, OptionSocialReason } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const CreateVoucher = ({ pettycash = null }) => {
+export const CreateVoucher = () => {
 
-    const [show, setShow] = useState(true)
-
+    const [show, setShow] = useState(false)
+    const [searchParams] = useSearchParams()
+    const { w, ptt } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.voucher)
 
     useEffect(() => {
-        dispatch(startAddNewVoucher())
+        if (w === 'voucher_create' && validator.isMongoId(ptt)) {
+            setShow(true)
+            dispatch(startAddNewVoucher(ptt))
+        }
+
         return () => dispatch(setActiveNewVoucher(null))
-    }, [dispatch])
+    }, [dispatch, w, ptt])
 
     return (
         <Offcanvas
-            show={show && !!activeNew}
+            show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear comprobante</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-accounting-voucher-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreateVoucherStep pettycashActive={pettycash} />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-accounting-voucher-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreateVoucherStep />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }
@@ -58,7 +68,7 @@ export const CreateVoucher = ({ pettycash = null }) => {
     )
 }
 
-export const CreateVoucherStep = ({ pettycashActive }) => {
+export const CreateVoucherStep = () => {
 
     const dispatch = useDispatch()
     const { activeNew } = useSelector(state => state.voucher)
@@ -76,8 +86,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
             nameSocialReason: socialReason ? socialReason?.nameSocialReason : '',
             concept,
             typeIncomeExpenses,
-            amountReceipt,
-            pettycash: pettycashActive ? pettycashActive?._id : null
+            amountReceipt
         }))
         dispatch(startSaveNewVoucher())
     }
@@ -106,8 +115,8 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                                         id='newVoucherDay'
                                         value={value}
                                         onChange={(e) => {
-                                            if (moment(e).isBefore(pettycashActive?.startDeclaration || new Date())) {
-                                                setValue('cancelDay', pettycashActive?.startDeclaration || new Date())
+                                            if (moment(e).isBefore(activeNew?.pettycash?.startDeclaration || new Date())) {
+                                                setValue('cancelDay', activeNew?.pettycash?.startDeclaration || new Date())
                                             } else {
                                                 setValue('cancelDay', e)
                                             }
@@ -133,7 +142,7 @@ export const CreateVoucherStep = ({ pettycashActive }) => {
                                 }) => (
                                     <DatePicker
                                         id='newCancelDay'
-                                        minDate={moment(pettycashActive?.startDeclaration || new Date()).toDate()}
+                                        minDate={moment(activeNew?.pettycash?.startDeclaration || new Date()).toDate()}
                                         value={value}
                                         onChange={onChange}
                                     />

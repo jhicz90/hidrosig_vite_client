@@ -6,13 +6,16 @@ import { addNewVoucher, setActiveNewVoucher, setActiveVoucher, setSavingVoucher,
 
 const SwalReact = withReactContent(Swal)
 
-export const startAddNewVoucher = () => {
+export const startAddNewVoucher = (pettycashId = null) => {
     return async (dispatch) => {
 
         dispatch(addNewVoucher())
 
         const resp = await fetchByToken({
-            endpoint: `voucher/create/new`
+            endpoint: `voucher/create/new`,
+            params: {
+                pettycashId
+            }
         })
 
         dispatch(setSavingNewVoucher(false))

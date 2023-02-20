@@ -73,7 +73,7 @@ const PettyCashVoucher = () => {
                 loading={isLoading}
                 action={
                     <SettingAction>
-                        <CreateVoucher pettycash={active} />
+                        <LinkBack className='btn btn-neutral text-primary' to={`?w=voucher_create&ptt=${active._id}`}>Nuevo comprobante</LinkBack>
                     </SettingAction>
                 }
                 list={

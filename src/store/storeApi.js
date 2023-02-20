@@ -570,6 +570,7 @@ export const {
     useGetZoneByIdQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
+    useLazyGetVoucherByIdQuery,
     useNewSectionByStructureQuery,
     useUpdateOrderChannelMutation,
     useUpdateRugosityMutation,
