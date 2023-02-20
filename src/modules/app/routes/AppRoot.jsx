@@ -152,36 +152,37 @@ export const AppRoot = () => {
     // }, [uid, session, dispatch])
 
     return (
-        <>
-            <Routes>
-                <Route
-                    path={`/`}
-                    element={
-                        <>
-                            <Layout />
-                            <CreatePettyCash />
-                            <CreateVoucher />
-                            <EditVoucher />
-                        </>
-                    }
-                >
-                    <Route index element={<Navigate to={`/app/home`} />} />
-                    <Route path={`home`} element={<DashboardPage />} />
-                    <Route path={`ambit/*`} element={<ModuleAmbitRoutes />} />
-                    <Route path={`schm/*`} element={<ModuleIrrigationRoutes />} />
-                    <Route path={`acct/*`} element={<ModuleAccountingRoutes />} />
-                    <Route path={`files/*`} element={<ModuleFilesRoutes />} />
-                    <Route path={`siga/*`} element={<ModuleSigaRoutes />} />
-                    <Route path={`tools/*`}>
-                        <Route path={`design/*`} element={<GuardRoute meta={['tools']} component={DesignRoutes} />} />
-                    </Route>
-                    <Route path={`sys/*`} element={<ModuleSystemRoutes />} />
-                    <Route path={`err404`} element={<PageError404 />} />
-                    <Route path={`err500`} element={<PageError500 />} />
-                    <Route path={`*`} element={<PageError404 />} />
+        <Routes>
+            <Route
+                path={`/`}
+                element={
+                    <>
+                        <Layout />
+                        <CreatePettyCash />
+                        <CreateVoucher />
+                        <EditVoucher />
+                        <CreateBlock />
+                        <CreateZone />
+                        <CreateJunta/>
+                    </>
+                }
+            >
+                <Route index element={<Navigate to={`/app/home`} />} />
+                <Route path={`home`} element={<DashboardPage />} />
+                <Route path={`ambit/*`} element={<ModuleAmbitRoutes />} />
+                <Route path={`schm/*`} element={<ModuleIrrigationRoutes />} />
+                <Route path={`acct/*`} element={<ModuleAccountingRoutes />} />
+                <Route path={`files/*`} element={<ModuleFilesRoutes />} />
+                <Route path={`siga/*`} element={<ModuleSigaRoutes />} />
+                <Route path={`tools/*`}>
+                    <Route path={`design/*`} element={<GuardRoute meta={['tools']} component={DesignRoutes} />} />
                 </Route>
-            </Routes>
-        </>
+                <Route path={`sys/*`} element={<ModuleSystemRoutes />} />
+                <Route path={`err404`} element={<PageError404 />} />
+                <Route path={`err500`} element={<PageError500 />} />
+                <Route path={`*`} element={<PageError404 />} />
+            </Route>
+        </Routes>
     )
 }
 
@@ -192,11 +193,6 @@ const ModalRoutes = () => {
 
     return (
         <>
-            {
-                w === 'junta_create' && id === 'new'
-                &&
-                <CreateJunta />
-            }
             {
                 w === 'comm_create' && id === 'new'
                 &&

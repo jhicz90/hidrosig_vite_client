@@ -3,11 +3,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
+import validator from 'validator'
 import { LoadingPage, OptionOrgz } from '../../../components'
 import { editActiveNewZone, searchJunta, setActiveNewZone, startAddNewZone, startSaveNewZone } from '../../../store/actions'
 import { useNavigateState } from '../../../hooks'
+import { useSearchParams } from 'react-router-dom'
 
-export const CreateZone = ({ junta = null }) => {
+export const CreateZone = () => {
+    const [searchParams] = useSearchParams()
+    const { w, j = '' } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'zone_create' || validator.isMongoId(j))
+                &&
+                <CreateZoneWindow junta={j} />
+            }
+        </>
+    )
+}
+
+const CreateZoneWindow = ({ junta = null }) => {
 
     const [show, setShow] = useState(true)
 
@@ -23,7 +40,7 @@ export const CreateZone = ({ junta = null }) => {
 
     return (
         <Offcanvas
-            show={show && !!activeNew}
+            show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
             placement='end'
@@ -31,25 +48,27 @@ export const CreateZone = ({ junta = null }) => {
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear zona</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-ambit-zone-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreateZoneStep juntaActive={junta} />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-ambit-zone-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreateZoneStep juntaActive={junta} />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }
@@ -122,7 +141,7 @@ const CreateZoneStep = ({ juntaActive }) => {
                 <div className='row'>
                     <div className='col'>
                         <Form.Group className='mb-3' controlId='newJunta'>
-                            <Form.Label>Razón social</Form.Label>
+                            <Form.Label>Junta de usuarios</Form.Label>
                             <Controller
                                 name='junta'
                                 control={control}

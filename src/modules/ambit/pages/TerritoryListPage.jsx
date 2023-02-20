@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { NavLink, Outlet } from 'react-router-dom'
+import { LinkBack } from '../../../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { CreateBlock, CreateZone } from '../components'
 
 export const TerritoryListPage = () => {
 
@@ -14,8 +14,8 @@ export const TerritoryListPage = () => {
         dispatch(setToolbarTitle('TERRITORIO'))
         dispatch(setToolbarActions(
             <>
-                <CreateZone />
-                <CreateBlock />
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=zone_create&j=`}>Nueva zona</LinkBack>
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=block_create&j=&c=`}>Nuevo bloque</LinkBack>
             </>
         ))
 

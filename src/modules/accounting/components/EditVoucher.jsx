@@ -7,29 +7,34 @@ import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import validator from 'validator'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageIdVoucher, startUpdateVoucher, useLazyGetVoucherByIdQuery } from '../../../store/actions'
+import { editActiveVoucher, searchSocialReason, setActiveVoucher, startDeleteImageVoucher, startDeleteVoucher, startModalResource, startUpdateImageIdVoucher, startUpdateVoucher, useGetVoucherByIdQuery, useLazyGetVoucherByIdQuery } from '../../../store/actions'
 import { DatePicker, FileImageSlider, LoadingPage, OptionSocialReason } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const EditVoucher = () => {
-
-    const [show, setShow] = useState(false)
     const [searchParams] = useSearchParams()
     const { w, id } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'voucher_edit' && validator.isMongoId(id))
+                &&
+                <EditVoucherWindow id={id} />
+            }
+        </>
+    )
+}
+
+const EditVoucherWindow = ({ id }) => {
+
+    const [show, setShow] = useState(true)
+
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
-    const [trigger, { data = null, isLoading, isError }] = useLazyGetVoucherByIdQuery()
+    const { data = null, isLoading, isError } = useGetVoucherByIdQuery(id)
     const { active, isSaving } = useSelector(state => state.voucher)
-
-    useEffect(() => {
-        if (w === 'voucher_edit' && validator.isMongoId(id)) {
-            setShow(true)
-            trigger(id)
-        }
-
-        return () => dispatch(setActiveVoucher(null))
-    }, [w, id])
 
     useEffect(() => {
         if (!!data) {
@@ -77,7 +82,7 @@ export const EditVoucher = () => {
                             </div>
                         </Offcanvas.Header>
                         <Offcanvas.Body>
-                            <EditVoucherStep  />
+                            <EditVoucherStep />
                         </Offcanvas.Body>
                         <div className='offcanvas-footer offcanvas-danger'>
                             <div className='d-flex justify-content-end gap-2 w-100'>

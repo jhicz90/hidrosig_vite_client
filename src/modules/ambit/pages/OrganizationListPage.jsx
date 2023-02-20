@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { CommitteeList, CreateCommittee, CreateJunta, JuntaList } from '../components'
+import { CommitteeList } from '../components'
+import { LinkBack } from '../../../components'
 
 export const OrganizationListPage = () => {
 
@@ -16,8 +17,8 @@ export const OrganizationListPage = () => {
         dispatch(setToolbarTitle('ORGANIZACIÓN'))
         dispatch(setToolbarActions(
             <>
-                {lvlAccess < 3 && <CreateJunta />}
-                <CreateCommittee />
+                {lvlAccess < 3 && <LinkBack className='btn btn-neutral text-primary' to={`?w=junta_create`}>Nueva junta</LinkBack>}
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=comm_create&j=&c=`}>Nuevo comisión</LinkBack>
             </>
         ))
 

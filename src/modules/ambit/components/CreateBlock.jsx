@@ -1,13 +1,30 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
+import validator from 'validator'
 import { LoadingPage, OptionOrgz } from '../../../components'
 import { editActiveNewBlock, searchCommitteeByJunta, searchJunta, setActiveNewBlock, startAddNewBlock, startSaveNewBlock } from '../../../store/actions'
 import { useNavigateState } from '../../../hooks'
 
-export const CreateBlock = ({ junta = null, committee = null }) => {
+export const CreateBlock = () => {
+    const [searchParams] = useSearchParams()
+    const { w, j = '', c = '' } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'block_create' || validator.isMongoId(j) || validator.isMongoId(c))
+                &&
+                <CreateBlockWindow junta={j} committee={c} />
+            }
+        </>
+    )
+}
+
+const CreateBlockWindow = ({ junta = null, committee = null }) => {
 
     const [show, setShow] = useState(true)
 
@@ -23,7 +40,7 @@ export const CreateBlock = ({ junta = null, committee = null }) => {
 
     return (
         <Offcanvas
-            show={show && !!activeNew}
+            show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
             placement='end'
@@ -31,25 +48,27 @@ export const CreateBlock = ({ junta = null, committee = null }) => {
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear bloque de riego</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-ambit-block-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreateBlockStep juntaActive={junta} committeeActive={committee} />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-ambit-block-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreateBlockStep juntaActive={junta} committeeActive={committee} />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }

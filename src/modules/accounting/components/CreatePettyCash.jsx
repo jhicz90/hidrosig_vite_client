@@ -8,23 +8,33 @@ import { DatePicker, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreatePettyCash = () => {
-
-    const [show, setShow] = useState(false)
     const [searchParams] = useSearchParams()
     const { w } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                w === 'pettycash_create'
+                &&
+                <CreatePettyCashWindow />
+            }
+        </>
+    )
+}
+
+const CreatePettyCashWindow = () => {
+
+    const [show, setShow] = useState(true)
+
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.pettycash)
 
     useEffect(() => {
-        if (w === 'pettycash_create') {
-            setShow(true)
-            dispatch(startAddNewPettycash())
-        }
-
+        dispatch(startAddNewPettycash())
         return () => dispatch(setActiveNewPettycash(null))
-    }, [dispatch, w])
+    }, [dispatch])
 
     return (
         <Offcanvas

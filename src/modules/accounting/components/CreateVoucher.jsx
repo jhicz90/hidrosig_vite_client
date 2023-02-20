@@ -11,23 +11,33 @@ import { DatePicker, LoadingPage, OptionSocialReason } from '../../../components
 import { useNavigateState } from '../../../hooks'
 
 export const CreateVoucher = () => {
-
-    const [show, setShow] = useState(false)
     const [searchParams] = useSearchParams()
     const { w, ptt } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'voucher_create' && validator.isMongoId(ptt))
+                &&
+                <CreateVoucherWindow ptt={ptt} />
+            }
+        </>
+    )
+}
+
+const CreateVoucherWindow = ({ ptt }) => {
+
+    const [show, setShow] = useState(true)
+
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.voucher)
 
     useEffect(() => {
-        if (w === 'voucher_create' && validator.isMongoId(ptt)) {
-            setShow(true)
-            dispatch(startAddNewVoucher(ptt))
-        }
-
+        dispatch(startAddNewVoucher(ptt))
         return () => dispatch(setActiveNewVoucher(null))
-    }, [dispatch, w, ptt])
+    }, [dispatch, ptt])
 
     return (
         <Offcanvas

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
+import validator from 'validator'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { setActiveNewJunta, startAddNewJunta, editActiveNewJunta, startSaveNewJunta } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
@@ -8,6 +10,21 @@ import { useNavigateState } from '../../../hooks'
 import { LoadingPage } from '../../../components'
 
 export const CreateJunta = () => {
+    const [searchParams] = useSearchParams()
+    const { w } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'junta_create')
+                &&
+                <CreateJuntaWindow />
+            }
+        </>
+    )
+}
+
+export const CreateJuntaWindow = () => {
 
     const [show, setShow] = useState(true)
 
@@ -23,7 +40,7 @@ export const CreateJunta = () => {
 
     return (
         <Offcanvas
-            show={show && !!activeNew}
+            show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
             placement='end'
@@ -31,25 +48,27 @@ export const CreateJunta = () => {
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear junta de usuarios</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-ambit-junta-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreateJuntaStep />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-ambit-junta-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreateJuntaStep />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }
