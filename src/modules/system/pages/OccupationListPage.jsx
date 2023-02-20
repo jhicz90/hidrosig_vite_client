@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
+import { LinkBack } from '../../../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { CreateOccupation, OccupationList } from '../components'
+import { OccupationList } from '../components'
 
 export const OccupationListPage = () => {
 
@@ -13,7 +14,7 @@ export const OccupationListPage = () => {
         dispatch(setToolbarTitle('OCUPACIONES'))
         dispatch(setToolbarActions(
             <>
-                <CreateOccupation />
+                <LinkBack className='btn btn-neutral' to={`?w=occupation_create&id=new`} >Nueva ocupación</LinkBack>
             </>
         ))
 

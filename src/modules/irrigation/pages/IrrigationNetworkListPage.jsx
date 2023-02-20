@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
-import { CreateStructure, CreateWaterSource } from '../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
+import { LinkBack } from '../../../components'
 
 export const IrrigationNetworkListPage = () => {
 
@@ -15,8 +15,8 @@ export const IrrigationNetworkListPage = () => {
         dispatch(setToolbarTitle('RED DE RIEGO'))
         dispatch(setToolbarActions(
             <>
-                <CreateStructure />
-                <CreateWaterSource />
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=structure_create&id=new`} >Nueva estructura</LinkBack>
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=watersource_create&id=new`} >Nueva fuente de agua</LinkBack>
             </>
         ))
 

@@ -1,35 +1,44 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { useWizard } from 'react-use-wizard'
 import { Button, Form, FormCheck, InputGroup, Offcanvas } from 'react-bootstrap'
-import { IoMdAddCircleOutline } from 'react-icons/io'
-import { editActiveNewSection, searchRugosity, setActiveNewSection, startAddNewSection, startSaveNewSection, useGetCalcPropertiesQuery } from '../../../store/actions'
-import { InputMask, OptionRugosity, WizardStep } from '../../../components'
+import { editActiveNewSection, searchRugosity, setActiveNewSection, startSaveNewSection, useGetCalcPropertiesQuery, useNewSectionByStructureQuery } from '../../../store/actions'
+import { InputMask, LoadingPage, OptionRugosity, WizardStep } from '../../../components'
 import { pDistance, pProgressive } from '../../../helpers'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateSection = ({ className = '', children }) => {
+export const CreateSection = ({ structureId = null }) => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
     const dispatch = useDispatch()
+    const { data = null, isLoading, isError } = useNewSectionByStructureQuery(structureId)
     const { activeNew, isSavingNew } = useSelector(state => state.section)
 
     useEffect(() => {
-        return () => dispatch(setActiveNewSection(null))
-    }, [dispatch])
+        if (!!data) {
+            dispatch(setActiveNewSection({...data, structureId}))
+        }
+
+        return () => {
+            dispatch(setActiveNewSection(null))
+        }
+    }, [data])
+
+    if (isError) {
+        redirect()
+    }
 
     return (
         <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewSection())}
-            >
-                {children || <>Agregar tramo <IoMdAddCircleOutline className='ms-2' size={20} color='green' /></>}
-            </button>
             <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewSection(null))}
+                show={show}
+                onHide={() => setShow(false)}
+                onExited={() => redirect()}
                 enforceFocus={false}
                 placement='end'
             >
@@ -72,12 +81,18 @@ export const CreateSection = ({ className = '', children }) => {
                         </div>
                     </div>
                 </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <WizardStep>
-                        <CreateSectionStep1 />
-                        <CreateSectionStep2 />
-                    </WizardStep>
-                </Offcanvas.Body>
+                {
+                    (!!activeNew && !isLoading)
+                        ?
+                        <Offcanvas.Body>
+                            <WizardStep>
+                                <CreateSectionStep1 />
+                                <CreateSectionStep2 />
+                            </WizardStep>
+                        </Offcanvas.Body>
+                        :
+                        <LoadingPage />
+                }
             </Offcanvas>
         </>
     )

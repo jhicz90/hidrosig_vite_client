@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
+import { LinkBack } from '../../../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { CreateRole, RoleList } from '../components'
+import { RoleList } from '../components'
 
 export const RoleListPage = () => {
 
@@ -13,7 +14,7 @@ export const RoleListPage = () => {
         dispatch(setToolbarTitle('ROLES DE USUARIOS'))
         dispatch(setToolbarActions(
             <>
-                <CreateRole />
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=role_create&id=new`} >Nuevo rol de usuario</LinkBack>
             </>
         ))
 

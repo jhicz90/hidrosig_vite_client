@@ -63,7 +63,7 @@ export const BlockList = () => {
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=block&id=${item._id}`}
+                                        to={`?w=block_edit&id=${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>

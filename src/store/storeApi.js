@@ -298,6 +298,16 @@ export const storeApi = createApi({
             transformResponse: (response, meta, arg) => response.structure,
             providesTags: ['Irrig']
         }),
+        newSectionByStructure: builder.query({
+            query: (structureId) => ({
+                url: `section/create/new`,
+                params: {
+                    structureId
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.section,
+            providesTags: ['Irrig']
+        }),
         getSectionById: builder.query({
             query: (id) => ({
                 url: `section/edit/${id}`
@@ -560,6 +570,7 @@ export const {
     useGetZoneByIdQuery,
     useGetZonesByJuntaQuery,
     useGetZonesQuery,
+    useNewSectionByStructureQuery,
     useUpdateOrderChannelMutation,
     useUpdateRugosityMutation,
 } = storeApi

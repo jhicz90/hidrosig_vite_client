@@ -1,54 +1,59 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { setActiveNewJunta, startAddNewJunta, editActiveNewJunta, startSaveNewJunta } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
+import { useNavigateState } from '../../../hooks'
+import { LoadingPage } from '../../../components'
 
-export const CreateJunta = ({ className = '', children }) => {
+export const CreateJunta = () => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/orgz/junta')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.junta)
 
     useEffect(() => {
+        dispatch(startAddNewJunta())
         return () => dispatch(setActiveNewJunta(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewJunta())}
-            >
-                {children || 'Nueva junta'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewJunta(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear junta de usuarios</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Header className='offcanvas-primary'>
-                    <div className='d-flex justify-content-end gap-2 w-100'>
-                        <Button
-                            disabled={isSavingNew}
-                            variant='primary'
-                            type='submit'
-                            form='form-ambit-junta-create'
-                            className='w-100'
-                        >
-                            Guardar nuevo
-                        </Button>
-                    </div>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <CreateJuntaStep />
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear junta de usuarios</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Header className='offcanvas-primary'>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        disabled={isSavingNew}
+                        variant='primary'
+                        type='submit'
+                        form='form-ambit-junta-create'
+                        className='w-100'
+                    >
+                        Guardar nuevo
+                    </Button>
+                </div>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <CreateJuntaStep />
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

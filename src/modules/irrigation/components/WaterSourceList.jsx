@@ -53,7 +53,7 @@ export const WaterSourceList = () => {
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=watersource&id=${item._id}`}
+                                        to={`?w=watersource_edit&id=${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>

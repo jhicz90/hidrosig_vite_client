@@ -1,31 +1,31 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { editActiveNewStructure, setActiveNewStructure, startAddNewStructure, startSaveNewStructure } from '../../../store/actions'
-import { DatePicker, InputMask } from '../../../components'
+import { DatePicker, InputMask, LoadingPage } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateStructure = ({ className = '', children }) => {
+export const CreateStructure = () => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.structure)
 
     useEffect(() => {
+        dispatch(startAddNewStructure())
         return () => dispatch(setActiveNewStructure(null))
     }, [dispatch])
 
     return (
         <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewStructure())}
-            >
-                {children || 'Nueva estructura'}
-            </button>
             <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewStructure(null))}
+                show={show && !!activeNew}
+                onHide={() => setShow(false)}
+                onExited={() => redirect()}
                 placement='end'
             >
                 <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
@@ -44,9 +44,15 @@ export const CreateStructure = ({ className = '', children }) => {
                         </Button>
                     </div>
                 </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <CreateStructureStep />
-                </Offcanvas.Body>
+                {
+                    !!activeNew
+                        ?
+                        <Offcanvas.Body>
+                            <CreateStructureStep />
+                        </Offcanvas.Body>
+                        :
+                        <LoadingPage />
+                }
             </Offcanvas>
         </>
     )

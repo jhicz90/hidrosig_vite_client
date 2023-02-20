@@ -215,7 +215,7 @@ const PettyCashVoucher = () => {
                                             <ButtonGroup size='sm'>
                                                 <LinkBack
                                                     className='btn btn-neutral-icon'
-                                                    to={`?w=voucher&id=${item._id}`}
+                                                    to={`?w=voucher_edit&id=${item._id}`}
                                                 >
                                                     <FaPen />
                                                 </LinkBack>

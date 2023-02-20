@@ -14,7 +14,6 @@ export const EditVoucher = ({ voucherid }) => {
 
     const [show, setShow] = useState(true)
 
-    // const { voucherid } = useParams()
     const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()

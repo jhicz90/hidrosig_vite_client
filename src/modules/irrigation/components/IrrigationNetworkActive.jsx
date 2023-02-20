@@ -23,9 +23,9 @@ export const IrrigationNetworkActive = ({ typeButton = 1 }) => {
                         className='text-primary text-decoration-none'
                         onClick={() => {
                             if (depth === 0) {
-                                navigate(`?w=watersource&id=${id}`, { state: { from: location } })
+                                navigate(`?w=watersource_edit&id=${id}`, { state: { from: location } })
                             } else {
-                                navigate(`?w=structure&id=${id}`, { state: { from: location } })
+                                navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
                             }
                         }}
                     >

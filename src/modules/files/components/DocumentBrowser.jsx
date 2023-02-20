@@ -56,7 +56,7 @@ export const DocumentBrowser = () => {
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=document&id=${item._id}`}
+                                        to={`?w=document_edit&id=${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>

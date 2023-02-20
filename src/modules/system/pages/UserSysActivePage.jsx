@@ -1,16 +1,20 @@
 import { useEffect } from 'react'
-import { Navigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BsKey, BsShieldLock, BsTrash } from 'react-icons/bs'
-import { FiSettings, FiUser } from 'react-icons/fi'
+import { FiUser } from 'react-icons/fi'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
-import { LoadingPage, ModuleNav } from '../../../components'
+import { IoMdNotificationsOutline } from 'react-icons/io'
+import { LinkBack, LoadingPage, ModuleNav } from '../../../components'
 import { clearToolbarActions, setActiveUserSys, setToolbarActions, setToolbarTitle, useGetUsrSysByIdQuery } from '../../../store/actions'
-import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete, CreateUserSys, CreateOccupation, UserSysModuleOptions } from '../components'
+import { UserSysModuleBanner, UserSysModuleEmail, UserSysModuleInformation, UserSysModulePassword, UserSysModuleRole, UserSysModuleDelete, CreateOccupation, UserSysModuleNotify } from '../components'
+import { useNavigateState } from '../../../hooks'
 
 export const UserSysActivePage = () => {
 
     const { userid } = useParams()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/sys/user_sys')
+
     const dispatch = useDispatch()
     const { data = null, isLoading, isError } = useGetUsrSysByIdQuery(userid)
     const { active } = useSelector(state => state.usersys)
@@ -23,8 +27,8 @@ export const UserSysActivePage = () => {
             dispatch(setToolbarTitle('USUARIO'))
             dispatch(setToolbarActions(
                 <>
-                    <CreateUserSys />
-                    <CreateOccupation />
+                    <LinkBack className='btn btn-neutral text-primary' to={`?w=usersys_create&id=new`} >Nuevo usuario</LinkBack>
+                    <LinkBack className='btn btn-neutral text-primary' to={`?w=occupation_create&id=new`} >Nueva ocupación</LinkBack>
                 </>
             ))
         }
@@ -40,7 +44,7 @@ export const UserSysActivePage = () => {
     }
 
     if (isError) {
-        return <Navigate to={-1} />
+        redirectEscape()
     }
 
     return (
@@ -60,11 +64,11 @@ export const UserSysActivePage = () => {
                                     module: UserSysModuleInformation
                                 },
                                 {
-                                    id: 'optionusersys',
-                                    icon: FiSettings,
-                                    name: 'Opciones',
+                                    id: 'notifyusersys',
+                                    icon: IoMdNotificationsOutline,
+                                    name: 'Notificaciones',
                                     title: true,
-                                    module: UserSysModuleOptions
+                                    module: UserSysModuleNotify
                                 },
                                 {
                                     id: 'emailusersys',

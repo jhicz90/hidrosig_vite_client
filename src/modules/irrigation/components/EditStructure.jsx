@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { IoMdAddCircleOutline, IoMdOpen, IoMdTrash } from 'react-icons/io'
 import { Controller, useForm } from 'react-hook-form'
-import { CreateSection } from './CreateSection'
 import { editActiveStructure, setActiveStructure, startDeleteIdSection, startDeleteImageStructure, startDeleteStructure, startModalResource, startUpdateImageIdStructure, startUpdateStructure, useGetStructureByIdQuery } from '../../../store/actions'
 import { DatePicker, FileImageSlider, Image, InputMask, LinkBack, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
@@ -319,7 +318,9 @@ const EditStructureStep = () => {
                     <Form.Group className='mb-3' controlId='pSections'>
                         <Form.Label>Tramos</Form.Label>
                         <ListGroup>
-                            <CreateSection className='list-group-item list-group-item-action d-flex align-items-center' />
+                            <LinkBack className='list-group-item list-group-item-action d-flex align-items-center' to={`?w=section_create&id=new&structure_id=${active._id}`} >
+                                Agregar tramo <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
+                            </LinkBack>
                             {
                                 active.sections.map(sect =>
                                     <ListGroup.Item key={sect._id}>
@@ -333,7 +334,7 @@ const EditStructureStep = () => {
                                                 <div className='btn-group'>
                                                     <LinkBack
                                                         className='btn btn-neutral-icon text-primary'
-                                                        to={`?w=section&id=${sect._id}`}
+                                                        to={`?w=section_edit&id=${sect._id}`}
                                                     >
                                                         <IoMdOpen size={20} />
                                                     </LinkBack>

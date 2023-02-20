@@ -6,23 +6,20 @@ import { addNewSection, setActiveNewSection, setActiveSection, setSavingSection,
 
 const SwalReact = withReactContent(Swal)
 
-export const startAddNewSection = () => {
+export const startAddNewSection = ({ structureId = null }) => {
     return async (dispatch, getState) => {
 
         dispatch(addNewSection())
 
-        const { active } = getState().structure
-        const { _id } = active
-
         const resp = await fetchByToken({
             endpoint: `section/create/new`,
-            params: { structureId: _id }
+            params: { structureId }
         })
 
         dispatch(setSavingNewSection(false))
 
         if (resp.ok) {
-            dispatch(setActiveNewSection({ ...resp.section, structureId: _id }))
+            dispatch(setActiveNewSection({ ...resp.section, structureId }))
         }
     }
 }

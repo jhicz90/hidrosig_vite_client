@@ -88,7 +88,6 @@ export const PettyCashActivePage = () => {
                     </ModuleNav>
                 </div>
             }
-            <Outlet />
         </>
     )
 }

@@ -1,46 +1,50 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { useWizard } from 'react-use-wizard'
 import { setActiveNewOccupation, startAddNewOccupation, editActiveNewOccupation, startSaveNewOccupation, searchJunta, searchCommitteeByJunta } from '../../../store/actions'
-import { ListGroupOption, ListGroupOptionItem, OptionOrgz, WizardStep } from '../../../components'
+import { ListGroupOption, ListGroupOptionItem, LoadingPage, OptionOrgz, WizardStep } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateOccupation = ({ className = '', children }) => {
+export const CreateOccupation = () => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/sys/user_sys')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.occupation)
 
     useEffect(() => {
+        dispatch(startAddNewOccupation())
         return () => dispatch(setActiveNewOccupation(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewOccupation())}
-            >
-                {children || 'Nueva ocupación'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewOccupation(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear ocupación</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <WizardStep>
-                        <CreateOccupationStep1 />
-                        <CreateOccupationStep2 />
-                    </WizardStep>
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear ocupación</Offcanvas.Title>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <WizardStep>
+                            <CreateOccupationStep1 />
+                            <CreateOccupationStep2 />
+                        </WizardStep>
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

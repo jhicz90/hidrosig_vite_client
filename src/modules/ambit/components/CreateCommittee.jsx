@@ -1,47 +1,51 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { useWizard } from 'react-use-wizard'
 import { setActiveNewCommittee, startAddNewCommittee, editActiveNewCommittee, startSaveNewCommittee, searchJunta, searchZoneByJunta } from '../../../store/actions'
-import { imageGet, upperCaseCatch } from '../../../helpers'
-import { OptionOrgz, WizardStep } from '../../../components'
+import { upperCaseCatch } from '../../../helpers'
+import { LoadingPage, OptionOrgz, WizardStep } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateCommittee = ({ junta = null, className = '', children }) => {
+export const CreateCommittee = ({ junta = null }) => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/orgz/comm')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.committee)
 
     useEffect(() => {
+        dispatch(startAddNewCommittee())
         return () => dispatch(setActiveNewCommittee(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewCommittee())}
-            >
-                {children || 'Nueva comisión'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewCommittee(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear comisión de usuarios</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <WizardStep>
-                        <CreateCommitteeStep1 />
-                        <CreateCommitteeStep2 juntaActive={junta} />
-                    </WizardStep>
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear comisión de usuarios</Offcanvas.Title>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <WizardStep>
+                            <CreateCommitteeStep1 />
+                            <CreateCommitteeStep2 juntaActive={junta} />
+                        </WizardStep>
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

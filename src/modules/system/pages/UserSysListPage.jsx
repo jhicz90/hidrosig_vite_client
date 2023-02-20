@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
+import { LinkBack } from '../../../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/app'
-import { CreateUserSys, UserSysList } from '../components'
+import { UserSysList } from '../components'
 
 export const UserSysListPage = () => {
 
@@ -13,7 +14,7 @@ export const UserSysListPage = () => {
         dispatch(setToolbarTitle('USUARIOS DE SISTEMA'))
         dispatch(setToolbarActions(
             <>
-                <CreateUserSys />
+                 <LinkBack className='btn btn-neutral text-primary' to={`?w=usersys_create&id=new`} >Nuevo usuario</LinkBack>
             </>
         ))
 

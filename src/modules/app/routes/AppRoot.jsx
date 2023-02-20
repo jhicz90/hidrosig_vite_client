@@ -23,6 +23,19 @@ import {
     EditWaterSource,
     EditZone,
     EditBlock,
+    CreateUserSys,
+    CreateOccupation,
+    CreateRole,
+    CreateStructure,
+    CreateSection,
+    CreateWaterSource,
+    CreateDocument,
+    CreateBlock,
+    CreateZone,
+    CreateJunta,
+    CreateCommittee,
+    CreateVoucher,
+    CreatePettyCash,
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -172,44 +185,110 @@ export const AppRoot = () => {
 
 const ModalRoutes = () => {
     const [searchParams] = useSearchParams()
+    const options = Object.fromEntries([...searchParams])
     const { w, id } = Object.fromEntries([...searchParams])
 
     return (
         <>
             {
-                w === 'zone' && validator.isMongoId(id)
+                w === 'junta_create' && id === 'new'
+                &&
+                <CreateJunta />
+            }
+            {
+                w === 'comm_create' && id === 'new'
+                &&
+                <CreateCommittee />
+            }
+            {
+                w === 'zone_create' && id === 'new'
+                &&
+                <CreateZone />
+            }
+            {
+                w === 'zone_edit' && validator.isMongoId(id)
                 &&
                 <EditZone zoneid={id} />
             }
             {
-                w === 'block' && validator.isMongoId(id)
+                w === 'block_create' && id === 'new'
+                &&
+                <CreateBlock />
+            }
+            {
+                w === 'block_edit' && validator.isMongoId(id)
                 &&
                 <EditBlock blockid={id} />
             }
             {
-                w === 'structure' && validator.isMongoId(id)
+                w === 'structure_create' && id === 'new'
+                &&
+                <CreateStructure />
+            }
+            {
+                w === 'structure_edit' && validator.isMongoId(id)
                 &&
                 <EditStructure strid={id} />
             }
             {
-                w === 'section' && validator.isMongoId(id)
+                w === 'section_create' && id === 'new' && validator.isMongoId(options.structure_id)
+                &&
+                <CreateSection structureId={options.structure_id} />
+            }
+            {
+                w === 'section_edit' && validator.isMongoId(id)
                 &&
                 <EditSection secid={id} />
             }
             {
-                w === 'watersource' && validator.isMongoId(id)
+                w === 'watersource_create' && id === 'new'
+                &&
+                <CreateWaterSource />
+            }
+            {
+                w === 'watersource_edit' && validator.isMongoId(id)
                 &&
                 <EditWaterSource wsid={id} />
             }
             {
-                w === 'voucher' && validator.isMongoId(id)
+                w === 'pettycash_create' && id === 'new'
+                &&
+                <CreatePettyCash />
+            }
+            {
+                w === 'voucher_create' && id === 'new'
+                &&
+                <CreateVoucher />
+            }
+            {
+                w === 'voucher_edit' && validator.isMongoId(id)
                 &&
                 <EditVoucher voucherid={id} />
             }
             {
-                w === 'document' && validator.isMongoId(id)
+                w === 'document_create' && id === 'new'
+                &&
+                <CreateDocument />
+            }
+            {
+                w === 'document_edit' && validator.isMongoId(id)
                 &&
                 <EditDocument docid={id} />
+            }
+            {
+                w === 'usersys_create' && id === 'new'
+                &&
+                <CreateUserSys />
+            }
+            {
+                w === 'occupation_create' && id === 'new'
+                &&
+                <CreateOccupation />
+            }
+            {
+                w === 'role_create' && id === 'new'
+                &&
+                <CreateRole />
             }
         </>
     )

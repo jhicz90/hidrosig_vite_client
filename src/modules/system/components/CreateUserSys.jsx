@@ -6,43 +6,47 @@ import AsyncSelect from 'react-select/async'
 import AsyncCreatable from 'react-select/async-creatable'
 import { useWizard } from 'react-use-wizard'
 import { setActiveNewUserSys, startAddNewUserSys, editActiveNewUserSys, startSaveNewUserSys, registerOccupation, searchOccupation, searchRole } from '../../../store/actions'
-import { DatePicker, WizardStep } from '../../../components'
+import { DatePicker, LoadingPage, WizardStep } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateUserSys = ({ className = '', children }) => {
+export const CreateUserSys = () => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/sys/user_sys')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.usersys)
 
     useEffect(() => {
+        dispatch(startAddNewUserSys())
         return () => dispatch(setActiveNewUserSys(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewUserSys())}
-            >
-                {children || 'Nueva usuario'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewUserSys(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear usuario de sistema</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <WizardStep>
-                        <CreateUserSysStep1 />
-                        <CreateUserSysStep2 />
-                        <CreateUserSysStep3 />
-                    </WizardStep>
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear usuario de sistema</Offcanvas.Title>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <WizardStep>
+                            <CreateUserSysStep1 />
+                            <CreateUserSysStep2 />
+                            <CreateUserSysStep3 />
+                        </WizardStep>
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

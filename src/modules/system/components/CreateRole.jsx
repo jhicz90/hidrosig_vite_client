@@ -1,46 +1,50 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { useWizard } from 'react-use-wizard'
 import { setActiveNewRole, startAddNewRole, editActiveNewRole, startSaveNewRole, searchJunta, searchCommitteeByJunta } from '../../../store/actions'
-import { ListGroupOption, ListGroupOptionItem, OptionOrgz, WizardStep } from '../../../components'
+import { ListGroupOption, ListGroupOptionItem, LoadingPage, OptionOrgz, WizardStep } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateRole = ({ className = '', children }) => {
+export const CreateRole = () => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/sys/role')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.role)
 
     useEffect(() => {
+        dispatch(startAddNewRole())
         return () => dispatch(setActiveNewRole(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewRole())}
-            >
-                {children || 'Nuevo rol de usuario'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewRole(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear rol de usuario</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <WizardStep>
-                        <CreateRoleStep1 />
-                        <CreateRoleStep2 />
-                    </WizardStep>
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear rol de usuario</Offcanvas.Title>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <WizardStep>
+                            <CreateRoleStep1 />
+                            <CreateRoleStep2 />
+                        </WizardStep>
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Card, Nav, Tab } from 'react-bootstrap'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { CreateDocument} from '../components'
+import { LinkBack } from '../../../components'
 
 export const ResourcesPage = () => {
 
@@ -14,7 +14,7 @@ export const ResourcesPage = () => {
         dispatch(setToolbarTitle('RECURSOS'))
         dispatch(setToolbarActions(
             <>
-                <CreateDocument />
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=document_create&id=new`} >Nuevo documento</LinkBack>
             </>
         ))
 

@@ -1,56 +1,60 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import moment from 'moment'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewVoucher, searchSocialReason, setActiveNewVoucher, startAddNewVoucher, startSaveNewVoucher } from '../../../store/actions'
-import { DatePicker, OptionSocialReason } from '../../../components'
+import { DatePicker, LoadingPage, OptionSocialReason } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateVoucher = ({ pettycash = null, className = '', children }) => {
+export const CreateVoucher = ({ pettycash = null }) => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.voucher)
 
     useEffect(() => {
+        dispatch(startAddNewVoucher())
         return () => dispatch(setActiveNewVoucher(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewVoucher())}
-            >
-                {children || 'Nuevo comprobante'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewVoucher(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear comprobante</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Header className='offcanvas-primary'>
-                    <div className='d-flex justify-content-end gap-2 w-100'>
-                        <Button
-                            disabled={isSavingNew}
-                            variant='primary'
-                            type='submit'
-                            form='form-accounting-voucher-create'
-                            className='w-100'
-                        >
-                            Guardar nuevo
-                        </Button>
-                    </div>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <CreateVoucherStep pettycashActive={pettycash} />
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear comprobante</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Header className='offcanvas-primary'>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        disabled={isSavingNew}
+                        variant='primary'
+                        type='submit'
+                        form='form-accounting-voucher-create'
+                        className='w-100'
+                    >
+                        Guardar nuevo
+                    </Button>
+                </div>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <CreateVoucherStep pettycashActive={pettycash} />
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

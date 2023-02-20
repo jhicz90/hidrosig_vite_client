@@ -1,55 +1,59 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm, Controller } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { editActiveNewDocument, searchJunta, setActiveNewDocument, startAddNewDocument, startSaveNewDocument } from '../../../store/actions'
-import { OptionOrgz } from '../../../components'
+import { LoadingPage, OptionOrgz } from '../../../components'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateDocument = ({ className = '', children }) => {
+export const CreateDocument = () => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/files/res/docs')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.document)
 
     useEffect(() => {
+        dispatch(startAddNewDocument())
         return () => dispatch(setActiveNewDocument(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewDocument())}
-            >
-                {children || 'Nuevo documento'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewDocument(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear documento</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Header className='offcanvas-primary'>
-                    <div className='d-flex justify-content-end gap-2 w-100'>
-                        <Button
-                            disabled={isSavingNew}
-                            variant='primary'
-                            type='submit'
-                            form='form-file-document-create'
-                            className='w-100'
-                        >
-                            Guardar nuevo
-                        </Button>
-                    </div>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <CreateDocumentStep />
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear documento</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Header className='offcanvas-primary'>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        disabled={isSavingNew}
+                        variant='primary'
+                        type='submit'
+                        form='form-file-document-create'
+                        className='w-100'
+                    >
+                        Guardar nuevo
+                    </Button>
+                </div>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <CreateDocumentStep />
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 

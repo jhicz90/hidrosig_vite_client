@@ -1,55 +1,59 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { OptionOrgz } from '../../../components'
+import { LoadingPage, OptionOrgz } from '../../../components'
 import { editActiveNewBlock, searchCommitteeByJunta, searchJunta, setActiveNewBlock, startAddNewBlock, startSaveNewBlock } from '../../../store/actions'
+import { useNavigateState } from '../../../hooks'
 
-export const CreateBlock = ({ junta = null, committee = null, className = '', children }) => {
+export const CreateBlock = ({ junta = null, committee = null }) => {
+
+    const [show, setShow] = useState(true)
+
+    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/block')
 
     const dispatch = useDispatch()
     const { activeNew, isSavingNew } = useSelector(state => state.block)
 
     useEffect(() => {
+        dispatch(startAddNewBlock())
         return () => dispatch(setActiveNewBlock(null))
     }, [dispatch])
 
     return (
-        <>
-            <button
-                disabled={isSavingNew}
-                className={className === '' ? 'btn btn-neutral text-primary text-decoration-none' : className}
-                onClick={() => dispatch(startAddNewBlock())}
-            >
-                {children || 'Nuevo bloque'}
-            </button>
-            <Offcanvas
-                show={!!activeNew}
-                onHide={() => dispatch(setActiveNewBlock(null))}
-                placement='end'
-            >
-                <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
-                    <Offcanvas.Title>Crear bloque de riego</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Header className='offcanvas-primary'>
-                    <div className='d-flex justify-content-end gap-2 w-100'>
-                        <Button
-                            disabled={isSavingNew}
-                            variant='primary'
-                            type='submit'
-                            form='form-ambit-block-create'
-                            className='w-100'
-                        >
-                            Guardar nuevo
-                        </Button>
-                    </div>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <CreateBlockStep juntaActive={junta} committeeActive={committee} />
-                </Offcanvas.Body>
-            </Offcanvas>
-        </>
+        <Offcanvas
+            show={show && !!activeNew}
+            onHide={() => setShow(false)}
+            onExited={() => redirect()}
+            placement='end'
+        >
+            <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
+                <Offcanvas.Title>Crear bloque de riego</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Header className='offcanvas-primary'>
+                <div className='d-flex justify-content-end gap-2 w-100'>
+                    <Button
+                        disabled={isSavingNew}
+                        variant='primary'
+                        type='submit'
+                        form='form-ambit-block-create'
+                        className='w-100'
+                    >
+                        Guardar nuevo
+                    </Button>
+                </div>
+            </Offcanvas.Header>
+            {
+                !!activeNew
+                    ?
+                    <Offcanvas.Body>
+                        <CreateBlockStep juntaActive={junta} committeeActive={committee} />
+                    </Offcanvas.Body>
+                    :
+                    <LoadingPage />
+            }
+        </Offcanvas>
     )
 }
 
