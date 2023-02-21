@@ -41,7 +41,7 @@ const CreateVoucherWindow = ({ ptt }) => {
 
     return (
         <Offcanvas
-            show={show}
+            show={show && !!activeNew}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
             enforceFocus={false}

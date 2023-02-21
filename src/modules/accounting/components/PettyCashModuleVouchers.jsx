@@ -29,8 +29,13 @@ const PettyCashVoucher = () => {
     const [indexImageLightbox, setIndexImageLightbox] = useState(0)
 
     let amountTotal = 0
+    let outTotal = 0
     vouchersIn.forEach(voucher => {
-        amountTotal += voucher.amountReceipt
+        if (voucher.typeIncomeExpenses === 2) {
+            amountTotal += voucher.amountReceipt
+        } else {
+            outTotal += voucher.amountReceipt
+        }
     })
 
     const handleLightbox = (images, index) => {
@@ -233,7 +238,7 @@ const PettyCashVoucher = () => {
                     </>
                 }
             >
-                {vouchersIn.length} - {`${amountTotal.toFixed(2)} / ${(Number(active.remainingAmount) + Number(active.oldBalance)).toFixed(2)}`}
+                {vouchersIn.length} - {`${amountTotal.toFixed(2)} / ${(Number(active.remainingAmount) + Number(active.oldBalance) + Number(outTotal)).toFixed(2)}`}
             </SettingBlock>
             <ImageLightbox
                 galleryTitle={'Comprobantes'}
