@@ -1,15 +1,32 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { useWizard } from 'react-use-wizard'
+import validator from 'validator'
 import { setActiveNewCommittee, startAddNewCommittee, editActiveNewCommittee, startSaveNewCommittee, searchJunta, searchZoneByJunta } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
 import { LoadingPage, OptionOrgz, WizardStep } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const CreateCommittee = ({ junta = null }) => {
+export const CreateCommittee = () => {
+    const [searchParams] = useSearchParams()
+    const { w, j = '' } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'comm_create' || validator.isMongoId(j))
+                &&
+                <CreateCommitteeWindow junta={j} />
+            }
+        </>
+    )
+}
+
+const CreateCommitteeWindow = ({ junta = null }) => {
 
     const [show, setShow] = useState(true)
 

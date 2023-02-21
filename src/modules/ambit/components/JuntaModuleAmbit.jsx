@@ -6,7 +6,6 @@ import { IoMdEye } from 'react-icons/io'
 import { useGetCommsByJuntaQuery, useGetWaterSourcesByJuntaQuery, useGetZonesByJuntaQuery } from '../../../store/actions'
 import { Avatar, InputSearch, SettingAction, SettingBlock, TableGrid, TagStatus, TypeWaterSource } from '../../../components'
 import { CreateZone, CreateCommittee } from '.'
-import { CreateWaterSource } from '../../'
 
 export const JuntaModuleAmbit = () => {
     return (
@@ -118,7 +117,7 @@ const JuntaWaterSource = () => {
             loading={isLoading}
             action={
                 <SettingAction>
-                    <CreateWaterSource junta={active} />
+                    <LinkBack className='btn btn-neutral text-primary' to={`?w=watersource_create&j=${active._id}`}>Nueva fuente de agua</LinkBack>
                 </SettingAction>
             }
             list={

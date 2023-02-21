@@ -1,14 +1,31 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, FormCheck, InputGroup, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
+import validator from 'validator'
 import { editActiveSection, searchGeoObject, searchRugosity, setActiveSection, startUpdateSection, useGetCalcPropertiesQuery, useGetSectionByIdQuery } from '../../../store/actions'
 import { InputMask, LoadingPage, LocationMap, OptionGeometry, OptionRugosity } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { pDistance } from '../../../helpers'
 
-export const EditSection = ({ secid }) => {
+export const EditSection = () => {
+    const [searchParams] = useSearchParams()
+    const { w, id } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'section_edit' && validator.isMongoId(id))
+                &&
+                <EditSectionWindow id={id} />
+            }
+        </>
+    )
+}
+
+const EditSectionWindow = ({ id }) => {
 
     const [show, setShow] = useState(true)
     const { register, control, handleSubmit, reset, watch, setFocus } = useForm({
@@ -21,7 +38,7 @@ export const EditSection = ({ secid }) => {
     const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig/net')
 
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetSectionByIdQuery(secid)
+    const { data = null, isLoading, isError } = useGetSectionByIdQuery(id)
     const { active, isSaving } = useSelector(state => state.section)
 
     const handleChange = ({ name, status, type, workCapacity, coatedType, coated, progressiveStart, progressiveEnd, mayorBasis, minorBasis, height, tight, slope, diameter, leftSlopeThickness, rightSlopeThickness, grade, rugosity, geometry }) => {

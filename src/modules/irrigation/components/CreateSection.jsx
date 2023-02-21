@@ -1,15 +1,32 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { useWizard } from 'react-use-wizard'
+import validator from 'validator'
 import { Button, Form, FormCheck, InputGroup, Offcanvas } from 'react-bootstrap'
 import { editActiveNewSection, searchRugosity, setActiveNewSection, startSaveNewSection, useGetCalcPropertiesQuery, useNewSectionByStructureQuery } from '../../../store/actions'
 import { InputMask, LoadingPage, OptionRugosity, WizardStep } from '../../../components'
 import { pDistance, pProgressive } from '../../../helpers'
 import { useNavigateState } from '../../../hooks'
 
-export const CreateSection = ({ structureId = null }) => {
+export const CreateSection = () => {
+    const [searchParams] = useSearchParams()
+    const { w, str = '' } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'section_create' && validator.isMongoId(str))
+                &&
+                <CreateSectionWindow structureId={str} />
+            }
+        </>
+    )
+}
+
+const CreateSectionWindow = ({ structureId = null }) => {
 
     const [show, setShow] = useState(true)
 
@@ -21,7 +38,7 @@ export const CreateSection = ({ structureId = null }) => {
 
     useEffect(() => {
         if (!!data) {
-            dispatch(setActiveNewSection({...data, structureId}))
+            dispatch(setActiveNewSection({ ...data, structureId }))
         }
 
         return () => {
@@ -36,7 +53,7 @@ export const CreateSection = ({ structureId = null }) => {
     return (
         <>
             <Offcanvas
-                show={show}
+                show={show && !!activeNew}
                 onHide={() => setShow(false)}
                 onExited={() => redirect()}
                 enforceFocus={false}
@@ -45,51 +62,53 @@ export const CreateSection = ({ structureId = null }) => {
                 <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear tramo</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Header className='flex-column'>
-                    <div className='container-fluid'>
-                        <div className='row mb-1'>
-                            <div className='col-12'>
-                                <div className='input-group'>
-                                    <span className='input-group-text col-6'>Estructura</span>
-                                    <input value={activeNew?.limitStructure.structureName || ''} readOnly type='text' className='form-control col-6' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='row mb-1'>
-                            <div className='col-12'>
-                                <div className='input-group'>
-                                    <span className='input-group-text col-6'>Total de tramos</span>
-                                    <input value={activeNew?.limitStructure.countSections || 0} readOnly type='text' className='form-control col-6' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='row mb-1'>
-                            <div className='col-12'>
-                                <div className='input-group'>
-                                    <span className='input-group-text col-6'>Longitud acumulada</span>
-                                    <input value={activeNew?.limitStructure.distanceTotal || 0} readOnly type='text' className='form-control col-6' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='row mb-1'>
-                            <div className='col-12'>
-                                <div className='input-group'>
-                                    <span className='input-group-text col-6'>Longitud restante</span>
-                                    <input value={activeNew?.limitStructure.limit || 0} readOnly type='text' className='form-control col-6' />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Offcanvas.Header>
                 {
                     (!!activeNew && !isLoading)
                         ?
-                        <Offcanvas.Body>
-                            <WizardStep>
-                                <CreateSectionStep1 />
-                                <CreateSectionStep2 />
-                            </WizardStep>
-                        </Offcanvas.Body>
+                        <>
+                            <Offcanvas.Header className='flex-column'>
+                                <div className='container-fluid'>
+                                    <div className='row mb-1'>
+                                        <div className='col-12'>
+                                            <div className='input-group'>
+                                                <span className='input-group-text col-6'>Estructura</span>
+                                                <input value={activeNew?.limitStructure.structureName || ''} readOnly type='text' className='form-control col-6' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='row mb-1'>
+                                        <div className='col-12'>
+                                            <div className='input-group'>
+                                                <span className='input-group-text col-6'>Total de tramos</span>
+                                                <input value={activeNew?.limitStructure.countSections || 0} readOnly type='text' className='form-control col-6' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='row mb-1'>
+                                        <div className='col-12'>
+                                            <div className='input-group'>
+                                                <span className='input-group-text col-6'>Longitud acumulada</span>
+                                                <input value={activeNew?.limitStructure.distanceTotal || 0} readOnly type='text' className='form-control col-6' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='row mb-1'>
+                                        <div className='col-12'>
+                                            <div className='input-group'>
+                                                <span className='input-group-text col-6'>Longitud restante</span>
+                                                <input value={activeNew?.limitStructure.limit || 0} readOnly type='text' className='form-control col-6' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Offcanvas.Header>
+                            <Offcanvas.Body>
+                                <WizardStep>
+                                    <CreateSectionStep1 />
+                                    <CreateSectionStep2 />
+                                </WizardStep>
+                            </Offcanvas.Body>
+                        </>
                         :
                         <LoadingPage />
                 }

@@ -163,7 +163,18 @@ export const AppRoot = () => {
                         <EditVoucher />
                         <CreateBlock />
                         <CreateZone />
-                        <CreateJunta/>
+                        <EditBlock />
+                        <EditZone />
+                        <CreateJunta />
+                        <CreateCommittee />
+                        <CreateDocument />
+                        <EditDocument />
+                        <CreateStructure />
+                        <CreateSection />
+                        <CreateWaterSource />
+                        <EditStructure />
+                        <EditSection />
+                        <EditWaterSource />
                     </>
                 }
             >

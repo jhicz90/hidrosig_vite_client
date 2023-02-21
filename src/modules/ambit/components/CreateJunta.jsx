@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import validator from 'validator'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { setActiveNewJunta, startAddNewJunta, editActiveNewJunta, startSaveNewJunta } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
@@ -40,7 +39,7 @@ export const CreateJuntaWindow = () => {
 
     return (
         <Offcanvas
-            show={show}
+            show={show && !!activeNew}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
             placement='end'

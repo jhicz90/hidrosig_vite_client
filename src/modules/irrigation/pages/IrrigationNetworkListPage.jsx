@@ -15,8 +15,8 @@ export const IrrigationNetworkListPage = () => {
         dispatch(setToolbarTitle('RED DE RIEGO'))
         dispatch(setToolbarActions(
             <>
-                <LinkBack className='btn btn-neutral text-primary' to={`?w=structure_create&id=new`} >Nueva estructura</LinkBack>
-                <LinkBack className='btn btn-neutral text-primary' to={`?w=watersource_create&id=new`} >Nueva fuente de agua</LinkBack>
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=structure_create`} >Nueva estructura</LinkBack>
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=watersource_create`} >Nueva fuente de agua</LinkBack>
             </>
         ))
 

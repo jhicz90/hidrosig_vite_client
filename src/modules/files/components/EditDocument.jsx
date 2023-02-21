@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, ListGroup, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -8,14 +9,29 @@ import { editActiveDocument, searchJunta, setActiveDocument, startDeleteDocument
 import { FileUploadSlider, LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditDocument = ({ docid }) => {
+export const EditDocument = () => {
+    const [searchParams] = useSearchParams()
+    const { w, id } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'document_edit' && validator.isMongoId(id))
+                &&
+                <EditDocumentWindow id={id} />
+            }
+        </>
+    )
+}
+
+const EditDocumentWindow = ({ id }) => {
 
     const [show, setShow] = useState(true)
 
     const [state, redirect, redirectEscape] = useNavigateState('/app/exp/resources/docs')
 
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetDocumentByIdQuery(docid)
+    const { data = null, isLoading, isError } = useGetDocumentByIdQuery(id)
     const { active, isSaving } = useSelector(state => state.document)
 
     useEffect(() => {
@@ -23,9 +39,7 @@ export const EditDocument = ({ docid }) => {
             dispatch(setActiveDocument(data))
         }
 
-        return () => {
-            dispatch(setActiveDocument(null))
-        }
+        return () => dispatch(setActiveDocument(null))
     }, [data])
 
     if (isError) {

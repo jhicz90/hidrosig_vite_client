@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
@@ -7,7 +8,22 @@ import { editActiveBlock, searchCommitteeByJunta, searchDocument, searchGeoObjec
 import { LoadingPage, LocationMap, OptionDocument, OptionGeometry, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditBlock = ({ blockid }) => {
+export const EditBlock = () => {
+    const [searchParams] = useSearchParams()
+    const { w, id } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'block_edit' && validator.isMongoId(id))
+                &&
+                <EditBlockWindow id={id} />
+            }
+        </>
+    )
+}
+
+export const EditBlockWindow = ({ id }) => {
 
     const [show, setShow] = useState(true)
     const { register, control, handleSubmit, reset, watch, setFocus, setValue } = useForm()
@@ -15,7 +31,7 @@ export const EditBlock = ({ blockid }) => {
     const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/block')
 
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetBlockByIdQuery(blockid)
+    const { data = null, isLoading, isError } = useGetBlockByIdQuery(id)
     const { active, isSaving } = useSelector(state => state.block)
 
     const handleChange = ({ name, code, desc, junta, committee, resolution, geometry }) => {
@@ -69,7 +85,7 @@ export const EditBlock = ({ blockid }) => {
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
-                !!active
+                (!!active && !isLoading)
                     ?
                     <>
                         <Offcanvas.Header className='offcanvas-success'>

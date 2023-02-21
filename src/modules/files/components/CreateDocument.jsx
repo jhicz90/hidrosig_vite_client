@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm, Controller } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
@@ -8,6 +9,21 @@ import { LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreateDocument = () => {
+    const [searchParams] = useSearchParams()
+    const { w } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'document_create')
+                &&
+                <CreateDocumentWindow />
+            }
+        </>
+    )
+}
+
+const CreateDocumentWindow = () => {
 
     const [show, setShow] = useState(true)
 
@@ -31,25 +47,27 @@ export const CreateDocument = () => {
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear documento</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-file-document-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreateDocumentStep />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-file-document-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreateDocumentStep />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }

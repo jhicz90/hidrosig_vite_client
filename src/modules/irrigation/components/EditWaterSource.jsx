@@ -1,20 +1,37 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
+import validator from 'validator'
 import { editActiveWaterSource, searchJunta, setActiveWaterSource, startDeleteWaterSource, startUpdateWaterSource, useGetWaterSourceByIdQuery } from '../../../store/actions'
 import { LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const EditWaterSource = ({ wsid }) => {
+export const EditWaterSource = () => {
+    const [searchParams] = useSearchParams()
+    const { w, id } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'watersource_edit' && validator.isMongoId(id))
+                &&
+                <EditWaterSourceWindow id={id} />
+            }
+        </>
+    )
+}
+
+const EditWaterSourceWindow = ({ id }) => {
 
     const [show, setShow] = useState(true)
 
     const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig/ws')
 
     const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetWaterSourceByIdQuery(wsid)
+    const { data = null, isLoading, isError } = useGetWaterSourceByIdQuery(id)
     const { active, isSaving } = useSelector(state => state.watersource)
 
     useEffect(() => {

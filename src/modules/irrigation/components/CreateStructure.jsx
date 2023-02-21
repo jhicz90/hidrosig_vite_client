@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
@@ -7,6 +8,21 @@ import { DatePicker, InputMask, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreateStructure = () => {
+    const [searchParams] = useSearchParams()
+    const { w } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'structure_create')
+                &&
+                <CreateStructureWindow />
+            }
+        </>
+    )
+}
+
+const CreateStructureWindow = () => {
 
     const [show, setShow] = useState(true)
 
@@ -23,33 +39,36 @@ export const CreateStructure = () => {
     return (
         <>
             <Offcanvas
-                show={show && !!activeNew}
+                show={show}
                 onHide={() => setShow(false)}
                 onExited={() => redirect()}
+                enforceFocus={false}
                 placement='end'
             >
                 <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                     <Offcanvas.Title>Crear estructura</Offcanvas.Title>
                 </Offcanvas.Header>
-                <Offcanvas.Header className='offcanvas-primary'>
-                    <div className='d-flex justify-content-end gap-2 w-100'>
-                        <Button
-                            disabled={isSavingNew}
-                            variant='primary'
-                            type='submit'
-                            form='form-irrig-structure-create'
-                            className='w-100'
-                        >
-                            Guardar nuevo
-                        </Button>
-                    </div>
-                </Offcanvas.Header>
                 {
                     !!activeNew
                         ?
-                        <Offcanvas.Body>
-                            <CreateStructureStep />
-                        </Offcanvas.Body>
+                        <>
+                            <Offcanvas.Header className='offcanvas-primary'>
+                                <div className='d-flex justify-content-end gap-2 w-100'>
+                                    <Button
+                                        disabled={isSavingNew}
+                                        variant='primary'
+                                        type='submit'
+                                        form='form-irrig-structure-create'
+                                        className='w-100'
+                                    >
+                                        Guardar nuevo
+                                    </Button>
+                                </div>
+                            </Offcanvas.Header>
+                            <Offcanvas.Body>
+                                <CreateStructureStep />
+                            </Offcanvas.Body>
+                        </>
                         :
                         <LoadingPage />
                 }

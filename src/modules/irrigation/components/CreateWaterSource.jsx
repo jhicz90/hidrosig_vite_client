@@ -1,13 +1,30 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Form, Modal, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Offcanvas } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
+import validator from 'validator'
 import { editActiveNewWaterSource, searchJunta, setActiveNewWaterSource, startAddNewWaterSource, startSaveNewWaterSource } from '../../../store/actions'
 import { LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
-export const CreateWaterSource = ({ junta = null }) => {
+export const CreateWaterSource = () => {
+    const [searchParams] = useSearchParams()
+    const { w, j = '' } = Object.fromEntries([...searchParams])
+
+    return (
+        <>
+            {
+                (w === 'watersource_create' || validator.isMongoId(j))
+                &&
+                <CreateWaterSourceWindow junta={j} />
+            }
+        </>
+    )
+}
+
+const CreateWaterSourceWindow = ({ junta = null }) => {
 
     const [show, setShow] = useState(true)
 
@@ -23,33 +40,36 @@ export const CreateWaterSource = ({ junta = null }) => {
 
     return (
         <Offcanvas
-            show={show && !!activeNew}
+            show={show}
             onHide={() => setShow(false)}
             onExited={() => redirect()}
+            enforceFocus={false}
             placement='end'
         >
             <Offcanvas.Header closeButton={!isSavingNew} closeVariant='white'>
                 <Offcanvas.Title>Crear fuente de agua</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Header className='offcanvas-primary'>
-                <div className='d-flex justify-content-end gap-2 w-100'>
-                    <Button
-                        disabled={isSavingNew}
-                        variant='primary'
-                        type='submit'
-                        form='form-irrig-watersource-create'
-                        className='w-100'
-                    >
-                        Guardar nuevo
-                    </Button>
-                </div>
-            </Offcanvas.Header>
             {
                 !!activeNew
                     ?
-                    <Offcanvas.Body>
-                        <CreateWaterSourceStep juntaActive={junta} />
-                    </Offcanvas.Body>
+                    <>
+                        <Offcanvas.Header className='offcanvas-primary'>
+                            <div className='d-flex justify-content-end gap-2 w-100'>
+                                <Button
+                                    disabled={isSavingNew}
+                                    variant='primary'
+                                    type='submit'
+                                    form='form-irrig-watersource-create'
+                                    className='w-100'
+                                >
+                                    Guardar nuevo
+                                </Button>
+                            </div>
+                        </Offcanvas.Header>
+                        <Offcanvas.Body>
+                            <CreateWaterSourceStep juntaActive={junta} />
+                        </Offcanvas.Body>
+                    </>
                     :
                     <LoadingPage />
             }
