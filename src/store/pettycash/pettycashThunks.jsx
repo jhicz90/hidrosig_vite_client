@@ -6,6 +6,63 @@ import { addNewPettycash, setActiveNewPettycash, setActivePettycash, setSavingPe
 
 const SwalReact = withReactContent(Swal)
 
+export const {
+    useAddPettyCashMutation,
+    useGetListPettyCashByUsrSysQuery,
+    useGetListPettyCashQuery,
+    useGetPettyCashByIdQuery,
+    useNewPettyCashQuery,
+} = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // PETTYCASH
+        newPettyCash: builder.query({
+            query: () => ({
+                url: `pettycash/create/new`,
+                params: {
+                    pettycashId
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.pettycash
+        }),
+        addPettyCash: builder.mutation({
+            query: (newPettyCash) => ({
+                url: `pettycash/create/new`,
+                method: 'post',
+                data: newPettyCash
+            }),
+            invalidatesTags: ['Acct - Ptty']
+        }),
+        getListPettyCash: builder.query({
+            query: (search) => ({
+                url: `pettycash/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct - Ptty']
+        }),
+        getPettyCashById: builder.query({
+            query: (id) => ({
+                url: `pettycash/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.pettycash,
+            providesTags: ['Acct - Ptty']
+        }),
+        getListPettyCashByUsrSys: builder.query({
+            query: ({ usersys, search }) => ({
+                url: `pettycash/search_by_usersys/${usersys}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct - Ptty']
+        }),
+        // PETTYCASH
+    })
+})
+
 export const startAddNewPettycash = () => {
     return async (dispatch) => {
 

@@ -5,30 +5,35 @@ export const voucherSlice = createSlice({
         isSaving: false,
         isSavingNew: false,
         active: null,
+        modalNew: true,
         activeNew: null,
     },
     reducers: {
         addNewVoucher: (state) => {
             state.activeNew = null
             state.isSavingNew = true
+            state.modalNew = true
         },
-        setActiveNewVoucher: (state, action) => {
-            state.activeNew = action.payload
+        setModalNewVoucher: (state, { payload }) => {
+            state.modalNew = payload
         },
-        editActiveNewVoucher: (state, action) => {
-            state.activeNew = { ...state.activeNew, ...action.payload }
+        setActiveNewVoucher: (state, { payload }) => {
+            state.activeNew = payload
         },
-        setActiveVoucher: (state, action) => {
-            state.active = action.payload
+        editActiveNewVoucher: (state, { payload }) => {
+            state.activeNew = { ...state.activeNew, ...payload }
         },
-        editActiveVoucher: (state, action) => {
-            state.active = { ...state.active, ...action.payload }
+        setActiveVoucher: (state, { payload }) => {
+            state.active = payload
         },
-        setSavingVoucher: (state, action) => {
-            state.isSaving = action.payload
+        editActiveVoucher: (state, { payload }) => {
+            state.active = { ...state.active, ...payload }
         },
-        setSavingNewVoucher: (state, action) => {
-            state.isSavingNew = action.payload
+        setSavingVoucher: (state, { payload }) => {
+            state.isSaving = payload
+        },
+        setSavingNewVoucher: (state, { payload }) => {
+            state.isSavingNew = payload
         },
     }
 });
@@ -39,6 +44,7 @@ export const {
     editActiveVoucher,
     setActiveNewVoucher,
     setActiveVoucher,
-    setSavingVoucher,
+    setModalNewVoucher,
     setSavingNewVoucher,
+    setSavingVoucher,
 } = voucherSlice.actions

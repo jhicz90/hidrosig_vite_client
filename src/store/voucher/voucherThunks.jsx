@@ -2,9 +2,66 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
-import { addNewVoucher, setActiveNewVoucher, setActiveVoucher, setSavingVoucher, setSavingNewVoucher } from './voucherSlice'
+import { addNewVoucher, setActiveNewVoucher, setActiveVoucher, setSavingVoucher, setSavingNewVoucher, setModalNewVoucher } from './voucherSlice'
 
 const SwalReact = withReactContent(Swal)
+
+export const {
+    useAddVoucherMutation,
+    useGetListVoucherByPettyCashQuery,
+    useGetListVoucherQuery,
+    useGetVoucherByIdQuery,
+    useNewVoucherQuery,
+} = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // VOUCHER
+        newVoucher: builder.query({
+            query: (pettycashId) => ({
+                url: `voucher/create/new`,
+                params: {
+                    pettycashId
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.voucher
+        }),
+        addVoucher: builder.mutation({
+            query: (newVoucher) => ({
+                url: `voucher/create/new`,
+                method: 'post',
+                data: newVoucher
+            }),
+            invalidatesTags: ['Acct - Vchr']
+        }),
+        getVoucherById: builder.query({
+            query: (id) => ({
+                url: `voucher/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.voucher,
+            providesTags: ['Acct - Vchr']
+        }),
+        getListVoucher: builder.query({
+            query: (search) => ({
+                url: `voucher/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct - Vchr']
+        }),
+        getListVoucherByPettyCash: builder.query({
+            query: ({ pettycash, search }) => ({
+                url: `voucher/search_by_pettycash/${pettycash}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Acct - Ptty', 'Acct - Vchr']
+        }),
+        // VOUCHER
+    })
+})
 
 export const startAddNewVoucher = (pettycashId = null) => {
     return async (dispatch) => {
@@ -46,8 +103,9 @@ export const startSaveNewVoucher = () => {
         dispatch(setSavingNewVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+            dispatch(setModalNewVoucher(false))
             dispatch(setActiveNewVoucher(null))
+            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
         }
     }
 }

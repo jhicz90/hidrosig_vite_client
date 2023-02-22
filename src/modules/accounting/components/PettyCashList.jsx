@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
-import { useGetPettyCashsQuery } from '../../../store/actions'
+import { useGetListPettyCashQuery } from '../../../store/actions'
 import { InputSearch, TableGrid, TimeAgo } from '../../../components'
 
 export const PettyCashList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetPettyCashsQuery(search)
+    const { data: list = [], isFetching } = useGetListPettyCashQuery(search)
 
     return (
         <>

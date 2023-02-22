@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
-import { startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetVouchersByPettyCashQuery } from '../../../store/actions'
+import { startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery } from '../../../store/actions'
 import { Image, ImageLightbox, InputSearch, LinkBack, SettingAction, SettingBlock, TableGrid, TimeAgo } from '../../../components'
 import { CreateVoucher } from './CreateVoucher'
 import { imageGet } from '../../../helpers'
@@ -22,7 +22,7 @@ const PettyCashVoucher = () => {
     const [filterSearch, setFilterSearch] = useState('')
     const dispatch = useDispatch()
     const { active } = useSelector(state => state.pettycash)
-    const { data: vouchersIn = [], isLoading } = useGetVouchersByPettyCashQuery({ pettycash: active._id, search: '' }, { refetchOnMountOrArgChange: true })
+    const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: active._id, search: '' }, { refetchOnMountOrArgChange: true })
 
     const [openLightbox, setOpenLightbox] = useState(false)
     const [imagesLightbox, setImagesLightbox] = useState([])

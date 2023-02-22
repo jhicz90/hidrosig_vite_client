@@ -43,7 +43,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
 export const storeApi = createApi({
     reducerPath: 'storeApi',
     keepUnusedDataFor: 120,
-    refetchOnFocus: true,
+    refetchOnFocus: false,
     refetchOnReconnect: true,
     tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Acct - Ptty', 'Acct - Vchr', 'Files'],
     baseQuery: axiosBaseQuery({
@@ -306,7 +306,6 @@ export const storeApi = createApi({
                 }
             }),
             transformResponse: (response, meta, arg) => response.section,
-            providesTags: ['Irrig']
         }),
         getSectionById: builder.query({
             query: (id) => ({
@@ -386,64 +385,6 @@ export const storeApi = createApi({
         //     providesTags: ['Files']
         // }),
         // FILES
-        // PETTYCASH
-        getPettyCashs: builder.query({
-            query: (search) => ({
-                url: `pettycash/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Ptty']
-        }),
-        getPettyCashById: builder.query({
-            query: (id) => ({
-                url: `pettycash/edit/${id}`,
-            }),
-            transformResponse: (response, meta, arg) => response.pettycash,
-            providesTags: ['Acct - Ptty']
-        }),
-        getPettyCashsByUsrSys: builder.query({
-            query: ({ usersys, search }) => ({
-                url: `pettycash/search_by_usersys/${usersys}`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Ptty']
-        }),
-        // PETTYCASH
-        // VOUCHER
-        getVoucherById: builder.query({
-            query: (id) => ({
-                url: `voucher/edit/${id}`,
-            }),
-            transformResponse: (response, meta, arg) => response.voucher,
-            providesTags: ['Acct - Vchr']
-        }),
-        getVouchers: builder.query({
-            query: (search) => ({
-                url: `voucher/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Vchr']
-        }),
-        getVouchersByPettyCash: builder.query({
-            query: ({ pettycash, search }) => ({
-                url: `voucher/search_by_pettycash/${pettycash}`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Ptty', 'Acct - Vchr']
-        }),
-        // VOUCHER
         // RED DE RIEGO
         getCalcProperties: builder.query({
             query: ({ type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => ({
@@ -550,9 +491,6 @@ export const {
     useGetOrderChannelsQuery,
     useGetPermsGroupQuery,
     useGetPermsQuery,
-    useGetPettyCashByIdQuery,
-    useGetPettyCashsByUsrSysQuery,
-    useGetPettyCashsQuery,
     useGetRoleByIdQuery,
     useGetRolesQuery,
     useGetRugositysQuery,
@@ -561,9 +499,6 @@ export const {
     useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,
     useGetUsrSysByIdQuery,
-    useGetVoucherByIdQuery,
-    useGetVouchersByPettyCashQuery,
-    useGetVouchersQuery,
     useGetWaterSourceByIdQuery,
     useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
