@@ -17,10 +17,7 @@ export const {
         // PETTYCASH
         newPettyCash: builder.query({
             query: () => ({
-                url: `pettycash/create/new`,
-                params: {
-                    pettycashId
-                }
+                url: `pettycash/create/new`
             }),
             transformResponse: (response, meta, arg) => response.pettycash
         }),

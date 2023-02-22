@@ -8,10 +8,12 @@ const SwalReact = withReactContent(Swal)
 
 export const {
     useAddVoucherMutation,
+    useDeleteVoucherByIdMutation,
     useGetListVoucherByPettyCashQuery,
     useGetListVoucherQuery,
     useGetVoucherByIdQuery,
     useNewVoucherQuery,
+    useUpdateVoucherByIdMutation,
 } = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // VOUCHER
@@ -59,73 +61,24 @@ export const {
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Acct - Ptty', 'Acct - Vchr']
         }),
+        updateVoucherById: builder.mutation({
+            query: ({ id, voucher }) => ({
+                url: `voucher/edit/${id}`,
+                method: 'put',
+                data: voucher
+            }),
+            invalidatesTags: ['Acct - Vchr']
+        }),
+        deleteVoucherById: builder.mutation({
+            query: async (id) => ({
+                url: `voucher/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Acct - Vchr']
+        })
         // VOUCHER
     })
 })
-
-export const startAddNewVoucher = (pettycashId = null) => {
-    return async (dispatch) => {
-
-        dispatch(addNewVoucher())
-
-        const resp = await fetchByToken({
-            endpoint: `voucher/create/new`,
-            params: {
-                pettycashId
-            }
-        })
-
-        dispatch(setSavingNewVoucher(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewVoucher(resp.voucher))
-        }
-    }
-}
-
-export const startSaveNewVoucher = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingNewVoucher(true))
-
-        const { activeNew } = getState().voucher
-
-        const newVoucher = {
-            ...activeNew
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `voucher/create/new`,
-            data: newVoucher,
-            method: 'POST'
-        })
-
-        dispatch(setSavingNewVoucher(false))
-
-        if (resp.ok) {
-            dispatch(setModalNewVoucher(false))
-            dispatch(setActiveNewVoucher(null))
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
-        }
-    }
-}
-
-export const startGetVoucher = (id) => {
-    return async (dispatch) => {
-
-        dispatch(setSavingVoucher(true))
-
-        const resp = await fetchByToken({
-            endpoint: `voucher/edit/${id}`
-        })
-
-        dispatch(setSavingVoucher(false))
-
-        if (resp.ok) {
-            dispatch(setActiveVoucher(resp.voucher))
-        }
-    }
-}
 
 export const startUpdateVoucher = () => {
     return async (dispatch, getState) => {
@@ -347,15 +300,11 @@ export const startDeleteIdVoucher = (voucher) => {
             }
         }).then(async (result) => {
             if (result.value) {
-
-                dispatch(setSavingVoucher(true))
-
+                
                 const resp = await fetchByToken({
                     endpoint: `voucher/delete/${_id}`,
                     method: 'DELETE'
                 })
-
-                dispatch(setSavingVoucher(false))
 
                 if (resp.ok) {
                     dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
