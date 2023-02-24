@@ -61,7 +61,7 @@ const PettyCashVoucher = () => {
                 tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
                 groupTypes: 'images',
                 limit,
-                maxSize: 10,
+                maxSize: 20,
                 setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
             }))
         }
