@@ -247,50 +247,6 @@ export const storeApi = createApi({
             invalidatesTags: ['Orgz']
         }),
         // COMMITTEE
-        getZones: builder.query({
-            query: (search) => ({
-                url: `zone/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Trrt']
-        }),
-        getZoneById: builder.query({
-            query: (id) => ({
-                url: `zone/edit/${id}`,
-            }),
-            transformResponse: (response, meta, arg) => response.zone,
-            providesTags: ['Orgz', 'Trrt']
-        }),
-        getZonesByJunta: builder.query({
-            query: ({ junta, search }) => ({
-                url: `zone/search_by_junta/${junta}`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Trrt']
-        }),
-        getBlocks: builder.query({
-            query: (search) => ({
-                url: `block/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Trrt']
-        }),
-        getBlockById: builder.query({
-            query: (id) => ({
-                url: `block/edit/${id}`
-            }),
-            transformResponse: (response, meta, arg) => response.block,
-            providesTags: ['Orgz', 'Trrt']
-        }),
         getStructureById: builder.query({
             query: (id) => ({
                 url: `structure/edit/${id}`
@@ -473,8 +429,6 @@ export const {
     useAddRugosityMutation,
     useDeleteOrderChannelMutation,
     useDeleteRugosityMutation,
-    useGetBlockByIdQuery,
-    useGetBlocksQuery,
     useGetBrowserQuery,
     useGetCalcPropertiesQuery,
     useGetCommByIdQuery,
@@ -502,9 +456,6 @@ export const {
     useGetWaterSourceByIdQuery,
     useGetWaterSourcesByJuntaQuery,
     useGetWaterSourcesQuery,
-    useGetZoneByIdQuery,
-    useGetZonesByJuntaQuery,
-    useGetZonesQuery,
     useLazyGetVoucherByIdQuery,
     useNewSectionByStructureQuery,
     useUpdateOrderChannelMutation,

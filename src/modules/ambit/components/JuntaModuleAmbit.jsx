@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import { ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { IoMdEye } from 'react-icons/io'
-import { useGetCommsByJuntaQuery, useGetWaterSourcesByJuntaQuery, useGetZonesByJuntaQuery } from '../../../store/actions'
-import { Avatar, InputSearch, SettingAction, SettingBlock, TableGrid, TagStatus, TypeWaterSource } from '../../../components'
+import { useGetCommsByJuntaQuery, useGetListZoneByJuntaQuery, useGetWaterSourcesByJuntaQuery } from '../../../store/actions'
+import { Avatar, InputSearch, LinkBack, SettingAction, SettingBlock, TableGrid, TagStatus, TypeWaterSource } from '../../../components'
 import { CreateZone, CreateCommittee } from '.'
 
 export const JuntaModuleAmbit = () => {
@@ -39,10 +39,9 @@ export const JuntaModuleAmbit = () => {
 
 const JuntaZone = () => {
 
-    const location = useLocation()
     const [search, setSearch] = useState('')
     const { active } = useSelector(state => state.junta)
-    const { data: zonesIn = [], isLoading } = useGetZonesByJuntaQuery({ junta: active._id, search }, { refetchOnMountOrArgChange: true })
+    const { data: zonesIn = [], isLoading } = useGetListZoneByJuntaQuery({ junta: active._id, search }, { refetchOnMountOrArgChange: true })
 
     return (
         <SettingBlock
@@ -86,13 +85,12 @@ const JuntaZone = () => {
                                     pinRight: true,
                                     renderCell: (item) =>
                                         <ButtonGroup>
-                                            <Link
+                                            <LinkBack
                                                 className='btn btn-neutral'
-                                                to={`/app/ambit/trrty/zone/edit/${item._id}`}
-                                                state={{ from: location }}
+                                                to={`?w=zone_edit&id=${item._id}`}
                                             >
-                                                <IoMdEye />
-                                            </Link>
+                                                <FaPen />
+                                            </LinkBack>
                                         </ButtonGroup>
                                 }
                             ]

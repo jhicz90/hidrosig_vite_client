@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
-import { useGetZonesQuery } from '../../../store/actions'
+import { useGetListZoneQuery } from '../../../store/actions'
 
 export const ZoneList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetZonesQuery(search)
+    const { data: list = [], isFetching } = useGetListZoneQuery(search)
 
     return (
         <>

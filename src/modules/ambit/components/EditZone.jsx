@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Nav, Offcanvas, Tab } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import AsyncSelect from 'react-select/async'
-import { editActiveZone, searchGeoObject, searchJunta, setActiveZone, startDeleteZone, startUpdateZone, useGetZoneByIdQuery } from '../../../store/actions'
+import validator from 'validator'
+import { searchGeoObject, searchJunta, useDeleteZoneByIdMutation, useGetZoneByIdQuery, useUpdateZoneByIdMutation } from '../../../store/actions'
 import { LoadingPage, LocationMap, OptionGeometry, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
+import { normalizeText } from '../../../helpers'
+
+const SwalReact = withReactContent(Swal)
 
 export const EditZone = () => {
     const [searchParams] = useSearchParams()
@@ -26,41 +31,83 @@ export const EditZone = () => {
 const EditZoneWindow = ({ id }) => {
 
     const [show, setShow] = useState(true)
-    const { register, control, handleSubmit, reset, watch } = useForm()
 
     const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/trrty/zone')
 
-    const dispatch = useDispatch()
-    const { data = null, isLoading, isError } = useGetZoneByIdQuery(id)
-    const { active, isSaving } = useSelector(state => state.zone)
+    const { data = null, isLoading, isError } = useGetZoneByIdQuery(id, { refetchOnMountOrArgChange: true })
+    const [updateZone, { isLoading: isSaving }] = useUpdateZoneByIdMutation()
+    const [deleteZone, { isLoading: isDeleting }] = useDeleteZoneByIdMutation()
+    const { register, control, handleSubmit, reset, watch } = useForm()
 
-    const handleChange = ({ name, code, desc, junta, geometry }) => {
-        dispatch(editActiveZone({
-            name,
-            code,
-            desc,
-            junta,
-            geometry,
-            idGeometry: geometry ? geometry._id : ''
-        }))
-        dispatch(startUpdateZone())
+    const handleUpdate = async ({ geometry, ...newData }) => {
+        try {
+            await updateZone({
+                id: data._id,
+                zone: {
+                    ...newData,
+                    geometry,
+                    idGeometry: geometry ? geometry._id : '',
+                }
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleDeleteZone = async () => {
+        try {
+            const { _id, name } = data
+            const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+
+            SwalReact.fire({
+                title:
+                    <>
+                        <div className='text-uppercase'>Eliminar zona</div>
+                        <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+                    </>,
+                html:
+                    <>
+                        <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta zona?</div>
+                        <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+                    </>,
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                allowOutsideClick: false,
+                icon: 'question',
+                customClass: {
+                    confirmButton: `btn btn-warning`,
+                    cancelButton: `btn btn-neutral`
+                },
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                buttonsStyling: false,
+                reverseButtons: true,
+                preConfirm: (typed) => {
+                    if (typed === wordConfirm) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+            }).then(async (result) => {
+                if (result.value) {
+                    await deleteZone(_id)
+                    setShow(false)
+                }
+            })
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     useEffect(() => {
         reset({
-            ...active
+            ...data
         })
-    }, [reset, active])
-
-    useEffect(() => {
-        if (!!data) {
-            dispatch(setActiveZone(data))
-        }
-
-        return () => {
-            dispatch(setActiveZone(null))
-        }
-    }, [data])
+    }, [reset, data])
 
     if (isError) {
         redirectEscape()
@@ -74,16 +121,16 @@ const EditZoneWindow = ({ id }) => {
             enforceFocus={false}
             placement='end'
         >
-            <Offcanvas.Header closeButton={!isSaving} closeVariant='white'>
+            <Offcanvas.Header closeButton={!isSaving || !isDeleting} closeVariant='white'>
                 <Offcanvas.Title>
                     <div className='d-flex flex-column'>
                         <span>Zona</span>
-                        <span>{active ? active?.name : 'Cargando...'}</span>
+                        <span>{!!data ? data?.name : 'Cargando...'}</span>
                     </div>
                 </Offcanvas.Title>
             </Offcanvas.Header>
             {
-                (!!active && !isLoading)
+                (!!data && !isLoading)
                     ?
                     <>
                         <Offcanvas.Header className='offcanvas-success'>
@@ -113,13 +160,114 @@ const EditZoneWindow = ({ id }) => {
                                 </Nav.Item>
                             </Nav>
                             <Offcanvas.Body>
-                                <form id='form-ambit-zone-edit' onSubmit={handleSubmit(handleChange)}>
+                                <form id='form-ambit-zone-edit' onSubmit={handleSubmit(handleUpdate)}>
                                     <Tab.Content>
                                         <Tab.Pane eventKey={0}>
-                                            <EditZoneStep1 register={register} control={control} />
+                                            <div className='row'>
+                                                <div className='col-12 col-md-6'>
+                                                    <Form.Group className='mb-3' controlId='pCode'>
+                                                        <Form.Label>Orden</Form.Label>
+                                                        <Form.Control
+                                                            {...register('order', { required: true })}
+                                                            type='number'
+                                                            min={0}
+                                                            autoComplete='off'
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                                <div className='col-12 col-md-6'>
+                                                    <Form.Group className='mb-3' controlId='pName'>
+                                                        <Form.Label>Nombre</Form.Label>
+                                                        <Form.Control
+                                                            {...register('name', { required: true })}
+                                                            type='text'
+                                                            autoComplete='off'
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col-12'>
+                                                    <Form.Group className='mb-3' controlId='pDesc'>
+                                                        <Form.Label>Descripción</Form.Label>
+                                                        <Form.Control
+                                                            {...register('desc')}
+                                                            as='textarea'
+                                                            type={'text'}
+                                                            autoComplete='off'
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col'>
+                                                    <Form.Group className='mb-3' controlId='pJunta'>
+                                                        <Form.Label>Junta de usuarios</Form.Label>
+                                                        <Controller
+                                                            name='junta'
+                                                            control={control}
+                                                            rules={{ required: true }}
+                                                            render={
+                                                                ({ field }) =>
+                                                                    <AsyncSelect
+                                                                        {...field}
+                                                                        inputId='pJunta'
+                                                                        classNamePrefix='rc-select'
+                                                                        isClearable
+                                                                        defaultOptions
+                                                                        loadOptions={searchJunta}
+                                                                        menuPlacement={'auto'}
+                                                                        placeholder={`Buscar...`}
+                                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                                        getOptionValue={e => e._id}
+                                                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                                                    />
+                                                            }
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                            </div>
                                         </Tab.Pane>
                                         <Tab.Pane eventKey={1}>
-                                            <EditZoneStep2 control={control} watch={watch} />
+                                            <div className='row'>
+                                                <div className='col-12'>
+                                                    <Form.Group className='mb-3' controlId='pGeometry'>
+                                                        <Form.Label>Área geográfica</Form.Label>
+                                                        <Controller
+                                                            name='geometry'
+                                                            control={control}
+                                                            render={({ field }) =>
+                                                                <AsyncSelect
+                                                                    {...field}
+                                                                    inputId='pGeometry'
+                                                                    classNamePrefix='rc-select'
+                                                                    menuPosition='absolute'
+                                                                    isClearable
+                                                                    defaultOptions
+                                                                    cacheOptions
+                                                                    loadOptions={
+                                                                        async (e) => {
+                                                                            return await searchGeoObject(e, 3)
+                                                                        }
+                                                                    }
+                                                                    menuPlacement={'auto'}
+                                                                    placeholder={`Buscar...`}
+                                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                                    getOptionValue={e => e._id}
+                                                                    getOptionLabel={e => <OptionGeometry geo={e} />}
+                                                                />
+                                                            }
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                            </div>
+                                            {
+                                                !!watch('geometry')
+                                                &&
+                                                <LocationMap data={watch('geometry')?.geometry.features || []} view={watch('geometry')?.view || {}} />
+                                            }
                                         </Tab.Pane>
                                     </Tab.Content>
                                 </form>
@@ -128,10 +276,8 @@ const EditZoneWindow = ({ id }) => {
                         <div className='offcanvas-footer offcanvas-danger'>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
-                                    onClick={() => {
-                                        dispatch(startDeleteZone())
-                                    }}
-                                    disabled={isSaving}
+                                    onClick={handleDeleteZone}
+                                    disabled={isSaving || isDeleting}
                                     variant='danger'
                                     type='button'
                                     className='w-100'
@@ -145,122 +291,5 @@ const EditZoneWindow = ({ id }) => {
                     <LoadingPage />
             }
         </Offcanvas>
-    )
-}
-
-const EditZoneStep1 = ({ register, control }) => {
-    return (
-        <>
-            <div className='row'>
-                <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='pCode'>
-                        <Form.Label>Orden</Form.Label>
-                        <Form.Control
-                            {...register('order', { required: true })}
-                            type='number'
-                            min={0}
-                            autoComplete='off'
-                        />
-                    </Form.Group>
-                </div>
-                <div className='col-12 col-md-6'>
-                    <Form.Group className='mb-3' controlId='pName'>
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control
-                            {...register('name', { required: true })}
-                            type='text'
-                            autoComplete='off'
-                        />
-                    </Form.Group>
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pDesc'>
-                        <Form.Label>Descripción</Form.Label>
-                        <Form.Control
-                            {...register('desc')}
-                            as='textarea'
-                            type={'text'}
-                            autoComplete='off'
-                        />
-                    </Form.Group>
-                </div>
-            </div>
-            <div className='row'>
-                <div className='col'>
-                    <Form.Group className='mb-3' controlId='pJunta'>
-                        <Form.Label>Junta de usuarios</Form.Label>
-                        <Controller
-                            name='junta'
-                            control={control}
-                            rules={{ required: true }}
-                            render={
-                                ({ field }) =>
-                                    <AsyncSelect
-                                        {...field}
-                                        inputId='pJunta'
-                                        classNamePrefix='rc-select'
-                                        isClearable
-                                        defaultOptions
-                                        loadOptions={searchJunta}
-                                        menuPlacement={'auto'}
-                                        placeholder={`Buscar...`}
-                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                        getOptionValue={e => e._id}
-                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                    />
-                            }
-                        />
-                    </Form.Group>
-                </div>
-            </div>
-        </>
-    )
-}
-
-const EditZoneStep2 = ({ control, watch }) => {
-    return (
-        <>
-            <div className='row'>
-                <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pGeometry'>
-                        <Form.Label>Área geográfica</Form.Label>
-                        <Controller
-                            name='geometry'
-                            control={control}
-                            render={({ field }) =>
-                                <AsyncSelect
-                                    {...field}
-                                    inputId='pGeometry'
-                                    classNamePrefix='rc-select'
-                                    menuPosition='absolute'
-                                    isClearable
-                                    defaultOptions
-                                    cacheOptions
-                                    loadOptions={
-                                        async (e) => {
-                                            return await searchGeoObject(e, 3)
-                                        }
-                                    }
-                                    menuPlacement={'auto'}
-                                    placeholder={`Buscar...`}
-                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                    getOptionValue={e => e._id}
-                                    getOptionLabel={e => <OptionGeometry geo={e} />}
-                                />
-                            }
-                        />
-                    </Form.Group>
-                </div>
-            </div>
-            {
-                !!watch('geometry')
-                &&
-                <LocationMap data={watch('geometry')?.geometry.features || []} view={watch('geometry')?.view || {}} />
-            }
-        </>
     )
 }

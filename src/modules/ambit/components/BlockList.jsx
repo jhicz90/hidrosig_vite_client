@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
-import { useGetBlocksQuery } from '../../../store/actions'
+import { useGetListBlockQuery } from '../../../store/actions'
 
 export const BlockList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetBlocksQuery(search)
+    const { data: list = [], isFetching } = useGetListBlockQuery(search)
 
     return (
         <>

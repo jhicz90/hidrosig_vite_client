@@ -2,7 +2,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
-import { addNewVoucher, setActiveNewVoucher, setActiveVoucher, setSavingVoucher, setSavingNewVoucher, setModalNewVoucher } from './voucherSlice'
+import { setActiveVoucher, setSavingVoucher } from './voucherSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -70,7 +70,7 @@ export const {
             invalidatesTags: ['Acct - Vchr']
         }),
         deleteVoucherById: builder.mutation({
-            query: async (id) => ({
+            query: (id) => ({
                 url: `voucher/delete/${id}`,
                 method: 'delete'
             }),
@@ -300,7 +300,7 @@ export const startDeleteIdVoucher = (voucher) => {
             }
         }).then(async (result) => {
             if (result.value) {
-                
+
                 const resp = await fetchByToken({
                     endpoint: `voucher/delete/${_id}`,
                     method: 'DELETE'

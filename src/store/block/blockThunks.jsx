@@ -6,6 +6,66 @@ import { addNewBlock, setActiveNewBlock, setActiveBlock, setSavingBlock, setSavi
 
 const SwalReact = withReactContent(Swal)
 
+export const {
+    useAddBlockMutation,
+    useDeleteBlockByIdMutation,
+    useGetBlockByIdQuery,
+    useGetListBlockQuery,
+    useNewBlockQuery,
+    useUpdateBlockByIdMutation,
+} = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // BLOCK
+        newBlock: builder.query({
+            query: () => ({
+                url: `block/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.block
+        }),
+        addBlock: builder.mutation({
+            query: (newBlock) => ({
+                url: `block/create/new`,
+                method: 'post',
+                data: newBlock
+            }),
+            invalidatesTags: ['Orgz', 'Trrt']
+        }),
+        getListBlock: builder.query({
+            query: (search) => ({
+                url: `block/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Trrt']
+        }),
+        getBlockById: builder.query({
+            query: (id) => ({
+                url: `block/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.block,
+            providesTags: ['Orgz', 'Trrt']
+        }),
+        updateBlockById: builder.mutation({
+            query: ({ id, block }) => ({
+                url: `block/edit/${id}`,
+                method: 'put',
+                data: block
+            }),
+            invalidatesTags: ['Orgz', 'Trrt']
+        }),
+        deleteBlockById: builder.mutation({
+            query: (id) => ({
+                url: `zone/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Orgz', 'Trrt']
+        }),
+        // BLOCK
+    })
+})
+
 export const startAddNewBlock = () => {
     return async (dispatch) => {
 
