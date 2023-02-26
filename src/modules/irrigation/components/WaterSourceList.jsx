@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, LinkBack, TableGrid, TimeAgo, TypeWaterSource } from '../../../components'
-import { useGetWaterSourcesQuery } from '../../../store/actions'
+import { useGetListWaterSourceQuery } from '../../../store/actions'
 
 export const WaterSourceList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetWaterSourcesQuery(search)
+    const { data: list = [], isFetching } = useGetListWaterSourceQuery(search)
 
     return (
         <>

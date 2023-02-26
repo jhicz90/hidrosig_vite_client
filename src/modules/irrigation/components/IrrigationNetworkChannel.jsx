@@ -3,13 +3,13 @@ import { Outlet } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { ChannelNetworkTree } from '../../../components'
 import { IrrigationNetworkActive } from './IrrigationNetworkActive'
-import { setActiveAmbitIrrigationNetwork, useGetJuntasQuery } from '../../../store/actions'
+import { setActiveAmbitIrrigationNetwork, useGetListJuntaQuery } from '../../../store/actions'
 
 export const IrrigationNetworkChannel = () => {
 
     const dispatch = useDispatch()
     const { activeAmbit, activeNode, isSaving } = useSelector(state => state.irrigationnetwork)
-    const { data: optionsJunta = [], isLoading } = useGetJuntasQuery('', { refetchOnMountOrArgChange: true })
+    const { data: optionsJunta = [], isLoading } = useGetListJuntaQuery('', { refetchOnMountOrArgChange: true })
 
     return (
         <>

@@ -183,173 +183,7 @@ export const storeApi = createApi({
             invalidatesTags: ['Modl']
         }),
         // ROLES
-        // JUNTA
-        getJuntas: builder.query({
-            query: (search) => ({
-                url: `junta/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
-        }),
-        getJuntaById: builder.query({
-            query: (id) => ({
-                url: `junta/edit/${id}`
-            }),
-            transformResponse: (response, meta, arg) => response.junta,
-            providesTags: ['Orgz']
-        }),
-        addNewJunta: builder.mutation({
-            query: (newJunta) => ({
-                url: `junta/create/new`,
-                method: 'post',
-                data: newJunta
-            }),
-            invalidatesTags: ['Orgz']
-        }),
-        // JUNTA
-        // COMMITTEE
-        getComms: builder.query({
-            query: (search) => ({
-                url: `committee/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
-        }),
-        getCommById: builder.query({
-            query: (id) => ({
-                url: `committee/edit/${id}`
-            }),
-            transformResponse: (response, meta, arg) => response.committee,
-            providesTags: ['Orgz']
-        }),
-        getCommsByJunta: builder.query({
-            query: ({ junta, search }) => ({
-                url: `committee/search_by_junta/${junta}`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz']
-        }),
-        addNewComm: builder.mutation({
-            query: (newCommittee) => ({
-                url: `committee/create/new`,
-                method: 'post',
-                data: newCommittee
-            }),
-            invalidatesTags: ['Orgz']
-        }),
-        // COMMITTEE
-        getStructureById: builder.query({
-            query: (id) => ({
-                url: `structure/edit/${id}`
-            }),
-            transformResponse: (response, meta, arg) => response.structure,
-            providesTags: ['Irrig']
-        }),
-        newSectionByStructure: builder.query({
-            query: (structureId) => ({
-                url: `section/create/new`,
-                params: {
-                    structureId
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.section,
-        }),
-        getSectionById: builder.query({
-            query: (id) => ({
-                url: `section/edit/${id}`
-            }),
-            transformResponse: (response, meta, arg) => response.section,
-            providesTags: ['Irrig']
-        }),
-        getWaterSources: builder.query({
-            query: (search) => ({
-                url: `watersource/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Irrig']
-        }),
-        getWaterSourceById: builder.query({
-            query: (id) => ({
-                url: `watersource/edit/${id}`
-            }),
-            transformResponse: (response, meta, arg) => response.watersource,
-            providesTags: ['Irrig']
-        }),
-        getWaterSourcesByJunta: builder.query({
-            query: ({ junta, search }) => ({
-                url: `watersource/search_by_junta/${junta}`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Irrig']
-        }),
-        // FILES
-        getBrowser: builder.query({
-            query: (folder) => ({
-                url: `resource/browser/${folder}`,
-            }),
-            transformResponse: (response, meta, arg) => response.browser,
-            providesTags: ['Files']
-        }),
-        getDocuments: builder.query({
-            query: (search) => ({
-                url: `document/list`,
-                params: {
-                    search
-                }
-            }),
-            transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Files']
-        }),
-        getDocumentById: builder.query({
-            query: (id) => ({
-                url: `document/edit/${id}`,
-            }),
-            transformResponse: (response, meta, arg) => response.document,
-            providesTags: ['Files']
-        }),
-        // addResource: builder.mutation({
-        //     query: (files) => {
-
-        //         const formData = new FormData()
-
-        //         files.forEach(item => {
-        //             formData.append('resources', item)
-        //         })
-
-        //         return {
-        //             method: 'POST',
-        //             data: formData,
-        //             url: `resource/up`,
-        //         }
-        //     },
-        //     transformResponse: (response, meta, arg) => response.document,
-        //     providesTags: ['Files']
-        // }),
-        // FILES
         // RED DE RIEGO
-        getCalcProperties: builder.query({
-            query: ({ type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => ({
-                url: `structure/cpprop`,
-                params: { type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }
-            }),
-            transformResponse: (response, meta, arg) => response.cpprop,
-            providesTags: ['Irrig']
-        }),
         addRugosity: builder.mutation({
             query: (rugosity) => ({
                 url: `rugosity/create/new`,
@@ -421,23 +255,12 @@ export const storeApi = createApi({
 })
 
 export const {
-    useAddNewCommMutation,
-    useAddNewJuntaMutation,
     useAddNewModuleMutation,
     useAddNewPermMutation,
     useAddOrderChannelMutation,
     useAddRugosityMutation,
     useDeleteOrderChannelMutation,
     useDeleteRugosityMutation,
-    useGetBrowserQuery,
-    useGetCalcPropertiesQuery,
-    useGetCommByIdQuery,
-    useGetCommsByJuntaQuery,
-    useGetCommsQuery,
-    useGetDocumentByIdQuery,
-    useGetDocumentsQuery,
-    useGetJuntaByIdQuery,
-    useGetJuntasQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
     useGetOccupByIdQuery,
@@ -448,16 +271,10 @@ export const {
     useGetRoleByIdQuery,
     useGetRolesQuery,
     useGetRugositysQuery,
-    useGetSectionByIdQuery,
-    useGetStructureByIdQuery,
     useGetUsrsSysByOccupQuery,
     useGetUsrsSysQuery,
     useGetUsrSysByIdQuery,
-    useGetWaterSourceByIdQuery,
-    useGetWaterSourcesByJuntaQuery,
-    useGetWaterSourcesQuery,
     useLazyGetVoucherByIdQuery,
-    useNewSectionByStructureQuery,
     useUpdateOrderChannelMutation,
     useUpdateRugosityMutation,
 } = storeApi

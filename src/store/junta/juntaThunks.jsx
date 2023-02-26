@@ -6,6 +6,68 @@ import { fetchByToken, normalizeText } from '../../helpers'
 
 const SwalReact = withReactContent(Swal)
 
+export const juntaApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // JUNTA
+        newJunta: builder.query({
+            query: () => ({
+                url: `junta/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.junta
+        }),
+        addJunta: builder.mutation({
+            query: (newJunta) => ({
+                url: `junta/create/new`,
+                method: 'post',
+                data: newJunta
+            }),
+            invalidatesTags: ['Orgz']
+        }),
+        getListJunta: builder.query({
+            query: (search) => ({
+                url: `junta/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getJuntaById: builder.query({
+            query: (id) => ({
+                url: `junta/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.junta,
+            providesTags: ['Orgz']
+        }),
+        updateJuntaById: builder.mutation({
+            query: ({ id, junta }) => ({
+                url: `junta/edit/${id}`,
+                method: 'put',
+                data: junta
+            }),
+            invalidatesTags: ['Orgz']
+        }),
+        deleteJuntaById: builder.mutation({
+            query: (id) => ({
+                url: `junta/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Orgz']
+        }),
+        // JUNTA
+    })
+})
+
+export const {
+    useAddJuntaMutation,
+    useDeleteJuntaByIdMutation,
+    useGetJuntaByIdQuery,
+    useGetListJuntaQuery,
+    useNewJuntaQuery,
+    useUpdateJuntaByIdMutation,
+} = juntaApi
+
 export const startAddNewJunta = () => {
     return async (dispatch) => {
 

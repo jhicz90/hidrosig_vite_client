@@ -37,11 +37,11 @@ export const EditBlockWindow = ({ id }) => {
     const { data = null, isLoading, isError } = useGetBlockByIdQuery(id, { refetchOnMountOrArgChange: true })
     const [updateBlock, { isLoading: isSaving }] = useUpdateBlockByIdMutation()
     const [deleteBlock, { isLoading: isDeleting }] = useDeleteBlockByIdMutation()
-    const { register, control, handleSubmit, reset, watch, setFocus, setValue } = useForm()
+    const { register, control, handleSubmit, reset, watch, setValue } = useForm()
 
     const handleUpdate = async ({ geometry, ...newData }) => {
         try {
-            await updateZone({
+            await updateBlock({
                 id: data._id,
                 block: {
                     ...newData,

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
-import { useGetCommsQuery } from '../../../store/actions'
+import { useGetListCommQuery } from '../../../store/actions'
 import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
 
 export const CommitteeList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetCommsQuery(search)
+    const { data: list = [], isFetching } = useGetListCommQuery(search)
 
     return (
         <>

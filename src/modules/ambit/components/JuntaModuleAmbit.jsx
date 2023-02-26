@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import { ButtonGroup, Card, ListGroup } from 'react-bootstrap'
 import { IoMdEye } from 'react-icons/io'
-import { useGetCommsByJuntaQuery, useGetListZoneByJuntaQuery, useGetWaterSourcesByJuntaQuery } from '../../../store/actions'
+import { useGetListCommByJuntaQuery, useGetListWaterSourceByJuntaQuery, useGetListZoneByJuntaQuery } from '../../../store/actions'
 import { Avatar, InputSearch, LinkBack, SettingAction, SettingBlock, TableGrid, TagStatus, TypeWaterSource } from '../../../components'
 import { CreateZone, CreateCommittee } from '.'
 
@@ -107,7 +107,7 @@ const JuntaWaterSource = () => {
     const location = useLocation()
     const [search, setSearch] = useState('')
     const { active } = useSelector(state => state.junta)
-    const { data: waterSourcesIn = [], isLoading } = useGetWaterSourcesByJuntaQuery({ junta: active._id, search }, { refetchOnMountOrArgChange: true })
+    const { data: waterSourcesIn = [], isLoading } = useGetListWaterSourceByJuntaQuery({ junta: active._id, search }, { refetchOnMountOrArgChange: true })
 
     return (
         <SettingBlock
@@ -176,7 +176,7 @@ const JuntaCommittee = () => {
     const location = useLocation()
     const [search, setSearch] = useState('')
     const { active } = useSelector(state => state.junta)
-    const { data: committeesIn = [], isLoading } = useGetCommsByJuntaQuery({ junta: active._id, search }, { refetchOnMountOrArgChange: true })
+    const { data: committeesIn = [], isLoading } = useGetListCommByJuntaQuery({ junta: active._id, search }, { refetchOnMountOrArgChange: true })
 
     return (
         <SettingBlock

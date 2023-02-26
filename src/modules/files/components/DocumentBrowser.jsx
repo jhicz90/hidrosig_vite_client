@@ -3,12 +3,12 @@ import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
 import { docTypes } from '../../../types'
-import { useGetDocumentsQuery } from '../../../store/actions'
+import { useGetListDocumentQuery } from '../../../store/actions'
 
 export const DocumentBrowser = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetDocumentsQuery(search)
+    const { data: list = [], isFetching } = useGetListDocumentQuery(search)
 
     return (
         <>

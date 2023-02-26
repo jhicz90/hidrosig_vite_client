@@ -6,15 +6,7 @@ import { setActiveVoucher, setSavingVoucher } from './voucherSlice'
 
 const SwalReact = withReactContent(Swal)
 
-export const {
-    useAddVoucherMutation,
-    useDeleteVoucherByIdMutation,
-    useGetListVoucherByPettyCashQuery,
-    useGetListVoucherQuery,
-    useGetVoucherByIdQuery,
-    useNewVoucherQuery,
-    useUpdateVoucherByIdMutation,
-} = storeApi.injectEndpoints({
+export const voucherApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // VOUCHER
         newVoucher: builder.query({
@@ -79,6 +71,16 @@ export const {
         // VOUCHER
     })
 })
+
+export const {
+    useAddVoucherMutation,
+    useDeleteVoucherByIdMutation,
+    useGetListVoucherByPettyCashQuery,
+    useGetListVoucherQuery,
+    useGetVoucherByIdQuery,
+    useNewVoucherQuery,
+    useUpdateVoucherByIdMutation,
+} = voucherApi
 
 export const startUpdateVoucher = () => {
     return async (dispatch, getState) => {

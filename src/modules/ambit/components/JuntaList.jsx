@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
 import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
-import { useGetJuntasQuery } from '../../../store/actions'
+import { useGetListJuntaQuery } from '../../../store/actions'
 
 export const JuntaList = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetJuntasQuery(search)
+    const { data: list = [], isFetching } = useGetListJuntaQuery(search)
 
     return (
         <>

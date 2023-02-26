@@ -6,13 +6,7 @@ import { addNewPettycash, setActiveNewPettycash, setActivePettycash, setSavingPe
 
 const SwalReact = withReactContent(Swal)
 
-export const {
-    useAddPettyCashMutation,
-    useGetListPettyCashByUsrSysQuery,
-    useGetListPettyCashQuery,
-    useGetPettyCashByIdQuery,
-    useNewPettyCashQuery,
-} = storeApi.injectEndpoints({
+export const pettycashApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // PETTYCASH
         newPettyCash: builder.query({
@@ -59,6 +53,14 @@ export const {
         // PETTYCASH
     })
 })
+
+export const {
+    useAddPettyCashMutation,
+    useGetListPettyCashByUsrSysQuery,
+    useGetListPettyCashQuery,
+    useGetPettyCashByIdQuery,
+    useNewPettyCashQuery,
+} = pettycashApi
 
 export const startAddNewPettycash = () => {
     return async (dispatch) => {

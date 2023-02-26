@@ -6,15 +6,7 @@ import { addNewZone, setActiveNewZone, setActiveZone, setSavingZone, setSavingNe
 
 const SwalReact = withReactContent(Swal)
 
-export const {
-    useAddZoneMutation,
-    useDeleteZoneByIdMutation,
-    useGetListZoneByJuntaQuery,
-    useGetListZoneQuery,
-    useGetZoneByIdQuery,
-    useNewZoneQuery,
-    useUpdateZoneByIdMutation,
-} = storeApi.injectEndpoints({
+export const zoneApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // ZONE
         newZone: builder.query({
@@ -64,7 +56,7 @@ export const {
                 method: 'put',
                 data: zone
             }),
-            invalidatesTags: ['Acct - Vchr']
+            invalidatesTags: ['Orgz', 'Trrt']
         }),
         deleteZoneById: builder.mutation({
             query: (id) => ({
@@ -76,6 +68,16 @@ export const {
         // ZONE
     })
 })
+
+export const {
+    useAddZoneMutation,
+    useDeleteZoneByIdMutation,
+    useGetListZoneByJuntaQuery,
+    useGetListZoneQuery,
+    useGetZoneByIdQuery,
+    useNewZoneQuery,
+    useUpdateZoneByIdMutation,
+} = zoneApi
 
 export const startAddNewZone = () => {
     return async (dispatch) => {

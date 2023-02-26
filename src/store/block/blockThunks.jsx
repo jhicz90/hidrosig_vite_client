@@ -6,14 +6,7 @@ import { addNewBlock, setActiveNewBlock, setActiveBlock, setSavingBlock, setSavi
 
 const SwalReact = withReactContent(Swal)
 
-export const {
-    useAddBlockMutation,
-    useDeleteBlockByIdMutation,
-    useGetBlockByIdQuery,
-    useGetListBlockQuery,
-    useNewBlockQuery,
-    useUpdateBlockByIdMutation,
-} = storeApi.injectEndpoints({
+export const blockApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // BLOCK
         newBlock: builder.query({
@@ -65,6 +58,15 @@ export const {
         // BLOCK
     })
 })
+
+export const {
+    useAddBlockMutation,
+    useDeleteBlockByIdMutation,
+    useGetBlockByIdQuery,
+    useGetListBlockQuery,
+    useNewBlockQuery,
+    useUpdateBlockByIdMutation,
+} = blockApi
 
 export const startAddNewBlock = () => {
     return async (dispatch) => {

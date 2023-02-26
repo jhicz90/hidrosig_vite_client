@@ -6,6 +6,79 @@ import { addNewCommittee, setActiveNewCommittee, setActiveCommittee, setSavingCo
 
 const SwalReact = withReactContent(Swal)
 
+export const committeeApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // COMMITTEE
+        newComm: builder.query({
+            query: () => ({
+                url: `committee/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.committee
+        }),
+        addComm: builder.mutation({
+            query: (newCommittee) => ({
+                url: `committee/create/new`,
+                method: 'post',
+                data: newCommittee
+            }),
+            invalidatesTags: ['Orgz']
+        }),
+        getListComm: builder.query({
+            query: (search) => ({
+                url: `committee/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        getCommById: builder.query({
+            query: (id) => ({
+                url: `committee/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.committee,
+            providesTags: ['Orgz']
+        }),
+        getListCommByJunta: builder.query({
+            query: ({ junta, search }) => ({
+                url: `committee/search_by_junta/${junta}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz']
+        }),
+        updateCommById: builder.mutation({
+            query: ({ id, committee }) => ({
+                url: `committee/edit/${id}`,
+                method: 'put',
+                data: committee
+            }),
+            invalidatesTags: ['Orgz']
+        }),
+        deleteCommById: builder.mutation({
+            query: (id) => ({
+                url: `committee/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Orgz']
+        }),
+        // COMMITTEE
+    })
+})
+
+export const {
+    useAddCommMutation,
+    useDeleteCommByIdMutation,
+    useGetCommByIdQuery,
+    useGetListCommByJuntaQuery,
+    useGetListCommQuery,
+    useNewCommQuery,
+    useUpdateCommByIdMutation,
+} = committeeApi
+
 export const startAddNewCommittee = () => {
     return async (dispatch) => {
 

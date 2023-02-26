@@ -7,6 +7,79 @@ import { addNewWaterSource, setActiveNewWaterSource, setActiveWaterSource, setSa
 
 const SwalReact = withReactContent(Swal)
 
+export const watersourceApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // VOUCHER
+        newWaterSource: builder.query({
+            query: () => ({
+                url: `watersource/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.watersource
+        }),
+        addWaterSource: builder.mutation({
+            query: (newWaterSource) => ({
+                url: `watersource/create/new`,
+                method: 'post',
+                data: newWaterSource
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        getListWaterSource: builder.query({
+            query: (search) => ({
+                url: `watersource/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Irrig']
+        }),
+        getWaterSourceById: builder.query({
+            query: (id) => ({
+                url: `watersource/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.watersource,
+            providesTags: ['Irrig']
+        }),
+        getListWaterSourceByJunta: builder.query({
+            query: ({ junta, search }) => ({
+                url: `watersource/search_by_junta/${junta}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Irrig']
+        }),
+        updateWaterSourceById: builder.mutation({
+            query: ({ id, watersource }) => ({
+                url: `watersource/edit/${id}`,
+                method: 'put',
+                data: watersource
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        deleteWaterSourceById: builder.mutation({
+            query: (id) => ({
+                url: `watersource/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Irrig']
+        })
+        // VOUCHER
+    })
+})
+
+export const {
+    useAddWaterSourceMutation,
+    useDeleteWaterSourceByIdMutation,
+    useGetListWaterSourceByJuntaQuery,
+    useGetListWaterSourceQuery,
+    useGetWaterSourceByIdQuery,
+    useNewWaterSourceQuery,
+    useUpdateWaterSourceByIdMutation,
+} = watersourceApi
+
 export const startAddNewWaterSource = () => {
     return async (dispatch) => {
 

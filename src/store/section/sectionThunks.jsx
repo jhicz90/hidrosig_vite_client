@@ -6,6 +6,91 @@ import { addNewSection, setActiveNewSection, setActiveSection, setSavingSection,
 
 const SwalReact = withReactContent(Swal)
 
+export const zoneApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // SECTION
+        newSectionByStructure: builder.query({
+            query: (structureId) => ({
+                url: `section/create/new`,
+                params: {
+                    structureId
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.section,
+        }),
+        addSection: builder.mutation({
+            query: (newSection) => ({
+                url: `section/create/new`,
+                method: 'post',
+                data: newSection
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        getListSection: builder.query({
+            query: (search) => ({
+                url: `section/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
+        getSectionById: builder.query({
+            query: (id) => ({
+                url: `section/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.section,
+            providesTags: ['Irrig']
+        }),
+        getListSectionByStructure: builder.query({
+            query: ({ structureId, search }) => ({
+                url: `section/search_by_structure/${structureId}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
+        updateSectionById: builder.mutation({
+            query: ({ id, section }) => ({
+                url: `section/edit/${id}`,
+                method: 'put',
+                data: section
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        deleteSectionById: builder.mutation({
+            query: (id) => ({
+                url: `section/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        getCalcProperties: builder.query({
+            query: ({ type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => ({
+                url: `structure/cpprop`,
+                params: { type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }
+            }),
+            transformResponse: (response, meta, arg) => response.cpprop,
+            providesTags: ['Irrig']
+        }),
+        // SECTION
+    })
+})
+
+export const {
+    useAddSectionMutation,
+    useDeleteSectionByIdMutation,
+    useGetListSectionByStructureQuery,
+    useGetListSectionQuery,
+    useGetSectionByIdQuery,
+    useNewSectionByStructureQuery,
+    useUpdateSectionByIdMutation,
+    useGetCalcPropertiesQuery
+} = zoneApi
+
 export const startAddNewSection = ({ structureId = null }) => {
     return async (dispatch, getState) => {
 

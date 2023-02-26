@@ -7,6 +7,71 @@ import { addNewStructure, setActiveNewStructure, setActiveStructure, setSavingSt
 
 const SwalReact = withReactContent(Swal)
 
+export const structureApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // STRUCTURE
+        newStructure: builder.query({
+            query: (parent) => ({
+                url: `structure/create/new`,
+                params: {
+                    parent
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.structure
+        }),
+        addStructure: builder.mutation({
+            query: (newStructure) => ({
+                url: `structure/create/new`,
+                method: 'post',
+                data: newStructure
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        getListStructure: builder.query({
+            query: (search) => ({
+                url: `structure/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Trrt']
+        }),
+        getStructureById: builder.query({
+            query: (id) => ({
+                url: `structure/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.structure,
+            providesTags: ['Irrig']
+        }),
+        updateStructureById: builder.mutation({
+            query: ({ id, structure }) => ({
+                url: `structure/edit/${id}`,
+                method: 'put',
+                data: structure
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        deleteStructureById: builder.mutation({
+            query: (id) => ({
+                url: `structure/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Irrig']
+        }),
+        // STRUCTURE
+    })
+})
+
+export const {
+    useAddStructureMutation,
+    useDeleteStructureByIdMutation,
+    useGetListStructureQuery,
+    useGetStructureByIdQuery,
+    useNewStructureQuery,
+    useUpdateStructureByIdMutation,
+} = structureApi
+
 export const startAddNewStructure = () => {
     return async (dispatch, getState) => {
         const { activeNode: { id } } = getState().irrigationnetwork

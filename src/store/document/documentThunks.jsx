@@ -6,6 +6,76 @@ import { fetchByToken, normalizeText } from '../../helpers'
 
 const SwalReact = withReactContent(Swal)
 
+export const documentApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // FILES
+        newDocument: builder.query({
+            query: () => ({
+                url: `document/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.zone
+        }),
+        addDocument: builder.mutation({
+            query: (newDocument) => ({
+                url: `document/create/new`,
+                method: 'post',
+                data: newDocument
+            }),
+            invalidatesTags: ['Files']
+        }),
+        getBrowser: builder.query({
+            query: (folder) => ({
+                url: `resource/browser/${folder}`,
+            }),
+            transformResponse: (response, meta, arg) => response.browser,
+            providesTags: ['Files']
+        }),
+        getListDocument: builder.query({
+            query: (search) => ({
+                url: `document/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Files']
+        }),
+        getDocumentById: builder.query({
+            query: (id) => ({
+                url: `document/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.document,
+            providesTags: ['Files']
+        }),
+        updateDocumentById: builder.mutation({
+            query: ({ id, document }) => ({
+                url: `document/edit/${id}`,
+                method: 'put',
+                data: document
+            }),
+            invalidatesTags: ['Files']
+        }),
+        deleteDocumentById: builder.mutation({
+            query: (id) => ({
+                url: `document/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Files']
+        }),
+        // FILES
+    })
+})
+
+export const {
+    useAddDocumentMutation,
+    useDeleteDocumentByIdMutation,
+    useGetBrowserQuery,
+    useGetDocumentByIdQuery,
+    useGetListDocumentQuery,
+    useNewDocumentQuery,
+    useUpdateDocumentByIdMutation,
+} = documentApi
+
 export const startAddNewDocument = () => {
     return async (dispatch) => {
 
