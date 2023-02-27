@@ -21,7 +21,7 @@ export const pettycashApi = storeApi.injectEndpoints({
                 method: 'post',
                 data: newPettyCash
             }),
-            invalidatesTags: ['Acct - Ptty']
+            invalidatesTags: ['Ptty']
         }),
         getListPettyCash: builder.query({
             query: (search) => ({
@@ -31,14 +31,14 @@ export const pettycashApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Ptty']
+            providesTags: ['Ptty']
         }),
         getPettyCashById: builder.query({
             query: (id) => ({
                 url: `pettycash/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.pettycash,
-            providesTags: ['Acct - Ptty']
+            providesTags: ['Ptty']
         }),
         getListPettyCashByUsrSys: builder.query({
             query: ({ usersys, search }) => ({
@@ -48,7 +48,7 @@ export const pettycashApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Ptty']
+            providesTags: ['Ptty']
         }),
         // PETTYCASH
     })
@@ -99,7 +99,7 @@ export const startSaveNewPettycash = () => {
         dispatch(setSavingNewPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
             dispatch(setActiveNewPettycash(null))
         }
     }
@@ -143,7 +143,7 @@ export const startUpdatePettycash = () => {
         dispatch(setSavingPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
             dispatch(setActivePettycash(resp.pettycash))
         }
     }
@@ -166,7 +166,7 @@ export const startUpdateInformationPettycash = ({ code, year, name, desc, receip
         dispatch(setSavingPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
             dispatch(setActivePettycash(resp.pettycash))
         }
     }
@@ -182,7 +182,7 @@ export const startUpdateImageIdPettyCash = (id, images) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
         }
     }
 }
@@ -197,7 +197,7 @@ export const startDeleteImagePettyCash = (id, imageId) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
         }
     }
 }
@@ -255,7 +255,7 @@ export const startDeletePettycash = () => {
                 dispatch(setSavingPettycash(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct - Ptty']))
+                    dispatch(storeApi.util.invalidateTags(['Ptty']))
                     dispatch(setActivePettycash(null))
                 }
             }

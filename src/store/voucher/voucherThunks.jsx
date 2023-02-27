@@ -24,14 +24,18 @@ export const voucherApi = storeApi.injectEndpoints({
                 method: 'post',
                 data: newVoucher
             }),
-            invalidatesTags: ['Acct - Vchr']
+            invalidatesTags: ['Vchr']
         }),
         getVoucherById: builder.query({
             query: (id) => ({
                 url: `voucher/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.voucher,
-            providesTags: ['Acct - Vchr']
+            // providesTags: ['Vchr']
+            providesTags: (result, error, arg) => [{
+                type: 'Vchr',
+                id: result._id
+            }]
         }),
         getListVoucher: builder.query({
             query: (search) => ({
@@ -41,7 +45,7 @@ export const voucherApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Vchr']
+            providesTags: ['Vchr']
         }),
         getListVoucherByPettyCash: builder.query({
             query: ({ pettycash, search }) => ({
@@ -51,7 +55,7 @@ export const voucherApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Acct - Ptty', 'Acct - Vchr']
+            providesTags: ['Ptty', 'Vchr']
         }),
         updateVoucherById: builder.mutation({
             query: ({ id, voucher }) => ({
@@ -59,21 +63,21 @@ export const voucherApi = storeApi.injectEndpoints({
                 method: 'put',
                 data: voucher
             }),
-            invalidatesTags: ['Acct - Vchr']
+            invalidatesTags: ['Vchr']
         }),
         deleteVoucherById: builder.mutation({
             query: (id) => ({
                 url: `voucher/delete/${id}`,
                 method: 'delete'
             }),
-            invalidatesTags: ['Acct - Vchr']
+            invalidatesTags: ['Vchr']
         }),
         addSunatImageById: builder.mutation({
             query: (id) => ({
                 url: `voucher/sunat/${id}`,
                 method: 'put'
             }),
-            invalidatesTags: ['Acct - Vchr']
+            invalidatesTags: ['Vchr']
         }),
         // VOUCHER
     })
@@ -112,7 +116,7 @@ export const startUpdateVoucher = () => {
         dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+            dispatch(storeApi.util.invalidateTags(['Vchr']))
             dispatch(setActiveVoucher(resp.voucher))
         }
     }
@@ -149,7 +153,7 @@ export const startUpdateInformationVoucher = ({ voucherDay, cancelDay, typeRecei
         dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+            dispatch(storeApi.util.invalidateTags(['Vchr']))
             dispatch(setActiveVoucher(resp.voucher))
         }
     }
@@ -172,7 +176,7 @@ export const startUpdateImageVoucher = (images) => {
         dispatch(setSavingVoucher(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+            dispatch(storeApi.util.invalidateTags(['Vchr']))
             dispatch(setActiveVoucher(resp.voucher))
         }
     }
@@ -188,7 +192,7 @@ export const startUpdateImageIdVoucher = (id, images) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+            dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
         }
     }
 }
@@ -203,7 +207,7 @@ export const startDeleteImageVoucher = (id, imageId) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+            dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
         }
     }
 }
@@ -261,7 +265,7 @@ export const startDeleteVoucher = () => {
                 dispatch(setSavingVoucher(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+                    dispatch(storeApi.util.invalidateTags(['Vchr']))
                     dispatch(setActiveVoucher(null))
                 }
             }
@@ -317,7 +321,7 @@ export const startDeleteIdVoucher = (voucher) => {
                 })
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct - Vchr']))
+                    dispatch(storeApi.util.invalidateTags(['Acct']))
                 }
             }
         })

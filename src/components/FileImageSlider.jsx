@@ -10,14 +10,17 @@ import 'keen-slider/keen-slider.min.css'
 
 export const FileImageSlider = ({ images = [], actionDelete = null }) => {
 
-    const [sliderRef] = useKeenSlider({
-        mode: 'free-snap',
-        slides: {
-            origin: 'center',
-            perView: 2,
-            spacing: 30,
+    const [sliderRef] = useKeenSlider(
+        {
+            mode: 'free-snap',
+            slides: {
+                origin: 'center',
+                perView: 2,
+                spacing: 30,
+            }
         },
-    })
+        [MutationPlugin]
+    )
 
     return (
         <>
@@ -62,6 +65,22 @@ export const FileImageSlider = ({ images = [], actionDelete = null }) => {
             }
         </>
     )
+}
+
+const MutationPlugin = (slider) => {
+    const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            slider.update()
+        })
+    })
+    const config = { childList: true }
+
+    slider.on("created", () => {
+        observer.observe(slider.container, config)
+    })
+    slider.on("destroyed", () => {
+        observer.disconnect()
+    })
 }
 
 const FileImageStyle = styled.div`
