@@ -67,12 +67,20 @@ export const voucherApi = storeApi.injectEndpoints({
                 method: 'delete'
             }),
             invalidatesTags: ['Acct - Vchr']
-        })
+        }),
+        addSunatImageById: builder.mutation({
+            query: (id) => ({
+                url: `voucher/sunat/${id}`,
+                method: 'put'
+            }),
+            invalidatesTags: ['Acct - Vchr']
+        }),
         // VOUCHER
     })
 })
 
 export const {
+    useAddSunatImageByIdMutation,
     useAddVoucherMutation,
     useDeleteVoucherByIdMutation,
     useGetListVoucherByPettyCashQuery,

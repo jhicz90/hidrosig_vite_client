@@ -9,8 +9,8 @@ import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import validator from 'validator'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { searchSocialReason, startDeleteImageVoucher, startModalResource, startUpdateImageIdVoucher, useDeleteVoucherByIdMutation, useGetVoucherByIdQuery, useUpdateVoucherByIdMutation } from '../../../store/actions'
-import { DatePicker, FileImageSlider, LoadingPage, OptionSocialReason } from '../../../components'
+import { searchSocialReason, startDeleteImageVoucher, startModalResource, startUpdateImageIdVoucher, useAddSunatImageByIdMutation, useDeleteVoucherByIdMutation, useGetVoucherByIdQuery, useUpdateVoucherByIdMutation } from '../../../store/actions'
+import { DatePicker, FileImageSlider, Image, LoadingPage, OptionSocialReason } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { normalizeText } from '../../../helpers'
 
@@ -41,6 +41,7 @@ const EditVoucherWindow = ({ id }) => {
     const { data = null, isLoading, isError } = useGetVoucherByIdQuery(id, { refetchOnMountOrArgChange: true })
     const [updateVoucher, { isLoading: isSaving }] = useUpdateVoucherByIdMutation()
     const [deleteVoucher, { isLoading: isDeleting }] = useDeleteVoucherByIdMutation()
+    const [addSunatImage] = useAddSunatImageByIdMutation()
     const { register, control, setValue, handleSubmit, reset } = useForm()
 
     const handleUpdate = async ({ socialReason, ...newData }) => {
@@ -73,6 +74,10 @@ const EditVoucherWindow = ({ id }) => {
                 setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
             }))
         }
+    }
+
+    const handleAddSunatImage = (voucher) => {
+        addSunatImage(voucher._id)
     }
 
     const handleDeleteImageVoucher = (imageId) => {
@@ -348,6 +353,9 @@ const EditVoucherWindow = ({ id }) => {
                                         <ListGroup>
                                             <ListGroup.Item onClick={() => handleAddImage(data)} className='d-flex align-items-center' action>
                                                 Agregar imagen <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
+                                            </ListGroup.Item>
+                                            <ListGroup.Item onClick={() => handleAddSunatImage(data)} className='d-flex align-items-center list-group-item-primary' action>
+                                                Agregar VALIDEZ SUNAT <Image className='ms-3' noImg={1093} width={50} height={25} />
                                             </ListGroup.Item>
                                             <ListGroup.Item className='bg-light'>
                                                 <FileImageSlider images={data.images} actionDelete={handleDeleteImageVoucher} />
