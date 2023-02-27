@@ -43,7 +43,7 @@ const EditVoucherWindow = ({ id }) => {
     const [deleteVoucher, { isLoading: isDeleting }] = useDeleteVoucherByIdMutation()
     const [addSunatImage] = useAddSunatImageByIdMutation()
     const { register, control, setValue, handleSubmit, reset } = useForm()
-    console.log(data)
+    
     const handleUpdate = async ({ socialReason, ...newData }) => {
         try {
             await updateVoucher({
