@@ -9,7 +9,7 @@ const SwalReact = withReactContent(Swal)
 
 export const watersourceApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
-        // VOUCHER
+        // WATERSOURCE
         newWaterSource: builder.query({
             query: () => ({
                 url: `watersource/create/new`,
@@ -66,7 +66,7 @@ export const watersourceApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Irrig']
         })
-        // VOUCHER
+        // WATERSOURCE
     })
 })
 

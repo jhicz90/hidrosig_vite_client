@@ -58,9 +58,7 @@ export const CommitteeModuleAmbit = () => {
                                                 loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                 getOptionValue={e => e._id}
-                                                getOptionLabel={e =>
-                                                    <OptionOrgz orgz={e} />
-                                                }
+                                                getOptionLabel={e => <OptionOrgz orgz={e} />}
                                             />
                                     }
                                 />

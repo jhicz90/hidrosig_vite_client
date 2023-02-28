@@ -64,7 +64,7 @@ const CreateSectionWindow = ({ structureId = null }) => {
             } else {
                 if (calcs?.froudeNumber < 1) {
                     try {
-                        await addVoucher({
+                        await addSection({
                             ...newData,
                             rugosity,
                             idRugosity: rugosity ? rugosity._id : ''
