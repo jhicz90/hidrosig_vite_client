@@ -23,6 +23,13 @@ export const pettycashApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Ptty']
         }),
+        getPettyCashById: builder.query({
+            query: (id) => ({
+                url: `pettycash/edit/${id}`,
+            }),
+            transformResponse: (response, meta, arg) => response.pettycash,
+            providesTags: (result, error, arg) => [{ type: 'Ptty', id: result._id }]
+        }),
         getListPettyCash: builder.query({
             query: (search) => ({
                 url: `pettycash/list`,
@@ -31,13 +38,6 @@ export const pettycashApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Ptty']
-        }),
-        getPettyCashById: builder.query({
-            query: (id) => ({
-                url: `pettycash/edit/${id}`,
-            }),
-            transformResponse: (response, meta, arg) => response.pettycash,
             providesTags: ['Ptty']
         }),
         getListPettyCashByUsrSys: builder.query({
@@ -166,7 +166,7 @@ export const startUpdateInformationPettycash = ({ code, year, name, desc, receip
         dispatch(setSavingPettycash(false))
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Ptty']))
+            dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id: _id }]))
             dispatch(setActivePettycash(resp.pettycash))
         }
     }
@@ -182,7 +182,7 @@ export const startUpdateImageIdPettyCash = (id, images) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Ptty']))
+            dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id }]))
         }
     }
 }
@@ -197,7 +197,7 @@ export const startDeleteImagePettyCash = (id, imageId) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Ptty']))
+            dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id }]))
         }
     }
 }
@@ -255,7 +255,7 @@ export const startDeletePettycash = () => {
                 dispatch(setSavingPettycash(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Ptty']))
+                    dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id: _id }]))
                     dispatch(setActivePettycash(null))
                 }
             }

@@ -9,7 +9,7 @@ import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import validator from 'validator'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import { searchSocialReason, startDeleteImageVoucher, startModalResource, startUpdateImageIdVoucher, useAddSunatImageByIdMutation, useDeleteVoucherByIdMutation, useGetVoucherByIdQuery, useUpdateVoucherByIdMutation } from '../../../store/actions'
+import { searchSocialReason, startAddSunatImageIdVoucher, startDeleteImageVoucher, startModalResource, startUpdateImageIdVoucher, useAddSunatImageByIdMutation, useDeleteVoucherByIdMutation, useGetVoucherByIdQuery, useUpdateVoucherByIdMutation } from '../../../store/actions'
 import { DatePicker, FileImageSlider, Image, LoadingPage, OptionSocialReason } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { normalizeText } from '../../../helpers'
@@ -41,9 +41,8 @@ const EditVoucherWindow = ({ id }) => {
     const { data = null, isLoading, isError } = useGetVoucherByIdQuery(id, { refetchOnMountOrArgChange: true })
     const [updateVoucher, { isLoading: isSaving }] = useUpdateVoucherByIdMutation()
     const [deleteVoucher, { isLoading: isDeleting }] = useDeleteVoucherByIdMutation()
-    const [addSunatImage] = useAddSunatImageByIdMutation()
     const { register, control, setValue, handleSubmit, reset } = useForm()
-    
+
     const handleUpdate = async ({ socialReason, ...newData }) => {
         try {
             await updateVoucher({
@@ -77,7 +76,7 @@ const EditVoucherWindow = ({ id }) => {
     }
 
     const handleAddSunatImage = (voucher) => {
-        addSunatImage(voucher._id)
+        dispatch(startAddSunatImageIdVoucher(voucher._id))
     }
 
     const handleDeleteImageVoucher = (imageId) => {

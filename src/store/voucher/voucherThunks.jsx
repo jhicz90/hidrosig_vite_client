@@ -1,3 +1,4 @@
+import { toast } from 'react-hot-toast'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
@@ -31,11 +32,7 @@ export const voucherApi = storeApi.injectEndpoints({
                 url: `voucher/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.voucher,
-            // providesTags: ['Vchr']
-            providesTags: (result, error, arg) => [{
-                type: 'Vchr',
-                id: result._id
-            }]
+            providesTags: (result, error, arg) => [{ type: 'Vchr', id: result._id }]
         }),
         getListVoucher: builder.query({
             query: (search) => ({
@@ -63,19 +60,12 @@ export const voucherApi = storeApi.injectEndpoints({
                 method: 'put',
                 data: voucher
             }),
-            invalidatesTags: ['Vchr']
+            invalidatesTags: (result, error, { id }) => [{ type: 'Vchr', id }]
         }),
         deleteVoucherById: builder.mutation({
             query: (id) => ({
                 url: `voucher/delete/${id}`,
                 method: 'delete'
-            }),
-            invalidatesTags: ['Vchr']
-        }),
-        addSunatImageById: builder.mutation({
-            query: (id) => ({
-                url: `voucher/sunat/${id}`,
-                method: 'put'
             }),
             invalidatesTags: ['Vchr']
         }),
@@ -205,6 +195,24 @@ export const startDeleteImageVoucher = (id, imageId) => {
             data: { images: [imageId] },
             method: 'DELETE'
         })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
+        }
+    }
+}
+
+export const startAddSunatImageIdVoucher = (id) => {
+    return async (dispatch) => {
+
+        const toastLoading = toast.loading('Consultando en SUNAT... por favor espere')
+
+        const resp = await fetchByToken({
+            endpoint: `voucher/sunat/${id}`,
+            method: 'PUT'
+        })
+
+        toast.dismiss(toastLoading)
 
         if (resp.ok) {
             dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
