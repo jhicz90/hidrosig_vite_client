@@ -52,7 +52,11 @@ export const voucherApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Ptty', 'Vchr']
+            // providesTags: ['Ptty', 'Vchr']
+            providesTags: (result, error, arg) =>
+                result
+                    ? [...result.map(({ _id }) => ({ type: 'Vchr', id: _id })), 'Ptty']
+                    : ['Ptty', 'Vchr']
         }),
         updateVoucherById: builder.mutation({
             query: ({ id, voucher }) => ({

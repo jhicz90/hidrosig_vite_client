@@ -149,7 +149,7 @@ export const startUpdatePettycash = () => {
     }
 }
 
-export const startUpdateInformationPettycash = ({ code, year, name, desc, receipt, check, remainingAmount, oldBalance, startDeclaration }) => {
+export const startUpdateInformationPettycash = (updateData) => {
     return async (dispatch, getState) => {
 
         dispatch(setSavingPettycash(true))
@@ -159,7 +159,7 @@ export const startUpdateInformationPettycash = ({ code, year, name, desc, receip
 
         const resp = await fetchByToken({
             endpoint: `pettycash/edit/${_id}`,
-            data: { code, year, name, desc, receipt, check, remainingAmount, oldBalance, startDeclaration },
+            data: updateData,
             method: 'PUT'
         })
 
@@ -284,5 +284,18 @@ export const startExportPdfActivePettyCash = () => {
         await fetchByToken({
             endpoint: `pettycash/export/pdf/${_id}`
         })
+    }
+}
+
+export const searchOrgz = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: 'pettycash/list_orgz',
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
     }
 }

@@ -2,32 +2,35 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
-import { startUpdateInformationPettycash } from '../../../store/actions'
-import { DatePicker } from '../../../components'
+import AsyncSelect from 'react-select/async'
+import { searchOrgz, startUpdateInformationPettycash } from '../../../store/actions'
+import { DatePicker, OptionOrgz } from '../../../components'
 
 export const PettyCashModuleInformation = () => {
 
     const dispatch = useDispatch()
     const { active, isSaving } = useSelector(state => state.pettycash)
-    const { register, control, handleSubmit, reset } = useForm()
+    const { register, control, handleSubmit, reset } = useForm({
+        defaultValues: {
+            organization: !!active?.organization?.orgId ? { _id: active?.organization?.orgId, name: active?.organization?.orgName, docid: active?.organization?.docId } : null
+        }
+    })
 
-    const handleSave = ({ code, year, name, desc, receipt, check, remainingAmount, oldBalance, startDeclaration }) => {
+    const handleSave = ({ organization, ...updateData }) => {
         dispatch(startUpdateInformationPettycash({
-            code,
-            year,
-            name,
-            desc,
-            receipt,
-            check,
-            remainingAmount,
-            oldBalance,
-            startDeclaration
+            ...updateData,
+            organization: {
+                orgId: organization._id,
+                orgName: organization.name,
+                docId: organization.docid
+            }
         }))
     }
 
     useEffect(() => {
         reset({
-            ...active
+            ...active,
+            organization: !!active?.organization?.orgId ? { _id: active?.organization?.orgId, name: active?.organization?.orgName, docid: active?.organization?.docId } : null
         })
     }, [reset, active])
 
@@ -163,6 +166,35 @@ export const PettyCashModuleInformation = () => {
                                 <Form.Text>
                                     Si al momento de iniciar esta declaración existe un saldo previo a esta caja.
                                 </Form.Text>
+                            </Form.Group>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col'>
+                            <Form.Group className='mb-3' controlId='uOrgz'>
+                                <Form.Label>Organización</Form.Label>
+                                <Controller
+                                    name='organization'
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={
+                                        ({ field }) =>
+                                            <AsyncSelect
+                                                {...field}
+                                                inputId='uOrgz'
+                                                classNamePrefix='rc-select'
+                                                isClearable
+                                                defaultOptions
+                                                loadOptions={searchOrgz}
+                                                menuPlacement={'auto'}
+                                                placeholder={`Buscar...`}
+                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                getOptionValue={e => e._id}
+                                                getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                            />
+                                    }
+                                />
                             </Form.Group>
                         </div>
                     </div>

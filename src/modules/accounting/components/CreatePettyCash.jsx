@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
-import { useAddPettyCashMutation, useNewPettyCashQuery } from '../../../store/actions'
-import { DatePicker, LoadingPage } from '../../../components'
+import AsyncSelect from 'react-select/async'
+import { searchOrgz, useAddPettyCashMutation, useNewPettyCashQuery } from '../../../store/actions'
+import { DatePicker, LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreatePettyCash = () => {
@@ -31,9 +32,16 @@ const CreatePettyCashWindow = () => {
     const [addPettyCash, { isLoading: isSaving }] = useAddPettyCashMutation()
     const { register, control, handleSubmit, reset } = useForm()
 
-    const handleSave = async (newData) => {
+    const handleSave = async ({ organization, ...newData }) => {
         try {
-            await addPettyCash(newData)
+            await addPettyCash({
+                ...newData,
+                organization: {
+                    orgId: organization._id,
+                    orgName: organization.name,
+                    docId: organization.docid
+                }
+            })
             setShow(false)
         } catch (err) {
             console.log(err)
@@ -207,6 +215,35 @@ const CreatePettyCashWindow = () => {
                                             <Form.Text>
                                                 Si al momento de iniciar esta declaración existe un saldo previo a esta caja.
                                             </Form.Text>
+                                        </Form.Group>
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className='col'>
+                                        <Form.Group className='mb-3' controlId='newOrgz'>
+                                            <Form.Label>Organización</Form.Label>
+                                            <Controller
+                                                name='organization'
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={
+                                                    ({ field }) =>
+                                                        <AsyncSelect
+                                                            {...field}
+                                                            inputId='newOrgz'
+                                                            classNamePrefix='rc-select'
+                                                            isClearable
+                                                            defaultOptions
+                                                            loadOptions={searchOrgz}
+                                                            menuPlacement={'auto'}
+                                                            placeholder={`Buscar...`}
+                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                            getOptionValue={e => e._id}
+                                                            getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                                        />
+                                                }
+                                            />
                                         </Form.Group>
                                     </div>
                                 </div>
