@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { toast } from 'react-hot-toast'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
@@ -274,5 +275,33 @@ export const startDeleteStructure = () => {
                 }
             }
         })
+    }
+}
+
+export const startExportNet = () => {
+    return async (dispatch) => {
+
+        const toastLoading = toast.loading('Exportando canales y tramos...')
+
+        const resp = await fetchByToken({
+            endpoint: `structure/export/net`,
+        })
+
+        toast.dismiss(toastLoading)
+    }
+}
+
+export const startImportNet = (fileName) => {
+    return async (dispatch) => {
+
+        const toastLoading = toast.loading('Importando canales y tramos...')
+
+        const resp = await fetchByToken({
+            endpoint: `structure/import/net`,
+            data: { filename: fileName },
+            method: 'POST'
+        })
+
+        toast.dismiss(toastLoading)
     }
 }
