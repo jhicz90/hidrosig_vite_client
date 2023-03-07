@@ -276,65 +276,46 @@ export const startUpdateAmbitCommittee = ({ junta, zone }) => {
     }
 }
 
-export const startDeleteCommittee = ({ navigate = null }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().committee
-        const { _id, name } = active
+export const questionDeleteCommittee = (name) => {
 
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Eliminar</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta comisión de usuarios?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: `btn btn-warning`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
+    const result = SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta comisión de usuarios?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
             }
-        }).then(async (result) => {
-            if (result.value) {
+        }
+    })
 
-                dispatch(setSavingCommittee(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `committee/delete/${_id}`,
-                    method: 'DELETE'
-                })
-
-                dispatch(setSavingCommittee(false))
-
-                if (resp.ok) {
-                    navigate('/app/ambit/orgz')
-                    dispatch(setActiveCommittee(null))
-                }
-            }
-        })
-    }
+    return result
 }
 
 export const searchCommitteeByJunta = async (junta, search) => {

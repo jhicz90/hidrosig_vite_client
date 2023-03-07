@@ -16,10 +16,10 @@ export const JuntaPage = () => {
     const [updateJunta, { isLoading: isSaving }] = useUpdateJuntaByIdMutation()
     const [deleteJunta] = useDeleteJuntaByIdMutation()
 
-    const handleActiveStatus = () => {
+    const handleStatus = (id, status) => {
         updateJunta({
-            id: juntaid,
-            junta: { status: !data.status }
+            id,
+            junta: { status }
         })
     }
 
@@ -56,7 +56,7 @@ export const JuntaPage = () => {
                                             Enviar notificación
                                         </Button>
                                         <Button
-                                            onClick={handleActiveStatus}
+                                            onClick={() => handleStatus(juntaid, data?.status)}
                                             disabled={isSaving || isLoading}
                                             variant={data.status ? 'danger' : 'success'}
                                         >

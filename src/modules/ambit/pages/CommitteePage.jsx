@@ -2,9 +2,9 @@ import { NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { Button, Card, Dropdown, Nav, Tab } from 'react-bootstrap'
-import { useDeleteCommByIdMutation, useGetCommByIdQuery, useUpdateCommByIdMutation } from '../../../store/actions'
-import { LoadingPage } from '../../../components'
-import { CommitteeInformation } from '../components'
+import { questionDeleteCommittee, useDeleteCommByIdMutation, useGetCommByIdQuery, useUpdateCommByIdMutation } from '../../../store/actions'
+import { LoadingPage, SliderTab } from '../../../components'
+import { CommitteeAmbit, CommitteeBanner, CommitteeInformation } from '../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CommitteePage = () => {
@@ -15,6 +15,19 @@ export const CommitteePage = () => {
     const { data = null, isLoading, isError } = useGetCommByIdQuery(commid)
     const [updateComm, { isLoading: isSaving }] = useUpdateCommByIdMutation()
     const [deleteComm] = useDeleteCommByIdMutation()
+
+    const handleStatus = (id, status) => {
+        updateComm({
+            id,
+            committee: { status }
+        })
+    }
+
+    const handleDelete = async (id, name) => {
+        if ((await questionDeleteCommittee(name)).value) {
+            deleteComm(id)
+        }
+    }
 
     if (isLoading) {
         return <LoadingPage />
@@ -43,7 +56,7 @@ export const CommitteePage = () => {
                                             Enviar notificación
                                         </Button>
                                         <Button
-                                            // onClick={handleActiveStatus}
+                                            onClick={() => handleStatus(commid, data?.status)}
                                             disabled={isSaving || isLoading}
                                             variant={data.status ? 'danger' : 'success'}
                                         >
@@ -57,7 +70,7 @@ export const CommitteePage = () => {
                                                 <Dropdown.Item>Reportes</Dropdown.Item>
                                                 <Dropdown.Item>Imprimir</Dropdown.Item>
                                                 <Dropdown.Item
-                                                    onClick={() => handleDelete(juntaid, data?.name)}
+                                                    onClick={() => handleDelete(commid, data?.name)}
                                                     className='text-danger'
                                                 >
                                                     Eliminar
@@ -71,24 +84,32 @@ export const CommitteePage = () => {
                     </div>
                     <div className='row'>
                         <div className='col-md-5 col-lg-5 col-xl-4'>
-                            {/* <JuntaBanner /> */}
+                            <CommitteeBanner />
                         </div>
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
-                                    <Nav variant='pills'>
-                                        <Nav.Item>
-                                            <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <NavLink to={`ambit`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Ámbito</NavLink>
-                                        </Nav.Item>
-                                    </Nav>
+                                    <SliderTab>
+                                        {/* <Nav variant='pills'> */}
+                                            <Nav.Item className='keen-slider__slide'>
+                                                <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
+                                            </Nav.Item>
+                                            <Nav.Item className='keen-slider__slide'>
+                                                <NavLink to={`ambit`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Ámbito</NavLink>
+                                            </Nav.Item>
+                                            <Nav.Item className='keen-slider__slide'>
+                                                <NavLink to={`blck`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Bloques de riego</NavLink>
+                                            </Nav.Item>
+                                            <Nav.Item className='keen-slider__slide'>
+                                                <NavLink to={`usr`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios de sistema</NavLink>
+                                            </Nav.Item>
+                                        {/* </Nav> */}
+                                    </SliderTab>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
                                         <Route index element={<CommitteeInformation />} />
-                                        {/* <Route path={`ambit`} element={<CommitteeAmbit />} /> */}
+                                        <Route path={`ambit`} element={<CommitteeAmbit />} />
                                     </Routes>
                                 </div>
                             </Tab.Container>

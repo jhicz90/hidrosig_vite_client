@@ -1,31 +1,31 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { searchJunta, searchZoneByJunta, startUpdateAmbitCommittee } from '../../../store/actions'
+import { committeeApi, searchJunta, searchZoneByJunta, useUpdateCommByIdMutation } from '../../../store/actions'
 import { OptionOrgz } from '../../../components'
 
 export const CommitteeAmbit = () => {
-
-    const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.committee)
-    const { control, watch, setValue, handleSubmit, reset } = useForm({
-        mode: 'onChange'
-    })
+    
+    const { commid } = useParams()
+    const { data = null } = useSelector(committeeApi.endpoints.getCommById.select(commid))
+    const [updateComm, { isLoading: isSaving }] = useUpdateCommByIdMutation()
+    const { control, watch, setValue, handleSubmit, reset } = useForm()
 
     const handleSave = ({ junta, zone }) => {
-        dispatch(startUpdateAmbitCommittee({
+        updateComm({
             junta: junta ? junta._id : null,
             zone: zone ? zone._id : null,
-        }))
+        })
     }
 
     useEffect(() => {
         reset({
-            ...active
+            ...data
         })
-    }, [reset, active])
+    }, [reset, data])
 
     return (
         <Card>
