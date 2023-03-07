@@ -1,40 +1,37 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { startUpdateInformationJunta } from '../../../store/actions'
+import { juntaApi, useUpdateJuntaByIdMutation } from '../../../store/actions'
+import { useParams } from 'react-router-dom'
 
-export const JuntaModuleInformation = () => {
+export const JuntaInformation = () => {
 
-    const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.junta)
+    const { juntaid } = useParams()
+    const { data = null } = useSelector(juntaApi.endpoints.getJuntaById.select(juntaid))
+    const [updateJunta, { isLoading: isSaving }] = useUpdateJuntaByIdMutation()
     const { register, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
-        dispatch(startUpdateInformationJunta({
-            name,
-            nameAbrev,
-            nameLarge,
-            nameLargeAbrev,
-            desc,
-            docid,
-            email
-        }))
+    const handleUpdate = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
+        updateJunta({
+            id: juntaid,
+            junta: { name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }
+        })
     }
 
     useEffect(() => {
         reset({
-            ...active
+            ...data
         })
-    }, [reset, active])
+    }, [reset, data])
 
     return (
         <Card>
             <Card.Body>
-                <form onSubmit={handleSubmit(handleSave)}>
+                <form onSubmit={handleSubmit(handleUpdate)}>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uName'>
+                            <Form.Group className='mb-3' controlId='pName'>
                                 <Form.Label>Nombre</Form.Label>
                                 <Form.Control
                                     {...register('name', { required: true })}
@@ -44,7 +41,7 @@ export const JuntaModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uNameAbrev'>
+                            <Form.Group className='mb-3' controlId='pNameAbrev'>
                                 <Form.Label>Nombre abreviado</Form.Label>
                                 <Form.Control
                                     {...register('nameAbrev', { required: true })}
@@ -56,7 +53,7 @@ export const JuntaModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uNameLarge'>
+                            <Form.Group className='mb-3' controlId='pNameLarge'>
                                 <Form.Label>Nombre largo o juridico</Form.Label>
                                 <Form.Control
                                     {...register('nameLarge', { required: true })}
@@ -66,7 +63,7 @@ export const JuntaModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uNameLargeAbrev'>
+                            <Form.Group className='mb-3' controlId='pNameLargeAbrev'>
                                 <Form.Label>Nombre largo abreviado</Form.Label>
                                 <Form.Control
                                     {...register('nameLargeAbrev', { required: true })}
@@ -78,7 +75,7 @@ export const JuntaModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12'>
-                            <Form.Group className='mb-3' controlId='uDesc'>
+                            <Form.Group className='mb-3' controlId='pDesc'>
                                 <Form.Label>Descripción</Form.Label>
                                 <Form.Control
                                     {...register('desc')}
@@ -91,7 +88,7 @@ export const JuntaModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uDocId'>
+                            <Form.Group className='mb-3' controlId='pDocId'>
                                 <Form.Label>Código de identidad o RUC</Form.Label>
                                 <Form.Control
                                     {...register('docid', { required: true })}
@@ -101,7 +98,7 @@ export const JuntaModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uEmail'>
+                            <Form.Group className='mb-3' controlId='pEmail'>
                                 <Form.Label>Correo electrónico</Form.Label>
                                 <Form.Control
                                     {...register('email', { required: true })}
