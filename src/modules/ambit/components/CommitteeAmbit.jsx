@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { searchJunta, searchZoneByJunta, startUpdateAmbitCommittee } from '../../../store/actions'
 import { OptionOrgz } from '../../../components'
 
-export const CommitteeModuleAmbit = () => {
+export const CommitteeAmbit = () => {
 
     const dispatch = useDispatch()
     const { active, isSaving } = useSelector(state => state.committee)

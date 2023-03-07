@@ -68,92 +68,6 @@ export const {
     useUpdateJuntaByIdMutation,
 } = juntaApi
 
-export const startAddNewJunta = () => {
-    return async (dispatch) => {
-
-        dispatch(addNewJunta())
-
-        const resp = await fetchByToken({
-            endpoint: `junta/create/new`
-        })
-
-        dispatch(setSavingNewJunta(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewJunta(resp.junta))
-        }
-    }
-}
-
-export const startSaveNewJunta = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingNewJunta(true))
-
-        const { activeNew } = getState().junta
-
-        const newJunta = {
-            ...activeNew
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `junta/create/new`,
-            data: newJunta,
-            method: 'POST'
-        })
-
-        dispatch(setSavingNewJunta(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Orgz']))
-            dispatch(setActiveNewJunta(null))
-        }
-    }
-}
-
-export const startGetJunta = (id) => {
-    return async (dispatch) => {
-
-        dispatch(setSavingJunta(true))
-
-        const resp = await fetchByToken({
-            endpoint: `junta/edit/${id}`
-        })
-
-        dispatch(setSavingJunta(false))
-
-        if (resp.ok) {
-            dispatch(setActiveJunta(resp.junta))
-        }
-    }
-}
-
-export const startUpdateJunta = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingJunta(true))
-
-        const { active } = getState().junta
-        const { _id } = active
-
-        const updateJunta = {
-            ...active
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `junta/edit/${_id}`,
-            data: updateJunta,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingJunta(false))
-
-        if (resp.ok) {
-            dispatch(setActiveJunta(resp.junta))
-        }
-    }
-}
-
 export const startUpdateImageJunta = (image) => {
     return async (dispatch, getState) => {
         const { active } = getState().junta
@@ -171,135 +85,74 @@ export const startUpdateImageJunta = (image) => {
     }
 }
 
-export const startUpdateStatusJunta = (status) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().junta
-        const { _id, name, status: statusJunta } = active
+export const questionStatusJunta = async (status, name) => {
+    const result = await SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Estado</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
+                <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta junta de usuarios se actualizaran.</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: status ? 'Desactivar' : 'Activar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: status ? 'btn btn-warning' : 'btn btn-success',
+            cancelButton: 'btn btn-neutral'
+        },
+        buttonsStyling: false,
+        reverseButtons: true
+    })
 
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Estado</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
-                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta junta de usuarios se actualizaran.</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: statusJunta ? 'Desactivar' : 'Activar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: statusJunta ? 'btn btn-warning' : 'btn btn-success',
-                cancelButton: 'btn btn-neutral'
-            },
-            buttonsStyling: false,
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-
-                dispatch(setSavingJunta(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `junta/status/${_id}`,
-                    data: { status },
-                    method: 'PUT'
-                })
-
-                dispatch(setSavingJunta(false))
-
-                if (resp.ok) {
-                    dispatch(setActiveJunta(resp.junta))
-                }
-            }
-        })
-    }
+    return result
 }
 
-export const startUpdateInformationJunta = ({ name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email }) => {
-    return async (dispatch, getState) => {
+export const questionDeleteJunta = async (name) => {
 
-        dispatch(setSavingJunta(true))
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
-        const { active } = getState().junta
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `junta/info/${_id}`,
-            data: { name, nameAbrev, nameLarge, nameLargeAbrev, desc, docid, email },
-            method: 'PUT'
-        })
-
-        dispatch(setSavingJunta(false))
-
-        if (resp.ok) {
-            dispatch(setActiveJunta(resp.junta))
+    const result = await SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar junta de usuarios</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta junta de usuarios?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
+            }
         }
-    }
-}
+    })
 
-export const startDeleteJunta = ({ navigate = null }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().junta
-        const { _id, name } = active
-
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
-
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Eliminar junta de usuarios</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta junta de usuarios?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: `btn btn-warning`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        }).then(async (result) => {
-            if (result.value) {
-
-                dispatch(setSavingJunta(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `junta/delete/${_id}`,
-                    method: 'DELETE'
-                })
-
-                dispatch(setSavingJunta(false))
-
-                if (resp.ok) {
-                    navigate('/app/ambit/orgz')
-                    dispatch(setActiveJunta(null))
-                }
-            }
-        })
-    }
+    return result
 }
 
 export const searchJunta = async (search) => {

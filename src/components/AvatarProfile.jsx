@@ -6,7 +6,7 @@ import { FaPen } from 'react-icons/fa'
 import { imageGet, imageSysGet } from '../helpers'
 import { startModalResource } from '../store/actions'
 
-export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px' }) => {
+export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px', bgColor = false }) => {
 
     const inputUploadImage = useId()
     const dispatch = useDispatch()
@@ -42,7 +42,7 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
                 <img
                     className='avatar-img'
                     src={avatarImg !== null ? imageGet(avatarImg) : imageSysGet(noImg)}
-                    style={{ background: backColor, width: size, height: size }}
+                    style={{ background: bgColor ? backColor : 'transparent', width: size, height: size }}
                     alt={`avatar-image-${avatarImg}`}
                     loading={'lazy'}
                 />
@@ -78,9 +78,9 @@ const ProfileAvatar = styled.div`
         width: 120px;
         object-fit: contain;
         border-radius: 50%;
-        border: 1px solid #fff;
+        /* border: 1px solid #fff;
+        border-color: rgba(13,110, 253, 1)!important; */
         box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
-        border-color: rgba(13,110, 253, 1)!important;
     }
 
     & label {

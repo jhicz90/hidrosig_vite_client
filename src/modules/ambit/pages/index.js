@@ -1,5 +1,5 @@
 export * from './AmbitResumePage'
-export * from './CommitteeActivePage'
+export * from './CommitteePage'
 export * from './JuntaPage'
 export * from './MapGeographicPage'
 export * from './OrganizationListPage'

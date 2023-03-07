@@ -38,6 +38,10 @@ body {
 	margin-left: 20px;
 }
 
+.flex-1 {
+	flex: 1;
+}
+
 a.uppy-Dashboard-poweredBy {
 	display: none;
 }
