@@ -79,208 +79,55 @@ export const {
     useUpdateCommByIdMutation,
 } = committeeApi
 
-export const startAddNewCommittee = () => {
+export const updateImageCommById = (id, image) => {
     return async (dispatch) => {
 
-        dispatch(addNewCommittee())
-
         const resp = await fetchByToken({
-            endpoint: `committee/create/new`
-        })
-
-        dispatch(setSavingNewCommittee(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewCommittee(resp.committee))
-        }
-    }
-}
-
-export const startSaveNewCommittee = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingNewCommittee(true))
-
-        const { activeNew } = getState().committee
-
-        const newCommittee = {
-            ...activeNew,
-            junta: activeNew.junta !== null ? activeNew.junta._id : null,
-            zone: activeNew.zone !== null ? activeNew.zone._id : null
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `committee/create/new`,
-            data: newCommittee,
-            method: 'POST'
-        })
-
-        dispatch(setSavingNewCommittee(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Orgz']))
-            dispatch(setActiveNewCommittee(null))
-        }
-    }
-}
-
-export const startGetCommittee = (id) => {
-    return async (dispatch) => {
-
-        dispatch(setSavingCommittee(true))
-
-        const resp = await fetchByToken({
-            endpoint: `committee/edit/${id}`
-        })
-
-        dispatch(setSavingCommittee(false))
-
-        if (resp.ok) {
-            dispatch(setActiveCommittee(resp.committee))
-        }
-    }
-}
-
-export const startUpdateCommittee = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingCommittee(true))
-
-        const { active } = getState().committee
-        const { _id } = active
-
-        const updateCommittee = {
-            ...active
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `committee/edit/${_id}`,
-            data: updateCommittee,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingCommittee(false))
-
-        if (resp.ok) {
-            dispatch(setActiveCommittee(resp.committee))
-        }
-    }
-}
-
-export const startUpdateImageCommittee = (image) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().committee
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `committee/image/${_id}`,
+            endpoint: `committee/image/${id}`,
             data: { image },
             method: 'PUT'
         })
 
         if (resp.ok) {
-            dispatch(setActiveCommittee(resp.committee))
+            dispatch(storeApi.util.invalidateTags(['Orgz']))
         }
     }
 }
 
-export const startUpdateStatusCommittee = (status) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().committee
-        const { _id, name, status: statusCommittee } = active
+export const questionStatusCommittee = async (status, name) => {
 
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Estado</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
-                    <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta ocupación se reiniciaran.</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: statusCommittee ? 'Desactivar' : 'Activar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: statusCommittee ? 'btn btn-warning' : 'btn btn-success',
-                cancelButton: 'btn btn-neutral'
-            },
-            buttonsStyling: false,
-            reverseButtons: true
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-
-                dispatch(setSavingCommittee(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `committee/status/${_id}`,
-                    data: { status },
-                    method: 'PUT'
-                })
-
-                dispatch(setSavingCommittee(false))
-
-                if (resp.ok) {
-                    dispatch(setActiveCommittee(resp.Committee))
-                }
-            }
-        })
-    }
-}
-
-export const startUpdateInformationCommittee = ({ name, desc }) => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingCommittee(true))
-
-        const { active } = getState().committee
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `committee/info/${_id}`,
-            data: { name, desc },
-            method: 'PUT'
-        })
-
-        dispatch(setSavingCommittee(false))
-
-        if (resp.ok) {
-            dispatch(setActiveCommittee(resp.committee))
-        }
-    }
-}
-
-export const startUpdateAmbitCommittee = ({ junta, zone }) => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingCommittee(true))
-
-        const { active } = getState().committee
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `committee/change_ambit/${_id}`,
-            data: { junta, zone },
-            method: 'PUT'
-        })
-
-        dispatch(setSavingCommittee(false))
-
-        if (resp.ok) {
-            dispatch(setActiveCommittee(resp.committee))
-        }
-    }
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Estado</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
+                <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de los usuarios asociados a esta organización se reiniciaran o se les restringira el acceso.</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: status ? 'Desactivar' : 'Activar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: status ? 'btn btn-warning' : 'btn btn-success',
+            cancelButton: 'btn btn-neutral'
+        },
+        buttonsStyling: false,
+        reverseButtons: true
+    }).then(({ isConfirmed }) => {
+        return isConfirmed
+    })
 }
 
 export const questionDeleteCommittee = (name) => {
 
     const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
-    const result = SwalReact.fire({
+    return SwalReact.fire({
         title:
             <>
                 <div className='text-uppercase'>Eliminar</div>
@@ -313,9 +160,9 @@ export const questionDeleteCommittee = (name) => {
                 return false
             }
         }
+    }).then(({ value }) => {
+        return value
     })
-
-    return result
 }
 
 export const searchCommitteeByJunta = async (junta, search) => {

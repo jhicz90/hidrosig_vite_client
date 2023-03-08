@@ -23,7 +23,8 @@ export const CommitteeList = () => {
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
                                         <Avatar
-                                            img={item.image?.fileName}
+                                            img={item.image?.metadata.url}
+                                            cloud={item.image?.cloud}
                                             noImgTxt={item.name}
                                             circle={true}
                                             width={40}

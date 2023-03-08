@@ -35,7 +35,7 @@ export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 201
                     ?
                     <img
                         className={`avatar ${circle ? "rounded-circle" : "rounded-2"} ${className}`}
-                        src={img !== '' ? imageGet(img, { cloud }) : imageSysGet(noImg)}
+                        src={img !== '' ? imageGet(img, { cloud, size: 500, thumb: true }) : imageSysGet(noImg)}
                         width={wAvatar}
                         height={hAvatar}
                         alt={img}

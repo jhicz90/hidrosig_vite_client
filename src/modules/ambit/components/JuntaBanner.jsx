@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { AvatarProfile } from '../../../components'
-import { juntaApi, startUpdateImageJunta} from '../../../store/actions'
+import { juntaApi, updateImageJuntaById} from '../../../store/actions'
 
 export const JuntaBanner = () => {
 
@@ -10,8 +10,8 @@ export const JuntaBanner = () => {
     const dispatch = useDispatch()
     const { data = null } = useSelector(juntaApi.endpoints.getJuntaById.select(juntaid))
 
-    const handleChangeImage = (e) => {
-        dispatch(startUpdateImageJunta(e))
+    const handleChangeImage = (id, image) => {
+        dispatch(updateImageJuntaById(id, image))
     }
 
     return (

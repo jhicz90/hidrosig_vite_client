@@ -68,25 +68,24 @@ export const {
     useUpdateJuntaByIdMutation,
 } = juntaApi
 
-export const startUpdateImageJunta = (image) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().junta
-        const { _id } = active
+export const updateImageJuntaById = (id, image) => {
+    return async (dispatch) => {
 
         const resp = await fetchByToken({
-            endpoint: `junta/image/${_id}`,
+            endpoint: `junta/image/${id}`,
             data: { image },
             method: 'PUT'
         })
 
         if (resp.ok) {
-            dispatch(setActiveJunta(resp.junta))
+            dispatch(storeApi.util.invalidateTags(['Orgz']))
         }
     }
 }
 
 export const questionStatusJunta = async (status, name) => {
-    const result = await SwalReact.fire({
+
+    return SwalReact.fire({
         title:
             <>
                 <div className='text-uppercase'>Estado</div>
@@ -108,16 +107,16 @@ export const questionStatusJunta = async (status, name) => {
         },
         buttonsStyling: false,
         reverseButtons: true
+    }).then(({ isConfirmed }) => {
+        return isConfirmed
     })
-
-    return result
 }
 
 export const questionDeleteJunta = async (name) => {
 
     const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
-    const result = await SwalReact.fire({
+    return SwalReact.fire({
         title:
             <>
                 <div className='text-uppercase'>Eliminar junta de usuarios</div>
@@ -150,9 +149,9 @@ export const questionDeleteJunta = async (name) => {
                 return false
             }
         }
+    }).then(({ value }) => {
+        return value
     })
-
-    return result
 }
 
 export const searchJunta = async (search) => {

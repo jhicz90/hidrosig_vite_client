@@ -2,8 +2,8 @@ import { NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { Button, Card, Dropdown, Nav, Tab } from 'react-bootstrap'
-import { questionDeleteCommittee, useDeleteCommByIdMutation, useGetCommByIdQuery, useUpdateCommByIdMutation } from '../../../store/actions'
-import { LoadingPage, SliderTab } from '../../../components'
+import { questionDeleteCommittee, questionStatusCommittee, useDeleteCommByIdMutation, useGetCommByIdQuery, useUpdateCommByIdMutation } from '../../../store/actions'
+import { LoadingPage, SliderNav } from '../../../components'
 import { CommitteeAmbit, CommitteeBanner, CommitteeInformation } from '../components'
 import { useNavigateState } from '../../../hooks'
 
@@ -16,15 +16,18 @@ export const CommitteePage = () => {
     const [updateComm, { isLoading: isSaving }] = useUpdateCommByIdMutation()
     const [deleteComm] = useDeleteCommByIdMutation()
 
-    const handleStatus = (id, status) => {
-        updateComm({
-            id,
-            committee: { status }
-        })
+    const handleStatus = async (id, status, name) => {
+        if (await questionStatusCommittee(status, name)) {
+            updateComm({
+                id,
+                committee: { status }
+            })
+        }
+
     }
 
     const handleDelete = async (id, name) => {
-        if ((await questionDeleteCommittee(name)).value) {
+        if (await questionDeleteCommittee(name)) {
             deleteComm(id)
         }
     }
@@ -56,11 +59,11 @@ export const CommitteePage = () => {
                                             Enviar notificación
                                         </Button>
                                         <Button
-                                            onClick={() => handleStatus(commid, data?.status)}
+                                            onClick={() => handleStatus(commid, !data?.status, data?.name)}
                                             disabled={isSaving || isLoading}
-                                            variant={data.status ? 'danger' : 'success'}
+                                            variant={data?.status ? 'danger' : 'success'}
                                         >
-                                            {data.status ? 'Desactivar' : 'Activar'}
+                                            {data?.status ? 'Desactivar' : 'Activar'}
                                         </Button>
                                         <Dropdown className='dropdown-noarrow'>
                                             <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
@@ -89,22 +92,20 @@ export const CommitteePage = () => {
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
-                                    <SliderTab>
-                                        {/* <Nav variant='pills'> */}
-                                            <Nav.Item className='keen-slider__slide'>
-                                                <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
-                                            </Nav.Item>
-                                            <Nav.Item className='keen-slider__slide'>
-                                                <NavLink to={`ambit`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Ámbito</NavLink>
-                                            </Nav.Item>
-                                            <Nav.Item className='keen-slider__slide'>
-                                                <NavLink to={`blck`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Bloques de riego</NavLink>
-                                            </Nav.Item>
-                                            <Nav.Item className='keen-slider__slide'>
-                                                <NavLink to={`usr`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios de sistema</NavLink>
-                                            </Nav.Item>
-                                        {/* </Nav> */}
-                                    </SliderTab>
+                                    <SliderNav>
+                                        <Nav.Item className='keen-slider__slide'>
+                                            <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
+                                        </Nav.Item>
+                                        <Nav.Item className='keen-slider__slide'>
+                                            <NavLink to={`ambit`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Ámbito</NavLink>
+                                        </Nav.Item>
+                                        <Nav.Item className='keen-slider__slide'>
+                                            <NavLink to={`blck`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Bloques de riego</NavLink>
+                                        </Nav.Item>
+                                        <Nav.Item className='keen-slider__slide'>
+                                            <NavLink to={`usr`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios de sistema</NavLink>
+                                        </Nav.Item>
+                                    </SliderNav>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>

@@ -5,8 +5,9 @@ import { prominent } from 'color.js'
 import { FaPen } from 'react-icons/fa'
 import { imageGet, imageSysGet } from '../helpers'
 import { startModalResource } from '../store/actions'
+import { Image } from './Image'
 
-export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px', bgColor = false }) => {
+export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px', sizeImage = 300, bgColor = false, cloud = false }) => {
 
     const inputUploadImage = useId()
     const dispatch = useDispatch()
@@ -39,12 +40,13 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
     return (
         <div className='text-center'>
             <ProfileAvatar className={`${className}`} style={{ width: size, height: size }}>
-                <img
+                <Image
                     className='avatar-img'
-                    src={avatarImg !== null ? imageGet(avatarImg) : imageSysGet(noImg)}
+                    img={avatarImg}
+                    cloud={cloud}
                     style={{ background: bgColor ? backColor : 'transparent', width: size, height: size }}
-                    alt={`avatar-image-${avatarImg}`}
-                    loading={'lazy'}
+                    thumb={true}
+                    resSize={sizeImage}
                 />
                 {
                     !!actionChange

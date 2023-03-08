@@ -2,8 +2,8 @@ import { NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { Button, Card, Dropdown, Nav, Tab } from 'react-bootstrap'
-import { questionDeleteJunta, useDeleteJuntaByIdMutation, useGetJuntaByIdQuery, useUpdateJuntaByIdMutation } from '../../../store/actions'
-import { LoadingPage } from '../../../components'
+import { questionDeleteJunta, questionStatusJunta, useDeleteJuntaByIdMutation, useGetJuntaByIdQuery, useUpdateJuntaByIdMutation } from '../../../store/actions'
+import { LoadingPage, SliderNav } from '../../../components'
 import { JuntaAmbitZone, JuntaBanner, JuntaInformation, JuntaAmbitWaterSource, JuntaAmbitCommittee } from '../components'
 import { useNavigateState } from '../../../hooks'
 
@@ -16,15 +16,17 @@ export const JuntaPage = () => {
     const [updateJunta, { isLoading: isSaving }] = useUpdateJuntaByIdMutation()
     const [deleteJunta] = useDeleteJuntaByIdMutation()
 
-    const handleStatus = (id, status) => {
-        updateJunta({
-            id,
-            junta: { status }
-        })
+    const handleStatus = async (id, status, name) => {
+        if (await questionStatusJunta(status, name)) {
+            updateJunta({
+                id,
+                junta: { status }
+            })
+        }
     }
 
     const handleDelete = async (id, name) => {
-        if ((await questionDeleteJunta(name)).value) {
+        if (await questionDeleteJunta(name)) {
             deleteJunta(id)
         }
     }
@@ -56,7 +58,7 @@ export const JuntaPage = () => {
                                             Enviar notificación
                                         </Button>
                                         <Button
-                                            onClick={() => handleStatus(juntaid, data?.status)}
+                                            onClick={() => handleStatus(juntaid, !data?.status, data?.name)}
                                             disabled={isSaving || isLoading}
                                             variant={data.status ? 'danger' : 'success'}
                                         >
@@ -89,20 +91,20 @@ export const JuntaPage = () => {
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
-                                    <Nav variant='pills'>
-                                        <Nav.Item>
+                                    <SliderNav>
+                                        <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
                                         </Nav.Item>
-                                        <Nav.Item>
+                                        <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={`zn`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Zonas</NavLink>
                                         </Nav.Item>
-                                        <Nav.Item>
+                                        <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={`ws`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Fuentes de agua</NavLink>
                                         </Nav.Item>
-                                        <Nav.Item>
+                                        <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={`comm`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Comisiones</NavLink>
                                         </Nav.Item>
-                                    </Nav>
+                                    </SliderNav>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
