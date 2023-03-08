@@ -3,7 +3,7 @@ import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { Button, Card, Dropdown, Nav, Tab } from 'react-bootstrap'
 import { questionDeleteCommittee, questionStatusCommittee, useDeleteCommByIdMutation, useGetCommByIdQuery, useUpdateCommByIdMutation } from '../../../store/actions'
-import { LoadingPage, SliderNav } from '../../../components'
+import { LoadingPage, SliderNavFlip } from '../../../components'
 import { CommitteeAmbit, CommitteeBanner, CommitteeInformation } from '../components'
 import { useNavigateState } from '../../../hooks'
 
@@ -92,8 +92,12 @@ export const CommitteePage = () => {
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
-                                    <SliderNav>
-                                        <Nav.Item className='keen-slider__slide'>
+                                    <SliderNavFlip>
+                                        <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
+                                        <NavLink to={`ambit`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Ámbito</NavLink>
+                                        <NavLink to={`blck`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Bloques de riego</NavLink>
+                                        <NavLink to={`usr`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Usuarios de sistema</NavLink>
+                                        {/* <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
                                         </Nav.Item>
                                         <Nav.Item className='keen-slider__slide'>
@@ -104,8 +108,8 @@ export const CommitteePage = () => {
                                         </Nav.Item>
                                         <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={`usr`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios de sistema</NavLink>
-                                        </Nav.Item>
-                                    </SliderNav>
+                                        </Nav.Item> */}
+                                    </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>

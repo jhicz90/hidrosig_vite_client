@@ -9,6 +9,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@egjs/flicking-plugins": "^4.7.0",
+        "@egjs/react-flicking": "^4.10.8",
         "@emotion/react": "^11.10.5",
         "@geoman-io/leaflet-geoman-free": "^2.14.1",
         "@reduxjs/toolkit": "^1.9.1",

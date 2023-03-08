@@ -1,9 +1,9 @@
 import { NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { Button, Card, Dropdown, Nav, Tab } from 'react-bootstrap'
+import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { questionDeleteJunta, questionStatusJunta, useDeleteJuntaByIdMutation, useGetJuntaByIdQuery, useUpdateJuntaByIdMutation } from '../../../store/actions'
-import { LoadingPage, SliderNav } from '../../../components'
+import { LoadingPage, SliderNavFlip } from '../../../components'
 import { JuntaAmbitZone, JuntaBanner, JuntaInformation, JuntaAmbitWaterSource, JuntaAmbitCommittee } from '../components'
 import { useNavigateState } from '../../../hooks'
 
@@ -91,8 +91,12 @@ export const JuntaPage = () => {
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
-                                    <SliderNav>
-                                        <Nav.Item className='keen-slider__slide'>
+                                    <SliderNavFlip>
+                                        <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
+                                        <NavLink to={`zn`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Zonas</NavLink>
+                                        <NavLink to={`ws`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Fuentes de agua</NavLink>
+                                        <NavLink to={`comm`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Comisiones</NavLink>
+                                        {/* <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
                                         </Nav.Item>
                                         <Nav.Item className='keen-slider__slide'>
@@ -103,8 +107,8 @@ export const JuntaPage = () => {
                                         </Nav.Item>
                                         <Nav.Item className='keen-slider__slide'>
                                             <NavLink to={`comm`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Comisiones</NavLink>
-                                        </Nav.Item>
-                                    </SliderNav>
+                                        </Nav.Item> */}
+                                    </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
