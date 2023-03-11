@@ -9,33 +9,35 @@ import { GuardRoute } from '../../../guards'
 
 import { DashboardPage, PageError404, PageError500 } from '../pages'
 import {
-    ModuleAmbitRoutes,
+    CreateBlock,
+    CreateCommittee,
+    CreateDocument,
+    CreateJunta,
+    CreateOccupation,
+    CreatePettyCash,
+    CreateRole,
+    CreateSection,
+    CreateStructure,
+    CreateUserFarm,
+    CreateUserSys,
+    CreateVoucher,
+    CreateWaterSource,
+    CreateZone,
     DesignRoutes,
-    ModuleIrrigationRoutes,
-    ModuleFilesRoutes,
-    ModuleSigaRoutes,
-    ModuleSystemRoutes,
-    ModuleAccountingRoutes,
-    EditVoucher,
+    EditBlock,
     EditDocument,
-    EditStructure,
     EditSection,
+    EditStructure,
+    EditVoucher,
     EditWaterSource,
     EditZone,
-    EditBlock,
-    CreateUserSys,
-    CreateOccupation,
-    CreateRole,
-    CreateStructure,
-    CreateSection,
-    CreateWaterSource,
-    CreateDocument,
-    CreateBlock,
-    CreateZone,
-    CreateJunta,
-    CreateCommittee,
-    CreateVoucher,
-    CreatePettyCash,
+    ModuleAccountingRoutes,
+    ModuleAmbitRoutes,
+    ModuleFilesRoutes,
+    ModuleIrrigationRoutes,
+    ModuleSigaRoutes,
+    ModuleSystemRoutes,
+    ModuleUserRegisterRouter,
 } from '../../'
 
 // const serverUrl = import.meta.env.VITE_APP_SERVER_URL
@@ -160,6 +162,7 @@ export const AppRoot = () => {
                         <Layout />
                         <CreatePettyCash />
                         <CreateVoucher />
+                        <CreateUserFarm />
                         <EditVoucher />
                         <CreateBlock />
                         <CreateZone />
@@ -181,6 +184,7 @@ export const AppRoot = () => {
                 <Route index element={<Navigate to={`/app/home`} />} />
                 <Route path={`home`} element={<DashboardPage />} />
                 <Route path={`ambit/*`} element={<ModuleAmbitRoutes />} />
+                <Route path={`user_reg/*`} element={<ModuleUserRegisterRouter />} />
                 <Route path={`schm/*`} element={<ModuleIrrigationRoutes />} />
                 <Route path={`acct/*`} element={<ModuleAccountingRoutes />} />
                 <Route path={`files/*`} element={<ModuleFilesRoutes />} />

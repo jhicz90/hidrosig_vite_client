@@ -7,7 +7,7 @@ export const IrrigationNetworkRoutes = () => {
     return (
         <Routes>
             <Route element={<IrrigationNetworkListPage />}>
-                <Route index element={<Navigate to={`net`} />} />
+                <Route index element={<Navigate to={`net`} replace />} />
                 <Route
                     path={`net`}
                     element={

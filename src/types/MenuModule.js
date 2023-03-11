@@ -52,7 +52,7 @@ export const menuModule = [
             {
                 label: 'Usuarios agrarios',
                 to: 'user_farm',
-                meta: ['userfarm'],
+                meta: ['farmuser'],
                 detail: 'Lista de los registros de usuarios, aqui podra registrarlos o editarlos.'
             },
             {

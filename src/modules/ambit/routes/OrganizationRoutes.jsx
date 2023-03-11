@@ -6,7 +6,7 @@ export const OrganizationRoutes = () => {
     return (
         <Routes>
             <Route element={<OrganizationListPage />}>
-                <Route index element={<Navigate to={`junta`} />} />
+                <Route index element={<Navigate to={`junta`} replace />} />
                 <Route
                     path={`junta`}
                     element={
