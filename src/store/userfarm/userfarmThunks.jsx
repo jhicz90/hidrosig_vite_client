@@ -21,6 +21,14 @@ export const userfarmApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['UsrFrm']
         }),
+        draftUserFarm: builder.mutation({
+            query: (draftUserFarm) => ({
+                url: `userfarm/draft/new`,
+                method: 'post',
+                data: draftUserFarm
+            }),
+            invalidatesTags: ['UsrFrm']
+        }),
         getListUserFarm: builder.query({
             query: (search) => ({
                 url: `userfarm/list`,
@@ -60,6 +68,7 @@ export const userfarmApi = storeApi.injectEndpoints({
 export const {
     useAddUserFarmMutation,
     useDeleteUserFarmByIdMutation,
+    useDraftUserFarmMutation,
     useGetListUserFarmQuery,
     useGetUserFarmByIdQuery,
     useNewUserFarmQuery,

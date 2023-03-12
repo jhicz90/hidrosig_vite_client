@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { useAddUserFarmMutation, useNewUserFarmQuery } from '../../../store/actions'
+import { useAddUserFarmMutation, useDraftUserFarmMutation, useNewUserFarmQuery } from '../../../store/actions'
 
 export const CreateUserFarm = () => {
 
@@ -14,12 +14,18 @@ export const CreateUserFarm = () => {
     const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/users')
 
     const { data = null, isLoading, isError } = useNewUserFarmQuery(undefined, { refetchOnMountOrArgChange: true, skip })
-    const [addUserFarm, { isLoading: isSaving }] = useAddUserFarmMutation()
-    const { register, watch, handleSubmit, reset } = useForm()
+    const [addUserFarm, { isLoading: isSavingAdd }] = useAddUserFarmMutation()
+    const [draftUserFarm, { isLoading: isSavingDraft }] = useDraftUserFarmMutation()
+    const { register, watch, handleSubmit, setValue, reset } = useForm()
 
-    const handleSave = async (newData) => {
+    const handleSave = async ({ draft, ...newData }) => {
         try {
-            await addUserFarm(newData)
+            if (!!draft) {
+                await draftUserFarm(newData)
+            } else {
+                await addUserFarm(newData)
+            }
+            redirect()
         } catch (err) {
             console.log(err)
         }
@@ -50,7 +56,7 @@ export const CreateUserFarm = () => {
             scrollable
             centered
         >
-            <Modal.Header closeButton closeVariant='white'>
+            <Modal.Header closeButton={!isSavingAdd || !isSavingDraft} closeVariant='white'>
                 <Modal.Title>Agregar un usuario agrario</Modal.Title>
             </Modal.Header>
             {
@@ -210,14 +216,17 @@ export const CreateUserFarm = () => {
                         <Modal.Footer>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
-                                    disabled={isSaving}
+                                    disabled={isSavingAdd || isSavingDraft}
                                     variant='neutral'
                                     type='button'
                                 >
                                     Descartar
                                 </Button>
                                 <Button
-                                    disabled={isSaving}
+                                    onClick={() => {
+                                        setValue('draft', true)
+                                    }}
+                                    disabled={isSavingAdd || isSavingDraft}
                                     variant='neutral'
                                     type='submit'
                                     form='form-userregister-userfarm-create'
@@ -226,12 +235,12 @@ export const CreateUserFarm = () => {
                                     Guardar borrador
                                 </Button>
                                 <Button
-                                    disabled={isSaving}
+                                    disabled={isSavingAdd || isSavingDraft}
                                     variant='primary'
                                     type='submit'
                                     form='form-userregister-userfarm-create'
                                 >
-                                    Guardar nuevo
+                                    Registrar nuevo
                                 </Button>
                             </div>
                         </Modal.Footer>
