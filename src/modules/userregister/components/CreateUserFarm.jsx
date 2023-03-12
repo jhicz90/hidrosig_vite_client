@@ -45,7 +45,6 @@ export const CreateUserFarm = () => {
         redirectEscape()
     }
 
-    // * ANOTACION PARA LOS MODALS EL FULLSCREEN SE APLICARA EN MOVILES Y TABLETS
     return (
         <Modal
             show={w === 'userfarm_create'}
@@ -54,7 +53,6 @@ export const CreateUserFarm = () => {
             size='xl'
             fullscreen='md-down'
             scrollable
-            centered
         >
             <Modal.Header closeButton={!isSavingAdd || !isSavingDraft} closeVariant='white'>
                 <Modal.Title>Agregar un usuario agrario</Modal.Title>
@@ -216,6 +214,9 @@ export const CreateUserFarm = () => {
                         <Modal.Footer>
                             <div className='d-flex justify-content-end gap-2 w-100'>
                                 <Button
+                                    onClick={() => {
+                                        redirect()
+                                    }}
                                     disabled={isSavingAdd || isSavingDraft}
                                     variant='neutral'
                                     type='button'

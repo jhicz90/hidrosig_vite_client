@@ -8,9 +8,9 @@ export const TagStatus = ({ status }) => {
             {
                 status
                     ?
-                    <span className='badge bg-success rounded-pill px-2 py-1'><FaCheck className='me-1' />Activo</span>
+                    <Badge bg='success' pill className='d-inline-flex px-2 py-1'><FaCheck className='me-1' />Activo</Badge>
                     :
-                    <span className='badge bg-warning rounded-pill px-2 py-1 text-dark'><FaMinusCircle className='me-1' />Desactivado</span>
+                    <Badge bg='warning' pill text='dark' className='d-inline-flex px-2 py-1'><FaMinusCircle className='me-1' />Desactivado</Badge>
             }
         </>
     )

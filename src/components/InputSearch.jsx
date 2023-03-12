@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Button, Col, Form, FormControl, Row } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 import { BsSearch } from 'react-icons/bs'
 import { MdClear } from 'react-icons/md'
+import { BeatLoader } from 'react-spinners'
 import styled from 'styled-components'
 import { useDebounce } from 'use-debounce'
 import { SYSCONST } from '../types'
-import { MiniLoader } from './MiniLoader'
 
 export const InputSearch = ({ className = '', value, onChange, debounce = 500, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
 
@@ -17,48 +17,73 @@ export const InputSearch = ({ className = '', value, onChange, debounce = 500, a
     }, [valueDebounce])
 
     return (
-        <Form.Group as={Row} className={`gx-2 ${className}`} controlId={controlId}>
-            {
-                loading
-                    ?
-                    <Col xs='auto' className='d-flex align-items-center' style={{ flex: '0 0 40px' }}>
-                        <MiniLoader />
-                    </Col>
-                    :
-                    <Form.Label column xs='auto' style={{ flex: '0 0 40px' }}>
-                        <BsSearch size={22} />
-                    </Form.Label>
-            }
-            <Col>
-                <InputText>
-                    <FormControl
-                        value={valueInput}
-                        onChange={(e) => setValueInput(e.target.value)}
-                        autoComplete={autoComplete ? true : 'off'}
-                        placeholder={placeholder}
-                    />
-                    {
-                        valueInput.length > 0
-                        &&
-                        <ButtonClear variant='outline-dark' size={'sm'} onClick={() => setValueInput('')}>
-                            <MdClear size={20} />
-                        </ButtonClear>
-                    }
-                </InputText>
-            </Col>
-        </Form.Group>
+        <SearchBox className={`p-3 ${className}`}>
+            <Form.Control
+                id={controlId}
+                value={valueInput}
+                onChange={(e) => setValueInput(e.target.value)}
+                autoComplete={autoComplete ? true : 'off'}
+                placeholder={placeholder}
+            />
+            <BsSearch className='search-box-icon' size={20} color='#8a94ad' />
+            <div className='search-box-options'>
+                {
+                    loading
+                    &&
+                    <BeatLoader size={10} color='#8a94ad' style={{ opacity: 0.7 }} />
+                }
+                {
+                    valueInput.length > 0
+                    &&
+                    <ButtonClear className='search-box-clear' variant='outline-dark' size={'sm'} onClick={() => setValueInput('')}>
+                        <MdClear size={20} />
+                    </ButtonClear>
+                }
+            </div>
+        </SearchBox>
     )
 }
 
-const InputText = styled.div`
-    display: flex;
-    align-items: center;
+const SearchBox = styled.div`
     position: relative;
+
+    & .form-control {
+        padding-left: 2.5rem;
+        padding-right: 2rem;
+        border-radius: 0.375rem;
+    }
+
+    & .search-box-icon {
+        overflow: visible;
+        box-sizing: content-box;
+        position: absolute;
+        color: #1f6bff;
+        top: 50%;
+        left: 1.75rem;
+        transform: translateY(-48%);
+        display: inline-block;
+        height: 1.5em;
+        overflow: visible;
+        vertical-align: -0.125em;
+    }
+
+    & .search-box-options {
+        /* box-sizing: content-box; */
+        position: absolute;
+        top: 50%;
+        right: 1.75rem;
+        transform: translateY(-48%);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        /* height: 1.5em; */
+        /* vertical-align: -0.125em; */
+    }
 `
 
 const ButtonClear = styled(Button)`
-    position: absolute;
-    right: 0.5rem;
+    display: flex;
+    align-items: center;
     border: none !important;
     background-color: white !important;
     color: black !important;

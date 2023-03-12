@@ -1,17 +1,17 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { CommitteePage, JuntaPage, OrganizationListPage, JuntaList, CommitteeList } from '..'
+import { CommitteePage, JuntaPage, OrganizationNavPage, JuntaListPage, CommitteeListPage } from '..'
 
 export const OrganizationRoutes = () => {
     return (
         <Routes>
-            <Route element={<OrganizationListPage />}>
+            <Route element={<OrganizationNavPage />}>
                 <Route index element={<Navigate to={`junta`} replace />} />
                 <Route
                     path={`junta`}
                     element={
                         <GuardRoute meta={['organization_junta']}>
-                            <JuntaList />
+                            <JuntaListPage />
                         </GuardRoute>
                     }
                 />
@@ -19,7 +19,7 @@ export const OrganizationRoutes = () => {
                     path={`comm`}
                     element={
                         <GuardRoute meta={['organization_comm']}>
-                            <CommitteeList />
+                            <CommitteeListPage />
                         </GuardRoute>
                     }
                 />

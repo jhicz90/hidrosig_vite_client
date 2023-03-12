@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+
 body {
 	/* background-color: #ebeef4; */
 	background-color: #f5f8fa;
 	font-size: 0.875rem;
 	position: relative;
+	font-family: 'Nunito Sans', sans-serif;
 }
 
 @media (max-width: 576px) {

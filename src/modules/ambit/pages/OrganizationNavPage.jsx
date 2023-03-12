@@ -1,20 +1,22 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Nav, Tab } from 'react-bootstrap'
-import { LinkBack } from '../../../components'
 import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
+import { LinkBack } from '../../../components'
 
-export const UserFarmNavPage = () => {
+export const OrganizationNavPage = () => {
 
     const dispatch = useDispatch()
+    const { lvlAccess } = useSelector(state => state.auth)
 
     useEffect(() => {
         dispatch(clearToolbarActions())
-        dispatch(setToolbarTitle('USUARIOS AGRARIOS'))
+        dispatch(setToolbarTitle('ORGANIZACIÓN'))
         dispatch(setToolbarActions(
             <>
-                <LinkBack className='btn btn-neutral text-primary' to={`?w=userfarm_create`}>Nuevo usuario</LinkBack>
+                {lvlAccess < 3 && <LinkBack className='btn btn-neutral text-primary' to={`?w=junta_create`}>Nueva junta</LinkBack>}
+                <LinkBack className='btn btn-neutral text-primary' to={`?w=comm_create&j=&c=`}>Nuevo comisión</LinkBack>
             </>
         ))
 
@@ -29,10 +31,10 @@ export const UserFarmNavPage = () => {
                 <Tab.Container>
                     <Nav variant='tabs' className='px-3'>
                         <Nav.Item>
-                            <NavLink to={`users`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios</NavLink>
+                            <NavLink to={`junta`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Junta</NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <NavLink to={`import`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Importación</NavLink>
+                            <NavLink to={`comm`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Comisiones</NavLink>
                         </Nav.Item>
                     </Nav>
                     <Outlet />

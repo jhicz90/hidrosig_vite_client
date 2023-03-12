@@ -1,23 +1,23 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
-import { useGetListCommQuery } from '../../../store/actions'
 import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { useGetListJuntaQuery } from '../../../store/actions'
 
-export const CommitteeList = () => {
+export const JuntaListPage = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetListCommQuery(search)
+    const { data: list = [], isFetching } = useGetListJuntaQuery(search)
 
     return (
         <>
-            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
                 columns={
                     [
                         {
-                            label: 'COMISION',
+                            label: 'JUNTA',
                             resize: true,
                             renderCell: (item) => (
                                 <div className='d-flex align-items-center px-2 py-1'>
@@ -43,12 +43,6 @@ export const CommitteeList = () => {
                                 <TagStatus status={item.status} />
                         },
                         {
-                            label: 'JUNTA',
-                            renderCell: (item) => (
-                                item.junta?.name || 'Sin junta de usuarios'
-                            )
-                        },
-                        {
                             label: 'CREADO',
                             renderCell: (item) =>
                                 <TimeAgo timestamp={item.createdAt} />
@@ -65,7 +59,7 @@ export const CommitteeList = () => {
                                 <div className='btn-group'>
                                     <Link
                                         className='btn btn-neutral'
-                                        to={`/app/ambit/orgz/comm/${item._id}`}
+                                        to={`/app/ambit/orgz/junta/${item._id}`}
                                     >
                                         <FaPen />
                                     </Link>
