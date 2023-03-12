@@ -30,7 +30,7 @@ export const InputSearch = ({ className = '', value, onChange, debounce = 500, a
                 {
                     loading
                     &&
-                    <BeatLoader size={10} color='#8a94ad' style={{ opacity: 0.7 }} />
+                    <BeatLoader size={10} color='#8a94ad' style={{ opacity: 0.7, display: 'flex' }} />
                 }
                 {
                     valueInput.length > 0
