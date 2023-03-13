@@ -15,7 +15,7 @@ export const JuntaAmbitZone = () => {
 
     return (
         <Card>
-            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
             <TableGrid
                 rows={zonesIn}
                 columns={
