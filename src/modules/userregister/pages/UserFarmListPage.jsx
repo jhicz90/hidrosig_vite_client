@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FaPen } from 'react-icons/fa'
-import { Avatar, InputSearch, LinkBack, TableGrid, TagNewReg, TagStatus, TimeAgo } from '../../../components'
+import { Avatar, InputSearch, LinkBack, DataTable, TagNewReg, TagStatus, TimeAgo } from '../../../components'
 import { typeUserFarm } from '../../../helpers'
 import { useGetListUserFarmQuery } from '../../../store/actions'
 
@@ -12,7 +12,7 @@ export const UserFarmListPage = () => {
     return (
         <>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
+            <DataTable
                 rows={list}
                 columns={
                     [

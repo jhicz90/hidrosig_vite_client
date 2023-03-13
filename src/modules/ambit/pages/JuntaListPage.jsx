@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
-import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TimeAgo, DataTable } from '../../../components'
 import { useGetListJuntaQuery } from '../../../store/actions'
 
 export const JuntaListPage = () => {
@@ -12,7 +12,7 @@ export const JuntaListPage = () => {
     return (
         <>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
+            <DataTable
                 rows={list}
                 columns={
                     [

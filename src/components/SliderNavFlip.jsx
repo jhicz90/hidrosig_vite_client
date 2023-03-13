@@ -12,6 +12,10 @@ export const SliderNavFlip = ({ children }) => {
 }
 
 const FlipWrapper = styled(Flicking)`
+
+    padding-left: 0.125rem;
+    padding-right: 0.125rem;
+
     & *:not(:last-child) {
         margin-right: 0.5rem;
     }

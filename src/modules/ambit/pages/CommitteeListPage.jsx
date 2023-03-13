@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
 import { useGetListCommQuery } from '../../../store/actions'
-import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TimeAgo, DataTable } from '../../../components'
 
 export const CommitteeListPage = () => {
 
@@ -12,7 +12,7 @@ export const CommitteeListPage = () => {
     return (
         <>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
+            <DataTable
                 rows={list}
                 columns={
                     [
