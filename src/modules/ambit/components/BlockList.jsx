@@ -11,7 +11,7 @@ export const BlockList = () => {
 
     return (
         <>
-            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <TableGrid
                 rows={list}
                 columns={

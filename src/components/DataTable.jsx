@@ -4,7 +4,8 @@ import { getTheme } from '@table-library/react-table-library/baseline'
 
 export const DataTable = ({ columns = [], rows, renderEmpty: NoResultsComponent = NoResults, className = '', style = {} }) => {
 
-    // MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
+    // * MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
+    // * TAMBIEN SE IMPLEMENTARA UN SOMBREADO O BACKGROUND ESPECIAL PARA LOS NUEVOS REGISTROS QUE APAREZCAN EN LA LISTA
 
     const theme = useTheme([
         getTheme(),

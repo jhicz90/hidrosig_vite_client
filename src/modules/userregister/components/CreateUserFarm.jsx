@@ -16,7 +16,7 @@ export const CreateUserFarm = () => {
     const { data = null, isLoading, isError } = useNewUserFarmQuery(undefined, { refetchOnMountOrArgChange: true, skip })
     const [addUserFarm, { isLoading: isSavingAdd }] = useAddUserFarmMutation()
     const [draftUserFarm, { isLoading: isSavingDraft }] = useDraftUserFarmMutation()
-    const { register, watch, handleSubmit, setValue, reset } = useForm()
+    const { register, watch, handleSubmit, getValues, setValue, reset } = useForm()
 
     const handleSave = async ({ draft, ...newData }) => {
         try {
@@ -225,11 +225,11 @@ export const CreateUserFarm = () => {
                                 </Button>
                                 <Button
                                     onClick={() => {
-                                        setValue('draft', true)
+                                        handleSave({ draft: true, ...getValues() })
                                     }}
                                     disabled={isSavingAdd || isSavingDraft}
                                     variant='neutral'
-                                    type='submit'
+                                    type='button'
                                     form='form-userregister-userfarm-create'
                                     className='text-primary'
                                 >

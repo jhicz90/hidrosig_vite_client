@@ -45,7 +45,8 @@ export const AppToolboxBar = () => {
 const Toolbar = styled.div.attrs(props => ({
     position: props.position > 0 ? `0 .5rem .5rem -0.5rem rgba(0,0,0,.2) !important` : 'inherit'
 }))`
-    background-color: #f5f8fa;
+    /* background-color: #f5f8fa; */
+    background-color: transparent;
     box-shadow: ${props => props.position};
     /* background-color: #fff3cd;
     border-bottom: 1px solid #ffc107; */

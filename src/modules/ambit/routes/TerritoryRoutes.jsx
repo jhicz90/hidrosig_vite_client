@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { ZoneList, TerritoryListPage, BlockList } from '..'
+import { ZoneList, TerritoryNavPage, BlockList } from '..'
 
 export const TerritoryRoutes = () => {
     return (
         <Routes>
-            <Route element={<TerritoryListPage />} >
-                <Route index element={<Navigate to={`zone`} />} />
+            <Route element={<TerritoryNavPage />} >
+                <Route index element={<Navigate to={`zone`} replace />} />
                 <Route
                     path={`zone`}
                     element={
