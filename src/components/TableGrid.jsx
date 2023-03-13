@@ -28,7 +28,7 @@ export const TableGrid = ({ columns, rows, renderEmpty: NoResultsComponent = NoR
                     return `
                         &:nth-of-type(${i + 1}) {
                             right: 0px;
-                            background-color: white;
+                            background-color: transparent;
                         }
                     `
                 }
