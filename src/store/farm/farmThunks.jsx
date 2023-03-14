@@ -5,93 +5,108 @@ import { storeApi } from '../storeApi'
 
 const SwalReact = withReactContent(Swal)
 
-export const userfarmApi = storeApi.injectEndpoints({
+export const farmApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
-        // USERFARM
-        newUserFarm: builder.query({
+        // FARM
+        newFarm: builder.query({
             query: () => ({
-                url: `userfarm/create/new`,
+                url: `farm/create/new`,
             }),
-            transformResponse: (response, meta, arg) => response.userfarm
+            transformResponse: (response, meta, arg) => response.farm
         }),
-        addUserFarm: builder.mutation({
-            query: (newUserFarm) => ({
-                url: `userfarm/create/new`,
+        addFarm: builder.mutation({
+            query: (newFarm) => ({
+                url: `farm/create/new`,
                 method: 'post',
-                data: newUserFarm
+                data: newFarm
             }),
-            invalidatesTags: ['UsrFrm']
+            invalidatesTags: ['Frm']
         }),
-        draftUserFarm: builder.mutation({
-            query: (draftUserFarm) => ({
-                url: `userfarm/draft/new`,
+        draftFarm: builder.mutation({
+            query: (draftFarm) => ({
+                url: `farm/draft/new`,
                 method: 'post',
-                data: draftUserFarm
+                data: draftFarm
             }),
-            invalidatesTags: ['UsrFrm']
+            invalidatesTags: ['Frm']
         }),
-        getListUserFarm: builder.query({
+        getListFarm: builder.query({
             query: (search) => ({
-                url: `userfarm/list`,
+                url: `farm/list`,
                 params: {
                     search
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['UsrFrm']
+            providesTags: ['Frm']
         }),
-        getUserFarmById: builder.query({
+        getFarmById: builder.query({
             query: (id) => ({
-                url: `userfarm/edit/${id}`
+                url: `farm/edit/${id}`
             }),
-            transformResponse: (response, meta, arg) => response.userfarm,
-            providesTags: ['UsrFrm']
+            transformResponse: (response, meta, arg) => response.farm,
+            providesTags: ['Frm']
         }),
-        updateUserFarmById: builder.mutation({
-            query: ({ id, userfarm }) => ({
-                url: `userfarm/edit/${id}`,
+        updateFarmById: builder.mutation({
+            query: ({ id, farm }) => ({
+                url: `farm/edit/${id}`,
                 method: 'put',
-                data: userfarm
+                data: farm
             }),
-            invalidatesTags: ['UsrFrm']
+            invalidatesTags: ['Frm']
         }),
-        deleteUserFarmById: builder.mutation({
+        deleteFarmById: builder.mutation({
             query: (id) => ({
-                url: `userfarm/delete/${id}`,
+                url: `farm/delete/${id}`,
                 method: 'delete'
             }),
-            invalidatesTags: ['UsrFrm']
+            invalidatesTags: ['Frm']
         })
-        // USERFARM
+        // FARM
     })
 })
 
 export const {
-    useAddUserFarmMutation,
-    useDeleteUserFarmByIdMutation,
-    useDraftUserFarmMutation,
-    useGetListUserFarmQuery,
-    useGetUserFarmByIdQuery,
-    useNewUserFarmQuery,
-    useUpdateUserFarmByIdMutation,
-} = userfarmApi
+    useAddFarmMutation,
+    useDeleteFarmByIdMutation,
+    useDraftFarmMutation,
+    useGetFarmByIdQuery,
+    useGetListFarmQuery,
+    useNewFarmQuery,
+    useUpdateFarmByIdMutation,
+} = farmApi
 
-export const updateImageUserFarmById = (id, image) => {
+export const startUpdateImageIdFarm = (id, images) => {
     return async (dispatch) => {
 
         const resp = await fetchByToken({
-            endpoint: `userfarm/image/${id}`,
-            data: { image },
+            endpoint: `farm/image/${id}`,
+            data: { images },
             method: 'PUT'
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['UsrFrm']))
+            dispatch(storeApi.util.invalidateTags([{ type: 'Frm', id }]))
         }
     }
 }
 
-export const questionActiveUserFarm = async (active, names) => {
+export const startDeleteImageFarm = (id, imageId) => {
+    return async (dispatch) => {
+
+        const resp = await fetchByToken({
+            endpoint: `farm/image/${id}`,
+            data: { images: [imageId] },
+            method: 'DELETE'
+        })
+
+        if (resp.ok) {
+            dispatch(storeApi.util.invalidateTags([{ type: 'Frm', id }]))
+        }
+    }
+}
+
+export const questionActiveFarm = async (active, names) => {
 
     return SwalReact.fire({
         title:
@@ -120,19 +135,19 @@ export const questionActiveUserFarm = async (active, names) => {
     })
 }
 
-export const questionDeleteUserFarm = async (names) => {
+export const questionDeleteFarm = async (name) => {
 
-    const wordConfirm = normalizeText(names, { lowerCase: true, removeSpaces: true })
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
     return SwalReact.fire({
         title:
             <>
-                <div className='text-uppercase'>Eliminar usuario agrario</div>
-                <div className="fs-5 fw-bold text-info mt-1">{names}</div>
+                <div className='text-uppercase'>Eliminar predio agrario</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
             </>,
         html:
             <>
-                <div className='fs-5 mb-2'>¿Estás seguro de eliminar este usuario agrario?</div>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar este predio?</div>
                 <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
             </>,
         showCancelButton: true,

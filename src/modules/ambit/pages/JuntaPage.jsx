@@ -44,7 +44,7 @@ export const JuntaPage = () => {
             {
                 !!data
                 &&
-                <div className='container'>
+                <div className='container-fluid'>
                     <div className='row'>
                         <div className='col-12'>
                             <div className='row align-items-center justify-content-between g-3 mb-3'>
@@ -96,18 +96,6 @@ export const JuntaPage = () => {
                                         <NavLink to={`zn`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Zonas</NavLink>
                                         <NavLink to={`ws`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Fuentes de agua</NavLink>
                                         <NavLink to={`comm`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Comisiones</NavLink>
-                                        {/* <Nav.Item className='keen-slider__slide'>
-                                            <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
-                                        </Nav.Item>
-                                        <Nav.Item className='keen-slider__slide'>
-                                            <NavLink to={`zn`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Zonas</NavLink>
-                                        </Nav.Item>
-                                        <Nav.Item className='keen-slider__slide'>
-                                            <NavLink to={`ws`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Fuentes de agua</NavLink>
-                                        </Nav.Item>
-                                        <Nav.Item className='keen-slider__slide'>
-                                            <NavLink to={`comm`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Comisiones</NavLink>
-                                        </Nav.Item> */}
                                     </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>

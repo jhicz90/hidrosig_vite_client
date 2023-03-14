@@ -3,14 +3,16 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { prominent } from 'color.js'
 import { FaPen } from 'react-icons/fa'
-import { imageGet, imageSysGet } from '../helpers'
+import { imageGet, imageSysGet, upperCaseCatch } from '../helpers'
 import { startModalResource } from '../store/actions'
 import { Image } from './Image'
 
-export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, actionChange = null, size = '120px', sizeImage = 300, bgColor = false, cloud = false }) => {
+export const AvatarProfile = ({ className = '', avatarImg = null, noImgTxt = 'USR', noImg = 1086, actionChange = null, size = '120px', sizeImage = 300, bgColor = false, cloud = false }) => {
 
     const inputUploadImage = useId()
     const dispatch = useDispatch()
+
+    const nameTxt = upperCaseCatch(noImgTxt).slice(0, 3)
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
@@ -40,14 +42,23 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImg = 1086, 
     return (
         <div className='text-center'>
             <ProfileAvatar className={`${className}`} style={{ width: size, height: size }}>
-                <Image
-                    className='avatar-img'
-                    img={avatarImg}
-                    cloud={cloud}
-                    style={{ background: bgColor ? backColor : 'transparent', width: size, height: size }}
-                    thumb={true}
-                    resSize={sizeImage}
-                />
+                {
+                    (avatarImg !== '' && avatarImg !== null && avatarImg !== undefined)
+                        ?
+                        <Image
+                            className='avatar-img'
+                            img={avatarImg}
+                            cloud={cloud}
+                            style={{ background: bgColor ? backColor : 'transparent', width: size, height: size }}
+                            thumb={true}
+                            resSize={sizeImage}
+                            noImg={noImg}
+                        />
+                        :
+                        <div className='avatar rounded-circle' style={{ width: size, height: size }}>
+                            <span className='avatar-initials' style={{ fontSize: 40, width: size, height: size }}>{nameTxt}</span>
+                        </div>
+                }
                 {
                     !!actionChange
                     &&

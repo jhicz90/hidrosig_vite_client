@@ -1,6 +1,6 @@
 import { Button, Card, CardGroup } from 'react-bootstrap'
 
-export const ImportUserPage = () => {
+export const UserFarmImportPage = () => {
     return (
         <CardGroup className='m-3'>
             <Card className='text-bg-primary'>

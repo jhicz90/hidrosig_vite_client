@@ -1,34 +1,33 @@
 import { NavLink, Route, Routes, useParams } from 'react-router-dom'
-import { AiFillNotification } from 'react-icons/ai'
+import { AiFillNotification, AiOutlineWhatsApp } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { Button, Card, Dropdown, Nav, Tab } from 'react-bootstrap'
-import { questionDeleteCommittee, questionStatusCommittee, useDeleteCommByIdMutation, useGetCommByIdQuery, useUpdateCommByIdMutation } from '../../../store/actions'
+import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { LoadingPage, SliderNavFlip } from '../../../components'
-import { CommitteeAmbit, CommitteeBanner, CommitteeInformation } from '../components'
+import { UserFarmBanner, UserFarmInformation } from '../components'
 import { useNavigateState } from '../../../hooks'
+import { questionActiveUserFarm, questionDeleteUserFarm, useDeleteUserFarmByIdMutation, useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
 
-export const CommitteePage = () => {
+export const UserFarmPage = () => {
 
-    const { commid } = useParams()
-    const [state, redirect, redirectEscape] = useNavigateState('/app/ambit/orgz/comm')
+    const { userid } = useParams()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/users')
 
-    const { data = null, isLoading, isError } = useGetCommByIdQuery(commid)
-    const [updateComm, { isLoading: isSaving }] = useUpdateCommByIdMutation()
-    const [deleteComm] = useDeleteCommByIdMutation()
+    const { data = null, isLoading, isError } = useGetUserFarmByIdQuery(userid)
+    const [updateUserFarm, { isLoading: isSaving }] = useUpdateUserFarmByIdMutation()
+    const [deleteUserFarm] = useDeleteUserFarmByIdMutation()
 
-    const handleStatus = async (id, status, name) => {
-        if (await questionStatusCommittee(status, name)) {
-            updateComm({
+    const handleStatus = async (id, active, names) => {
+        if (await questionActiveUserFarm(!active, names)) {
+            updateUserFarm({
                 id,
-                committee: { status }
+                userfarm: { active }
             })
         }
-
     }
 
-    const handleDelete = async (id, name) => {
-        if (await questionDeleteCommittee(name)) {
-            deleteComm(id)
+    const handleDelete = async (id, names) => {
+        if (await questionDeleteUserFarm(names)) {
+            deleteUserFarm(id)
         }
     }
 
@@ -50,20 +49,24 @@ export const CommitteePage = () => {
                         <div className='col-12'>
                             <div className='row align-items-center justify-content-between g-3 mb-3'>
                                 <div className='col-12 col-md-auto'>
-                                    <h4 className='mb-0'>Detalles de Comisión</h4>
+                                    <h4 className='mb-0'>Detalles de Usuario agrario</h4>
                                 </div>
                                 <div className='col-12 col-md-auto'>
                                     <div className='d-flex gap-2'>
+                                        <Button variant='success' className='d-flex align-items-center gap-2'>
+                                            <AiOutlineWhatsApp size={24} />
+                                            Enviar mensaje
+                                        </Button>
                                         <Button variant='primary' className='d-flex align-items-center gap-2'>
                                             <AiFillNotification size={24} />
-                                            Enviar notificación
+                                            Generar notificacion
                                         </Button>
                                         <Button
-                                            onClick={() => handleStatus(commid, !data?.status, data?.name)}
+                                            onClick={() => handleStatus(userid, !data?.active, data?.names)}
                                             disabled={isSaving || isLoading}
-                                            variant={data?.status ? 'danger' : 'success'}
+                                            variant={data.active ? 'danger' : 'success'}
                                         >
-                                            {data?.status ? 'Desactivar' : 'Activar'}
+                                            {data.active ? 'Desactivar' : 'Activar'}
                                         </Button>
                                         <Dropdown className='dropdown-noarrow'>
                                             <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
@@ -73,7 +76,7 @@ export const CommitteePage = () => {
                                                 <Dropdown.Item>Reportes</Dropdown.Item>
                                                 <Dropdown.Item>Imprimir</Dropdown.Item>
                                                 <Dropdown.Item
-                                                    onClick={() => handleDelete(commid, data?.name)}
+                                                    onClick={() => handleDelete(userid, data?.names)}
                                                     className='text-danger'
                                                 >
                                                     Eliminar
@@ -87,22 +90,24 @@ export const CommitteePage = () => {
                     </div>
                     <div className='row'>
                         <div className='col-md-5 col-lg-5 col-xl-4'>
-                            <CommitteeBanner />
+                            <UserFarmBanner />
                         </div>
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
                                     <SliderNavFlip>
                                         <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
-                                        <NavLink to={`ambit`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Ámbito</NavLink>
-                                        <NavLink to={`blck`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Bloques de riego</NavLink>
-                                        <NavLink to={`usr`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Usuarios de sistema</NavLink>
+                                        <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
+                                        <NavLink to={`not`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Notificaciones</NavLink>
+                                        <NavLink to={`doc`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Documentos</NavLink>
                                     </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
-                                        <Route index element={<CommitteeInformation />} />
-                                        <Route path={`ambit`} element={<CommitteeAmbit />} />
+                                        <Route index element={<UserFarmInformation />} />
+                                        {/* <Route path={`zn`} element={<JuntaAmbitZone />} />
+                                        <Route path={`ws`} element={<JuntaAmbitWaterSource />} />
+                                        <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
                                     </Routes>
                                 </div>
                             </Tab.Container>

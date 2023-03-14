@@ -1,17 +1,18 @@
-import { Card } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { AvatarProfile } from '../../../components'
-import { committeeApi, updateImageCommById } from '../../../store/actions'
+import { Card } from 'react-bootstrap'
+import { AvatarProfile, TagNewReg } from '../../../components'
+import { typeUserFarm } from '../../../helpers'
+import { updateImageUserFarmById, userfarmApi } from '../../../store/actions'
 
-export const CommitteeBanner = () => {
+export const UserFarmBanner = () => {
 
-    const { commid } = useParams()
+    const { userid } = useParams()
     const dispatch = useDispatch()
-    const { data = null } = useSelector(committeeApi.endpoints.getCommById.select(commid))
+    const { data = null } = useSelector(userfarmApi.endpoints.getUserFarmById.select(userid))
 
     const handleChangeImage = (id, image) => {
-        dispatch(updateImageCommById(id, image))
+        dispatch(updateImageUserFarmById(id, image))
     }
 
     return (
@@ -21,16 +22,16 @@ export const CommitteeBanner = () => {
                     <div className='col-12 col-xxl-auto'>
                         <AvatarProfile
                             className='mb-3'
-                            noImgTxt={data.name}
-                            noImg={4003}
+                            noImgTxt={data.type > 1 ? `${data.socialReason}` : `${data.names} ${data.lastName} ${data.motherLastName}`}
                             avatarImg={data.image?.metadata.url}
                             cloud={data.image?.cloud}
                             actionChange={(image) => handleChangeImage(data?._id, image)}
                         />
                     </div>
                     <div className='col-12 col-sm-auto flex-1'>
-                        <h3 className='fw-bolder mb-2'>{data.name}</h3>
-                        <p className='mb-0'>Comisión de usuarios</p>
+                        <TagNewReg time={data.createdAt} />
+                        <h3 className='fw-bolder mb-2'>{data.type > 1 ? `${data.socialReason}` : `${data.names} ${data.lastName} ${data.motherLastName}`}</h3>
+                        <p className='mb-0'>{typeUserFarm(data.type)}</p>
                         <a className='fw-bold'>Información adicional</a>
                     </div>
                 </div>

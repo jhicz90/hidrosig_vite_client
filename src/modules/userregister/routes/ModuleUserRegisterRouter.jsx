@@ -5,7 +5,7 @@ import { UserFarmRoutes } from '..'
 export const ModuleUserRegisterRouter = () => {
     return (
         <Routes>
-            <Route index element={<Navigate to={`resume`} />} />
+            <Route index element={<Navigate to={`resume`} replace />} />
             <Route path={`resume`} element={<>Resumen de Padrón de usuarios</>} />
             <Route
                 path={`user_farm/*`}

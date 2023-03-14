@@ -50,16 +50,10 @@ export const menuModule = [
                 to: 'resume'
             },
             {
-                label: 'Usuarios agrarios',
+                label: 'Usuarios y predios',
                 to: 'user_farm',
                 meta: ['farmuser'],
                 detail: 'Lista de los registros de usuarios, aqui podra registrarlos o editarlos.'
-            },
-            {
-                label: 'Predios o áreas',
-                to: 'area',
-                meta: ['area'],
-                detail: 'Lista de los registros de usuarios o predios, aqui podra registrarlos o editarlos.'
             },
             {
                 label: 'Delegados',

@@ -9,6 +9,7 @@ import { GuardRoute } from '../../../guards'
 
 import { DashboardPage, PageError404, PageError500 } from '../pages'
 import {
+    CreateAreaFarm,
     CreateBlock,
     CreateCommittee,
     CreateDocument,
@@ -160,24 +161,25 @@ export const AppRoot = () => {
                 element={
                     <>
                         <Layout />
-                        <CreatePettyCash />
-                        <CreateVoucher />
-                        <CreateUserFarm />
-                        <EditVoucher />
+                        <CreateAreaFarm />
                         <CreateBlock />
-                        <CreateZone />
-                        <EditBlock />
-                        <EditZone />
-                        <CreateJunta />
                         <CreateCommittee />
                         <CreateDocument />
-                        <EditDocument />
-                        <CreateStructure />
+                        <CreateJunta />
+                        <CreatePettyCash />
                         <CreateSection />
+                        <CreateStructure />
+                        <CreateUserFarm />
+                        <CreateVoucher />
                         <CreateWaterSource />
-                        <EditStructure />
+                        <CreateZone />
+                        <EditBlock />
+                        <EditDocument />
                         <EditSection />
+                        <EditStructure />
+                        <EditVoucher />
                         <EditWaterSource />
+                        <EditZone />
                     </>
                 }
             >

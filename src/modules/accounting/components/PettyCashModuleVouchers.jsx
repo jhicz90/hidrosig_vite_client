@@ -83,7 +83,7 @@ const PettyCashVoucher = () => {
                 }
                 list={
                     <>
-                        <InputSearch className='my-3 px-3' value={filterSearch} onChange={(e) => setFilterSearch(e)} />
+                        <InputSearch value={filterSearch} onChange={(e) => setFilterSearch(e)} />
                         <TableGrid
                             style={{ borderRadius: '0 0 9px 9px' }}
                             renderEmpty={() => <strong className='mx-3 fs-5'>No ahi comprobantes asociadas a esta caja chica</strong>}
