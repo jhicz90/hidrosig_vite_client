@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap");
 
 body {
 	/* background-color: #ebeef4; */
 	background-color: #f5f8fa;
 	font-size: 0.875rem;
 	position: relative;
-	font-family: 'Nunito Sans', sans-serif;
+	font-family: "Nunito Sans", sans-serif;
 }
 
 @media (max-width: 576px) {
@@ -20,6 +20,10 @@ body {
 
 .cursor-pointer {
 	cursor: pointer;
+}
+
+.table-virtual .table > :not(caption) > * > * {
+	padding: 0 !important;
 }
 
 table.table thead tr th {

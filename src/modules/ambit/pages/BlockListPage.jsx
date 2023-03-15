@@ -4,7 +4,7 @@ import { FaPen } from 'react-icons/fa'
 import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
 import { useGetListBlockQuery } from '../../../store/actions'
 
-export const BlockList = () => {
+export const BlockListPage = () => {
 
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetListBlockQuery(search)

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { ZoneList, TerritoryNavPage, BlockList } from '..'
+import { TerritoryNavPage, ZoneListPage, BlockListPage, LocationListPage } from '..'
 
 export const TerritoryRoutes = () => {
     return (
@@ -11,7 +11,7 @@ export const TerritoryRoutes = () => {
                     path={`zone`}
                     element={
                         <GuardRoute meta={['ambit_zones']}>
-                            <ZoneList />
+                            <ZoneListPage />
                         </GuardRoute>
                     }
                 />
@@ -19,7 +19,15 @@ export const TerritoryRoutes = () => {
                     path={`block`}
                     element={
                         <GuardRoute meta={['ambit_blocks']}>
-                            <BlockList />
+                            <BlockListPage />
+                        </GuardRoute>
+                    }
+                />
+                <Route
+                    path={`location`}
+                    element={
+                        <GuardRoute meta={['ambit_location']}>
+                            <LocationListPage />
                         </GuardRoute>
                     }
                 />

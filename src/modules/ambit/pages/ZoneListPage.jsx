@@ -4,7 +4,7 @@ import { FaPen } from 'react-icons/fa'
 import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
 import { useGetListZoneQuery } from '../../../store/actions'
 
-export const ZoneList = () => {
+export const ZoneListPage = () => {
 
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetListZoneQuery(search)

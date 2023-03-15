@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Modal } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { LoadingPage, OptionOrgz } from '../../../components'
+import { LoadingPage, OptionLocation, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { searchCommitteeByJunta, searchJunta, useAddFarmMutation, useDraftFarmMutation, useNewFarmQuery } from '../../../store/actions'
+import { searchBlockByJunta, searchJunta, searchLocation, useAddFarmMutation, useDraftFarmMutation, useNewFarmQuery } from '../../../store/actions'
 
 export const CreateAreaFarm = () => {
 
@@ -14,6 +15,7 @@ export const CreateAreaFarm = () => {
     const { w } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/prps')
 
+    const { lvlAccess } = useSelector(state => state.auth)
     const { data = null, isLoading, isError } = useNewFarmQuery(undefined, { refetchOnMountOrArgChange: true, skip })
     const [addFarm, { isLoading: isSavingAdd }] = useAddFarmMutation()
     const [draftFarm, { isLoading: isSavingDraft }] = useDraftFarmMutation()
@@ -156,64 +158,92 @@ export const CreateAreaFarm = () => {
                                         </Form.Group>
                                     </div>
                                 </div>
+                                {
+                                    lvlAccess === 1
+                                    &&
+                                    <div className='row'>
+                                        <div className='col-12 col-md-6'>
+                                            <Form.Group className='mb-3' controlId='newJunta'>
+                                                <Form.Label>Junta de usuarios</Form.Label>
+                                                <Controller
+                                                    name='junta'
+                                                    control={control}
+                                                    rules={{ required: true }}
+                                                    render={
+                                                        ({ field }) =>
+                                                            <AsyncSelect
+                                                                {...field}
+                                                                inputId='newJunta'
+                                                                classNamePrefix='rc-select'
+                                                                isClearable
+                                                                defaultOptions
+                                                                loadOptions={searchJunta}
+                                                                menuPlacement={'auto'}
+                                                                placeholder={`Buscar...`}
+                                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                                getOptionValue={e => e._id}
+                                                                getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                                            />
+                                                    }
+                                                />
+                                            </Form.Group>
+                                        </div>
+                                    </div>
+                                }
                                 <div className='row'>
                                     <div className='col-12 col-md-6'>
-                                        <Form.Group className='mb-3' controlId='newJunta'>
-                                            <Form.Label>Junta de usuarios</Form.Label>
+                                        <Form.Group className='mb-3' controlId='newBlock'>
+                                            <Form.Label>Bloque de riego</Form.Label>
                                             <Controller
-                                                name='junta'
-                                                control={control}
-                                                rules={{
-                                                    required: true,
-                                                    onChange: () => {
-                                                        setValue('committee', null)
-                                                    }
-                                                }}
-                                                render={
-                                                    ({ field }) =>
-                                                        <AsyncSelect
-                                                            {...field}
-                                                            inputId='newJunta'
-                                                            classNamePrefix='rc-select'
-                                                            isClearable
-                                                            defaultOptions
-                                                            loadOptions={searchJunta}
-                                                            menuPlacement={'auto'}
-                                                            placeholder={`Buscar...`}
-                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                            getOptionValue={e => e._id}
-                                                            getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                                        />
-                                                }
-                                            />
-                                        </Form.Group>
-                                    </div>
-                                    <div className='col-12 col-md-6'>
-                                        <Form.Group className='mb-3' controlId='newCommittee'>
-                                            <Form.Label>Comisiones</Form.Label>
-                                            <Controller
-                                                name='committee'
+                                                name='block'
                                                 control={control}
                                                 rules={{ required: true }}
                                                 render={
                                                     ({ field }) =>
                                                         <AsyncSelect
                                                             {...field}
-                                                            inputId='newCommittee'
+                                                            inputId='newBlock'
                                                             classNamePrefix='rc-select'
                                                             isClearable
-                                                            defaultOptions
-                                                            isDisabled={watch().junta === null}
+                                                            isDisabled={watch('junta') === null}
                                                             loadOptions={async (e) => {
-                                                                return await searchCommitteeByJunta(watch('junta')._id, e)
+                                                                return await searchBlockByJunta(watch('junta')?._id || null, e)
                                                             }}
                                                             menuPlacement={'auto'}
                                                             placeholder={`Buscar...`}
                                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                             noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                             getOptionValue={e => e._id}
-                                                            getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                                            getOptionLabel={e => e.name}
+                                                        />
+                                                }
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                    <div className='col-12 col-md-6'>
+                                        <Form.Group className='mb-3' controlId='newLocation'>
+                                            <Form.Label>Localidad</Form.Label>
+                                            <Controller
+                                                name='location'
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={
+                                                    ({ field }) =>
+                                                        <AsyncSelect
+                                                            {...field}
+                                                            inputId='newLocation'
+                                                            classNamePrefix='rc-select'
+                                                            isClearable
+                                                            defaultOptions
+                                                            isDisabled={watch('junta') === null}
+                                                            loadOptions={searchLocation}
+                                                            menuPlacement={'auto'}
+                                                            placeholder={`Buscar...`}
+                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                            getOptionValue={e => e._id}
+                                                            getOptionLabel={e => <OptionLocation location={e} />}
                                                         />
                                                 }
                                             />
