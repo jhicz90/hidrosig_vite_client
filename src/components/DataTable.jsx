@@ -11,26 +11,47 @@ export const DataTable = ({ columns = [], rows, renderEmpty: NoResultsComponent 
     const theme = useTheme([
         getTheme(),
         virtual
-        ?
-        {
-            HeaderCell: `
-                background-color: white;
-                min-height: 50px;
-            `,
-        }
-        :
-        {
-            Table: `
-                height: auto;
-            `,
-            HeaderCell: `
-                background-color: white;
-                max-height: 40px;
-            `,
-            Cell: `
-                max-height: 60px;
-            `
-        }
+            ?
+            {
+                HeaderCell: `
+                    background-color: #fff;
+                    min-height: 50px;
+                `,
+            }
+            :
+            {
+                Table: `
+                    height: auto;
+                    background-color: #f5f8fa;
+                    --data-table-library_grid-template-columns: ${columns.map(c => {
+                        if (!c.width) {
+                            if (!c.minWidth) {
+                                return 'minmax(200px, 1fr)'
+                            } else {
+                                return `minmax(${c.minWidth}, 1fr)`
+                            }
+                        } else {
+                            return c.width
+                        }
+                    }).join(' ')} !important;
+                `,
+                HeaderCell: `
+                    background-color: #fff !important;
+                    max-height: 40px;
+
+                    &.pin-right {
+                        right: 0px;
+                    }
+                `,
+                Cell: `
+                    max-height: 60px;
+
+                    &.pin-right {
+                        right: 0px;
+                        background-color: #f5f8fa;
+                    }
+                `
+            }
     ])
 
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
@@ -76,7 +97,14 @@ export const DataTable = ({ columns = [], rows, renderEmpty: NoResultsComponent 
                                     <HeaderRow>
                                         {
                                             columns.map((col, index) =>
-                                                <HeaderCell key={`header_column_${index}`} resize={col.resize}>{col.label}</HeaderCell>
+                                                <HeaderCell
+                                                    key={`header_column_${index}`}
+                                                    // resize={col.resize}
+                                                    pinLeft={col.pinLeft || undefined}
+                                                    pinRight={col.pinRight || undefined}
+                                                >
+                                                    {col.label}
+                                                </HeaderCell>
                                             )
                                         }
                                     </HeaderRow>
@@ -87,7 +115,13 @@ export const DataTable = ({ columns = [], rows, renderEmpty: NoResultsComponent 
                                             <Row key={`row_${item.id}`} item={item}>
                                                 {
                                                     columns.map((col, index) =>
-                                                        <Cell key={`row_cell_${index}_${item.id}`}>{col.renderCell(item) || ''}</Cell>
+                                                        <Cell
+                                                            key={`row_cell_${index}_${item.id}`}
+                                                            pinLeft={col.pinLeft || undefined}
+                                                            pinRight={col.pinRight || undefined}
+                                                        >
+                                                            {col.renderCell(item) || ''}
+                                                        </Cell>
                                                     )
                                                 }
                                             </Row>

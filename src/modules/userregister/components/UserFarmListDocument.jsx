@@ -1,26 +1,30 @@
 import { useState } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
+import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { DataTable, InputSearch, LinkBack, TimeAgo } from '../../../components'
+import { useGetListDocumentByUserFarmQuery, userfarmApi } from '../../../store/actions'
 import { docTypes } from '../../../types'
-import { useGetListDocumentQuery } from '../../../store/actions'
 
-export const DocumentBrowser = () => {
+export const UserFarmListDocument = () => {
 
+    const { userid } = useParams()
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetListDocumentQuery(search)
+    const { data = null } = useSelector(userfarmApi.endpoints.getUserFarmById.select(userid))
+    const { data: docsIn = [], isLoading } = useGetListDocumentByUserFarmQuery({ userfarm: userid, search }, { refetchOnMountOrArgChange: true, skip: !data })
 
     return (
-        <>
-            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
-                rows={list}
+        <Card>
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+            <DataTable
+                rows={docsIn}
                 columns={
                     [
                         {
                             label: 'NOMBRE',
                             renderCell: (item) =>
-                                <div className='d-flex flex-column'>
+                            <div className='d-flex flex-column'>
                                     <p
                                         className='d-block text-primary fw-bolder mb-0'
                                     >
@@ -33,12 +37,6 @@ export const DocumentBrowser = () => {
                             label: 'FIRMANTE',
                             renderCell: (item) =>
                                 item.signer
-                        },
-                        {
-                            label: 'JUNTA',
-                            renderCell: (item) => (
-                                item.junta?.name || 'Sin junta de usuarios'
-                            )
                         },
                         {
                             label: 'CREADO',
@@ -67,6 +65,9 @@ export const DocumentBrowser = () => {
                     ]
                 }
             />
-        </>
+            <Card.Footer className='p-3 text-center'>
+                Ir a DOCUMENTOS
+            </Card.Footer>
+        </Card>
     )
 }

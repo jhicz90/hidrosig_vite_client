@@ -13,3 +13,16 @@ export const typeUserFarm = (type) => {
         return ''
     }
 }
+
+export const statusUserFarm = (status)=> {
+    try {
+        return ({
+            0: 'Fallecido',
+            1: 'Vivo',
+            2: 'Heredero',
+        }[status])
+    } catch (err) {
+        console.log(err)
+        return ''
+    }
+}

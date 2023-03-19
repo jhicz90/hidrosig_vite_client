@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FaPen } from 'react-icons/fa'
-import { InputSearch, LinkBack, DataTable, TagNewReg, TagStatus, TimeAgo } from '../../../components'
+import { InputSearch, LinkBack, DataTable, TagStatus, TimeAgo } from '../../../components'
 import { useGetListFarmQuery } from '../../../store/actions'
 
 export const AreaFarmListPage = () => {
@@ -17,7 +17,7 @@ export const AreaFarmListPage = () => {
                     [
                         {
                             label: 'PREDIO',
-                            resize: true,
+                            minWidth: '250px',
                             renderCell: (item) => (
                                 <div className='d-flex flex-column'>
                                     <p
@@ -25,7 +25,7 @@ export const AreaFarmListPage = () => {
                                     >
                                         {item.name}
                                     </p>
-                                    <span>{item.code} <TagNewReg time={item.createdAt} /></span>
+                                    <span>{item.code}</span>
                                 </div>
                             )
                         },

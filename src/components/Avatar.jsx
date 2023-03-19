@@ -7,7 +7,7 @@ export const Avatar = ({ className = '', img = '', noImgTxt = 'USR', noImg = 201
 
     const [wAvatar, setWAvatar] = useState(width)
     const [hAvatar, setHAvatar] = useState(height)
-    const nameTxt = upperCaseCatch(noImgTxt).slice(0, 3)
+    const nameTxt = upperCaseCatch(noImgTxt).slice(0, 2)
 
     useEffect(() => {
         if (size === 'none' && width === 0 && height === 0) {

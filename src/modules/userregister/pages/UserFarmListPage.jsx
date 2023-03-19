@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FaPen } from 'react-icons/fa'
-import { Avatar, InputSearch, LinkBack, DataTable, TagNewReg, TagStatus, TimeAgo } from '../../../components'
+import { Avatar, InputSearch, LinkBack, DataTable, TagStatus, TimeAgo } from '../../../components'
 import { typeUserFarm } from '../../../helpers'
 import { useGetListUserFarmQuery } from '../../../store/actions'
 
@@ -18,7 +18,7 @@ export const UserFarmListPage = () => {
                     [
                         {
                             label: 'USUARIO',
-                            resize: true,
+                            minWidth: '300px',
                             renderCell: (item) => (
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
@@ -37,7 +37,7 @@ export const UserFarmListPage = () => {
                                         >
                                             {item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}
                                         </p>
-                                        <span>{typeUserFarm(item.type)} <TagNewReg time={item.createdAt}/></span>
+                                        <span>{typeUserFarm(item.type)}</span>
                                     </div>
                                 </div>
                             )

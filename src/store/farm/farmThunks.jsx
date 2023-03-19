@@ -40,6 +40,16 @@ export const farmApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Frm']
         }),
+        getListFarmByUserFarm: builder.query({
+            query: ({ userfarm, search }) => ({
+                url: `farm/search_by_userfarm/${userfarm}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Frm']
+        }),
         getFarmById: builder.query({
             query: (id) => ({
                 url: `farm/edit/${id}`
@@ -71,7 +81,9 @@ export const {
     useDeleteFarmByIdMutation,
     useDraftFarmMutation,
     useGetFarmByIdQuery,
+    useGetListFarmByUserFarmQuery,
     useGetListFarmQuery,
+    useLazyNewFarmQuery,
     useNewFarmQuery,
     useUpdateFarmByIdMutation,
 } = farmApi

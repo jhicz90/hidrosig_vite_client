@@ -3,7 +3,7 @@ import { AiFillNotification, AiOutlineWhatsApp } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { LoadingPage, SliderNavFlip } from '../../../components'
-import { UserFarmBanner, UserFarmInformation } from '../components'
+import { UserFarmBanner, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
 import { useNavigateState } from '../../../hooks'
 import { questionActiveUserFarm, questionDeleteUserFarm, useDeleteUserFarmByIdMutation, useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
 
@@ -100,14 +100,15 @@ export const UserFarmPage = () => {
                                         <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
                                         <NavLink to={`not`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Notificaciones</NavLink>
                                         <NavLink to={`doc`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Documentos</NavLink>
+                                        <NavLink to={`msg`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Mensajes</NavLink>
                                     </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
                                         <Route index element={<UserFarmInformation />} />
-                                        {/* <Route path={`zn`} element={<JuntaAmbitZone />} />
-                                        <Route path={`ws`} element={<JuntaAmbitWaterSource />} />
-                                        <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
+                                        <Route path={`prp`} element={<UserFarmListAreaFarm />} />
+                                        <Route path={`doc`} element={<UserFarmListDocument />} />
+                                        {/* <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
                                     </Routes>
                                 </div>
                             </Tab.Container>

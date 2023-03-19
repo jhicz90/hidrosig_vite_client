@@ -1,44 +1,43 @@
 import { useState } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { InputSearch, LinkBack, TableGrid, TimeAgo } from '../../../components'
-import { docTypes } from '../../../types'
-import { useGetListDocumentQuery } from '../../../store/actions'
+import { DataTable, InputSearch, LinkBack, TagStatus, TimeAgo } from '../../../components'
+import { useGetListFarmByUserFarmQuery, userfarmApi } from '../../../store/actions'
 
-export const DocumentBrowser = () => {
+export const UserFarmListAreaFarm = () => {
 
+    const { userid } = useParams()
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetListDocumentQuery(search)
+    const { data = null } = useSelector(userfarmApi.endpoints.getUserFarmById.select(userid))
+    const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
 
     return (
-        <>
-            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
-                rows={list}
+        <Card>
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+            <DataTable
+                rows={farmsIn}
                 columns={
                     [
                         {
-                            label: 'NOMBRE',
-                            renderCell: (item) =>
+                            label: 'PREDIO',
+                            minWidth: '250px',
+                            renderCell: (item) => (
                                 <div className='d-flex flex-column'>
                                     <p
                                         className='d-block text-primary fw-bolder mb-0'
                                     >
                                         {item.name}
                                     </p>
-                                    <span>{docTypes.find(d => d.type === item.type).name}</span>
+                                    <span>{item.code}</span>
                                 </div>
-                        },
-                        {
-                            label: 'FIRMANTE',
-                            renderCell: (item) =>
-                                item.signer
-                        },
-                        {
-                            label: 'JUNTA',
-                            renderCell: (item) => (
-                                item.junta?.name || 'Sin junta de usuarios'
                             )
+                        },
+                        {
+                            label: 'ESTADO',
+                            renderCell: (item) =>
+                                <TagStatus status={item.active} />
                         },
                         {
                             label: 'CREADO',
@@ -52,13 +51,12 @@ export const DocumentBrowser = () => {
                         },
                         {
                             label: 'ACCIÓN',
-                            width: '100px',
                             pinRight: true,
                             renderCell: (item) =>
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=document_edit&id=${item._id}`}
+                                        to={`/app/user_reg/area_farm/prps/${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>
@@ -67,6 +65,9 @@ export const DocumentBrowser = () => {
                     ]
                 }
             />
-        </>
+            <Card.Footer className='p-3 text-center'>
+                Ir a PREDIOS
+            </Card.Footer>
+        </Card>
     )
 }

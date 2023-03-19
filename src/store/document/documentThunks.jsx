@@ -40,6 +40,16 @@ export const documentApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Files']
         }),
+        getListDocumentByUserFarm: builder.query({
+            query: ({ userfarm, search }) => ({
+                url: `document/search_by_userfarm/${userfarm}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Files']
+        }),
         getDocumentById: builder.query({
             query: (id) => ({
                 url: `document/edit/${id}`,
@@ -71,6 +81,8 @@ export const {
     useDeleteDocumentByIdMutation,
     useGetBrowserQuery,
     useGetDocumentByIdQuery,
+    useLazyGetDocumentByIdQuery,
+    useGetListDocumentByUserFarmQuery,
     useGetListDocumentQuery,
     useNewDocumentQuery,
     useUpdateDocumentByIdMutation,

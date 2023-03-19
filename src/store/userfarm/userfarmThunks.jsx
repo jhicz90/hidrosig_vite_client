@@ -72,6 +72,7 @@ export const {
     useDraftUserFarmMutation,
     useGetListUserFarmQuery,
     useGetUserFarmByIdQuery,
+    useLazyNewUserFarmQuery,
     useNewUserFarmQuery,
     useUpdateUserFarmByIdMutation,
 } = userfarmApi
@@ -160,4 +161,17 @@ export const questionDeleteUserFarm = async (names) => {
     }).then(({ value }) => {
         return value
     })
+}
+
+export const searchUserFarm = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: 'userfarm/search',
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
+    }
 }

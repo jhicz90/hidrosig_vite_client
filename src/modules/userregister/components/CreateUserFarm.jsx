@@ -1,21 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { useAddUserFarmMutation, useDraftUserFarmMutation, useNewUserFarmQuery } from '../../../store/actions'
+import { useAddUserFarmMutation, useDraftUserFarmMutation, useLazyNewUserFarmQuery, useNewUserFarmQuery } from '../../../store/actions'
 
 export const CreateUserFarm = () => {
 
-    const [skip, setSkip] = useState(true)
     const [searchParams, setSearchParams] = useSearchParams()
     const { w } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/users')
 
-    const { data = null, isLoading, isError } = useNewUserFarmQuery(undefined, { refetchOnMountOrArgChange: true, skip })
-    const [addUserFarm, { isLoading: isSavingAdd }] = useAddUserFarmMutation()
-    const [draftUserFarm, { isLoading: isSavingDraft }] = useDraftUserFarmMutation()
+    const [newUserFarm, { data = null, isLoading, isError }] = useLazyNewUserFarmQuery()
+    const [addUserFarm, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddUserFarmMutation()
+    const [draftUserFarm, { isLoading: isSavingDraft, isSuccess: isSavedDraft }] = useDraftUserFarmMutation()
     const { register, watch, handleSubmit, getValues, reset } = useForm()
 
     const handleSave = async ({ draft, ...newData }) => {
@@ -25,7 +24,6 @@ export const CreateUserFarm = () => {
             } else {
                 await addUserFarm(newData)
             }
-            redirect()
         } catch (err) {
             console.log(err)
         }
@@ -38,12 +36,22 @@ export const CreateUserFarm = () => {
     }, [reset, data])
 
     useEffect(() => {
-        setSkip(w === 'userfarm_create' ? false : true)
+        if (w === 'userfarm_create') {
+            newUserFarm()
+        }
     }, [w])
 
-    if (isError) {
-        redirectEscape()
-    }
+    useEffect(() => {
+        if (isSaved || isSavedDraft) {
+            redirect()
+        }
+    }, [isSaved, isSavedDraft])
+
+    useEffect(() => {
+        if (isError) {
+            redirectEscape()
+        }
+    }, [isError])
 
     return (
         <Modal
@@ -77,7 +85,7 @@ export const CreateUserFarm = () => {
                                     </div>
                                     <div className='col-12 col-sm-6 col-md-6 col-lg-2'>
                                         <Form.Group className='mb-3' controlId='newType'>
-                                            <Form.Label>Tipo</Form.Label>
+                                            <Form.Label>Tipo de usuario</Form.Label>
                                             <Form.Select
                                                 {...register('type', { required: true })}
                                                 autoComplete='off'

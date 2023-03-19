@@ -12,7 +12,7 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImgTxt = 'US
     const inputUploadImage = useId()
     const dispatch = useDispatch()
 
-    const nameTxt = upperCaseCatch(noImgTxt).slice(0, 3)
+    const nameTxt = upperCaseCatch(noImgTxt).slice(0, 2)
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 

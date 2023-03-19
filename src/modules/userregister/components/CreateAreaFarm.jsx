@@ -1,34 +1,31 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Modal } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { FieldSet, LoadingPage, OptionBlock, OptionLocation, OptionOrgz } from '../../../components'
+import { LoadingPage, OptionBlock, OptionLocation, OptionOrgz, OptionUserFarm } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { searchBlockByJunta, searchJunta, searchLocation, useAddFarmMutation, useDraftFarmMutation, useNewFarmQuery } from '../../../store/actions'
+import { searchBlockByJunta, searchJunta, searchLocation, searchUserFarm, useAddFarmMutation, useDraftFarmMutation, useLazyNewFarmQuery } from '../../../store/actions'
 
 export const CreateAreaFarm = () => {
 
-    const [skip, setSkip] = useState(true)
     const [searchParams, setSearchParams] = useSearchParams()
     const { w } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/prps')
 
     const { lvlAccess } = useSelector(state => state.auth)
-    const { data = null, isLoading, isError } = useNewFarmQuery(undefined, { refetchOnMountOrArgChange: true, skip })
-    const [addFarm, { isLoading: isSavingAdd }] = useAddFarmMutation()
-    const [draftFarm, { isLoading: isSavingDraft }] = useDraftFarmMutation()
+    const [newAreaFarm, { data = null, isLoading, isError }] = useLazyNewFarmQuery()
+    const [addFarm, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddFarmMutation()
+    const [draftFarm, { isLoading: isSavingDraft, isSuccess: isSavedDraft }] = useDraftFarmMutation()
     const { control, register, handleSubmit, watch, setValue, getValues, reset } = useForm()
 
     const handleSave = async ({ draft, ...newData }) => {
         try {
             if (!!draft) {
                 await draftFarm(newData)
-                redirect()
             } else {
                 await addFarm(newData)
-                redirect()
             }
         } catch (err) {
             console.log(err)
@@ -42,12 +39,22 @@ export const CreateAreaFarm = () => {
     }, [reset, data])
 
     useEffect(() => {
-        setSkip(w === 'areafarm_create' ? false : true)
+        if (w === 'areafarm_create') {
+            newAreaFarm()
+        }
     }, [w])
 
-    if (isError) {
-        redirectEscape()
-    }
+    useEffect(() => {
+        if (isSaved || isSavedDraft) {
+            redirect()
+        }
+    }, [isSaved, isSavedDraft])
+
+    useEffect(() => {
+        if (isError) {
+            redirectEscape()
+        }
+    }, [isError])
 
     return (
         <Modal
@@ -67,223 +74,257 @@ export const CreateAreaFarm = () => {
                     <>
                         <Modal.Body>
                             <form id='form-userregister-areafarm-create' onSubmit={handleSubmit(handleSave)}>
-                                <FieldSet title='Información'>
-                                    <div className='row'>
-                                        <div className='col-12 col-md-6 col-lg-3'>
-                                            <Form.Group className='mb-3' controlId='newCode'>
-                                                <Form.Label>Código</Form.Label>
-                                                <Form.Control
-                                                    {...register('code', { required: true })}
-                                                    type='text'
-                                                    disabled
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
-                                        <div className='col-12 col-md-6 col-lg-6'>
-                                            <Form.Group className='mb-3' controlId='newName'>
-                                                <Form.Label>Nombre del predio</Form.Label>
-                                                <Form.Control
-                                                    {...register('name', { required: true })}
-                                                    type='text'
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
-                                        <div className='col-12 col-md-6 col-lg-3'>
-                                            <Form.Group className='mb-3' controlId='newCadUnit'>
-                                                <Form.Label>Unidad Catastral</Form.Label>
-                                                <Form.Control
-                                                    {...register('cadUnit', { required: true })}
-                                                    type='text'
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
+                                <div className='row'>
+                                    <div className='col-12 col-md-6 col-lg-3'>
+                                        <Form.Group className='mb-3' controlId='newCode'>
+                                            <Form.Label>Código</Form.Label>
+                                            <Form.Control
+                                                {...register('code', { required: true })}
+                                                type='text'
+                                                disabled
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
                                     </div>
-                                    <div className='row'>
-                                        <div className='col'>
-                                            <Form.Group className='mb-3' controlId='newDesc'>
-                                                <Form.Label>Descripción</Form.Label>
-                                                <Form.Control
-                                                    {...register('desc')}
-                                                    type='text'
-                                                    as='textarea'
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
+                                    <div className='col-12 col-md-6 col-lg-6'>
+                                        <Form.Group className='mb-3' controlId='newName'>
+                                            <Form.Label>Nombre del predio</Form.Label>
+                                            <Form.Control
+                                                {...register('name', { required: true })}
+                                                type='text'
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
                                     </div>
-                                </FieldSet>
-                                <FieldSet title='Área del predio'>
-                                    <div className='row'>
-                                        <div className='col-12 col-md-6 col-lg-3'>
-                                            <Form.Group className='mb-3' controlId='newAreaTotal'>
-                                                <Form.Label>Area total</Form.Label>
-                                                <Form.Control
-                                                    {...register('areaTotal', { required: true })}
-                                                    type='number'
-                                                    min={0}
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
-                                        <div className='col-12 col-md-6 col-lg-3'>
-                                            <Form.Group className='mb-3' controlId='newAreaLic'>
-                                                <Form.Label>Area de licencia</Form.Label>
-                                                <Form.Control
-                                                    {...register('areaLic', {
-                                                        required: true,
-                                                        onChange: (e) => setValue('areaUse', Number(getValues('areaUse')) + Number(e.target.value))
-                                                    })}
-                                                    type='number'
-                                                    min={0}
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
-                                        <div className='col-12 col-md-6 col-lg-3'>
-                                            <Form.Group className='mb-3' controlId='newAreaPer'>
-                                                <Form.Label>Area de permiso</Form.Label>
-                                                <Form.Control
-                                                    {...register('areaPer', {
-                                                        required: true,
-                                                        onChange: (e) => setValue('areaUse', Number(getValues('areaUse')) + Number(e.target.value))
-                                                    })}
-                                                    type='number'
-                                                    min={0}
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
-                                        <div className='col-12 col-md-6 col-lg-3'>
-                                            <Form.Group className='mb-3' controlId='newAreaUse'>
-                                                <Form.Label>Area de uso</Form.Label>
-                                                <Form.Control
-                                                    {...register('areaUse', { required: true })}
-                                                    disabled={true}
-                                                    type='number'
-                                                    min={0}
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
+                                    <div className='col-12 col-md-6 col-lg-3'>
+                                        <Form.Group className='mb-3' controlId='newCadUnit'>
+                                            <Form.Label>Unidad Catastral</Form.Label>
+                                            <Form.Control
+                                                {...register('cadUnit', { required: true })}
+                                                type='text'
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
                                     </div>
-                                </FieldSet>
+                                </div>
+                                <div className='row'>
+                                    <div className='col'>
+                                        <Form.Group className='mb-3' controlId='newDesc'>
+                                            <Form.Label>Descripción</Form.Label>
+                                            <Form.Control
+                                                {...register('desc')}
+                                                type='text'
+                                                as='textarea'
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className='col-12 col-md-6 col-lg-3'>
+                                        <Form.Group className='mb-3' controlId='newAreaTotal'>
+                                            <Form.Label>Area total</Form.Label>
+                                            <Form.Control
+                                                {...register('areaTotal', { required: true })}
+                                                type='number'
+                                                min={0}
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                    <div className='col-12 col-md-6 col-lg-3'>
+                                        <Form.Group className='mb-3' controlId='newAreaLic'>
+                                            <Form.Label>Area de licencia</Form.Label>
+                                            <Form.Control
+                                                {...register('areaLic', {
+                                                    required: true,
+                                                    onChange: (e) => setValue('areaUse', Number(getValues('areaPer')) + Number(e.target.value))
+                                                })}
+                                                type='number'
+                                                min={0}
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                    <div className='col-12 col-md-6 col-lg-3'>
+                                        <Form.Group className='mb-3' controlId='newAreaPer'>
+                                            <Form.Label>Area de permiso</Form.Label>
+                                            <Form.Control
+                                                {...register('areaPer', {
+                                                    required: true,
+                                                    onChange: (e) => setValue('areaUse', Number(getValues('areaLic')) + Number(e.target.value))
+                                                })}
+                                                type='number'
+                                                min={0}
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                    <div className='col-12 col-md-6 col-lg-3'>
+                                        <Form.Group className='mb-3' controlId='newAreaUse'>
+                                            <Form.Label>Area de uso</Form.Label>
+                                            <Form.Control
+                                                {...register('areaUse', { required: true })}
+                                                disabled={true}
+                                                type='number'
+                                                min={0}
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                </div>
                                 {
                                     lvlAccess === 1
                                     &&
-                                    <FieldSet title='Organización'>
-                                        <div className='row'>
-                                            <div className='col-12 col-md-6'>
-                                                <Form.Group className='mb-3' controlId='newJunta'>
-                                                    <Form.Label>Junta de usuarios</Form.Label>
-                                                    <Controller
-                                                        name='junta'
-                                                        control={control}
-                                                        rules={{
-                                                            required: true,
-                                                            onChange: () => {
-                                                                setValue('block', null)
-                                                                setValue('location', null)
-                                                            }
-                                                        }}
-                                                        render={
-                                                            ({ field }) =>
-                                                                <AsyncSelect
-                                                                    {...field}
-                                                                    inputId='newJunta'
-                                                                    classNamePrefix='rc-select'
-                                                                    isClearable
-                                                                    defaultOptions
-                                                                    loadOptions={searchJunta}
-                                                                    menuPlacement={'auto'}
-                                                                    placeholder={`Buscar...`}
-                                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                                    getOptionValue={e => e._id}
-                                                                    getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                                                />
-                                                        }
-                                                    />
-                                                </Form.Group>
-                                            </div>
-                                        </div>
-                                    </FieldSet>
-                                }
-                                <FieldSet title='Ubicación'>
                                     <div className='row'>
                                         <div className='col-12 col-md-6'>
-                                            <Form.Group className='mb-3' controlId='newBlock'>
-                                                <Form.Label>Bloque de riego</Form.Label>
+                                            <Form.Group className='mb-3' controlId='newJunta'>
+                                                <Form.Label>Junta de usuarios</Form.Label>
                                                 <Controller
-                                                    name='block'
+                                                    name='junta'
                                                     control={control}
-                                                    rules={{ required: true }}
+                                                    rules={{
+                                                        required: true,
+                                                        onChange: () => {
+                                                            setValue('block', null)
+                                                            setValue('location', null)
+                                                        }
+                                                    }}
                                                     render={
                                                         ({ field }) =>
                                                             <AsyncSelect
                                                                 {...field}
-                                                                inputId='newBlock'
-                                                                classNamePrefix='rc-select'
-                                                                isClearable
-                                                                isDisabled={watch('junta') === null}
-                                                                loadOptions={async (e) => {
-                                                                    return await searchBlockByJunta(watch('junta')?._id || null, e)
-                                                                }}
-                                                                menuPlacement={'auto'}
-                                                                placeholder={`Buscar...`}
-                                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                                getOptionValue={e => e._id}
-                                                                getOptionLabel={e => <OptionBlock block={e} />}
-                                                            />
-                                                    }
-                                                />
-                                            </Form.Group>
-                                        </div>
-                                        <div className='col-12 col-md-6'>
-                                            <Form.Group className='mb-3' controlId='newLocation'>
-                                                <Form.Label>Localidad</Form.Label>
-                                                <Controller
-                                                    name='location'
-                                                    control={control}
-                                                    rules={{ required: true }}
-                                                    render={
-                                                        ({ field }) =>
-                                                            <AsyncSelect
-                                                                {...field}
-                                                                inputId='newLocation'
+                                                                inputId='newJunta'
                                                                 classNamePrefix='rc-select'
                                                                 isClearable
                                                                 defaultOptions
-                                                                isDisabled={watch('junta') === null}
-                                                                loadOptions={searchLocation}
+                                                                loadOptions={searchJunta}
                                                                 menuPlacement={'auto'}
                                                                 placeholder={`Buscar...`}
                                                                 loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                                 noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                                 getOptionValue={e => e._id}
-                                                                getOptionLabel={e => <OptionLocation location={e} />}
+                                                                getOptionLabel={e => <OptionOrgz orgz={e} />}
                                                             />
                                                     }
                                                 />
                                             </Form.Group>
                                         </div>
                                     </div>
-                                    <div className='row'>
-                                        <div className='col-12 col-md-6'>
-                                            <Form.Group className='mb-3' controlId='newPlace'>
-                                                <Form.Label>Lugar de referencia</Form.Label>
-                                                <Form.Control
-                                                    {...register('place')}
-                                                    type='text'
-                                                    autoComplete='off'
-                                                />
-                                            </Form.Group>
-                                        </div>
+                                }
+                                <div className='row'>
+                                    <div className='col-12 col-md-6'>
+                                        <Form.Group className='mb-3' controlId='newBlock'>
+                                            <Form.Label>Bloque de riego</Form.Label>
+                                            <Controller
+                                                name='block'
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={
+                                                    ({ field }) =>
+                                                        <AsyncSelect
+                                                            {...field}
+                                                            inputId='newBlock'
+                                                            classNamePrefix='rc-select'
+                                                            styles={{
+                                                                control: (baseStyles, state) => ({
+                                                                    ...baseStyles,
+                                                                    minHeight: '90px',
+                                                                }),
+                                                            }}
+                                                            isClearable
+                                                            isDisabled={watch('junta') === null}
+                                                            loadOptions={async (e) => {
+                                                                return await searchBlockByJunta(watch('junta')?._id || null, e)
+                                                            }}
+                                                            menuPlacement={'auto'}
+                                                            placeholder={`Buscar...`}
+                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                            getOptionValue={e => e._id}
+                                                            getOptionLabel={e => <OptionBlock block={e} />}
+                                                        />
+                                                }
+                                            />
+                                        </Form.Group>
                                     </div>
-                                </FieldSet>
+                                    <div className='col-12 col-md-6'>
+                                        <Form.Group className='mb-3' controlId='newLocation'>
+                                            <Form.Label>Localidad</Form.Label>
+                                            <Controller
+                                                name='location'
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={
+                                                    ({ field }) =>
+                                                        <AsyncSelect
+                                                            {...field}
+                                                            inputId='newLocation'
+                                                            classNamePrefix='rc-select'
+                                                            styles={{
+                                                                control: (baseStyles, state) => ({
+                                                                    ...baseStyles,
+                                                                    minHeight: '90px',
+                                                                }),
+                                                            }}
+                                                            isClearable
+                                                            defaultOptions
+                                                            isDisabled={watch('junta') === null}
+                                                            loadOptions={searchLocation}
+                                                            menuPlacement={'auto'}
+                                                            placeholder={`Buscar...`}
+                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                            getOptionValue={e => e._id}
+                                                            getOptionLabel={e => <OptionLocation location={e} />}
+                                                        />
+                                                }
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className='col-12 col-md-6'>
+                                        <Form.Group className='mb-3' controlId='newPlace'>
+                                            <Form.Label>Lugar de referencia</Form.Label>
+                                            <Form.Control
+                                                {...register('place')}
+                                                type='text'
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                </div>
+                                <div className='row'>
+                                    <div className='col-12'>
+                                        <Form.Group className='mb-3' controlId='newUserFarms'>
+                                            <Form.Label>Usuarios o posesionarios</Form.Label>
+                                            <Controller
+                                                name='userfarms'
+                                                control={control}
+                                                rules={{ required: true }}
+                                                render={
+                                                    ({ field }) =>
+                                                        <AsyncSelect
+                                                            {...field}
+                                                            inputId='newUserFarms'
+                                                            classNamePrefix='rc-select'
+                                                            isClearable
+                                                            defaultOptions
+                                                            isMulti
+                                                            loadOptions={searchUserFarm}
+                                                            menuPlacement={'auto'}
+                                                            placeholder={`Buscar...`}
+                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                            getOptionValue={e => e._id}
+                                                            getOptionLabel={e => <OptionUserFarm userfarm={e} />}
+                                                        />
+                                                }
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                </div>
                             </form>
                         </Modal.Body>
                         <Modal.Footer>
