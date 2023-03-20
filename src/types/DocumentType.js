@@ -10,4 +10,5 @@ export const docTypes = [
     { type: 9, name: 'INTENDENCIA' },
     { type: 10, name: '	OFICIO' },
     { type: 11, name: '	CARTA' },
+    { type: 12, name: '	NOTIFICACION' },
 ]

@@ -98,7 +98,6 @@ export const UserFarmPage = () => {
                                     <SliderNavFlip>
                                         <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
                                         <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
-                                        <NavLink to={`not`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Notificaciones</NavLink>
                                         <NavLink to={`doc`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Documentos</NavLink>
                                         <NavLink to={`msg`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Mensajes</NavLink>
                                     </SliderNavFlip>

@@ -113,6 +113,7 @@ const CreateDocumentWindow = ({ juntaActive = null }) => {
                                                 <option value={9}>INTENDENCIA</option>
                                                 <option value={10}>OFICIO</option>
                                                 <option value={11}>CARTA</option>
+                                                <option value={12}>NOTIFICACIÓN</option>
                                             </Form.Select>
                                         </Form.Group>
                                     </div>
