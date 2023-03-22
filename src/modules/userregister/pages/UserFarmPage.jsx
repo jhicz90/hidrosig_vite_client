@@ -3,7 +3,7 @@ import { AiFillNotification, AiOutlineWhatsApp } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { LoadingPage, SliderNavFlip } from '../../../components'
-import { UserFarmBanner, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
+import { UserFarmAdditionalData, UserFarmBanner, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
 import { useNavigateState } from '../../../hooks'
 import { questionActiveUserFarm, questionDeleteUserFarm, useDeleteUserFarmByIdMutation, useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
 
@@ -16,7 +16,7 @@ export const UserFarmPage = () => {
     const [updateUserFarm, { isLoading: isSaving }] = useUpdateUserFarmByIdMutation()
     const [deleteUserFarm] = useDeleteUserFarmByIdMutation()
 
-    const handleStatus = async (id, active, names) => {
+    const handleActive = async (id, active, names) => {
         if (await questionActiveUserFarm(!active, names)) {
             updateUserFarm({
                 id,
@@ -44,12 +44,12 @@ export const UserFarmPage = () => {
             {
                 !!data
                 &&
-                <div className='container-fluid'>
+                <div className='container-fluid my-3'>
                     <div className='row'>
                         <div className='col-12'>
                             <div className='row align-items-center justify-content-between g-3 mb-3'>
                                 <div className='col-12 col-md-auto'>
-                                    <h4 className='mb-0'>Detalles de Usuario agrario</h4>
+                                    <h4 className='mb-0'>Usuario agrario</h4>
                                 </div>
                                 <div className='col-12 col-md-auto'>
                                     <div className='d-flex gap-2'>
@@ -59,10 +59,10 @@ export const UserFarmPage = () => {
                                         </Button>
                                         <Button variant='primary' className='d-flex align-items-center gap-2'>
                                             <AiFillNotification size={24} />
-                                            Generar notificacion
+                                            Generar notificación
                                         </Button>
                                         <Button
-                                            onClick={() => handleStatus(userid, !data?.active, data?.names)}
+                                            onClick={() => handleActive(userid, !data?.active, data?.names)}
                                             disabled={isSaving || isLoading}
                                             variant={data.active ? 'danger' : 'success'}
                                         >
@@ -100,6 +100,7 @@ export const UserFarmPage = () => {
                                         <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
                                         <NavLink to={`doc`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Documentos</NavLink>
                                         <NavLink to={`msg`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Mensajes</NavLink>
+                                        <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
                                     </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>
@@ -108,6 +109,7 @@ export const UserFarmPage = () => {
                                         <Route path={`prp`} element={<UserFarmListAreaFarm />} />
                                         <Route path={`doc`} element={<UserFarmListDocument />} />
                                         {/* <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
+                                        <Route path={`add`} element={<UserFarmAdditionalData />} />
                                     </Routes>
                                 </div>
                             </Tab.Container>

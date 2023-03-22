@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import validator from 'validator'
 import { searchJunta, searchZoneByJunta, useNewCommQuery, useAddCommMutation } from '../../../store/actions'
 import { upperCaseCatch } from '../../../helpers'
-import { LoadingPage, OptionOrgz } from '../../../components'
+import { Liner, LoadingPage, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreateCommittee = () => {
@@ -89,7 +89,7 @@ const CreateCommitteeWindow = ({ juntaActive = null }) => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <form id='form-ambit-committee-create' onSubmit={handleSubmit(handleSave)}>
-                                <h5 className='liner'>Información</h5>
+                                <Liner>Información</Liner>
                                 <div className='row'>
                                     <div className='col-12 col-md-6'>
                                         <Form.Group className='mb-3' controlId='newName'>
@@ -179,7 +179,7 @@ const CreateCommitteeWindow = ({ juntaActive = null }) => {
                                         </Form.Group>
                                     </div>
                                 </div>
-                                <h5 className='liner'>Ámbito</h5>
+                                <Liner>Ámbito</Liner>
                                 {
                                     !juntaActive
                                     &&

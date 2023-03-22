@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useLocation, useParams } from 'react-router-dom'
-import { ButtonGroup, Card, ListGroup } from 'react-bootstrap'
-import { IoMdEye } from 'react-icons/io'
+import { useParams } from 'react-router-dom'
+import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { juntaApi, useGetListCommByJuntaQuery, useGetListWaterSourceByJuntaQuery, useGetListZoneByJuntaQuery } from '../../../store/actions'
-import { Avatar, InputSearch, LinkBack, SettingAction, SettingBlock, TableGrid, TagStatus, TypeWaterSource } from '../../../components'
-import { CreateZone, CreateCommittee } from '.'
+import { juntaApi, useGetListWaterSourceByJuntaQuery } from '../../../store/actions'
+import { DataTable, InputSearch, LinkBack, TypeWaterSource } from '../../../components'
 
 export const JuntaAmbitWaterSource = () => {
 
@@ -18,7 +16,7 @@ export const JuntaAmbitWaterSource = () => {
     return (
         <Card>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
-            <TableGrid
+            <DataTable
                 rows={waterSourcesIn}
                 columns={
                     [

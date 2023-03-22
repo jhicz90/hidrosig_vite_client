@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { ButtonGroup, Card } from 'react-bootstrap'
 import { IoMdEye } from 'react-icons/io'
 import { juntaApi, useGetListCommByJuntaQuery } from '../../../store/actions'
-import { Avatar, InputSearch, LinkBack, TableGrid, TagStatus } from '../../../components'
+import { Avatar, DataTable, InputSearch, LinkBack, TagStatus } from '../../../components'
 
 export const JuntaAmbitCommittee = () => {
 
@@ -16,7 +16,7 @@ export const JuntaAmbitCommittee = () => {
     return (
         <Card>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
-            <TableGrid
+            <DataTable
                 rows={committeesIn}
                 columns={
                     [
@@ -27,7 +27,8 @@ export const JuntaAmbitCommittee = () => {
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>
                                         <Avatar
-                                            img={item.image?.fileName}
+                                            img={item.image?.metadata?.url}
+                                            cloud={item.image?.cloud}
                                             noImgTxt={item.name}
                                             circle={true}
                                             width={40}

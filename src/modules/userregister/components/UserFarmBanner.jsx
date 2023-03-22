@@ -23,6 +23,7 @@ export const UserFarmBanner = () => {
                         <AvatarProfile
                             className='mb-3'
                             noImgTxt={data.type > 1 ? `${data.socialReason}` : `${data.names} ${data.lastName} ${data.motherLastName}`}
+                            noImg={4004}
                             avatarImg={data.image?.metadata.url}
                             cloud={data.image?.cloud}
                             actionChange={(image) => handleChangeImage(data?._id, image)}

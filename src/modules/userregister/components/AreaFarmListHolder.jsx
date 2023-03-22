@@ -1,20 +1,24 @@
 import { useState } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { Avatar, InputSearch, LinkBack, DataTable, TagStatus, TimeAgo } from '../../../components'
+import { Avatar, DataTable, InputSearch, LinkBack, TagStatus, TimeAgo } from '../../../components'
 import { typeUserFarm } from '../../../helpers'
-import { useGetListUserFarmQuery } from '../../../store/actions'
+import { farmApi, useGetListUserFarmByFarmQuery } from '../../../store/actions'
 
-export const UserFarmListPage = () => {
+export const AreaFarmListHolder = () => {
 
+    const { prpid } = useParams()
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetListUserFarmQuery(search)
+    const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
+    const { data: usersIn = [], isLoading } = useGetListUserFarmByFarmQuery({ farm: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
 
     return (
-        <>
-            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
+        <Card>
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
             <DataTable
-                rows={list}
+                rows={usersIn}
                 columns={
                     [
                         {
@@ -75,6 +79,9 @@ export const UserFarmListPage = () => {
                     ]
                 }
             />
-        </>
+            <Card.Footer className='p-3 text-center'>
+                Ir a USUARIOS
+            </Card.Footer>
+        </Card>
     )
 }

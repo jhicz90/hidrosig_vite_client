@@ -1,4 +1,5 @@
 export * from './CommitteeAmbit'
+export * from './CommitteeAmbitBlock'
 export * from './CommitteeBanner'
 export * from './CommitteeInformation'
 export * from './CreateBlock'

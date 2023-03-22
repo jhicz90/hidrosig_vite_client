@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Form, Modal } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { LoadingPage, OptionBlock, OptionLocation, OptionOrgz, OptionUserFarm } from '../../../components'
+import { Liner, LoadingPage, OptionBlock, OptionLocation, OptionOrgz, OptionUserFarm } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { searchBlockByJunta, searchJunta, searchLocation, searchUserFarm, useAddFarmMutation, useDraftFarmMutation, useLazyNewFarmQuery } from '../../../store/actions'
 
@@ -74,6 +74,7 @@ export const CreateAreaFarm = () => {
                     <>
                         <Modal.Body>
                             <form id='form-userregister-areafarm-create' onSubmit={handleSubmit(handleSave)}>
+                                <Liner>Detalle</Liner>
                                 <div className='row'>
                                     <div className='col-12 col-md-6 col-lg-3'>
                                         <Form.Group className='mb-3' controlId='newCode'>
@@ -86,21 +87,21 @@ export const CreateAreaFarm = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                    <div className='col-12 col-md-6 col-lg-6'>
-                                        <Form.Group className='mb-3' controlId='newName'>
-                                            <Form.Label>Nombre del predio</Form.Label>
-                                            <Form.Control
-                                                {...register('name', { required: true })}
-                                                type='text'
-                                                autoComplete='off'
-                                            />
-                                        </Form.Group>
-                                    </div>
                                     <div className='col-12 col-md-6 col-lg-3'>
                                         <Form.Group className='mb-3' controlId='newCadUnit'>
                                             <Form.Label>Unidad Catastral</Form.Label>
                                             <Form.Control
                                                 {...register('cadUnit', { required: true })}
+                                                type='text'
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                    <div className='col-12 col-md-6 col-lg-6'>
+                                        <Form.Group className='mb-3' controlId='newName'>
+                                            <Form.Label>Nombre del predio</Form.Label>
+                                            <Form.Control
+                                                {...register('name', { required: true })}
                                                 type='text'
                                                 autoComplete='off'
                                             />
@@ -120,6 +121,7 @@ export const CreateAreaFarm = () => {
                                         </Form.Group>
                                     </div>
                                 </div>
+                                <Liner>Área</Liner>
                                 <div className='row'>
                                     <div className='col-12 col-md-6 col-lg-3'>
                                         <Form.Group className='mb-3' controlId='newAreaTotal'>
@@ -173,6 +175,7 @@ export const CreateAreaFarm = () => {
                                         </Form.Group>
                                     </div>
                                 </div>
+                                <Liner>Bloque y ubicación</Liner>
                                 {
                                     lvlAccess === 1
                                     &&
@@ -187,7 +190,6 @@ export const CreateAreaFarm = () => {
                                                         required: true,
                                                         onChange: () => {
                                                             setValue('block', null)
-                                                            setValue('location', null)
                                                         }
                                                     }}
                                                     render={
@@ -269,7 +271,6 @@ export const CreateAreaFarm = () => {
                                                             }}
                                                             isClearable
                                                             defaultOptions
-                                                            isDisabled={watch('junta') === null}
                                                             loadOptions={searchLocation}
                                                             menuPlacement={'auto'}
                                                             placeholder={`Buscar...`}

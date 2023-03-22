@@ -1,4 +1,5 @@
 export * from './AreaFarmListPage'
+export * from './AreaFarmPage'
 export * from './UserFarmImportPage'
 export * from './UserFarmListPage'
 export * from './UserFarmNavPage'

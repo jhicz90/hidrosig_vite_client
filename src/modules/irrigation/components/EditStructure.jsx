@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Button, Form, ListGroup, Nav, Offcanvas, Tab } from 'react-bootstrap'
-import { IoMdAddCircleOutline, IoMdOpen, IoMdTrash } from 'react-icons/io'
+import { IoMdAddCircleOutline, IoMdClose, IoMdOpen, IoMdTrash } from 'react-icons/io'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import validator from 'validator'
 import { startDeleteIdSection, startDeleteImageStructure, startModalResource, startUpdateImageIdStructure, useDeleteStructureByIdMutation, useGetStructureByIdQuery, useUpdateStructureByIdMutation } from '../../../store/actions'
@@ -39,13 +39,12 @@ export const EditStructureWindow = ({ id }) => {
             progressive: '000+000.00',
         }
     })
-    const { fields, append } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: 'appIdentifiers',
     })
 
     const handleUpdate = async (newData) => {
-        console.log(newData)
         try {
             await updateStructure({
                 id: data._id,
@@ -422,12 +421,12 @@ export const EditStructureWindow = ({ id }) => {
                                                         <Form.Label>Identificadores de aplicaciones</Form.Label>
                                                         <ListGroup>
                                                             <ListGroup.Item onClick={() => append({ nameApp: '', idApp: '' })} className='d-flex align-items-center' action>
-                                                                Agregar identificador
+                                                                Agregar identificador <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
                                                             </ListGroup.Item>
                                                             {
                                                                 fields.map((field, index) =>
-                                                                    <ListGroup.Item key={`appIdentity_${index}`}>
-                                                                        <div className='row align-items-center'>
+                                                                    <ListGroup.Item key={`appIdentity_${index}`} variant={!field._id ? 'primary' : ''}>
+                                                                        <div className='row align-items-center g-2'>
                                                                             <div className='col'>
                                                                                 <Form.Group>
                                                                                     <Form.Control
@@ -447,6 +446,11 @@ export const EditStructureWindow = ({ id }) => {
                                                                                         placeholder='ID de aplicación'
                                                                                     />
                                                                                 </Form.Group>
+                                                                            </div>
+                                                                            <div className='col-auto'>
+                                                                                <Button onClick={() => remove(index)} variant='outline-danger'>
+                                                                                    <IoMdClose size={20} />
+                                                                                </Button>
                                                                             </div>
                                                                         </div>
                                                                     </ListGroup.Item>

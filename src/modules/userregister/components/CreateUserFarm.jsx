@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
-import { LoadingPage } from '../../../components'
+import { Liner, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { useAddUserFarmMutation, useDraftUserFarmMutation, useLazyNewUserFarmQuery, useNewUserFarmQuery } from '../../../store/actions'
 
@@ -71,6 +71,7 @@ export const CreateUserFarm = () => {
                     <>
                         <Modal.Body>
                             <form id='form-userregister-userfarm-create' onSubmit={handleSubmit(handleSave)}>
+                                <Liner>Información personal</Liner>
                                 <div className='row'>
                                     <div className='col-12 col-sm-6 col-md-6 col-lg-2'>
                                         <Form.Group className='mb-3' controlId='newCode'>
@@ -185,6 +186,7 @@ export const CreateUserFarm = () => {
                                         </Form.Group>
                                     </div>
                                 </div>
+                                <Liner>Contacto</Liner>
                                 <div className='row'>
                                     <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newEmail'>

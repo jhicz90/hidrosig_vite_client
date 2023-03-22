@@ -1,36 +1,45 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { juntaApi, useGetListZoneByJuntaQuery } from '../../../store/actions'
-import { DataTable, InputSearch, LinkBack } from '../../../components'
+import { DataTable, InputSearch, LinkBack, TimeAgo } from '../../../components'
+import { committeeApi, useGetListBlockByAmbitQuery } from '../../../store/actions'
 
-export const JuntaAmbitZone = () => {
+export const CommitteeAmbitBlock = () => {
 
-    const { juntaid } = useParams()
+    const { commid } = useParams()
     const [search, setSearch] = useState('')
-    const { data = null } = useSelector(juntaApi.endpoints.getJuntaById.select(juntaid))
-    const { data: zonesIn = [], isLoading } = useGetListZoneByJuntaQuery({ junta: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data = null } = useSelector(committeeApi.endpoints.getCommById.select(commid))
+    const { data: blocksIn = [], isLoading } = useGetListBlockByAmbitQuery({ comm: data?._id, junta: data?.junta._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
 
     return (
         <Card>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
             <DataTable
-                rows={zonesIn}
+                rows={blocksIn}
                 columns={
                     [
                         {
-                            label: 'ZONA',
-                            resize: true,
+                            label: 'BLOQUE DE RIEGO',
                             renderCell: (item) => (
                                 item.name
                             )
                         },
                         {
-                            label: 'ORDEN',
+                            label: 'RESOLUCION',
                             renderCell: (item) =>
-                                item.order
+                                item.resolution?.name || 'Sin resolución'
+                        },
+                        {
+                            label: 'CREADO',
+                            renderCell: (item) =>
+                                <TimeAgo timestamp={item.createdAt} />
+                        },
+                        {
+                            label: 'ACTUALIZADO',
+                            renderCell: (item) =>
+                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',
@@ -39,7 +48,7 @@ export const JuntaAmbitZone = () => {
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=zone_edit&id=${item._id}`}
+                                        to={`?w=block_edit&id=${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>
@@ -49,7 +58,7 @@ export const JuntaAmbitZone = () => {
                 }
             />
             <Card.Footer className='p-3 text-center'>
-                Ir a ZONAS
+                Ir a BLOQUES DE RIEGO
             </Card.Footer>
         </Card>
     )

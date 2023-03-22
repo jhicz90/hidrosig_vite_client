@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { UserFarmNavPage, UserFarmImportPage, UserFarmPage, UserFarmListPage, AreaFarmListPage } from '..'
+import { UserFarmNavPage, UserFarmImportPage, UserFarmPage, UserFarmListPage, AreaFarmListPage, AreaFarmPage } from '..'
 
 export const UserFarmRoutes = () => {
     return (
@@ -37,6 +37,14 @@ export const UserFarmRoutes = () => {
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <UserFarmPage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`prps/:prpid/*`}
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <AreaFarmPage />
                     </GuardRoute>
                 }
             />

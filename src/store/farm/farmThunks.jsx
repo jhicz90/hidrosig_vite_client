@@ -128,7 +128,7 @@ export const questionActiveFarm = async (active, names) => {
             </>,
         html:
             <>
-                <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
+                <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado del predio?</div>
                 <div className='alert alert-warning'>Recordar que al hacer el cambio podrán o no tener acceso, segun sea conveniente.</div>
             </>,
         showCancelButton: true,

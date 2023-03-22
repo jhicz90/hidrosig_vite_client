@@ -33,6 +33,26 @@ export const blockApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
         }),
+        getListBlockByJunta: builder.query({
+            query: ({ junta, search }) => ({
+                url: `block/search_by_junta/${junta}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Trrt']
+        }),
+        getListBlockByAmbit: builder.query({
+            query: ({ junta, comm, search }) => ({
+                url: `block/search_by_ambit/${junta}/${comm}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Orgz', 'Trrt']
+        }),
         getBlockById: builder.query({
             query: (id) => ({
                 url: `block/edit/${id}`
@@ -63,6 +83,8 @@ export const {
     useAddBlockMutation,
     useDeleteBlockByIdMutation,
     useGetBlockByIdQuery,
+    useGetListBlockByAmbitQuery,
+    useGetListBlockByJuntaQuery,
     useGetListBlockQuery,
     useNewBlockQuery,
     useUpdateBlockByIdMutation,

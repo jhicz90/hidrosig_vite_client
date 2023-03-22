@@ -3,19 +3,20 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { Liner } from '../../../components'
 import { userfarmApi, useUpdateUserFarmByIdMutation } from '../../../store/actions'
 
 export const UserFarmInformation = () => {
 
     const { userid } = useParams()
     const { data = null } = useSelector(userfarmApi.endpoints.getUserFarmById.select(userid))
-    const [updateJunta, { isLoading: isSaving }] = useUpdateUserFarmByIdMutation()
+    const [updateUserFarm, { isLoading: isUpdating }] = useUpdateUserFarmByIdMutation()
     const { register, watch, handleSubmit, getValues, reset } = useForm()
 
-    const handleUpdate = (newData) => {
-        updateJunta({
+    const handleUpdate = (updateData) => {
+        updateUserFarm({
             id: userid,
-            userfarm: newData
+            userfarm: updateData
         })
     }
 
@@ -29,9 +30,10 @@ export const UserFarmInformation = () => {
         <Card>
             <Card.Body>
                 <form id='form-userregister-userfarm-edit' onSubmit={handleSubmit(handleUpdate)}>
+                    <Liner>Información personal</Liner>
                     <div className='row'>
                         <div className='col-12 col-sm-6 col-md-6 col-lg-2'>
-                            <Form.Group className='mb-3' controlId='newCode'>
+                            <Form.Group className='mb-3' controlId='pCode'>
                                 <Form.Label>Código</Form.Label>
                                 <Form.Control
                                     {...register('code', { required: true })}
@@ -42,7 +44,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-sm-6 col-md-6 col-lg-2'>
-                            <Form.Group className='mb-3' controlId='newType'>
+                            <Form.Group className='mb-3' controlId='pType'>
                                 <Form.Label>Tipo</Form.Label>
                                 <Form.Select
                                     {...register('type', { required: true })}
@@ -58,7 +60,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-sm-6 col-md-6 col-lg-4'>
-                            <Form.Group className='mb-3' controlId='newDocId'>
+                            <Form.Group className='mb-3' controlId='pDocId'>
                                 <Form.Label>Documento de identidad o RUC</Form.Label>
                                 <Form.Control
                                     {...register('docid', { required: true })}
@@ -68,7 +70,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-sm-6 col-md-6 col-lg-4'>
-                            <Form.Group className='mb-3' controlId='newStatus'>
+                            <Form.Group className='mb-3' controlId='pStatus'>
                                 <Form.Label>Estado</Form.Label>
                                 <Form.Select
                                     {...register('status', { required: true })}
@@ -83,7 +85,7 @@ export const UserFarmInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12'>
-                            <Form.Group className='mb-3' controlId='newSocialReason'>
+                            <Form.Group className='mb-3' controlId='pSocialReason'>
                                 <Form.Label>Razón social</Form.Label>
                                 <Form.Control
                                     {...register('socialReason', { required: Number(watch('type')) > 1 })}
@@ -96,7 +98,7 @@ export const UserFarmInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-6 col-lg-3'>
-                            <Form.Group className='mb-3' controlId='newGender'>
+                            <Form.Group className='mb-3' controlId='pGender'>
                                 <Form.Label>Género</Form.Label>
                                 <Form.Select
                                     {...register('gender', { required: Number(watch('type')) === 1 })}
@@ -110,7 +112,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6 col-lg-3'>
-                            <Form.Group className='mb-3' controlId='newNames'>
+                            <Form.Group className='mb-3' controlId='pNames'>
                                 <Form.Label>Nombres</Form.Label>
                                 <Form.Control
                                     {...register('names', { required: Number(watch('type')) === 1 })}
@@ -121,7 +123,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6 col-lg-3'>
-                            <Form.Group className='mb-3' controlId='newLastName'>
+                            <Form.Group className='mb-3' controlId='pLastName'>
                                 <Form.Label>Apellidos Paternos</Form.Label>
                                 <Form.Control
                                     {...register('lastName', { required: Number(watch('type')) === 1 })}
@@ -132,7 +134,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6 col-lg-3'>
-                            <Form.Group className='mb-3' controlId='newMotherLastName'>
+                            <Form.Group className='mb-3' controlId='pMotherLastName'>
                                 <Form.Label>Apellidos Maternos</Form.Label>
                                 <Form.Control
                                     {...register('motherLastName', { required: Number(watch('type')) === 1 })}
@@ -143,9 +145,10 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                     </div>
+                    <Liner>Contacto</Liner>
                     <div className='row'>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='newEmail'>
+                            <Form.Group className='mb-3' controlId='pEmail'>
                                 <Form.Label>Correo electronico</Form.Label>
                                 <Form.Control
                                     {...register('email')}
@@ -155,7 +158,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='newCellphone'>
+                            <Form.Group className='mb-3' controlId='pCellphone'>
                                 <Form.Label>Celular</Form.Label>
                                 <Form.Control
                                     {...register('cellphone')}
@@ -165,7 +168,7 @@ export const UserFarmInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='newAddress'>
+                            <Form.Group className='mb-3' controlId='pAddress'>
                                 <Form.Label>Dirección</Form.Label>
                                 <Form.Control
                                     {...register('address')}
@@ -177,7 +180,7 @@ export const UserFarmInformation = () => {
                     </div>
                     <div className='d-flex justify-content-end gap-2'>
                         <Button
-                            disabled={isSaving}
+                            disabled={isUpdating}
                             variant='primary'
                             type='submit'
                         >

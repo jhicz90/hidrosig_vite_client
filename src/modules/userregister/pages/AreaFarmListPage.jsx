@@ -51,7 +51,7 @@ export const AreaFarmListPage = () => {
                                 <div className='btn-group'>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`/app/user_reg/area_farm/prps/${item._id}`}
+                                        to={`/app/user_reg/user_farm/prps/${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>

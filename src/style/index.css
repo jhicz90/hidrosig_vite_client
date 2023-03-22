@@ -31,25 +31,6 @@ table.table thead tr th {
 	background-color: white;
 }
 
-.liner {
-	display: flex;
-	align-items: flex-start;
-	text-align: left;
-}
-
-.liner::after {
-	content: "";
-	flex-grow: 1;
-	height: 1px;
-	background: #0b85d6;
-	min-width: 20px;
-	margin: auto;
-}
-
-.liner::after {
-	margin-left: 20px;
-}
-
 .flex-1 {
 	flex: 1;
 }
