@@ -93,6 +93,7 @@ export const AreaFarmPage = () => {
                                 <Card className='p-2'>
                                     <SliderNavFlip>
                                         <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
+                                        <NavLink to={`area`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Superficie</NavLink>
                                         <NavLink to={`win`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Toma de agua</NavLink>
                                         <NavLink to={`sw`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Drenaje</NavLink>
                                         <NavLink to={`vol`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Volumen</NavLink>

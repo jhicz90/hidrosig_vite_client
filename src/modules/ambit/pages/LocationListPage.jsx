@@ -44,6 +44,12 @@ export const LocationListPage = () => {
                             )
                         },
                         {
+                            label: 'REGION',
+                            renderCell: (item) => (
+                                item.region
+                            )
+                        },
+                        {
                             label: 'DEPARTAMENTO',
                             renderCell: (item) =>
                                 item.departamento
@@ -52,12 +58,6 @@ export const LocationListPage = () => {
                             label: 'PROVINCIA',
                             renderCell: (item) => (
                                 item.provincia
-                            )
-                        },
-                        {
-                            label: 'REGION',
-                            renderCell: (item) => (
-                                item.region
                             )
                         },
                         {

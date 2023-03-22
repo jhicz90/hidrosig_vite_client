@@ -15,7 +15,7 @@ const LinerWrapper = styled.h5`
     &::after {
         content: "";
         flex-grow: 1;
-        height: 1px;
+        height: 2px;
         background: #0b85d6;
         min-width: 20px;
         margin: auto;
