@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import { scaleZoom } from '../helpers'
 
-export const LocationMap = ({ data = [], view }) => {
+export const LocationMap = ({ data = [] }) => {
+
+    const { geometry, view } = data
+
     return (
         <MapContainer
             zoomControl={true}
@@ -16,7 +19,7 @@ export const LocationMap = ({ data = [], view }) => {
                 attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
                 url={`http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}`}
             />
-            <DrawGeo data={data} />
+            <DrawGeo data={geometry} />
         </MapContainer>
     )
 }
