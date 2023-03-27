@@ -3,7 +3,7 @@ import { Card, Dropdown, Tab } from 'react-bootstrap'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { questionDeletePettycash, useDeletePettyCashByIdMutation, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, SliderNavFlip } from '../../../components'
-import { ExportExcelPettyCash, ExportPdfPettyCash, PettyCashBanner, PettyCashInformation, PettyCashListVouchers } from '../components'
+import { ExportExcelPettyCash, ExportPdfPettyCash, PettyCashBanner, PettyCashImages, PettyCashInformation, PettyCashListVouchers } from '../components'
 import { useNavigateState } from '../../../hooks'
 
 export const PettyCashPage = () => {
@@ -80,8 +80,7 @@ export const PettyCashPage = () => {
                                 <div className='mt-2'>
                                     <Routes>
                                         <Route index element={<PettyCashInformation />} />
-                                        {/* <Route path={`prp`} element={<UserFarmListAreaFarm />} /> */}
-                                        {/* <Route path={`doc`} element={<UserFarmListDocument />} /> */}
+                                        <Route path={`img`} element={<PettyCashImages />} />
                                         <Route path={`vch`} element={<PettyCashListVouchers />} />
                                     </Routes>
                                 </div>

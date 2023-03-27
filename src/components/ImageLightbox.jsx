@@ -57,12 +57,12 @@ export const ImageLightbox = ({ galleryTitle, images, currentImageIndex, setCurr
         // singleClickToZoom
 
         /* react-spring config for open/close animation */
-        // pageTransitionConfig={{
-        //   from: { transform: "scale(0.75)", opacity: 0 },
-        //   enter: { transform: "scale(1)", opacity: 1 },
-        //   leave: { transform: "scale(0.75)", opacity: 0 },
-        //   config: { mass: 1, tension: 320, friction: 32 }
-        // }}
+        pageTransitionConfig={{
+          from: { transform: "scale(1)", opacity: 0 },
+          // enter: { transform: "scale(1)", opacity: 1 },
+          leave: { transform: "scale(1)", opacity: 0 },
+          // config: { mass: 1, tension: 320, friction: 32 }
+        }}
         />
     )
 }
@@ -73,7 +73,7 @@ const StyledLightbox = styled(Lightbox)`
 `
 
 const GalleryHeading = styled.h2`
-  margin: 0 0 5px 0;
+  margin: 0;
   font-weight: normal;
 `
 
@@ -128,15 +128,18 @@ const LeftSideDescriptionContainer = styled.div`
   border-left-width: 3px;
   border-left-color: darkcyan;
   border-left-style: solid;
-  padding: 8px 0 8px 10px;
+  padding-left: 6px;
 `
 
 const TopHeaderBar = styled.header`
   z-index: 10;
+  height: 60px;
   cursor: auto;
   display: flex;
   justify-content: space-between;
-  padding: 10px 2px 10px 20px;
+  align-items: center;
+  padding: 6px 2px 6px 12px;
   color: #e2e5ec;
-  background-color: #101010
+  background-color: #101010;
+  box-shadow: 0 0 #0000, 0 0 #0000,  0 10px 15px -3px hsla(0,0%,100%,.1),0 4px 6px -2px hsla(0,0%,100%,.05);;
 `
