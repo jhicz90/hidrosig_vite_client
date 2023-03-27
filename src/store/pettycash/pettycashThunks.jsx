@@ -50,127 +50,34 @@ export const pettycashApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Ptty']
         }),
+        updatePettyCashById: builder.mutation({
+            query: ({ id, pettycash }) => ({
+                url: `pettycash/edit/${id}`,
+                method: 'put',
+                data: pettycash
+            }),
+            invalidatesTags: ['Ptty']
+        }),
+        deletePettyCashById: builder.mutation({
+            query: (id) => ({
+                url: `pettycash/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['Ptty']
+        })
         // PETTYCASH
     })
 })
 
 export const {
     useAddPettyCashMutation,
+    useDeletePettyCashByIdMutation,
     useGetListPettyCashByUsrSysQuery,
     useGetListPettyCashQuery,
     useGetPettyCashByIdQuery,
     useNewPettyCashQuery,
+    useUpdatePettyCashByIdMutation,
 } = pettycashApi
-
-export const startAddNewPettycash = () => {
-    return async (dispatch) => {
-
-        dispatch(addNewPettycash())
-
-        const resp = await fetchByToken({
-            endpoint: `pettycash/create/new`
-        })
-
-        dispatch(setSavingNewPettycash(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewPettycash(resp.pettycash))
-        }
-    }
-}
-
-export const startSaveNewPettycash = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingNewPettycash(true))
-
-        const { activeNew } = getState().pettycash
-
-        const newPettycash = {
-            ...activeNew
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `pettycash/create/new`,
-            data: newPettycash,
-            method: 'POST'
-        })
-
-        dispatch(setSavingNewPettycash(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Ptty']))
-            dispatch(setActiveNewPettycash(null))
-        }
-    }
-}
-
-export const startGetPettycash = (id) => {
-    return async (dispatch) => {
-
-        dispatch(setSavingPettycash(true))
-
-        const resp = await fetchByToken({
-            endpoint: `pettycash/edit/${id}`
-        })
-
-        dispatch(setSavingPettycash(false))
-
-        if (resp.ok) {
-            dispatch(setActivePettycash(resp.pettycash))
-        }
-    }
-}
-
-export const startUpdatePettycash = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingPettycash(true))
-
-        const { active } = getState().pettycash
-        const { _id } = active
-
-        const updatePettycash = {
-            ...active
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `pettycash/edit/${_id}`,
-            data: updatePettycash,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingPettycash(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Ptty']))
-            dispatch(setActivePettycash(resp.pettycash))
-        }
-    }
-}
-
-export const startUpdateInformationPettycash = (updateData) => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingPettycash(true))
-
-        const { active } = getState().pettycash
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `pettycash/edit/${_id}`,
-            data: updateData,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingPettycash(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id: _id }]))
-            dispatch(setActivePettycash(resp.pettycash))
-        }
-    }
-}
 
 export const startUpdateImageIdPettyCash = (id, images) => {
     return async (dispatch) => {
@@ -200,6 +107,48 @@ export const startDeleteImagePettyCash = (id, imageId) => {
             dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id }]))
         }
     }
+}
+
+export const questionDeletePettycash = async (name) => {
+
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar caja chica</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta caja chica?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }).then(({ value }) => {
+        return value
+    })
 }
 
 export const startDeletePettycash = () => {
@@ -263,26 +212,18 @@ export const startDeletePettycash = () => {
     }
 }
 
-export const startExportExcelActivePettyCash = () => {
-    return async (dispatch, getState) => {
-
-        const { active } = getState().pettycash
-        const { _id } = active
-
+export const startExportExcelActivePettyCash = (id) => {
+    return async () => {
         await fetchByToken({
-            endpoint: `pettycash/export/excel/${_id}`
+            endpoint: `pettycash/export/excel/${id}`
         })
     }
 }
 
-export const startExportPdfActivePettyCash = () => {
-    return async (dispatch, getState) => {
-
-        const { active } = getState().pettycash
-        const { _id } = active
-
+export const startExportPdfActivePettyCash = (id) => {
+    return async () => {
         await fetchByToken({
-            endpoint: `pettycash/export/pdf/${_id}`
+            endpoint: `pettycash/export/pdf/${id}`
         })
     }
 }

@@ -95,7 +95,9 @@ const CreatePettyCashWindow = () => {
                                             <Form.Control
                                                 {...register('code', { required: true })}
                                                 type='text'
+                                                disabled
                                                 autoComplete='off'
+                                                readOnly
                                             />
                                         </Form.Group>
                                     </div>

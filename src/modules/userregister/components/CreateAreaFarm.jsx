@@ -198,6 +198,12 @@ export const CreateAreaFarm = () => {
                                                                 {...field}
                                                                 inputId='newJunta'
                                                                 classNamePrefix='rc-select'
+                                                                styles={{
+                                                                    control: (baseStyles, state) => ({
+                                                                        ...baseStyles,
+                                                                        minHeight: '90px',
+                                                                    }),
+                                                                }}
                                                                 isClearable
                                                                 defaultOptions
                                                                 loadOptions={searchJunta}

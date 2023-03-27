@@ -3,7 +3,7 @@ import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { Virtualized } from '@table-library/react-table-library/virtualized'
 
-export const DataTable = ({ columns = [], rows, renderEmpty: NoResultsComponent = NoResults, className = '', style = {}, virtual = false }) => {
+export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsComponent = NoResults, className = '', style = {}, virtual = false }) => {
 
     // * MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
     // * TAMBIEN SE IMPLEMENTARA UN SOMBREADO O BACKGROUND ESPECIAL PARA LOS NUEVOS REGISTROS QUE APAREZCAN EN LA LISTA
@@ -21,8 +21,9 @@ export const DataTable = ({ columns = [], rows, renderEmpty: NoResultsComponent 
             :
             {
                 Table: `
-                    height: auto;
+                    height: 400px;
                     background-color: #f5f8fa;
+                    grid-template-rows: 40px repeat(${rows.length}, minmax(50px, 60px));
                     --data-table-library_grid-template-columns: ${columns.map(c => {
                         if (!c.width) {
                             if (!c.minWidth) {

@@ -8,7 +8,7 @@ export const TimeAgo = ({ timestamp = new Date(), timeago = false }) => {
             <div className='flex-fill' style={{ fontSize: '0.75rem' }}>{moment(timestamp).format('DD MMMM, hh:mm A').toUpperCase()}</div>
             {
                 !timeago &&
-                <TagNewReg className time={timestamp} />
+                <TagNewReg time={timestamp} />
             }
             {
                 timeago &&

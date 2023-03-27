@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { useDebounce } from 'use-debounce'
 import { SYSCONST } from '../types'
 
-export const InputSearch = ({ className = '', value, onChange, debounce = 500, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
+export const InputSearch = ({ className = 'm-3', value, onChange, debounce = 500, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
 
     const [valueInput, setValueInput] = useState(value)
     const [valueDebounce] = useDebounce(valueInput, debounce <= 500 ? debounce : SYSCONST.searchDebounce)
@@ -17,7 +17,7 @@ export const InputSearch = ({ className = '', value, onChange, debounce = 500, a
     }, [valueDebounce])
 
     return (
-        <SearchBox className={`p-3 ${className}`}>
+        <SearchBox className={className}>
             <Form.Control
                 id={controlId}
                 value={valueInput}
@@ -46,6 +46,7 @@ export const InputSearch = ({ className = '', value, onChange, debounce = 500, a
 
 const SearchBox = styled.div`
     position: relative;
+    box-sizing: content-box;
 
     & .form-control {
         padding-left: 2.5rem;
@@ -59,7 +60,7 @@ const SearchBox = styled.div`
         position: absolute;
         color: #1f6bff;
         top: 50%;
-        left: 1.75rem;
+        left: 12px;
         transform: translateY(-48%);
         display: inline-block;
         height: 1.5em;

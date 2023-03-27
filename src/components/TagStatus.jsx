@@ -22,7 +22,7 @@ export const TagNewReg = ({ time = new Date() }) => {
             {
                 !moment(time).isBefore(new Date(), 'day')
                 &&
-                <Badge bg='success' className='mt-1' style={{ width: 'min-content'}}>Nuevo</Badge>
+                <Badge bg='success' style={{ width: 'min-content'}}>Nuevo</Badge>
             }
         </>
     )

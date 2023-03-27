@@ -81,6 +81,7 @@ export const CreateUserFarm = () => {
                                                 type='text'
                                                 disabled
                                                 autoComplete='off'
+                                                readOnly
                                             />
                                         </Form.Group>
                                     </div>
