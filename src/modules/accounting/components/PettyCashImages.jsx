@@ -35,7 +35,6 @@ export const PettyCashImages = () => {
                         Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
                     </Alert>
                     <GridGallery
-                        title={data.name}
                         actionElement={
                             <div className='col'>
                                 <Button

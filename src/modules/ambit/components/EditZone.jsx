@@ -266,7 +266,7 @@ const EditZoneWindow = ({ id }) => {
                                             {
                                                 !!watch('geometry')
                                                 &&
-                                                <LocationMap data={watch('geometry')?.geometry.features || []} view={watch('geometry')?.view || {}} />
+                                                <LocationMap geometry={watch('geometry')?.geometry || {}} view={watch('geometry')?.view || {}} />
                                             }
                                         </Tab.Pane>
                                     </Tab.Content>

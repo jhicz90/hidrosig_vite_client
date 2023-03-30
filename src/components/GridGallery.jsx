@@ -1,77 +1,54 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { IoMdTrash } from 'react-icons/io'
 import { imageGet, imageSysGet } from '../helpers'
 import { ImageLightbox } from './ImageLightbox'
 
-export const GridGallery = ({ title = '', actionElement = null, elements = [] }) => {
+export const GridGallery = ({ actionElement = null, elements = [] }) => {
 
-    const [openLightbox, setOpenLightbox] = useState(false)
-    const [imagesLightbox, setImagesLightbox] = useState([])
-    const [indexImageLightbox, setIndexImageLightbox] = useState(0)
+    const navigate = useNavigate()
 
     const handleLightbox = (images, index) => {
-        setImagesLightbox(images)
-        setIndexImageLightbox(index)
-        setOpenLightbox(true)
+        navigate(`?w=viewer`, { state: { files: images, index } })
     }
 
     return (
-        <>
-            <GridGalleryStyled className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2' >
-                {actionElement}
-                {
-                    elements.map((e, index) => {
-                        const imageData = elements.map(({ cloud, metadata }) => ({
-                            src: imageGet(metadata.url, { cloud }),
-                            loading: 'lazy',
-                            alt: metadata.id
-                        }))
-
-                        return (
+        <GridGalleryStyled className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2' >
+            {actionElement}
+            {
+                elements.map((e, index) => {
+                    return (
+                        <div
+                            key={e.metadata.id}
+                            className='col'
+                            style={{ minHeight: '200px' }}
+                        >
                             <div
-                                key={e.metadata.id}
-                                className='col'
-                                style={{ minHeight: '200px' }}
+                                className='border rounded-2 gg-item'
                             >
-                                <div
-                                    className='border rounded-2 gg-item'
-                                >
-                                    <button className='btn btn-light text-danger'>
-                                        <IoMdTrash size={20} />
-                                    </button>
-                                    <a onClick={() => handleLightbox(imageData, index)}>
-                                        {/* <Link to={e.link}> */}
-                                        <img
-                                            src={
-                                                (e.metadata.url !== '' && e.metadata.url !== null && e.metadata.url !== undefined)
-                                                    ? imageGet(e.metadata.url, { cloud: e.cloud, size: 200, thumb: true })
-                                                    : imageSysGet(2010)
-                                            }
-                                            width={200}
-                                            height={200}
-                                        />
-                                        {/* </Link> */}
-                                    </a>
-                                </div>
+                                <button className='btn btn-light text-danger'>
+                                    <IoMdTrash size={20} />
+                                </button>
+                                <a onClick={() => handleLightbox(elements, index)}>
+                                    {/* <Link to={e.link}> */}
+                                    <img
+                                        src={
+                                            (e.metadata.url !== '' && e.metadata.url !== null && e.metadata.url !== undefined)
+                                                ? imageGet(e.metadata.url, { cloud: e.cloud, size: 200, thumb: true })
+                                                : imageSysGet(2010)
+                                        }
+                                        width={200}
+                                        height={200}
+                                    />
+                                    {/* </Link> */}
+                                </a>
                             </div>
-                        )
-                    })
-                }
-            </GridGalleryStyled>
-            <ImageLightbox
-                galleryTitle={title}
-                currentImageIndex={indexImageLightbox}
-                setCurrentIndex={setIndexImageLightbox}
-                isOpen={openLightbox}
-                onClose={() => {
-                    setOpenLightbox(false)
-                    setImagesLightbox([])
-                }}
-                images={imagesLightbox}
-            />
-        </>
+                        </div>
+                    )
+                })
+            }
+        </GridGalleryStyled>
     )
 }
 

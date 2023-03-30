@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
-import { scaleZoom } from '../helpers'
 
-export const LocationMap = ({ data = [] }) => {
-
-    const { geometry, view } = data
+export const LocationMap = ({ geometry = {}, view }) => {
 
     return (
         <MapContainer
@@ -32,7 +29,7 @@ const CenterMap = ({ view }) => {
         setViewMap(view)
     }, [view])
 
-    map.setView([viewMap.center[1], viewMap.center[0]], scaleZoom(viewMap.area))
+    map.setView([viewMap?.center[1], viewMap?.center[0]], viewMap?.zoom)
 
     return null
 }

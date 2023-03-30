@@ -32,6 +32,7 @@ import {
     EditVoucher,
     EditWaterSource,
     EditZone,
+    FileViewer,
     ModuleAccountingRoutes,
     ModuleAmbitRoutes,
     ModuleFilesRoutes,
@@ -180,6 +181,7 @@ export const AppRoot = () => {
                         <EditVoucher />
                         <EditWaterSource />
                         <EditZone />
+                        <FileViewer />
                     </>
                 }
             >

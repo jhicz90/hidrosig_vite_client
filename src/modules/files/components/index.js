@@ -1,4 +1,5 @@
 export * from './CreateDocument'
 export * from './DocumentBrowser'
 export * from './EditDocument'
+export * from './FileViewer'
 export * from './ResourceBrowser'

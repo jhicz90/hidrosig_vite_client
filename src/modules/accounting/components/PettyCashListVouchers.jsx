@@ -1,22 +1,18 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import { pettycashApi, startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery } from '../../../store/actions'
-import { DataTable, Image, ImageLightbox, InputSearch, LinkBack, TimeAgo } from '../../../components'
-import { imageGet } from '../../../helpers'
+import { DataTable, Image, InputSearch, LinkBack, TimeAgo } from '../../../components'
 
 export const PettyCashListVouchers = () => {
 
     const { pettycashid } = useParams()
+    const navigate = useNavigate()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
     const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: data?._id, search: '' }, { refetchOnMountOrArgChange: true, skip: !data })
-
-    const [openLightbox, setOpenLightbox] = useState(false)
-    const [imagesLightbox, setImagesLightbox] = useState([])
-    const [indexImageLightbox, setIndexImageLightbox] = useState(0)
 
     let amountTotal = 0
     let outTotal = 0
@@ -29,9 +25,7 @@ export const PettyCashListVouchers = () => {
     })
 
     const handleLightbox = (images, index) => {
-        setImagesLightbox(images)
-        setIndexImageLightbox(index)
-        setOpenLightbox(true)
+        navigate(`?w=viewer`, { state: { files: images, index } })
     }
 
     const handleImageVoucher = (id, voucher) => {
@@ -109,18 +103,12 @@ export const PettyCashListVouchers = () => {
                                 label: 'IMAGENES',
                                 width: '200px',
                                 renderCell: (item) => {
-                                    const imageData = item.images.map(({ cloud, metadata }) => ({
-                                        src: imageGet(metadata.url, { cloud, size: 1000 }),
-                                        loading: 'lazy',
-                                        alt: metadata.id
-                                    }))
-
                                     return (
                                         <div className='d-flex p-2 gap-2'>
                                             {
                                                 item.images.map(({ cloud, metadata }, index) =>
                                                     <Image
-                                                        onClick={() => handleLightbox(imageData, index)}
+                                                        onClick={() => handleLightbox(item.images, index)}
                                                         key={metadata.id}
                                                         className='rounded shadow-sm border border-light'
                                                         width={30}
@@ -190,17 +178,6 @@ export const PettyCashListVouchers = () => {
                     Ir a COMPROBANTES
                 </Card.Footer>
             </Card>
-            <ImageLightbox
-                galleryTitle={'Comprobantes'}
-                currentImageIndex={indexImageLightbox}
-                setCurrentIndex={setIndexImageLightbox}
-                isOpen={openLightbox}
-                onClose={() => {
-                    setOpenLightbox(false)
-                    setImagesLightbox([])
-                }}
-                images={imagesLightbox}
-            />
         </>
     )
 }

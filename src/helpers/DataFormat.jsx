@@ -137,36 +137,36 @@ export const typeGeoData = (type = '') => {
     return geoData
 }
 
-export const scaleZoom = (v) => {
-    const zoom = (v * 5 / 6372.7982)
-
-    if (zoom <= 0.109375) {
-        return 13
-    } else if (zoom <= 0.21875) {
-        return 12
-    } else if (zoom <= 0.4375) {
+export const scaleZoom = (area) => {
+    if (area >= 24000000) {
         return 11
-    } else if (zoom <= 0.875) {
-        return 10
-    } else if (zoom <= 1.75) {
-        return 9
-    } else if (zoom <= 3.5) {
-        return 8
-    } else if (zoom <= 7) {
-        return 7
-    } else if (zoom <= 14) {
-        return 6
-    } else if (zoom <= 28) {
-        return 5
-    } else if (zoom <= 56) {
-        return 4
-    } else if (zoom <= 112) {
-        return 3
-    } else if (zoom <= 224) {
-        return 2
-    } else if (zoom <= 448) {
-        return 1
-    } else if (zoom <= 896) {
-        return 0
+    } else if (area >= 12000000) {
+        return 11.5
+    } else if (area >= 6000000) {
+        return 12
+    } else if (area >= 3000000) {
+        return 12.5
+    } else if (area >= 1500000) {
+        return 13
+    } else if (area >= 750000) {
+        return 13.5
+    } else if (area >= 375000) {
+        return 14
+    } else if (area >= 188000) {
+        return 14.5
+    } else if (area >= 94000) {
+        return 15
+    } else if (area >= 47000) {
+        return 15.5
+    } else if (area >= 23500) {
+        return 16
+    } else if (area >= 11750) {
+        return 16.5
+    } else if (area >= 5900) {
+        return 17
+    } else if (area >= 3000) {
+        return 17.5
+    } else {
+        return 18
     }
 }

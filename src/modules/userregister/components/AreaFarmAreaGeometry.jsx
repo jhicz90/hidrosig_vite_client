@@ -68,7 +68,7 @@ export const AreaFarmAreaGeometry = () => {
                     {
                         !!watch('feature')
                         &&
-                        <LocationMap data={watch('feature') || []} />
+                        <LocationMap geometry={watch('feature')?.geometry || {}} view={watch('feature')?.view || {}} />
                     }
                 </form>
             </Card.Body>

@@ -330,7 +330,7 @@ export const EditBlockWindow = ({ id }) => {
                                             {
                                                 !!watch('geometry')
                                                 &&
-                                                <LocationMap data={watch('geometry') || []} />
+                                                <LocationMap geometry={watch('geometry')?.geometry || {}} view={watch('geometry')?.view || {}} />
                                             }
                                         </Tab.Pane>
                                     </Tab.Content>
