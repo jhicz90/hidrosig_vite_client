@@ -65,7 +65,6 @@ export const searchPolygonObject = async (search) => {
     })
 
     if (resp.ok) {
-        console.log(resp.docs)
         return resp.docs
     } else {
         return []
@@ -79,7 +78,6 @@ export const searchGeoObject = async (search, geoobj = 1) => {
     })
 
     if (resp.ok) {
-        console.log(resp.docs)
         return resp.docs
     } else {
         return []

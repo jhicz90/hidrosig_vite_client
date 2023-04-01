@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { Avatar, InputSearch, LinkBack, DataTable, TagStatus, TimeAgo } from '../../../components'
+import { Avatar, InputSearch, LinkBack, DataTable, TagStatus, TagTimeAgo } from '../../../components'
 import { typeUserFarm } from '../../../helpers'
 import { useGetListUserFarmQuery } from '../../../store/actions'
 
@@ -52,12 +52,12 @@ export const UserFarmListPage = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

@@ -28,28 +28,22 @@ export const PettyCashImages = () => {
     }
 
     return (
-        <>
-            <Card>
-                <Card.Body>
-                    <Alert variant='info'>
-                        Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
-                    </Alert>
-                    <GridGallery
-                        actionElement={
-                            <div className='col'>
-                                <Button
-                                    onClick={() => handleAddImage(data)}
-                                    variant='neutral'
-                                    className='w-100'
-                                    style={{ height: '200px' }}
-                                >
-                                    <MdAddPhotoAlternate size={40} />
-                                </Button>
-                            </div>
-                        }
-                        elements={data.images.map(i => ({ ...i, link: '/' }))} />
-                </Card.Body>
-            </Card>
-        </>
+        <Card>
+            <Card.Body>
+                <Alert variant='info'>
+                    Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
+                </Alert>
+                <GridGallery
+                    actionElement={
+                        <Button
+                            onClick={() => handleAddImage(data)}
+                            variant='neutral'
+                        >
+                            <MdAddPhotoAlternate size={40} />
+                        </Button>
+                    }
+                    elements={data.images.map(i => ({ ...i, link: '/' }))} />
+            </Card.Body>
+        </Card>
     )
 }

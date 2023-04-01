@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { filesize } from 'filesize'
 import { useKeenSlider } from 'keen-slider/react'
 import { IoMdTrash } from 'react-icons/io'
-import { TimeAgo } from '.'
+import { TagTimeAgo } from '.'
 import { previewImageResource } from '../helpers'
 
 import 'keen-slider/keen-slider.min.css'
@@ -51,7 +51,7 @@ export const FileUploadSlider = ({ files = [], actionDelete = null }) => {
                                             {file.fileName}
                                         </small>
                                         <small className='d-block'>Tamaño: {filesize(file.bytes !== undefined ? file.bytes : 0)}</small>
-                                        <small className="d-block">Subido el: <TimeAgo timestamp={file.createdAt} /></small>
+                                        <small className="d-block">Subido el: <TagTimeAgo timestamp={file.createdAt} /></small>
                                     </div>
                                     <Button
                                         onClick={() => actionDelete(file._id)}

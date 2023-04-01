@@ -2,7 +2,7 @@ import { NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { AreaFarmAdditionalData, AreaFarmAreaGeometry, AreaFarmBanner, AreaFarmInformation, AreaFarmListHolder } from '../components'
+import { AreaFarmAdditionalData, AreaFarmAreaGeometry, AreaFarmBanner, AreaFarmImages, AreaFarmInformation, AreaFarmListHolder } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { questionActiveFarm, questionDeleteFarm, useDeleteFarmByIdMutation, useGetFarmByIdQuery, useUpdateFarmByIdMutation } from '../../../store/actions'
@@ -98,6 +98,7 @@ export const AreaFarmPage = () => {
                                         <NavLink to={`sw`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Drenaje</NavLink>
                                         <NavLink to={`vol`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Volumen</NavLink>
                                         <NavLink to={`hld`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Titulares</NavLink>
+                                        <NavLink to={`img`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Imagenes</NavLink>
                                         <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
                                     </SliderNavFlip>
                                 </Card>
@@ -107,6 +108,7 @@ export const AreaFarmPage = () => {
                                         <Route path={`area`} element={<AreaFarmAreaGeometry />} />
                                         {/* <Route path={`doc`} element={<UserFarmListDocument />} /> */}
                                         <Route path={`hld`} element={<AreaFarmListHolder />} />
+                                        <Route path={`img`} element={<AreaFarmImages />} />
                                         <Route path={`add`} element={<AreaFarmAdditionalData />} />
                                     </Routes>
                                 </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
-import { TagStatus, Avatar, InputSearch, TimeAgo, DataTable } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TagTimeAgo, DataTable } from '../../../components'
 import { useGetListJuntaQuery } from '../../../store/actions'
 
 export const JuntaListPage = () => {
@@ -45,12 +45,12 @@ export const JuntaListPage = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

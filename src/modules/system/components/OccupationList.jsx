@@ -4,7 +4,7 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
 import { useGetOccupsQuery } from '../../../store/actions'
-import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TableGrid, TagTimeAgo } from '../../../components'
 
 export const OccupationList = () => {
 
@@ -51,12 +51,12 @@ export const OccupationList = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

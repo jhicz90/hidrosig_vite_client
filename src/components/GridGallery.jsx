@@ -1,9 +1,7 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { IoMdTrash } from 'react-icons/io'
 import { imageGet, imageSysGet } from '../helpers'
-import { ImageLightbox } from './ImageLightbox'
 
 export const GridGallery = ({ actionElement = null, elements = [] }) => {
 
@@ -14,36 +12,26 @@ export const GridGallery = ({ actionElement = null, elements = [] }) => {
     }
 
     return (
-        <GridGalleryStyled className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2' >
+        <GridGalleryStyled className='rounded-2'>
             {actionElement}
             {
                 elements.map((e, index) => {
                     return (
                         <div
                             key={e.metadata.id}
-                            className='col'
-                            style={{ minHeight: '200px' }}
                         >
-                            <div
-                                className='border rounded-2 gg-item'
-                            >
-                                <button className='btn btn-light text-danger'>
-                                    <IoMdTrash size={20} />
-                                </button>
-                                <a onClick={() => handleLightbox(elements, index)}>
-                                    {/* <Link to={e.link}> */}
-                                    <img
-                                        src={
-                                            (e.metadata.url !== '' && e.metadata.url !== null && e.metadata.url !== undefined)
-                                                ? imageGet(e.metadata.url, { cloud: e.cloud, size: 200, thumb: true })
-                                                : imageSysGet(2010)
-                                        }
-                                        width={200}
-                                        height={200}
-                                    />
-                                    {/* </Link> */}
-                                </a>
-                            </div>
+                            <button className='btn btn-light text-danger'>
+                                <IoMdTrash size={20} />
+                            </button>
+                            <img
+                                onClick={() => handleLightbox(elements, index)}
+                                className='img-fluid'
+                                src={
+                                    (e.metadata.url !== '' && e.metadata.url !== null && e.metadata.url !== undefined)
+                                        ? imageGet(e.metadata.url, { cloud: e.cloud, size: 400, thumb: true })
+                                        : imageSysGet(2010)
+                                }
+                            />
                         </div>
                     )
                 })
@@ -53,12 +41,34 @@ export const GridGallery = ({ actionElement = null, elements = [] }) => {
 }
 
 const GridGalleryStyled = styled.div`
-    /* grid-template-columns: repeat(4, minmax(200px, 1fr));
-    grid-auto-rows: 200px;
-    grid-gap: 10px; */
 
-    & .gg-item {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    grid-auto-rows: 1fr;
+    background-color: #f5f8fa;
+    padding: 10px;
+    gap: 10px;
+
+    &::before {
+        content: '';
+        width: 0;
+        padding-bottom: 100%;
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+    }
+
+    & > *:first-child {
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+    }
+
+    /* Just to make the grid visible */
+
+    & > * {
         position: relative;
+        background: rgba(0,0,0,0.1);
+        border: 1px rgba(0, 0, 0, 0.1) solid;
+        border-radius: 6px;
         overflow: hidden;
 
         & button {
@@ -66,47 +76,6 @@ const GridGalleryStyled = styled.div`
             top: 10px;
             right: 10px;
             z-index: 2;
-        }
-
-        &:hover{ 
-            & a::before {
-                opacity: 0.3;
-                transition: opacity 0.5s;
-            }
-
-            & img {
-                transform: translate3d(0, 0, 0);
-                transition: opacity 0.35s, transform 0.35s;
-            }
-        }
-
-        & a {
-            display: block;
-            width: 100%;
-            height: auto;
-            position: relative;
-            overflow: hidden;
-
-            &::before {
-                content: '';
-                display: block;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                top: 0;
-                left: 0;
-                background: #000;
-                z-index: 1;
-                opacity: 0;
-                transition: opacity 0.4s;
-            }
-
-            & img {
-                width: calc(100% + 50px);
-                max-width: calc(100% + 50px);
-                transition: opacity 0.35s, transform 0.35s;
-                transform: translate3d(-40px, 0, 0);
-            }
         }
     }
 `

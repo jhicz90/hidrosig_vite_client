@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
 import { useGetListCommQuery } from '../../../store/actions'
-import { TagStatus, Avatar, InputSearch, TimeAgo, DataTable } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TagTimeAgo, DataTable } from '../../../components'
 
 export const CommitteeListPage = () => {
 
@@ -51,12 +51,12 @@ export const CommitteeListPage = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

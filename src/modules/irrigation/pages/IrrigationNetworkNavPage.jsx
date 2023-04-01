@@ -1,18 +1,19 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Nav, Tab } from 'react-bootstrap'
 import { LinkBack } from '../../../components'
 
-export const UserFarmNavPage = () => {
+export const IrrigationNetworkNavPage = () => {
 
     // const dispatch = useDispatch()
+    // const { hash } = useLocation()
 
     // useEffect(() => {
     //     dispatch(clearToolbarActions())
-    //     dispatch(setToolbarTitle('USUARIOS Y PREDIOS'))
+    //     dispatch(setToolbarTitle('RED DE RIEGO'))
     //     dispatch(setToolbarActions(
     //         <>
-    //             <LinkBack className='btn btn-neutral text-primary' to={`?w=userfarm_create`}>Nuevo usuario</LinkBack>
-    //             <LinkBack className='btn btn-neutral text-primary' to={`?w=areafarm_create`}>Nuevo predio</LinkBack>
+    //             <LinkBack className='btn btn-neutral text-primary' to={`?w=structure_create`} >Nueva estructura</LinkBack>
+    //             <LinkBack className='btn btn-neutral text-primary' to={`?w=watersource_create`} >Nueva fuente de agua</LinkBack>
     //         </>
     //     ))
 
@@ -27,10 +28,13 @@ export const UserFarmNavPage = () => {
                 <Tab.Container>
                     <Nav variant='tabs' className='px-3'>
                         <Nav.Item>
-                            <NavLink to={`users`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios</NavLink>
+                            <NavLink to={`net`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Red de riego</NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <NavLink to={`prps`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Predios</NavLink>
+                            <NavLink to={`ws`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Fuentes de agua</NavLink>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <NavLink to={`var`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Variables</NavLink>
                         </Nav.Item>
                         <Nav.Item>
                             <NavLink to={`import`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Importación</NavLink>

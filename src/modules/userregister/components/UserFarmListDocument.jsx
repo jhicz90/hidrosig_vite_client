@@ -3,7 +3,7 @@ import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { DataTable, InputSearch, LinkBack, TimeAgo } from '../../../components'
+import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
 import { useGetListDocumentByUserFarmQuery, userfarmApi } from '../../../store/actions'
 import { docTypes } from '../../../types'
 
@@ -41,12 +41,12 @@ export const UserFarmListDocument = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

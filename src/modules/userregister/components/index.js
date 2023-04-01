@@ -1,6 +1,7 @@
 export * from './AreaFarmAdditionalData'
 export * from './AreaFarmAreaGeometry'
 export * from './AreaFarmBanner'
+export * from './AreaFarmImages'
 export * from './AreaFarmInformation'
 export * from './AreaFarmListHolder'
 export * from './CreateAreaFarm'

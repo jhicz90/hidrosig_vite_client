@@ -1,38 +1,51 @@
 import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Form } from 'react-bootstrap'
 import CheckboxTree from 'react-checkbox-tree'
-import { FaChevronDown, FaChevronRight, FaRedoAlt, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
+import { FaChevronDown, FaChevronRight, FaRedoAlt, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare, FaTimes } from 'react-icons/fa'
 import { InputSearch } from './InputSearch'
-import { searchIrrigationNetworkByJunta, setActiveNodeIrrigationNetwork, setNetIrrigExpIrrigationNetwork } from '../store/actions'
-import { childrenNode, treeNetIrrig } from '../helpers'
+import { LoadingPage } from './LoadingPage'
+import { clearActiveNodeIrrigationNetwork, setActiveAmbitIrrigationNetwork, setActiveNodeIrrigationNetwork, setNetIrrigChkIrrigationNetwork, setNetIrrigExpIrrigationNetwork, useGetListJuntaQuery, useLazyGetIrrigationNetByJuntaQuery, setNetIrrigData } from '../store/actions'
+import { childrenNode } from '../helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
-export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true, children }) => {
+export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) => {
+
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const dispatch = useDispatch()
-    const { activeAmbit, netIrrig, netIrrigExp, netIrrigChk } = useSelector(state => state.irrigationnetwork)
+    const { lvlAccess } = useSelector(state => state.auth)
+    const {
+        activeNode: { id, name, depth, data, loading },
+        activeAmbit,
+        netIrrig,
+        netIrrigExp,
+        netIrrigChk,
+        netIrrigBase
+    } = useSelector(state => state.irrigationnetwork)
+
+    const { data: optionsJunta = [], isLoading: isLoadingListJunta } = useGetListJuntaQuery('')
+    const [loadIrrigNet, { isLoading: isLoagindTree }] = useLazyGetIrrigationNetByJuntaQuery()
+
     const [search, setSearch] = useState('')
+
     const [ctrlKey, setCtrlKey] = useState(false)
-    const [net, setNet] = useState([])
-    const [netFiltered, setNetFiltered] = useState([])
-    const [checked, setChecked] = useState(netIrrigChk)
     const [netExpanded, setNetExpanded] = useState(netIrrigExp)
 
     useEffect(() => {
-        dispatch(searchIrrigationNetworkByJunta(activeAmbit))
-    }, [dispatch, activeAmbit])
+        if (lvlAccess === 1 && activeAmbit !== '') {
+            loadIrrigNet({ junta: activeAmbit, showCheckbox })
+        } else if (lvlAccess > 1) {
+            loadIrrigNet({ showCheckbox })
+        }
+    }, [lvlAccess, activeAmbit])
 
     useEffect(() => {
-        const tree = treeNetIrrig(netIrrig, showCheckbox)
-        setNet(tree)
-        setNetFiltered(tree)
-    }, [netIrrig, showCheckbox])
-
-    useEffect(() => {
-        setNetExpanded(netIrrigExp)
-    }, [netIrrigExp])
+        dispatch(setNetIrrigExpIrrigationNetwork(netExpanded))
+    }, [netExpanded])
 
     useEffect(() => {
         const filterNodes = (filtered, node) => {
@@ -46,9 +59,11 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true, ch
             ) {
                 if (children.length > 0) {
                     setNetExpanded(e => [...e, node.value])
+                    // dispatch(setNetIrrigExpIrrigationNetwork([...netIrrigExp, node.value]))
                     filtered.push({ ...node, children })
                 } else {
                     setNetExpanded(e => [...e, node.value])
+                    // dispatch(setNetIrrigExpIrrigationNetwork([...netIrrigExp, node.value]))
                     const { children, ...rest } = node
                     filtered.push(rest)
                 }
@@ -57,42 +72,49 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true, ch
             return filtered
         }
 
-        if (search === '') {
-            // Se desabilito para poder volver a ver los nodos expandidos
-            // setExpanded([])
-            setChecked([])
-            setNetFiltered(net)
-        } else {
-            // Se desabilito para poder volver a ver los nodos expandidos
+        if (search.trim().length > 0) {
             setNetExpanded([])
-            setChecked([])
-            setNetFiltered(net.reduce(filterNodes, []))
+            dispatch(setNetIrrigExpIrrigationNetwork([]))
+            // dispatch(setNetIrrigChkIrrigationNetwork([]))
+            dispatch(setNetIrrigData(netIrrigBase.reduce(filterNodes, [])))
+        } else {
+            dispatch(setNetIrrigExpIrrigationNetwork([]))
+            // dispatch(setNetIrrigChkIrrigationNetwork([]))
+            dispatch(setNetIrrigData(netIrrigBase))
         }
-    }, [search, net])
+    }, [search])
 
     const handleSelectNode = (e) => {
-        if (selectNode) {
+
+        if (showCheckbox) {
             if (e.treeDepth > 0) {
                 if (e.checked === true) {
                     if (ctrlKey) {
-                        setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
+                        // setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
+                        dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigBase.filter(c => !childrenNode(e).includes(c))]))
                     } else {
-                        setChecked(checked.filter(c => c !== e.value))
+                        // setChecked(checked.filter(c => c !== e.value))
+                        dispatch(setNetIrrigChkIrrigationNetwork(netIrrigBase.filter(c => c !== e.value)))
                     }
                 } else if (e.checked === false) {
                     if (ctrlKey) {
-                        setChecked([...checked, ...childrenNode(e)])
+                        // setChecked([...checked, ...childrenNode(e)])
+                        dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, ...childrenNode(e)]))
                     } else {
-                        setChecked([...checked, e.value])
+                        // setChecked([...checked, e.value])
+                        dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, e.value]))
                     }
                 }
             }
+        }
+
+        if (selectNode) {
             dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth, data: null, loading: false }))
         }
     }
 
     const onCheck = (checked) => {
-        setChecked(checked)
+        dispatch(setNetIrrigChkIrrigationNetwork(checked))
     }
 
     const onExpand = (expand) => {
@@ -108,7 +130,11 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true, ch
     }
 
     const handleReload = () => {
-        dispatch(searchIrrigationNetworkByJunta(activeAmbit))
+        if (lvlAccess === 1 && activeAmbit !== '') {
+            loadIrrigNet({ junta: activeAmbit, showCheckbox })
+        } else if (lvlAccess > 1) {
+            loadIrrigNet({ showCheckbox })
+        }
     }
 
     useEffect(() => {
@@ -122,44 +148,95 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true, ch
 
     return (
         <>
-            <Form.Group as={Row} className='my-3 px-3' controlId='uChannel'>
-                <Col xs='auto'>
-                    <InputSearch value={search} onChange={(e) => setSearch(e)} />
-                </Col>
-                <Col xs='auto'>
+            <div className='row'>
+                {
+                    lvlAccess === 1
+                    &&
+                    <div className='col'>
+                        <Form.Select
+                            disabled={optionsJunta.length === 0 || isLoadingListJunta}
+                            value={activeAmbit}
+                            onChange={({ target }) => dispatch(setActiveAmbitIrrigationNetwork(target.value))}
+                            autoComplete='off'
+                        >
+                            <option value={''}>Seleccione la junta de usuarios</option>
+                            {
+                                optionsJunta.map(j => <option key={j._id} value={j._id}>{j.name}</option>)
+                            }
+                        </Form.Select>
+                    </div>
+                }
+                <div className='col'>
+                    <InputSearch className='m-0' value={search} onChange={(e) => setSearch(e)} />
+                </div>
+                <div className='col-auto'>
                     <Button
                         onClick={handleReload}
                         variant='neutral'
                     >
                         <FaRedoAlt size={20} />
                     </Button>
-                </Col>
-                <Col>
-                    {children}
-                </Col>
-            </Form.Group>
-            <div className='row my-3 px-3'>
-                <div className='col-12 p-3'>
-                    <CheckboxTree
-                        onClick={handleSelectNode}
-                        nodes={netFiltered}
-                        checked={checked}
-                        expanded={netExpanded}
-                        onCheck={onCheck}
-                        onExpand={onExpand}
-                        // iconsClass='fa5'
-                        noCascade
-                        lang={{ toggle: 'Abrir / cerrar' }}
-                        icons={{
-                            check: <FaRegCheckSquare />,
-                            uncheck: <FaRegSquare />,
-                            halfCheck: <FaRegMinusSquare />,
-                            expandClose: <FaChevronRight />,
-                            expandOpen: <FaChevronDown />,
-                        }}
-                    />
                 </div>
+                {
+                    !!id
+                    &&
+                    <div className='col-auto'>
+                        <ButtonGroup>
+                            <Button
+                                disabled={loading}
+                                variant='neutral'
+                                className='text-primary text-decoration-none'
+                                onClick={() => {
+                                    if (depth === 0) {
+                                        navigate(`?w=watersource_edit&id=${id}`, { state: { from: location } })
+                                    } else {
+                                        navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
+                                    }
+                                }}
+                            >
+                                {name}
+                            </Button>
+                            <Button
+                                variant='neutral'
+                                className='d-flex align-items-center'
+                                onClick={() => {
+                                    dispatch(clearActiveNodeIrrigationNetwork())
+                                }}
+                            >
+                                <FaTimes size={20} />
+                            </Button>
+                        </ButtonGroup>
+                    </div>
+                }
             </div>
+            {
+                isLoagindTree
+                    ?
+                    <LoadingPage />
+                    :
+                    <div className='row my-3 px-3'>
+                        <div className='col-12 p-3'>
+                            <CheckboxTree
+                                onClick={handleSelectNode}
+                                nodes={netIrrig}
+                                checked={netIrrigChk}
+                                expanded={netIrrigExp}
+                                onCheck={onCheck}
+                                onExpand={onExpand}
+                                // iconsClass='fa5'
+                                noCascade
+                                lang={{ toggle: 'Abrir / cerrar' }}
+                                icons={{
+                                    check: <FaRegCheckSquare />,
+                                    uncheck: <FaRegSquare />,
+                                    halfCheck: <FaRegMinusSquare />,
+                                    expandClose: <FaChevronRight />,
+                                    expandOpen: <FaChevronDown />,
+                                }}
+                            />
+                        </div>
+                    </div>
+            }
         </>
     )
 }

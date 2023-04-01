@@ -1,18 +1,18 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { IrrigationNetworkListPage } from '../pages'
-import { ImportNetwork, IrrigationNetworkChannel, VariableList, WaterSourceList } from '..'
+import { IrrigationNetworkNavPage } from '../pages'
+import { ImportNetwork, ChannelSchemePage, VariableList, WaterSourceList } from '..'
 
 export const IrrigationNetworkRoutes = () => {
     return (
         <Routes>
-            <Route element={<IrrigationNetworkListPage />}>
+            <Route element={<IrrigationNetworkNavPage />}>
                 <Route index element={<Navigate to={`net`} replace />} />
                 <Route
                     path={`net`}
                     element={
                         <GuardRoute meta={['irrigation_network']}>
-                            <IrrigationNetworkChannel />
+                            <ChannelSchemePage />
                         </GuardRoute>
                     }
                 />

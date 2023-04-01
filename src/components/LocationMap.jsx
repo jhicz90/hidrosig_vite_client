@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 
-export const LocationMap = ({ geometry = {}, view }) => {
+export const LocationMap = ({ className = 'my-2', geometry = {}, view }) => {
 
     return (
         <MapContainer
+            className={className}
             zoomControl={true}
             center={[-4.79, -80.56]}
             zoom={13}

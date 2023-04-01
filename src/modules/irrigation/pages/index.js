@@ -1,2 +1,3 @@
-export * from './IrrigationNetworkListPage'
+export * from './ChannelSchemePage'
+export * from './IrrigationNetworkNavPage'
 export * from './IrrigationSchemeResumePage'

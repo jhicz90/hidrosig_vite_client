@@ -36,7 +36,7 @@ export const structureApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            providesTags: ['Orgz', 'Trrt']
+            providesTags: ['Irrig']
         }),
         getStructureById: builder.query({
             query: (id) => ({

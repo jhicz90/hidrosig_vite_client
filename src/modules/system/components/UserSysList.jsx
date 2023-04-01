@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Col, Form, Row } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { BsSearch } from 'react-icons/bs'
-import { TagStatus, Avatar, InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TableGrid, TagTimeAgo } from '../../../components'
 import { useGetUsrsSysQuery } from '../../../store/actions'
 
 export const UserSysList = () => {
@@ -53,12 +53,12 @@ export const UserSysList = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Card, Form } from 'react-bootstrap'
+import { Button, Card, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { LocationMap, OptionGeometry } from '../../../components'
 import { farmApi, searchGeoObject, searchPolygonObject, useUpdateFarmByIdMutation } from '../../../store/actions'
@@ -46,7 +46,7 @@ export const AreaFarmAreaGeometry = () => {
                                             styles={{
                                                 control: (baseStyles, state) => ({
                                                     ...baseStyles,
-                                                    minHeight: '90px',
+                                                    minHeight: '150px',
                                                 }),
                                             }}
                                             isClearable
@@ -70,6 +70,15 @@ export const AreaFarmAreaGeometry = () => {
                         &&
                         <LocationMap geometry={watch('feature')?.geometry || {}} view={watch('feature')?.view || {}} />
                     }
+                    <div className='d-flex justify-content-end gap-2'>
+                        <Button
+                            disabled={isUpdating}
+                            variant='primary'
+                            type='submit'
+                        >
+                            Guardar cambios
+                        </Button>
+                    </div>
                 </form>
             </Card.Body>
         </Card>

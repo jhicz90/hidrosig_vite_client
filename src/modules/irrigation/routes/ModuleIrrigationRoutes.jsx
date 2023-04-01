@@ -7,7 +7,7 @@ import { IrrigationNetworkRoutes } from '..'
 export const ModuleIrrigationRoutes = () => {
     return (
         <Routes>
-            <Route index element={<Navigate to={`resume`} />} />
+            <Route index element={<Navigate to={`resume`} replace />} />
             <Route path={`resume`} element={<IrrigationSchemeResumePage />} />
             <Route
                 path={`irrig/*`}

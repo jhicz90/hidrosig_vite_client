@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaPen } from 'react-icons/fa'
 import { useGetListPettyCashQuery } from '../../../store/actions'
-import { InputSearch, TableGrid, TimeAgo } from '../../../components'
+import { InputSearch, TableGrid, TagTimeAgo } from '../../../components'
 
 export const PettyCashList = () => {
 
@@ -39,12 +39,12 @@ export const PettyCashList = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { DataTable, InputSearch, LinkBack, TagStatus, TimeAgo } from '../../../components'
+import { DataTable, InputSearch, LinkBack, TagStatus, TagTimeAgo } from '../../../components'
 import { useGetListFarmByUserFarmQuery, userfarmApi } from '../../../store/actions'
 
 export const UserFarmListAreaFarm = () => {
@@ -42,12 +42,12 @@ export const UserFarmListAreaFarm = () => {
                         {
                             label: 'CREADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.createdAt} />
+                                <TagTimeAgo timestamp={item.createdAt} />
                         },
                         {
                             label: 'ACTUALIZADO',
                             renderCell: (item) =>
-                                <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                         },
                         {
                             label: 'ACCIÓN',

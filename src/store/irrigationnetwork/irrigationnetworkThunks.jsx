@@ -1,5 +1,31 @@
-import { fetchByToken } from '../../helpers'
-import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork, setNetIrrigIrrigationNetwork } from './irrigationnetworkSlice'
+import { fetchByToken, treeNetIrrig } from '../../helpers'
+import { storeApi } from '../storeApi'
+import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork, setNetIrrigDataFull } from './irrigationnetworkSlice'
+
+export const irrigationApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // IRRIGATION
+        getIrrigationNetByJunta: builder.query({
+            query: ({ junta = '' }) => ({
+                url: `structure/irrignet`,
+                params: { junta }
+            }),
+            transformResponse: (response, meta, arg) => response.net,
+            providesTags: ['Irrig', 'Orgz'],
+            onQueryStarted: async ({ showCheckbox }, { dispatch, queryFulfilled }) => {
+                try {
+                    const { data } = await queryFulfilled
+                    dispatch(setNetIrrigDataFull(treeNetIrrig(data, showCheckbox)))
+                } catch (error) { }
+            },
+        }),
+        // IRRIGATION
+    })
+})
+
+export const {
+    useLazyGetIrrigationNetByJuntaQuery
+} = irrigationApi
 
 export const startGetActiveIrrigationNetwork = (id, depth) => {
     return async (dispatch) => {
@@ -27,9 +53,9 @@ export const searchIrrigationNetworkByJunta = (junta) => {
         })
 
         if (resp.ok) {
-            dispatch(setNetIrrigIrrigationNetwork(resp.net))
+            dispatch(setNetIrrigDataFull(resp.net))
         } else {
-            dispatch(setNetIrrigIrrigationNetwork([]))
+            dispatch(setNetIrrigDataFull([]))
         }
     }
 }

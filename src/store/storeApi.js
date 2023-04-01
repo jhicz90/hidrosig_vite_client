@@ -43,8 +43,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
 export const storeApi = createApi({
     reducerPath: 'storeApi',
     keepUnusedDataFor: 60,
-    refetchOnFocus: false,
-    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
     tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL

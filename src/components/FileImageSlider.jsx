@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 import { filesize } from 'filesize'
 import { IoMdTrash } from 'react-icons/io'
 import { useKeenSlider } from 'keen-slider/react'
-import { TimeAgo } from '.'
+import { TagTimeAgo } from '.'
 import { previewImageResource } from '../helpers'
 
 import 'keen-slider/keen-slider.min.css'
@@ -43,7 +43,7 @@ export const FileImageSlider = ({ images = [], actionDelete = null }) => {
                                             {image.fileName}
                                         </small>
                                         <small className='d-block'>Tamaño: {filesize(image.bytes !== undefined ? image.bytes : 0)}</small>
-                                        <small className="d-block">Subido el: <TimeAgo timestamp={image.createdAt} /></small>
+                                        <small className="d-block">Subido el: <TagTimeAgo timestamp={image.createdAt} /></small>
                                     </div>
                                     <Button
                                         onClick={() => actionDelete(image._id)}

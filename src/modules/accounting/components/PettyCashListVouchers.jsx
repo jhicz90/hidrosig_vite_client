@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
 import { pettycashApi, startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery } from '../../../store/actions'
-import { DataTable, Image, InputSearch, LinkBack, TimeAgo } from '../../../components'
+import { DataTable, Image, InputSearch, LinkBack, TagDate, TagTimeAgo } from '../../../components'
 
 export const PettyCashListVouchers = () => {
 
@@ -76,10 +76,16 @@ export const PettyCashListVouchers = () => {
                                     item.typeReceipt
                             },
                             {
+                                label: 'FECHA COMP.',
+                                width: '150px',
+                                renderCell: (item) =>
+                                    <TagDate date={item.voucherDay} />
+                            },
+                            {
                                 label: 'CANCELADO',
                                 width: '150px',
                                 renderCell: (item) =>
-                                    <TimeAgo timestamp={item.cancelDay} />
+                                    <TagDate date={item.cancelDay} />
                             },
                             {
                                 label: 'COMPROBANTE',
@@ -144,12 +150,12 @@ export const PettyCashListVouchers = () => {
                             {
                                 label: 'CREADO',
                                 renderCell: (item) =>
-                                    <TimeAgo timestamp={item.createdAt} />
+                                    <TagTimeAgo timestamp={item.createdAt} />
                             },
                             {
                                 label: 'ACTUALIZADO',
                                 renderCell: (item) =>
-                                    <TimeAgo timestamp={item.updatedAt} timeago={true} />
+                                    <TagTimeAgo timestamp={item.updatedAt} timeago={true} />
                             },
                             {
                                 label: 'ACCIÓN',
