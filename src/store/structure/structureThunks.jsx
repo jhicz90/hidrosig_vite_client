@@ -69,6 +69,7 @@ export const {
     useDeleteStructureByIdMutation,
     useGetListStructureQuery,
     useGetStructureByIdQuery,
+    useLazyNewStructureQuery,
     useNewStructureQuery,
     useUpdateStructureByIdMutation,
 } = structureApi

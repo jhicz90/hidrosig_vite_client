@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { InputSearch, LinkBack, TableGrid, TagTimeAgo, TypeWaterSource } from '../../../components'
+import { DataTable, InputSearch, LinkBack, TableGrid, TagTimeAgo, TypeWaterSource } from '../../../components'
 import { useGetListWaterSourceQuery } from '../../../store/actions'
 
 export const WaterSourceList = () => {
@@ -11,14 +11,13 @@ export const WaterSourceList = () => {
 
     return (
         <>
-            <InputSearch className='my-3 px-3' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
+            <DataTable
                 rows={list}
                 columns={
                     [
                         {
                             label: 'FUENTE DE AGUA',
-                            resize: true,
                             renderCell: (item) => (
                                 <div className='d-flex align-items-center px-2 py-1'>
                                     <div className='flex-shrink-0 me-3'>

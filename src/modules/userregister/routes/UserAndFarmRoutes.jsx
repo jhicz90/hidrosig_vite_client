@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { UserFarmNavPage, UserFarmImportPage, UserFarmPage, UserFarmListPage, AreaFarmListPage, AreaFarmPage } from '..'
+import { UserAndFarmNavPage, UserFarmImportPage, UserFarmPage, UserFarmListPage, AreaFarmListPage, AreaFarmPage } from '..'
 
-export const UserFarmRoutes = () => {
+export const UserAndFarmRoutes = () => {
     return (
         <Routes>
-            <Route element={<UserFarmNavPage />}>
+            <Route element={<UserAndFarmNavPage />}>
                 <Route index element={<Navigate to={`users`} replace />} />
                 <Route
                     path={`users`}

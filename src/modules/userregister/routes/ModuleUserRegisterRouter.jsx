@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { UserFarmRoutes } from '..'
+import { UserAndFarmRoutes } from '..'
 
 export const ModuleUserRegisterRouter = () => {
     return (
@@ -11,7 +11,7 @@ export const ModuleUserRegisterRouter = () => {
                 path={`user_farm/*`}
                 element={
                     <GuardRoute meta={['userregister']}>
-                        <UserFarmRoutes />
+                        <UserAndFarmRoutes />
                     </GuardRoute>
                 }
             />

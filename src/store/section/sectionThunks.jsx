@@ -83,12 +83,13 @@ export const zoneApi = storeApi.injectEndpoints({
 export const {
     useAddSectionMutation,
     useDeleteSectionByIdMutation,
+    useGetCalcPropertiesQuery,
     useGetListSectionByStructureQuery,
     useGetListSectionQuery,
     useGetSectionByIdQuery,
+    useLazyNewSectionByStructureQuery,
     useNewSectionByStructureQuery,
     useUpdateSectionByIdMutation,
-    useGetCalcPropertiesQuery
 } = zoneApi
 
 export const startAddNewSection = ({ structureId = null }) => {

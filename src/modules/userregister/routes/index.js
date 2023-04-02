@@ -1,2 +1,2 @@
 export * from './ModuleUserRegisterRouter'
-export * from './UserFarmRoutes'
+export * from './UserAndFarmRoutes'

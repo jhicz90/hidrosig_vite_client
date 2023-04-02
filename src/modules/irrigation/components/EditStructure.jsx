@@ -297,12 +297,14 @@ export const EditStructureWindow = ({ id }) => {
                                                             name='progressive'
                                                             rules={{ required: true }}
                                                             render={({
-                                                                field,
+                                                                field: { value, onChange }
                                                             }) => (
                                                                 <InputMask
+                                                                    id='pProgressive'
                                                                     mask='999+999.99'
                                                                     maskPlaceholder='000+000.00'
-                                                                    {...field}
+                                                                    value={value}
+                                                                    onChange={onChange}
                                                                 />
                                                             )}
                                                         />
@@ -376,7 +378,11 @@ export const EditStructureWindow = ({ id }) => {
                                                     <Form.Group className='mb-3' controlId='pSections'>
                                                         <Form.Label>Tramos</Form.Label>
                                                         <ListGroup>
-                                                            <LinkBack className='list-group-item list-group-item-action d-flex align-items-center' to={`?w=section_create&str=${data._id}`} >
+                                                            <LinkBack
+                                                                className='list-group-item list-group-item-action d-flex align-items-center'
+                                                                to={`?w=section_create`}
+                                                                state={{ structureId: data._id || '' }}
+                                                            >
                                                                 Agregar tramo <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
                                                             </LinkBack>
                                                             {
