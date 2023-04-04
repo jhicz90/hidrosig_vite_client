@@ -1,35 +1,36 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { ButtonGroup, Card } from 'react-bootstrap'
+import { ButtonGroup } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
-import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
-import { committeeApi, useGetListBlockByAmbitQuery } from '../../../store/actions'
+import { InputSearch, LinkBack, DataTable, TagTimeAgo } from '../../../components'
+import { useGetListStructureQuery } from '../../../store/actions'
 
-export const CommitteeAmbitBlock = () => {
+export const StructureListPage = () => {
 
-    const { commid } = useParams()
     const [search, setSearch] = useState('')
-    const { data = null } = useSelector(committeeApi.endpoints.getCommById.select(commid))
-    const { data: blocksIn = [], isLoading } = useGetListBlockByAmbitQuery({ comm: data?._id, junta: data?.junta._id, search }, { skip: !data })
+    const { data: list = [], isFetching } = useGetListStructureQuery(search)
 
     return (
-        <Card>
-            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+        <>
+            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
             <DataTable
-                rows={blocksIn}
+                rows={list}
                 columns={
                     [
                         {
-                            label: 'BLOQUE DE RIEGO',
+                            label: 'ESTRUCTURA',
+                            minWidth: '300px',
                             renderCell: (item) => (
-                                item.name
+                                <div className='d-flex align-items-center px-2 py-1'>
+                                    <div className='d-flex flex-column'>
+                                        <p
+                                            className='d-block text-primary fw-bolder mb-0'
+                                        >
+                                            {item.name}
+                                        </p>
+                                        <span>{item.progressive}</span>
+                                    </div>
+                                </div>
                             )
-                        },
-                        {
-                            label: 'RESOLUCION',
-                            renderCell: (item) =>
-                                item.resolution?.name || 'Sin resolución'
                         },
                         {
                             label: 'CREADO',
@@ -48,7 +49,7 @@ export const CommitteeAmbitBlock = () => {
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=block_edit&id=${item._id}`}
+                                        to={`/app/schm/irrig/str/${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>
@@ -57,9 +58,6 @@ export const CommitteeAmbitBlock = () => {
                     ]
                 }
             />
-            <Card.Footer className='p-3 text-center'>
-                Ir a BLOQUES DE RIEGO
-            </Card.Footer>
-        </Card>
+        </>
     )
 }

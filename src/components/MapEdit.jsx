@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { GeomanControls } from 'react-leaflet-geoman-v2'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { setFeatureCollection, useAddPointMutation, useAddPolygonMutation } from '../store/actions'
+import { setFeatureCollection, useAddLineMutation, useAddPointMutation, useAddPolygonMutation } from '../store/actions'
 
 import L from 'leaflet'
 
@@ -54,6 +54,7 @@ export const Geoman = () => {
     const { featureCollection } = useSelector(state => state.geoobject)
     const [addPoint] = useAddPointMutation()
     const [addPolygon] = useAddPolygonMutation()
+    const [addLine] = useAddLineMutation()
 
     const handleChange = () => {
 
@@ -145,6 +146,12 @@ export const Geoman = () => {
                         properties: data.properties,
                         geometry: data.geometry
                     })
+                } else if (data.properties.shape === 'Line') {
+                    addLine({
+                        desc: result.value,
+                        properties: data.properties,
+                        geometry: data.geometry
+                    })
                 }
             }
         })
@@ -181,8 +188,8 @@ export const Geoman = () => {
                 }}
                 // eventDebugFn={console.log}
                 onCreate={handleChange}
-                // onChange={handleChange}
-                // onUpdate={debounce(handleChange, 2000)}
+            // onChange={handleChange}
+            // onUpdate={debounce(handleChange, 2000)}
             // onEdit={handleChange}
             // onMapRemove={handleChange}
             // onMapCut={handleChange}

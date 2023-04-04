@@ -1,33 +1,22 @@
 import { NavLink, Route, Routes, useParams } from 'react-router-dom'
-import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
-import { AiFillNotification } from 'react-icons/ai'
+import { Card, Dropdown, Tab } from 'react-bootstrap'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { AreaFarmAdditionalData, AreaFarmAreaGeometry, AreaFarmBanner, AreaFarmImages, AreaFarmInformation, AreaFarmListHolder } from '../components'
-import { LoadingPage, SliderNavFlip } from '../../../components'
+import { StructureAdditionalData, StructureBanner, StructureImages, StructureInformation, StructureListSection } from '../components'
+import { LinkBack, LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { questionActiveFarm, questionDeleteFarm, useDeleteFarmByIdMutation, useGetFarmByIdQuery, useUpdateFarmByIdMutation } from '../../../store/actions'
+import { questionDeleteStructure, useDeleteStructureByIdMutation, useGetStructureByIdQuery } from '../../../store/actions'
 
-export const AreaFarmPage = () => {
+export const StructurePage = () => {
 
-    const { prpid } = useParams()
-    const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/prps')
+    const { strid } = useParams()
+    const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
-    const { data = null, isLoading, isError } = useGetFarmByIdQuery(prpid)
-    const [updateFarm, { isLoading: isSaving }] = useUpdateFarmByIdMutation()
-    const [deleteFarm] = useDeleteFarmByIdMutation()
-
-    const handleActive = async (id, active, name) => {
-        if (await questionActiveFarm(!active, name)) {
-            updateFarm({
-                id,
-                farm: { active }
-            })
-        }
-    }
+    const { data = null, isLoading, isError } = useGetStructureByIdQuery(strid)
+    const [deleteStructure] = useDeleteStructureByIdMutation()
 
     const handleDelete = async (id, name) => {
-        if (await questionDeleteFarm(name)) {
-            deleteFarm(id)
+        if (await questionDeleteStructure(name)) {
+            deleteStructure(id)
         }
     }
 
@@ -49,21 +38,11 @@ export const AreaFarmPage = () => {
                         <div className='col-12'>
                             <div className='row align-items-center justify-content-between g-3 mb-3'>
                                 <div className='col-12 col-md-auto'>
-                                    <h4 className='mb-0'>PREDIO AGRARIO</h4>
+                                    <h4 className='mb-0'>ESTRUCTURA</h4>
                                 </div>
                                 <div className='col-12 col-md-auto'>
                                     <div className='d-flex gap-2'>
-                                        <Button variant='primary' className='d-flex align-items-center gap-2'>
-                                            <AiFillNotification size={24} />
-                                            Generar notificación
-                                        </Button>
-                                        <Button
-                                            onClick={() => handleActive(prpid, !data?.active, data?.name)}
-                                            disabled={isSaving || isLoading}
-                                            variant={data.active ? 'danger' : 'success'}
-                                        >
-                                            {data.active ? 'Desactivar' : 'Activar'}
-                                        </Button>
+                                        <LinkBack to={`/app/schm/irrig`} className='btn btn-secondary'>Ir a Red de riego</LinkBack>
                                         <Dropdown className='dropdown-noarrow'>
                                             <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
                                                 <IoEllipsisVertical size={24} />
@@ -72,7 +51,7 @@ export const AreaFarmPage = () => {
                                                 <Dropdown.Item>Reportes</Dropdown.Item>
                                                 <Dropdown.Item>Imprimir</Dropdown.Item>
                                                 <Dropdown.Item
-                                                    onClick={() => handleDelete(prpid, data?.name)}
+                                                    onClick={() => handleDelete(strid, data?.name)}
                                                     className='text-danger'
                                                 >
                                                     Eliminar
@@ -86,30 +65,33 @@ export const AreaFarmPage = () => {
                     </div>
                     <div className='row'>
                         <div className='col-md-5 col-lg-5 col-xl-4'>
-                            <AreaFarmBanner />
+                            <StructureBanner />
                         </div>
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
                                     <SliderNavFlip>
                                         <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
-                                        <NavLink to={`area`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Superficie</NavLink>
-                                        <NavLink to={`win`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Toma de agua</NavLink>
-                                        <NavLink to={`sw`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Drenaje</NavLink>
-                                        <NavLink to={`vol`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Volumen</NavLink>
-                                        <NavLink to={`hld`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Titulares</NavLink>
+                                        <NavLink to={`sct`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Tramos</NavLink>
                                         <NavLink to={`img`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Imagenes</NavLink>
                                         <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
+                                        {/* Usuarios en la estructura */}
+                                        {/* <NavLink to={`area`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Superficie</NavLink>
+                                        <NavLink to={`hld`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Titulares</NavLink>
+                                        <NavLink to={`img`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Imagenes</NavLink>
+                                        <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink> */}
                                     </SliderNavFlip>
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
-                                        <Route index element={<AreaFarmInformation />} />
-                                        <Route path={`area`} element={<AreaFarmAreaGeometry />} />
-                                        {/* <Route path={`doc`} element={<UserFarmListDocument />} /> */}
+                                        <Route index element={<StructureInformation />} />
+                                        <Route path={`sct/*`} element={<StructureListSection />} />
+                                        <Route path={`img`} element={<StructureImages />} />
+                                        <Route path={`add`} element={<StructureAdditionalData />} />
+                                        {/* <Route path={`area`} element={<AreaFarmAreaGeometry />} />
                                         <Route path={`hld`} element={<AreaFarmListHolder />} />
                                         <Route path={`img`} element={<AreaFarmImages />} />
-                                        <Route path={`add`} element={<AreaFarmAdditionalData />} />
+                                        <Route path={`add`} element={<AreaFarmAdditionalData />} /> */}
                                     </Routes>
                                 </div>
                             </Tab.Container>

@@ -11,7 +11,7 @@ export const JuntaAmbitZone = () => {
     const { juntaid } = useParams()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(juntaApi.endpoints.getJuntaById.select(juntaid))
-    const { data: zonesIn = [], isLoading } = useGetListZoneByJuntaQuery({ junta: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data: zonesIn = [], isLoading } = useGetListZoneByJuntaQuery({ junta: data?._id, search }, { skip: !data })
 
     return (
         <Card>

@@ -68,7 +68,17 @@ export const AreaFarmAreaGeometry = () => {
                     {
                         !!watch('feature')
                         &&
-                        <LocationMap geometry={watch('feature')?.geometry || {}} view={watch('feature')?.view || {}} />
+                        <LocationMap
+                            geometry={
+                                [
+                                    {
+                                        type: 'Feature',
+                                        ...watch('feature').geometry
+                                    }
+                                ]
+                            }
+                            view={watch('feature')?.view || {}}
+                        />
                     }
                     <div className='d-flex justify-content-end gap-2'>
                         <Button

@@ -17,7 +17,7 @@ export const CreateSection = () => {
     const { w } = Object.fromEntries([...searchParams])
     const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
-    const [newSection, { data = null, isLoading, isError }] = useLazyNewSectionByStructureQuery()
+    const [newSection, { data = null, isLoading, isError, error }] = useLazyNewSectionByStructureQuery()
     const [addSection, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddSectionMutation()
     const { register, control, handleSubmit, reset, watch, setFocus, setValue } = useForm({
         defaultValues: {
@@ -84,7 +84,7 @@ export const CreateSection = () => {
     useEffect(() => {
         if (isError) {
             // SE HIZO ESTE POR SER UN CASO ESPECIAL
-            if (params?.structureId === '') {
+            if (error.status === 401) {
                 redirect()
             } else {
                 redirectEscape()

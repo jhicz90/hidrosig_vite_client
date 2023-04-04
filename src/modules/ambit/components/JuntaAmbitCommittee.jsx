@@ -11,7 +11,7 @@ export const JuntaAmbitCommittee = () => {
     const { juntaid } = useParams()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(juntaApi.endpoints.getJuntaById.select(juntaid))
-    const { data: committeesIn = [], isLoading } = useGetListCommByJuntaQuery({ junta: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data: committeesIn = [], isLoading } = useGetListCommByJuntaQuery({ junta: data?._id, search }, { skip: !data })
 
     return (
         <Card>

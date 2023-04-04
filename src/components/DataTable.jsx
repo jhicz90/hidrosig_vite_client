@@ -58,7 +58,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
 
     return (
-        <div style={{ height: '400px' }} className={`${virtual ? 'table-virtual' : ''}`}>
+        <div style={{ height: '400px', ...style }} className={`${virtual ? 'table-virtual' : ''}`}>
             <Table theme={theme} data={data} layout={{ fixedHeader: true, horizontalScroll: true }}>
                 {
                     virtual

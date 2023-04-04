@@ -12,7 +12,7 @@ export const PettyCashListVouchers = () => {
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
-    const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: data?._id, search: '' }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: data?._id, search: '' }, { skip: !data })
 
     let amountTotal = 0
     let outTotal = 0

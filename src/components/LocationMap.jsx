@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
+import { randomColor } from '../helpers'
 
-export const LocationMap = ({ className = 'my-2', geometry = {}, view }) => {
-
+export const LocationMap = ({ className = 'my-2', geometry = [], view = {}, style = {} }) => {
     return (
         <MapContainer
             className={className}
@@ -10,14 +10,22 @@ export const LocationMap = ({ className = 'my-2', geometry = {}, view }) => {
             center={[-4.79, -80.56]}
             zoom={13}
             scrollWheelZoom={false}
-            style={{ height: '300px' }}
+            style={{ height: '300px', ...style }}
         >
-            <CenterMap view={view} />
+            {
+                Object.keys(view).length > 0
+                &&
+                <CenterMap view={view} />
+            }
             <TileLayer
                 attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
                 url={`http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}`}
             />
-            <DrawGeo data={geometry} />
+            {
+                geometry.length > 0
+                &&
+                <DrawGeo data={geometry} />
+            }
         </MapContainer>
     )
 }
@@ -50,6 +58,7 @@ const DrawGeo = ({ data }) => {
         <GeoJSON
             ref={geoJsonRef}
             data={data}
+            pathOptions={{ color: randomColor }}
         />
     )
 }

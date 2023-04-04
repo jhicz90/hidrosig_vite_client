@@ -11,7 +11,7 @@ export const JuntaAmbitWaterSource = () => {
     const { juntaid } = useParams()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(juntaApi.endpoints.getJuntaById.select(juntaid))
-    const { data: waterSourcesIn = [], isLoading } = useGetListWaterSourceByJuntaQuery({ junta: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data: waterSourcesIn = [], isLoading } = useGetListWaterSourceByJuntaQuery({ junta: data?._id, search }, { skip: !data })
 
     return (
         <Card>

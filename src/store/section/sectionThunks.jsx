@@ -6,7 +6,7 @@ import { addNewSection, setActiveNewSection, setActiveSection, setSavingSection,
 
 const SwalReact = withReactContent(Swal)
 
-export const zoneApi = storeApi.injectEndpoints({
+export const sectionApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // SECTION
         newSectionByStructure: builder.query({
@@ -44,8 +44,8 @@ export const zoneApi = storeApi.injectEndpoints({
             providesTags: ['Irrig']
         }),
         getListSectionByStructure: builder.query({
-            query: ({ structureId, search }) => ({
-                url: `section/search_by_structure/${structureId}`,
+            query: ({ structure, search }) => ({
+                url: `section/search_by_structure/${structure}`,
                 params: {
                     search
                 }
@@ -90,7 +90,7 @@ export const {
     useLazyNewSectionByStructureQuery,
     useNewSectionByStructureQuery,
     useUpdateSectionByIdMutation,
-} = zoneApi
+} = sectionApi
 
 export const startAddNewSection = ({ structureId = null }) => {
     return async (dispatch, getState) => {
@@ -240,9 +240,9 @@ export const startDeleteSection = () => {
     }
 }
 
-export const startDeleteIdSection = (voucher) => {
+export const startDeleteIdSection = (section) => {
     return async (dispatch) => {
-        const { _id, name } = voucher
+        const { _id, name, progressiveStart, progressiveEnd } = section
 
         const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
@@ -251,6 +251,7 @@ export const startDeleteIdSection = (voucher) => {
                 <>
                     <div className='text-uppercase'>Eliminar tramo</div>
                     <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+                    <div className='fs-5 fw-light text-muted'>{`${progressiveStart} - ${progressiveEnd}`}</div>
                 </>,
             html:
                 <>
@@ -282,14 +283,10 @@ export const startDeleteIdSection = (voucher) => {
         }).then(async (result) => {
             if (result.value) {
 
-                dispatch(setSavingSection(true))
-
                 const resp = await fetchByToken({
                     endpoint: `section/delete/${_id}`,
                     method: 'DELETE'
                 })
-
-                dispatch(setSavingSection(false))
 
                 if (resp.ok) {
                     dispatch(storeApi.util.invalidateTags(['Irrig']))

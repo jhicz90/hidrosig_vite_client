@@ -20,7 +20,7 @@ export const OptionGeometry = ({ geo = null }) => {
                         Perimetro (metros):
                     </div>
                     <div className='col-10'>
-                        {geo.view.perimeter}
+                        {geo.view?.perimeter}
                     </div>
                 </div>
                 <div className='row'>
@@ -28,7 +28,7 @@ export const OptionGeometry = ({ geo = null }) => {
                         Área (metros cuadrados):
                     </div>
                     <div className='col-10'>
-                        {geo.view.areaM2}
+                        {geo.view?.areaM2}
                     </div>
                 </div>
                 <div className='row'>
@@ -36,7 +36,7 @@ export const OptionGeometry = ({ geo = null }) => {
                         Área (hectareas):
                     </div>
                     <div className='col-10'>
-                        {geo.view.areaHa}
+                        {geo.view?.areaHa}
                     </div>
                 </div>
                 <div className='row'>

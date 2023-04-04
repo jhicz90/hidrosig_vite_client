@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import AsyncSelect from 'react-select/async'
 import validator from 'validator'
-import { searchGeoObject, searchRugosity, useDeleteSectionByIdMutation, useGetCalcPropertiesQuery, useGetSectionByIdQuery, useUpdateSectionByIdMutation } from '../../../store/actions'
+import { searchLineStringObject, searchRugosity, useDeleteSectionByIdMutation, useGetCalcPropertiesQuery, useGetSectionByIdQuery, useUpdateSectionByIdMutation } from '../../../store/actions'
 import { InputMask, LoadingPage, LocationMap, OptionGeometry, OptionRugosity } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { pDistance } from '../../../helpers'
@@ -59,7 +59,7 @@ const EditSectionWindow = ({ id }) => {
         rugosity: watch('rugosity')?.value || 0,
     }, { skip: !watch('rugosity') })
 
-    const handleUpdate = async ({ progressiveStart, progressiveEnd, rugosity, geometry, ...newData }) => {
+    const handleUpdate = async ({ progressiveStart, progressiveEnd, rugosity, feature, ...newData }) => {
         if (pDistance(progressiveEnd) - pDistance(progressiveStart) > 0) {
             if (
                 pDistance(progressiveEnd) - pDistance(progressiveStart)
@@ -72,8 +72,8 @@ const EditSectionWindow = ({ id }) => {
                             ...newData,
                             rugosity,
                             idRugosity: rugosity ? rugosity._id : '',
-                            geometry,
-                            idGeometry: geometry ? geometry._id : ''
+                            feature,
+                            idFeature: feature ? feature._id : ''
                         }
                     })
                 } catch (err) {
@@ -325,12 +325,14 @@ const EditSectionWindow = ({ id }) => {
                                                                 name='progressiveStart'
                                                                 rules={{ required: true }}
                                                                 render={({
-                                                                    field
+                                                                    field: { value, onChange }
                                                                 }) => (
                                                                     <InputMask
+                                                                        id='pProgressiveStart'
                                                                         mask='999+999.99'
                                                                         maskPlaceholder='000+000.00'
-                                                                        {...field}
+                                                                        value={value}
+                                                                        onChange={onChange}
                                                                     />
                                                                 )}
                                                             />
@@ -339,12 +341,14 @@ const EditSectionWindow = ({ id }) => {
                                                                 name='progressiveEnd'
                                                                 rules={{ required: true }}
                                                                 render={({
-                                                                    field
+                                                                    field: { value, onChange }
                                                                 }) => (
                                                                     <InputMask
+                                                                        id='pProgressiveEnd'
                                                                         mask='999+999.99'
                                                                         maskPlaceholder='000+000.00'
-                                                                        {...field}
+                                                                        value={value}
+                                                                        onChange={onChange}
                                                                     />
                                                                 )}
                                                             />
@@ -527,7 +531,7 @@ const EditSectionWindow = ({ id }) => {
                                                     <Form.Group className='mb-3' controlId='pGeometry'>
                                                         <Form.Label>Estructura geográfica</Form.Label>
                                                         <Controller
-                                                            name='geometry'
+                                                            name='feature'
                                                             control={control}
                                                             rules={{ required: true }}
                                                             render={({ field }) =>
@@ -539,11 +543,7 @@ const EditSectionWindow = ({ id }) => {
                                                                     isClearable
                                                                     defaultOptions
                                                                     cacheOptions
-                                                                    loadOptions={
-                                                                        async (e) => {
-                                                                            return await searchGeoObject(e, 1)
-                                                                        }
-                                                                    }
+                                                                    loadOptions={searchLineStringObject}
                                                                     menuPlacement={'auto'}
                                                                     placeholder={`Buscar...`}
                                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
@@ -557,9 +557,19 @@ const EditSectionWindow = ({ id }) => {
                                                 </div>
                                             </div>
                                             {
-                                                !!watch('geometry')
+                                                !!watch('feature')
                                                 &&
-                                                <LocationMap data={watch('geometry')?.geometry.features || []} view={watch('geometry')?.view || {}} />
+                                                <LocationMap
+                                                    geometry={
+                                                        [
+                                                            {
+                                                                type: 'Feature',
+                                                                ...watch('feature').geometry
+                                                            }
+                                                        ]
+                                                    }
+                                                    view={watch('feature')?.view || {}}
+                                                />
                                             }
                                         </Tab.Pane>
                                     </Tab.Content>

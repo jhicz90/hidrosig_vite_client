@@ -11,7 +11,7 @@ export const UserFarmListAreaFarm = () => {
     const { userid } = useParams()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(userfarmApi.endpoints.getUserFarmById.select(userid))
-    const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: data?._id, search }, { skip: !data })
 
     return (
         <Card>

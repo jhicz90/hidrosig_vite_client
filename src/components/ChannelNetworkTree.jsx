@@ -190,7 +190,8 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
                                     if (depth === 0) {
                                         navigate(`?w=watersource_edit&id=${id}`, { state: { from: location } })
                                     } else {
-                                        navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
+                                        // navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
+                                        navigate(`/app/schm/irrig/str/${id}`, { state: { from: location } })
                                     }
                                 }}
                             >

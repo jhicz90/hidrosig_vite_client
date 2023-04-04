@@ -24,10 +24,30 @@ export const geoobjectApi = storeApi.injectEndpoints({
             invalidatesTags: ['Geo']
         }),
         // POLYGON
+        // LINE
+        addLine: builder.mutation({
+            query: (newLine) => ({
+                url: `geoobject/linestring/create/new`,
+                method: 'post',
+                data: newLine
+            }),
+            invalidatesTags: ['Geo']
+        }),
+        addMultiLine: builder.mutation({
+            query: (newMultiLine) => ({
+                url: `geoobject/mlinestring/create/new`,
+                method: 'post',
+                data: newMultiLine
+            }),
+            invalidatesTags: ['Geo']
+        }),
+        // LINE
     })
 })
 
 export const {
+    useAddLineMutation,
+    useAddMultiLineMutation,
     useAddPointMutation,
     useAddPolygonMutation,
 } = geoobjectApi
@@ -55,6 +75,19 @@ export const startSaveNewGeometry = () => {
             // dispatch(storeApi.util.invalidateTags(['Files']))
             dispatch(clearFeatureCollection())
         }
+    }
+}
+
+export const searchLineStringObject = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: 'geoobject/search/linestring',
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
     }
 }
 
@@ -95,7 +128,7 @@ export const startImportShapes = (fileName) => {
         if (resp.ok) {
             const importFeatures = resp.shapes?.features.map(f => {
                 if (f.geometry.type === 'Polygon' && !f.properties.hasOwnProperty('shape')) return {
-                    ...f, 
+                    ...f,
                     properties: {
                         ...f.properties,
                         shape: 'Polygon'

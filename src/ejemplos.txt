@@ -1,7 +1,28 @@
 
-            <FilesUploadInline
-                accept='docs'
-                tags={['Documento', active.name]}
-                access={1}
-                actionUpload={(data) => dispatch(startUpdateDocsDocument(data))}
-            />
+    <Link to={{ pathname: 'modaltest' }} relative='path' className='btn btn-secondary'>Ir a Red de riego</Link>
+
+    export const ModalTest = () => {
+
+    const { pathname } = useLocation()
+    const windowKey = pathname.split('/')[pathname.split('/').length - 1]
+    // const [searchParams, setSearchParams] = useSearchParams()
+    // const { win } = Object.fromEntries([...searchParams])
+
+    return (
+        <Modal
+            show={windowKey === 'modaltest'}
+            size='xl'
+        // onHide={() => setSearchParams()}
+        >
+            <Modal.Body>
+                Hola bienvenidos desde la ruta
+                <Link to={``}>Inicio</Link>
+                <Link to={`data`}>Datos adicionales</Link>
+                <Routes>
+                    <Route index element={<>Inicio a todos</>} />
+                    <Route path='data' element={<>Datos para todos</>} />
+                </Routes>
+            </Modal.Body>
+        </Modal>
+    )
+}

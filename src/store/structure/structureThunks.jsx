@@ -219,64 +219,46 @@ export const startDeleteImageStructure = (id, imageId) => {
     }
 }
 
-export const startDeleteStructure = () => {
-    return async (dispatch, getState) => {
-        const { active } = getState().structure
-        const { _id, name } = active
+export const questionDeleteStructure = async (name) => {
 
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Eliminar estructura</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar?</div>
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar estructura</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: `btn btn-danger`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
             }
-        }).then(async (result) => {
-            if (result.value) {
-
-                dispatch(setSavingStructure(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `structure/delete/${_id}`,
-                    method: 'DELETE'
-                })
-
-                dispatch(setSavingStructure(false))
-
-                if (resp.ok) {
-                    dispatch(setActiveStructure(null))
-                }
-            }
-        })
-    }
+        }
+    }).then(({ value }) => {
+        return value
+    })
 }
 
 export const startExportNet = () => {

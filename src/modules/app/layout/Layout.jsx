@@ -10,7 +10,7 @@ export const Layout = () => {
             <AppHeader />
             <ContentApp className='content-app'>
                 <AppSidebar />
-                <AppToolboxBar />
+                {/* <AppToolboxBar /> */}
                 <div className='scroll-content'>
                     <Outlet />
                 </div>

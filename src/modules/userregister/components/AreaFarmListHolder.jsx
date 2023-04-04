@@ -12,7 +12,7 @@ export const AreaFarmListHolder = () => {
     const { prpid } = useParams()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
-    const { data: usersIn = [], isLoading } = useGetListUserFarmByFarmQuery({ farm: data?._id, search }, { refetchOnMountOrArgChange: true, skip: !data })
+    const { data: usersIn = [], isLoading } = useGetListUserFarmByFarmQuery({ farm: data?._id, search }, { skip: !data })
 
     return (
         <Card>
