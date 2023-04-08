@@ -27,8 +27,6 @@ import {
     DesignRoutes,
     EditBlock,
     EditDocument,
-    EditSection,
-    EditStructure,
     EditVoucher,
     EditWaterSource,
     EditZone,
@@ -176,8 +174,6 @@ export const AppRoot = () => {
                         <CreateZone />
                         <EditBlock />
                         <EditDocument />
-                        <EditSection />
-                        <EditStructure />
                         <EditVoucher />
                         <EditWaterSource />
                         <EditZone />

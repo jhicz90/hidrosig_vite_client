@@ -29,7 +29,7 @@ export const UserFarmInformation = () => {
     return (
         <Card>
             <Card.Body>
-                <form id='form-userregister-userfarm-edit' onSubmit={handleSubmit(handleUpdate)}>
+                <form id='form-userregister-userfarm-info' onSubmit={handleSubmit(handleUpdate)}>
                     <Liner>Información personal</Liner>
                     <div className='row'>
                         <div className='col-12 col-sm-6 col-md-6 col-lg-2'>

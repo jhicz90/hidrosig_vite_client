@@ -2,7 +2,7 @@ import { NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { AreaFarmAdditionalData, AreaFarmAreaGeometry, AreaFarmBanner, AreaFarmImages, AreaFarmInformation, AreaFarmListHolder } from '../components'
+import { AreaFarmAdditionalData, AreaFarmAreaGeometry, AreaFarmBanner, AreaFarmImages, AreaFarmInformation, AreaFarmListHolder, AreaFarmWaterIn } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { questionActiveFarm, questionDeleteFarm, useDeleteFarmByIdMutation, useGetFarmByIdQuery, useUpdateFarmByIdMutation } from '../../../store/actions'
@@ -106,6 +106,7 @@ export const AreaFarmPage = () => {
                                     <Routes>
                                         <Route index element={<AreaFarmInformation />} />
                                         <Route path={`area`} element={<AreaFarmAreaGeometry />} />
+                                        <Route path={`win`} element={<AreaFarmWaterIn />} />
                                         {/* <Route path={`doc`} element={<UserFarmListDocument />} /> */}
                                         <Route path={`hld`} element={<AreaFarmListHolder />} />
                                         <Route path={`img`} element={<AreaFarmImages />} />

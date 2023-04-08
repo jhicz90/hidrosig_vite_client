@@ -1,5 +1,6 @@
 export * from './ChannelSchemePage'
 export * from './IrrigationNetworkNavPage'
 export * from './IrrigationSchemeResumePage'
+export * from './SectionPage'
 export * from './StructureListPage'
 export * from './StructurePage'

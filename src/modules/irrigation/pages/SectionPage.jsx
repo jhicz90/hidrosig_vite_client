@@ -1,22 +1,22 @@
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Card, Dropdown, Tab } from 'react-bootstrap'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { StructureAdditionalData, StructureBanner, StructureImages, StructureInformation, StructureListSection } from '../components'
+import { SectionAdditionalData, SectionBanner, SectionInformation, SectionLongitude } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { questionDeleteStructure, useDeleteStructureByIdMutation, useGetStructureByIdQuery } from '../../../store/actions'
+import { questionDeleteSection, useDeleteSectionByIdMutation, useGetSectionByIdQuery } from '../../../store/actions'
 
-export const StructurePage = () => {
+export const SectionPage = () => {
 
-    const { strid } = useParams()
+    const { sectid } = useParams()
     const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
-    const { data = null, isLoading, isError } = useGetStructureByIdQuery(strid)
-    const [deleteStructure] = useDeleteStructureByIdMutation()
+    const { data = null, isLoading, isError } = useGetSectionByIdQuery(sectid)
+    const [deleteSection] = useDeleteSectionByIdMutation()
 
-    const handleDelete = async (id, name) => {
-        if (await questionDeleteStructure(name)) {
-            deleteStructure(id)
+    const handleDelete = async (id, data) => {
+        if (await questionDeleteSection(data)) {
+            deleteSection(id)
         }
     }
 
@@ -38,12 +38,11 @@ export const StructurePage = () => {
                         <div className='col-12'>
                             <div className='row align-items-center justify-content-between g-3 mb-3'>
                                 <div className='col-12 col-md-auto'>
-                                    <h4 className='mb-0'>ESTRUCTURA</h4>
+                                    <h4 className='mb-0'>TRAMO</h4>
                                 </div>
                                 <div className='col-12 col-md-auto'>
                                     <div className='d-flex gap-2'>
-                                        <Link to={`/app/schm/irrig`} className='btn btn-secondary'>RED DE RIEGO</Link>
-                                        <Link to={`/app/schm/irrig/str`} className='btn btn-secondary'>ESTRUCTURAS</Link>
+                                        <Link to={`/app/schm/irrig/str/${data.structure._id}`} className='btn btn-secondary'>{data.structure.name}</Link>
                                         <Dropdown className='dropdown-noarrow'>
                                             <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
                                                 <IoEllipsisVertical size={24} />
@@ -52,7 +51,7 @@ export const StructurePage = () => {
                                                 <Dropdown.Item>Reportes</Dropdown.Item>
                                                 <Dropdown.Item>Imprimir</Dropdown.Item>
                                                 <Dropdown.Item
-                                                    onClick={() => handleDelete(strid, data?.name)}
+                                                    onClick={() => handleDelete(sectid, data)}
                                                     className='text-danger'
                                                 >
                                                     Eliminar
@@ -66,16 +65,15 @@ export const StructurePage = () => {
                     </div>
                     <div className='row'>
                         <div className='col-md-5 col-lg-5 col-xl-4'>
-                            <StructureBanner />
+                            <SectionBanner />
                         </div>
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
                                 <Card className='p-2'>
                                     <SliderNavFlip>
                                         <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
-                                        <NavLink to={`sct`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Tramos</NavLink>
+                                        <NavLink to={`lon`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Longitud</NavLink>
                                         <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
-                                        <NavLink to={`img`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Imagenes</NavLink>
                                         <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
                                         {/* Usuarios en la estructura */}
                                         {/* <NavLink to={`area`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Superficie</NavLink>
@@ -86,14 +84,12 @@ export const StructurePage = () => {
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
-                                        <Route index element={<StructureInformation />} />
-                                        <Route path={`sct/*`} element={<StructureListSection />} />
+                                        <Route index element={<SectionInformation />} />
+                                        <Route path={`lon`} element={<SectionLongitude />} />
+                                        <Route path={`add`} element={<SectionAdditionalData />} />
+                                        {/* <Route path={`sct/*`} element={<StructureListSection />} />
                                         <Route path={`img`} element={<StructureImages />} />
-                                        <Route path={`add`} element={<StructureAdditionalData />} />
-                                        {/* <Route path={`area`} element={<AreaFarmAreaGeometry />} />
-                                        <Route path={`hld`} element={<AreaFarmListHolder />} />
-                                        <Route path={`img`} element={<AreaFarmImages />} />
-                                        <Route path={`add`} element={<AreaFarmAdditionalData />} /> */}
+                                        <Route path={`add`} element={<StructureAdditionalData />} /> */}
                                     </Routes>
                                 </div>
                             </Tab.Container>

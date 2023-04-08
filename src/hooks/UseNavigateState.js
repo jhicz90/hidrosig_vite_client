@@ -5,14 +5,14 @@ export const useNavigateState = (url = '') => {
     const location = useLocation()
     const navigate = useNavigate()
     const { state } = location
-    
+
     const redirect = () => {
-        navigate(state.from || url, { state: state?.from?.state || null })
+        navigate(state.from || url, { state: state?.from?.state || null, replace: true })
     }
 
     const redirectEscape = () => {
-        navigate(`/app/err404`, { state: { from: location || null } })
+        navigate(`/app/err404`, { state: { from: location || null, replace: true } })
     }
 
-    return [state, redirect, redirectEscape]
+    return [redirect, redirectEscape]
 }

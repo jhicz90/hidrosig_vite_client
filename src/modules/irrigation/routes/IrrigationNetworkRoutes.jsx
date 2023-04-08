@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { IrrigationNetworkNavPage, StructureListPage, StructurePage } from '../pages'
+import { IrrigationNetworkNavPage, SectionPage, StructureListPage, StructurePage } from '../pages'
 import { ImportNetwork, ChannelSchemePage, VariableList, WaterSourceList } from '..'
 
 export const IrrigationNetworkRoutes = () => {
@@ -54,6 +54,14 @@ export const IrrigationNetworkRoutes = () => {
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <StructurePage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path='sct/:sectid/*'
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <SectionPage />
                     </GuardRoute>
                 }
             />

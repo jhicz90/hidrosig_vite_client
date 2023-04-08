@@ -2,16 +2,17 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import moment from 'moment'
-import { TagNewReg } from '../../../components'
-import { structureApi } from '../../../store/actions'
+import { LocationMap, TagNewReg } from '../../../components'
+import { structureApi, useGetListSectionByStructureQuery } from '../../../store/actions'
 
 export const StructureBanner = () => {
 
     const { strid } = useParams()
     const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
+    const { data: sectionsIn = [], isLoading } = useGetListSectionByStructureQuery({ structure: data?._id, search: '' }, { skip: !data })
 
     return (
-        <Card>
+        <Card className='overflow-hidden'>
             <Card.Body>
                 <div className='row align-items-center g-3 text-center text-xxl-start'>
                     <div className='col-12 col-sm-auto flex-1'>
@@ -24,6 +25,27 @@ export const StructureBanner = () => {
                     </div>
                 </div>
             </Card.Body>
+            <div className='row'>
+                <div className='col'>
+                    <LocationMap
+                        className='my-0'
+                        geometry={
+                            sectionsIn.map(sect => {
+                                if (!!sect.feature) {
+                                    return {
+                                        type: 'Feature',
+                                        ...sect.feature.geometry
+                                    }
+                                }
+                            }).filter(f => !!f)
+                        }
+                        view={sectionsIn[0]?.feature.view}
+                        style={{
+                            height: '400px'
+                        }}
+                    />
+                </div>
+            </div>
         </Card>
     )
 }

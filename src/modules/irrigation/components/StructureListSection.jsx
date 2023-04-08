@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import { FaPen } from 'react-icons/fa'
 import { IoMdTrash } from 'react-icons/io'
-import { DataTable, InputSearch, LinkBack, LocationMap, TagTimeAgo } from '../../../components'
+import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
 import { startDeleteIdSection, structureApi, useGetListSectionByStructureQuery } from '../../../store/actions'
 
 export const StructureListSection = () => {
@@ -13,7 +13,7 @@ export const StructureListSection = () => {
     const { strid } = useParams()
     const [search, setSearch] = useState('')
     const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
-    const { data: sectionsIn = [], isLoading } = useGetListSectionByStructureQuery({ structure: data?._id, search }, { skip: !data })
+    const { data: sectionsIn = [], isLoading } = useGetListSectionByStructureQuery({ structure: data?._id, search: '' }, { skip: !data })
 
     return (
         <Card className='overflow-hidden'>
@@ -32,19 +32,19 @@ export const StructureListSection = () => {
                 </div>
             </div>
             <DataTable
-                style={{ height: '300px' }}
                 rows={sectionsIn}
                 columns={
                     [
                         {
                             label: 'TRAMO',
-                            minWidth: '200px',
+                            minWidth: '250px',
                             renderCell: (item) => (
                                 item.name
                             )
                         },
                         {
                             label: 'PROGRESIVA',
+                            minWidth: '250px',
                             renderCell: (item) =>
                                 <p className='text-sm text-muted my-0'>{`${item.progressiveStart} - ${item.progressiveEnd}`}</p>
                         },
@@ -65,7 +65,7 @@ export const StructureListSection = () => {
                                 <ButtonGroup>
                                     <LinkBack
                                         className='btn btn-neutral'
-                                        to={`?w=section_edit&id=${item._id}`}
+                                        to={`/app/schm/irrig/sct/${item._id}`}
                                     >
                                         <FaPen />
                                     </LinkBack>
@@ -80,23 +80,6 @@ export const StructureListSection = () => {
                         }
                     ]
                 }
-            />
-            <LocationMap
-                className='my-0'
-                geometry={
-                    sectionsIn.map(sect => {
-                        if (!!sect.feature) {
-                            return {
-                                type: 'Feature',
-                                ...sect.feature.geometry
-                            }
-                        }
-                    }).filter(f => !!f)
-                }
-                view={sectionsIn[0]?.feature.view}
-                style={{
-                    height: '400px'
-                }}
             />
         </Card>
     )

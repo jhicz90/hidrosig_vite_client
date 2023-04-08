@@ -1,11 +1,9 @@
 import { useEffect } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { useWizard } from 'react-use-wizard'
-import { Button, Form, FormCheck, InputGroup, Offcanvas } from 'react-bootstrap'
-import { editActiveNewSection, searchRugosity, startSaveNewSection, useAddSectionMutation, useGetCalcPropertiesQuery, useLazyNewSectionByStructureQuery } from '../../../store/actions'
+import { Button, Form, FormCheck, InputGroup, Modal } from 'react-bootstrap'
+import { searchRugosity, useAddSectionMutation, useGetCalcPropertiesQuery, useLazyNewSectionByStructureQuery } from '../../../store/actions'
 import { InputMask, Liner, LoadingPage, OptionRugosity } from '../../../components'
 import { pDistance, pProgressive } from '../../../helpers'
 import { useNavigateState } from '../../../hooks'
@@ -15,7 +13,7 @@ export const CreateSection = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const { state: params } = useLocation()
     const { w } = Object.fromEntries([...searchParams])
-    const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
+    const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
     const [newSection, { data = null, isLoading, isError, error }] = useLazyNewSectionByStructureQuery()
     const [addSection, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddSectionMutation()
@@ -93,44 +91,28 @@ export const CreateSection = () => {
     }, [isError])
 
     return (
-        <Offcanvas
+        <Modal
             show={w === 'section_create'}
             onHide={() => setSearchParams()}
-            enforceFocus={false}
-            placement='end'
+            size='lg'
         >
-            <Offcanvas.Header closeButton={!isSavingAdd} closeVariant='white'>
-                <Offcanvas.Title>Crear tramo</Offcanvas.Title>
-            </Offcanvas.Header>
+            <Modal.Header closeButton={!isSavingAdd} closeVariant='white'>
+                <Modal.Title>Crear tramo</Modal.Title>
+            </Modal.Header>
             {
                 (!!data && !isLoading)
                     ?
                     <>
-                        <Offcanvas.Header className='offcanvas-primary'>
-                            <div className='d-flex justify-content-end gap-2 w-100'>
-                                <Button
-                                    disabled={isSavingAdd}
-                                    variant='primary'
-                                    type='submit'
-                                    form='form-irrigation-section-create'
-                                    className='w-100'
-                                >
-                                    Guardar nuevo
-                                </Button>
-                            </div>
-                        </Offcanvas.Header>
-                        <Offcanvas.Header className='flex-column'>
+                        <div className='flex-column p-2'>
                             <div className='container-fluid'>
                                 <div className='row mb-1'>
-                                    <div className='col-12'>
+                                    <div className='col-6'>
                                         <div className='input-group input-group-sm'>
                                             <span className='input-group-text col-6'>Estructura</span>
                                             <input value={data?.limitStructure.structureName || ''} readOnly type='text' className='form-control col-6' />
                                         </div>
                                     </div>
-                                </div>
-                                <div className='row mb-1'>
-                                    <div className='col-12'>
+                                    <div className='col-6'>
                                         <div className='input-group input-group-sm'>
                                             <span className='input-group-text col-6'>Total de tramos</span>
                                             <input value={data?.limitStructure.countSections || 0} readOnly type='text' className='form-control col-6' />
@@ -138,15 +120,13 @@ export const CreateSection = () => {
                                     </div>
                                 </div>
                                 <div className='row mb-1'>
-                                    <div className='col-12'>
+                                    <div className='col-6'>
                                         <div className='input-group input-group-sm'>
                                             <span className='input-group-text col-6'>Longitud acumulada</span>
                                             <input value={data?.limitStructure.distanceTotal || 0} readOnly type='text' className='form-control col-6' />
                                         </div>
                                     </div>
-                                </div>
-                                <div className='row mb-1'>
-                                    <div className='col-12'>
+                                    <div className='col-6'>
                                         <div className='input-group input-group-sm'>
                                             <span className='input-group-text col-6'>Longitud restante</span>
                                             <input value={data?.limitStructure.limit || 0} readOnly type='text' className='form-control col-6' />
@@ -154,12 +134,12 @@ export const CreateSection = () => {
                                     </div>
                                 </div>
                             </div>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
+                        </div>
+                        <Modal.Body>
                             <form id='form-irrigation-section-create' onSubmit={handleSubmit(handleSave)}>
                                 <Liner>Información</Liner>
                                 <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-6'>
                                         <Form.Group className='mb-3' controlId='newName'>
                                             <Form.Label>Nombre</Form.Label>
                                             <Form.Control
@@ -169,8 +149,6 @@ export const CreateSection = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
                                     <div className='col-12 col-md-6'>
                                         <Form.Group className='mb-3' controlId='newStatus'>
                                             <Form.Label>Estado</Form.Label>
@@ -186,7 +164,9 @@ export const CreateSection = () => {
                                             </Form.Select>
                                         </Form.Group>
                                     </div>
-                                    <div className='col-12 col-md-6'>
+                                </div>
+                                <div className='row'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newType'>
                                             <Form.Label>Tipo de estructura</Form.Label>
                                             <Form.Select
@@ -200,9 +180,7 @@ export const CreateSection = () => {
                                             </Form.Select>
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newWorkCapacity'>
                                             <Form.Label>Capacidad de trabajo</Form.Label>
                                             <Form.Select
@@ -218,15 +196,15 @@ export const CreateSection = () => {
                                             </Form.Select>
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newCoatedType'>
                                             <Form.Label>Tipo de revestimiento</Form.Label>
                                             <Form.Select
                                                 {...register('coatedType', { required: true })}
                                                 autoComplete='off'
+                                                disabled={!watch('coated')}
                                             >
+                                                <option value={0}>Ninguno</option>
                                                 <option value={1}>Solera</option>
                                                 <option value={2}>Talud derecho</option>
                                                 <option value={3}>Talud izquierdo</option>
@@ -234,7 +212,17 @@ export const CreateSection = () => {
                                                 <option value={5}>Talud izquierdo y solera</option>
                                                 <option value={6}>Total</option>
                                             </Form.Select>
-                                            <FormCheck id='newCoated' {...register('coated')} label='¿La estructura esta revestida?' />
+                                            <FormCheck
+                                                id='newCoated'
+                                                {...register('coated', {
+                                                    onChange: () => {
+                                                        setValue('coatedType', 0)
+                                                        setValue('leftSlopeThickness', 0)
+                                                        setValue('rightSlopeThickness', 0)
+                                                    }
+                                                })}
+                                                label='¿La estructura esta revestida?'
+                                            />
                                         </Form.Group>
                                     </div>
                                 </div>
@@ -392,7 +380,7 @@ export const CreateSection = () => {
                                     </div>
                                 </div>
                                 <div className='row'>
-                                    <div className='col-12 col-md-3'>
+                                    <div className='col-12 col-md-2'>
                                         <Form.Group className='mb-3' controlId='newGrade'>
                                             <Form.Label>Pendiente (S)</Form.Label>
                                             <Form.Control
@@ -404,7 +392,7 @@ export const CreateSection = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                    <div className='col-12 col-md-9'>
+                                    <div className='col-12 col-md-7'>
                                         <Form.Group className='mb-3' controlId='newRugosity'>
                                             <Form.Label>Rugosidad</Form.Label>
                                             <Controller
@@ -433,26 +421,35 @@ export const CreateSection = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
-                                        <InputGroup className='mb-3'>
-                                            <InputGroup.Text>Tipo de flujo:</InputGroup.Text>
+                                    <div className='col-12 col-md-3'>
+                                        <Form.Group controlId='typeFlow'>
+                                            <Form.Label>Tipo de flujo</Form.Label>
                                             <Form.Control
                                                 readOnly
                                                 type='text'
                                                 className={calcs?.froudeNumber === 1 ? 'text-warning' : calcs?.froudeNumber < 1 ? 'text-success' : 'text-danger'}
                                                 value={calcs?.typeFlow || 'Faltan datos'}
                                             />
-                                        </InputGroup>
+                                        </Form.Group>
                                     </div>
                                 </div>
                             </form>
-                        </Offcanvas.Body>
+                        </Modal.Body>
+                        <Modal.Footer className='flex-column align-items-stretch w-100 gap-2 border-top-0'>
+                            <Button
+                                disabled={isSavingAdd}
+                                variant='primary'
+                                type='submit'
+                                form='form-irrigation-section-create'
+                                size='lg'
+                            >
+                                Guardar nuevo
+                            </Button>
+                        </Modal.Footer>
                     </>
                     :
                     <LoadingPage />
             }
-        </Offcanvas>
+        </Modal>
     )
 }

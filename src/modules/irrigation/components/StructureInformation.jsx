@@ -36,7 +36,7 @@ export const StructureInformation = () => {
                 <form id='form-irrig-structure-edit-info' onSubmit={handleSubmit(handleUpdate)}>
                     <Liner>Detalle</Liner>
                     <div className='row'>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12'>
                             <Form.Group className='mb-3' controlId='pName'>
                                 <Form.Label>Nombre</Form.Label>
                                 <Form.Control
@@ -46,7 +46,23 @@ export const StructureInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6'>
+                    </div>
+                    <div className='row'>
+                        <div className='col-12'>
+                            <Form.Group className='mb-3' controlId='pObs'>
+                                <Form.Label>Observación</Form.Label>
+                                <Form.Control
+                                    {...register('obs')}
+                                    as='textarea'
+                                    type='text'
+                                    rows={4}
+                                    autoComplete='off'
+                                />
+                            </Form.Group>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-12 col-md-4'>
                             <Form.Group className='mb-3' controlId='pStatus'>
                                 <Form.Label>Estado de la estructura</Form.Label>
                                 <Form.Select
@@ -61,9 +77,7 @@ export const StructureInformation = () => {
                                 </Form.Select>
                             </Form.Group>
                         </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-4'>
                             <Form.Group className='mb-3' controlId='pDateCons'>
                                 <Form.Label>Fecha de construccion</Form.Label>
                                 <Controller
@@ -82,7 +96,7 @@ export const StructureInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-4'>
                             <Form.Group className='mb-3' controlId='pDateInvt'>
                                 <Form.Label>Fecha de inventario</Form.Label>
                                 <Controller
@@ -98,20 +112,6 @@ export const StructureInformation = () => {
                                             onChange={onChange}
                                         />
                                     )}
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12'>
-                            <Form.Group className='mb-3' controlId='pObs'>
-                                <Form.Label>Observación</Form.Label>
-                                <Form.Control
-                                    {...register('obs')}
-                                    as='textarea'
-                                    type='text'
-                                    rows={4}
-                                    autoComplete='off'
                                 />
                             </Form.Group>
                         </div>
@@ -168,7 +168,7 @@ export const StructureInformation = () => {
                     </div>
                     <Liner>Operación</Liner>
                     <div className='row'>
-                        <div className='col-12'>
+                        <div className='col-12 col-md-4'>
                             <Form.Group className='mb-3' controlId='pEfficiency'>
                                 <Form.Label>Eficiencia (%)</Form.Label>
                                 <Form.Control
@@ -180,9 +180,7 @@ export const StructureInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12'>
+                        <div className='col-12 col-md-4'>
                             <Form.Group className='mb-3' controlId='pFlow'>
                                 <Form.Label>Caudal (m3/seg)</Form.Label>
                                 <Form.Control

@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Form, Offcanvas } from 'react-bootstrap'
+import { Button, Form, Modal } from 'react-bootstrap'
 import { useAddStructureMutation, useLazyNewStructureQuery } from '../../../store/actions'
-import { DatePicker, InputMask, LoadingPage } from '../../../components'
+import { DatePicker, InputMask, Liner, LoadingPage } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreateStructure = () => {
@@ -11,9 +11,9 @@ export const CreateStructure = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const { state: params } = useLocation()
     const { w } = Object.fromEntries([...searchParams])
-    const [state, redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
+    const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
-    const [newStructure, { data = null, isLoading, isError }] = useLazyNewStructureQuery()
+    const [newStructure, { data = null, isLoading, isError, error }] = useLazyNewStructureQuery()
     const [addStructure, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddStructureMutation()
     const { register, control, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -50,7 +50,7 @@ export const CreateStructure = () => {
     useEffect(() => {
         if (isError) {
             // SE HIZO ESTE POR SER UN CASO ESPECIAL
-            if (params?.parent === '') {
+            if (error.status === 401) {
                 redirect()
             } else {
                 redirectEscape()
@@ -59,36 +59,33 @@ export const CreateStructure = () => {
     }, [isError])
 
     return (
-        <Offcanvas
+        <Modal
             show={w === 'structure_create'}
             onHide={() => setSearchParams()}
-            enforceFocus={false}
-            placement='end'
+            size='lg'
         >
-            <Offcanvas.Header closeButton={!isSavingAdd} closeVariant='white'>
-                <Offcanvas.Title>Crear estructura</Offcanvas.Title>
-            </Offcanvas.Header>
+            <Modal.Header closeButton={!isSavingAdd} closeVariant='white'>
+                <Modal.Title>Crear estructura</Modal.Title>
+            </Modal.Header>
             {
                 (!!data && !isLoading)
                     ?
                     <>
-                        <Offcanvas.Header className='offcanvas-primary'>
-                            <div className='d-flex justify-content-end gap-2 w-100'>
-                                <Button
-                                    disabled={isSavingAdd}
-                                    variant='primary'
-                                    type='submit'
-                                    form='form-irrig-structure-create'
-                                    className='w-100'
-                                >
-                                    Guardar nuevo
-                                </Button>
-                            </div>
-                        </Offcanvas.Header>
-                        <Offcanvas.Body>
+                        <Modal.Body>
                             <form id='form-irrig-structure-create' onSubmit={handleSubmit(handleSave)}>
+                                <Liner>Información</Liner>
                                 <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-6'>
+                                        <Form.Group className='mb-3' controlId='newName'>
+                                            <Form.Label>Nombre</Form.Label>
+                                            <Form.Control
+                                                {...register('name', { required: true })}
+                                                type='text'
+                                                autoComplete='off'
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                    <div className='col-12 col-md-6'>
                                         <Form.Group className='mb-3' controlId='newOrder'>
                                             <Form.Label>Tipo de estructura</Form.Label>
                                             <Form.Select
@@ -100,18 +97,6 @@ export const CreateStructure = () => {
                                                     data?.optionsOrder.map((o) => <option key={o._id} value={o._id}>{o.name}</option>)
                                                 }
                                             </Form.Select>
-                                        </Form.Group>
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
-                                        <Form.Group className='mb-3' controlId='newName'>
-                                            <Form.Label>Nombre</Form.Label>
-                                            <Form.Control
-                                                {...register('name', { required: true })}
-                                                type='text'
-                                                autoComplete='off'
-                                            />
                                         </Form.Group>
                                     </div>
                                 </div>
@@ -130,7 +115,7 @@ export const CreateStructure = () => {
                                     </div>
                                 </div>
                                 <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newStatus'>
                                             <Form.Label>Estado de la estructura</Form.Label>
                                             <Form.Select
@@ -145,9 +130,7 @@ export const CreateStructure = () => {
                                             </Form.Select>
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newDateCons'>
                                             <Form.Label>Fecha de construccion</Form.Label>
                                             <Controller
@@ -166,9 +149,7 @@ export const CreateStructure = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newDateInvt'>
                                             <Form.Label>Fecha de inventario</Form.Label>
                                             <Controller
@@ -189,7 +170,7 @@ export const CreateStructure = () => {
                                     </div>
                                 </div>
                                 <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newMargin'>
                                             <Form.Label>Margen</Form.Label>
                                             <Form.Select
@@ -201,9 +182,7 @@ export const CreateStructure = () => {
                                             </Form.Select>
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newProgressive'>
                                             <Form.Label>Progresiva</Form.Label>
                                             <Controller
@@ -224,9 +203,7 @@ export const CreateStructure = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newLongitude'>
                                             <Form.Label>Longitud (metros)</Form.Label>
                                             <Form.Control
@@ -242,8 +219,9 @@ export const CreateStructure = () => {
                                         </Form.Group>
                                     </div>
                                 </div>
+                                <Liner>Operación</Liner>
                                 <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newEfficiency'>
                                             <Form.Label>Eficiencia (%)</Form.Label>
                                             <Form.Control
@@ -255,9 +233,7 @@ export const CreateStructure = () => {
                                             />
                                         </Form.Group>
                                     </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col-12'>
+                                    <div className='col-12 col-md-4'>
                                         <Form.Group className='mb-3' controlId='newFlow'>
                                             <Form.Label>Caudal (m3/seg)</Form.Label>
                                             <Form.Control
@@ -271,11 +247,22 @@ export const CreateStructure = () => {
                                     </div>
                                 </div>
                             </form>
-                        </Offcanvas.Body>
+                        </Modal.Body>
+                        <Modal.Footer className='flex-column align-items-stretch w-100 gap-2 border-top-0'>
+                            <Button
+                                disabled={isSavingAdd}
+                                variant='primary'
+                                type='submit'
+                                form='form-irrig-structure-create'
+                                size='lg'
+                            >
+                                Guardar nuevo
+                            </Button>
+                        </Modal.Footer>
                     </>
                     :
                     <LoadingPage />
             }
-        </Offcanvas>
+        </Modal>
     )
 }

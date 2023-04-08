@@ -1,23 +1,23 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Controller, useForm } from 'react-hook-form'
 import { Button, Card, Form } from 'react-bootstrap'
+import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { LocationMap, OptionGeometry } from '../../../components'
-import { farmApi, searchPolygonObject, useUpdateFarmByIdMutation } from '../../../store/actions'
+import { searchLineStringObject, sectionApi, useUpdateSectionByIdMutation } from '../../../store/actions'
 
-export const AreaFarmAreaGeometry = () => {
+export const SectionLongitude = () => {
 
-    const { prpid } = useParams()
-    const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
-    const [updateFarm, { isLoading: isUpdating }] = useUpdateFarmByIdMutation()
+    const { sectid } = useParams()
+    const { data = null } = useSelector(sectionApi.endpoints.getSectionById.select(sectid))
+    const [updateSection, { isLoading: isUpdating }] = useUpdateSectionByIdMutation()
     const { watch, control, handleSubmit, reset } = useForm()
 
-    const handleUpdate = ({ feature }) => {
-        updateFarm({
-            id: prpid,
-            farm: { feature }
+    const handleUpdate = ({ feature, structure }) => {
+        updateSection({
+            id: sectid,
+            section: { feature, structure }
         })
     }
 
@@ -30,7 +30,7 @@ export const AreaFarmAreaGeometry = () => {
     return (
         <Card>
             <Card.Body>
-                <form id='form-userregister-areafarm-edit-geometry' onSubmit={handleSubmit(handleUpdate)}>
+                <form id='form-irrigation-section-longitude' onSubmit={handleSubmit(handleUpdate)}>
                     <div className='row'>
                         <div className='col-12'>
                             <Form.Group className='mb-3' controlId='pFeature'>
@@ -52,7 +52,7 @@ export const AreaFarmAreaGeometry = () => {
                                             isClearable
                                             defaultOptions
                                             cacheOptions
-                                            loadOptions={searchPolygonObject}
+                                            loadOptions={searchLineStringObject}
                                             menuPlacement={'auto'}
                                             placeholder={`Buscar...`}
                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}

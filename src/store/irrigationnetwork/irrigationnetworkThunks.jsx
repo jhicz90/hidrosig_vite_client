@@ -19,12 +19,21 @@ export const irrigationApi = storeApi.injectEndpoints({
                 } catch (error) { }
             },
         }),
+        getListWaterInForArea: builder.query({
+            query: ({ id, range = 200 }) => ({
+                url: `structure/search_waterin/${id}`,
+                params: { range }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        })
         // IRRIGATION
     })
 })
 
 export const {
-    useLazyGetIrrigationNetByJuntaQuery
+    useLazyGetIrrigationNetByJuntaQuery,
+    useLazyGetListWaterInForAreaQuery,
 } = irrigationApi
 
 export const startGetActiveIrrigationNetwork = (id, depth) => {
