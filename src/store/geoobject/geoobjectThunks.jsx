@@ -78,6 +78,19 @@ export const startSaveNewGeometry = () => {
     }
 }
 
+export const searchPointObject = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: 'geoobject/search/point',
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
+    }
+}
+
 export const searchLineStringObject = async (search) => {
     const resp = await fetchByToken({
         endpoint: 'geoobject/search/linestring',

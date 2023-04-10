@@ -1,71 +1,64 @@
-import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Card, Dropdown, DropdownButton, Form, InputGroup } from 'react-bootstrap'
-import { DataTable } from '../../../components'
-import { useLazyGetListWaterInForAreaQuery } from '../../../store/actions'
-import { FaSearchLocation } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
+import { Button, Card } from 'react-bootstrap'
+import { DataTable, LinkBack } from '../../../components'
+import { farmApi } from '../../../store/actions'
 
 export const AreaFarmWaterIn = () => {
 
     const { prpid } = useParams()
-    const [rangeSearch, setRangeSearch] = useState(200)
-    const [loadWaterIn, { data: watersIn = [], isLoading }] = useLazyGetListWaterInForAreaQuery()
+    const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
 
     return (
         <Card className='overflow-hidden'>
             <div className='row p-3'>
                 <div className='col-auto'>
-                    <InputGroup>
-                        <Button
-                            onClick={() => loadWaterIn({ id: prpid, range: rangeSearch })}
-                            className='d-flex align-items-center gap-2'
-                        >
-                            <FaSearchLocation size={24} />
-                            Tomas cercanas
-                        </Button>
-                        <DropdownButton>
-                            <Dropdown.ItemText>
-                                <Form.Group controlId='pLongSearch'>
-                                    <Form.Label>Distancia (metros)</Form.Label>
-                                    <Form.Control
-                                        value={rangeSearch}
-                                        onChange={(e) => setRangeSearch(e.target.value)}
-                                        type='number'
-                                    />
-                                </Form.Group>
-                            </Dropdown.ItemText>
-                        </DropdownButton>
-                    </InputGroup>
+                    <LinkBack
+                        className='btn btn-neutral text-primary'
+                        to={`?w=areafarm_create_waterin`}
+                        state={{ farm: data || '' }}
+                    >
+                        Agregar tramo
+                    </LinkBack>
                 </div>
             </div>
             <DataTable
-                rows={watersIn}
+                rows={data.inputIrrig}
                 columns={
                     [
                         {
-                            label: 'CANAL',
-                            minWidth: '250px',
+                            label: 'ORDEN',
+                            minWidth: '50px',
                             renderCell: (item) => (
-                                item.structure.name
+                                item.order
                             )
                         },
                         {
-                            label: 'TRAMO',
-                            minWidth: '250px',
-                            renderCell: (item) =>
-                                <p className='text-wrap m-0' style={{ fontSize: '0.75rem', width: '250px' }}>{item.name}</p>
+                            label: 'AREA DE RIEGO',
+                            minWidth: '50px',
+                            renderCell: (item) => (
+                                item.areaUse
+                            )
                         },
                         {
-                            label: 'PROGRESIVA',
-                            minWidth: '250px',
-                            renderCell: (item) =>
-                                <p className='text-muted m-0'>{`${item.progressiveStart} - ${item.progressiveEnd}`}</p>
+                            label: 'SISTEMA DE RIEGO',
+                            minWidth: '50px',
+                            renderCell: (item) => (
+                                item.irrigSystem.name
+                            )
+                        },
+                        {
+                            label: 'VOLUMEN',
+                            minWidth: '50px',
+                            renderCell: (item) => (
+                                <strong>{Number(item.regulation)}</strong>
+                            )
                         },
                         {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <>Opciones de elegir el tramo</>
+                                <Button>Editar</Button>
                         }
                     ]
                 }

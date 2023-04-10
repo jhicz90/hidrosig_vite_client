@@ -232,7 +232,7 @@ export const questionDeleteStructure = async (name) => {
         html:
             <>
                 <div className='fs-5 mb-2'>¿Estás seguro de eliminar?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
             </>,
         showCancelButton: true,
         confirmButtonText: 'Eliminar',
@@ -286,5 +286,18 @@ export const startImportNet = (fileName) => {
         })
 
         toast.dismiss(toastLoading)
+    }
+}
+
+export const searchStructureByJunta = async (junta, search) => {
+    const resp = await fetchByToken({
+        endpoint: `structure/search_by_junta/${junta}`,
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
     }
 }

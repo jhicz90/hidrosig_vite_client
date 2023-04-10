@@ -87,6 +87,7 @@ export const {
     useGetListSectionByStructureQuery,
     useGetListSectionQuery,
     useGetSectionByIdQuery,
+    useLazyGetListSectionByStructureQuery,
     useLazyNewSectionByStructureQuery,
     useNewSectionByStructureQuery,
     useUpdateSectionByIdMutation,

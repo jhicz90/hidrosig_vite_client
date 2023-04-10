@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import { randomColor } from '../helpers'
 
-export const LocationMap = ({ className = 'my-2', geometry = [], view = {}, style = {} }) => {
+export const MapLocation = ({ className = 'my-2', geometry = [], view = {}, style = {} }) => {
     return (
         <MapContainer
             className={className}

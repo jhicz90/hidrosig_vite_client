@@ -65,6 +65,14 @@ export const farmApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Frm']
         }),
+        updateFarmByIdAddInputIrrig: builder.mutation({
+            query: ({ id, inputIrrig }) => ({
+                url: `farm/add/${id}`,
+                method: 'put',
+                data: inputIrrig
+            }),
+            invalidatesTags: ['Frm']
+        }),
         deleteFarmById: builder.mutation({
             query: (id) => ({
                 url: `farm/delete/${id}`,
@@ -85,6 +93,7 @@ export const {
     useGetListFarmQuery,
     useLazyNewFarmQuery,
     useNewFarmQuery,
+    useUpdateFarmByIdAddInputIrrigMutation,
     useUpdateFarmByIdMutation,
 } = farmApi
 

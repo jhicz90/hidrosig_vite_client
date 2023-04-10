@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Card, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { LocationMap, OptionGeometry } from '../../../components'
+import { MapLocation, OptionGeometry } from '../../../components'
 import { farmApi, searchPolygonObject, useUpdateFarmByIdMutation } from '../../../store/actions'
 
 export const AreaFarmAreaGeometry = () => {
@@ -68,7 +68,7 @@ export const AreaFarmAreaGeometry = () => {
                     {
                         !!watch('feature')
                         &&
-                        <LocationMap
+                        <MapLocation
                             geometry={
                                 [
                                     {

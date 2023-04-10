@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { LocationMap, OptionGeometry } from '../../../components'
+import { MapLocation, OptionGeometry } from '../../../components'
 import { searchLineStringObject, sectionApi, useUpdateSectionByIdMutation } from '../../../store/actions'
 
 export const SectionLongitude = () => {
@@ -68,7 +68,7 @@ export const SectionLongitude = () => {
                     {
                         !!watch('feature')
                         &&
-                        <LocationMap
+                        <MapLocation
                             geometry={
                                 [
                                     {

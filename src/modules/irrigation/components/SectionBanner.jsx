@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
-import { LocationMap, TagNewReg } from '../../../components'
+import { MapLocation, TagNewReg } from '../../../components'
 import { sectionApi } from '../../../store/actions'
 
 export const SectionBanner = () => {
@@ -25,7 +25,7 @@ export const SectionBanner = () => {
                 &&
                 <div className='row'>
                     <div className='col'>
-                        <LocationMap
+                        <MapLocation
                             className='my-0'
                             geometry={
                                 [

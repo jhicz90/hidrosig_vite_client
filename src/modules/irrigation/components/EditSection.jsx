@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content'
 import AsyncSelect from 'react-select/async'
 import validator from 'validator'
 import { searchLineStringObject, searchRugosity, useDeleteSectionByIdMutation, useGetCalcPropertiesQuery, useGetSectionByIdQuery, useUpdateSectionByIdMutation } from '../../../store/actions'
-import { InputMask, LoadingPage, LocationMap, OptionGeometry, OptionRugosity } from '../../../components'
+import { InputMask, LoadingPage, MapLocation, OptionGeometry, OptionRugosity } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { pDistance } from '../../../helpers'
 
@@ -559,7 +559,7 @@ const EditSectionWindow = ({ id }) => {
                                             {
                                                 !!watch('feature')
                                                 &&
-                                                <LocationMap
+                                                <MapLocation
                                                     geometry={
                                                         [
                                                             {

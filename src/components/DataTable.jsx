@@ -3,7 +3,7 @@ import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { Virtualized } from '@table-library/react-table-library/virtualized'
 
-export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsComponent = NoResults, className = '', style = {}, virtual = false }) => {
+export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsComponent = NoResults, className = '', style = {}, virtual = false, height = '400px' }) => {
 
     // * MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
     // * TAMBIEN SE IMPLEMENTARA UN SOMBREADO O BACKGROUND ESPECIAL PARA LOS NUEVOS REGISTROS QUE APAREZCAN EN LA LISTA
@@ -21,7 +21,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
             :
             {
                 Table: `
-                    height: 400px;
+                    height: ${height};
                     background-color: #f5f8fa;
                     grid-template-rows: 40px repeat(${rows.length}, minmax(50px, 60px));
                     --data-table-library_grid-template-columns: ${columns.map(c => {
@@ -58,7 +58,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
     const data = { nodes: rows.map(r => ({ ...r, id: r._id })) }
 
     return (
-        <div style={{ height: '400px', ...style }} className={`${virtual ? 'table-virtual' : ''}`}>
+        <div style={{ height, ...style }} className={`${virtual ? 'table-virtual' : ''}`}>
             <Table theme={theme} data={data} layout={{ fixedHeader: true, horizontalScroll: true }}>
                 {
                     virtual

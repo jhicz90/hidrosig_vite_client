@@ -7,7 +7,7 @@ import withReactContent from 'sweetalert2-react-content'
 import AsyncSelect from 'react-select/async'
 import validator from 'validator'
 import { searchCommitteeByJunta, searchDocument, searchGeoObject, searchJunta, useDeleteBlockByIdMutation, useGetBlockByIdQuery, useUpdateBlockByIdMutation } from '../../../store/actions'
-import { LoadingPage, LocationMap, OptionDocument, OptionGeometry, OptionOrgz } from '../../../components'
+import { LoadingPage, MapLocation, OptionDocument, OptionGeometry, OptionOrgz } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { normalizeText } from '../../../helpers'
 
@@ -330,7 +330,7 @@ export const EditBlockWindow = ({ id }) => {
                                             {
                                                 !!watch('geometry')
                                                 &&
-                                                <LocationMap geometry={watch('geometry')?.geometry || {}} view={watch('geometry')?.view || {}} />
+                                                <MapLocation geometry={watch('geometry')?.geometry || {}} view={watch('geometry')?.view || {}} />
                                             }
                                         </Tab.Pane>
                                     </Tab.Content>

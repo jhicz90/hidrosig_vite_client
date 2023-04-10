@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import moment from 'moment'
-import { LocationMap, TagNewReg } from '../../../components'
+import { MapLocation, TagNewReg } from '../../../components'
 import { structureApi, useGetListSectionByStructureQuery } from '../../../store/actions'
 
 export const StructureBanner = () => {
@@ -27,7 +27,7 @@ export const StructureBanner = () => {
             </Card.Body>
             <div className='row'>
                 <div className='col'>
-                    <LocationMap
+                    <MapLocation
                         className='my-0'
                         geometry={
                             sectionsIn.map(sect => {

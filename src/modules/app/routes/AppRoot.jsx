@@ -22,6 +22,7 @@ import {
     CreateUserFarm,
     CreateUserSys,
     CreateVoucher,
+    CreateWaterIn,
     CreateWaterSource,
     CreateZone,
     DesignRoutes,
@@ -178,6 +179,7 @@ export const AppRoot = () => {
                         <EditWaterSource />
                         <EditZone />
                         <FileViewer />
+                        <CreateWaterIn />
                     </>
                 }
             >
