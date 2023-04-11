@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMap, Circle } from 'react-leaflet'
 import { randomColor } from '../helpers'
 
-export const MapLocation = ({ className = 'my-2', geometry = [], view = {}, style = {} }) => {
+export const MapLocation = ({ className = 'my-2', geometry = [], style = {} }) => {
     return (
         <MapContainer
             className={className}
@@ -13,9 +13,9 @@ export const MapLocation = ({ className = 'my-2', geometry = [], view = {}, styl
             style={{ height: '300px', ...style }}
         >
             {
-                Object.keys(view).length > 0
+                geometry.length > 0
                 &&
-                <CenterMap view={view} />
+                <CenterMap data={geometry} />
             }
             <TileLayer
                 attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
@@ -30,20 +30,20 @@ export const MapLocation = ({ className = 'my-2', geometry = [], view = {}, styl
     )
 }
 
-const CenterMap = ({ view }) => {
-    const [viewMap, setViewMap] = useState(view)
+const CenterMap = ({ data = [] }) => {
+    const [viewMap, setViewMap] = useState(data[0].properties)
     const map = useMap()
 
     useEffect(() => {
-        setViewMap(view)
-    }, [view])
+        setViewMap(data[0].properties)
+    }, [data])
 
-    map.setView([viewMap?.center[1], viewMap?.center[0]], viewMap?.zoom)
+    map.setView([viewMap.center[1], viewMap.center[0]], viewMap.zoom)
 
     return null
 }
 
-const DrawGeo = ({ data }) => {
+const DrawGeo = ({ data = [] }) => {
 
     const geoJsonRef = useRef()
 
@@ -55,10 +55,27 @@ const DrawGeo = ({ data }) => {
     }, [geoJsonRef, data])
 
     return (
-        <GeoJSON
-            ref={geoJsonRef}
-            data={data}
-            pathOptions={{ color: randomColor }}
-        />
+        <>
+            {
+                data.map(object => {
+                    if (object.properties.shape === 'Circle') {
+                        return <Circle
+                            key={`circle${object._id}`}
+                            center={object.geometry.coordinates.slice().reverse()}
+                            radius={object.properties.radius}
+                            pmIgnore={false}
+                            pathOptions={{ fillColor: randomColor }}
+                        />
+                    } else {
+                        return <GeoJSON
+                            key={`feature${object._id}`}
+                            data={object.geometry}
+                            pmIgnore={false}
+                            pathOptions={{ fillColor: randomColor }}
+                        />
+                    }
+                })
+            }
+        </>
     )
 }

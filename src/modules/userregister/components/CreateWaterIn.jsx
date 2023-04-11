@@ -198,13 +198,9 @@ export const CreateWaterIn = () => {
                         <MapLocation
                             geometry={
                                 [
-                                    {
-                                        type: 'Feature',
-                                        ...watch('waterPointFeature').geometry
-                                    }
+                                    watch('waterPointFeature')
                                 ]
                             }
-                        // view={watch('waterPointFeature')?.view || {}}
                         />
                     }
                 </form>

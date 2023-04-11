@@ -30,16 +30,8 @@ export const StructureBanner = () => {
                     <MapLocation
                         className='my-0'
                         geometry={
-                            sectionsIn.map(sect => {
-                                if (!!sect.feature) {
-                                    return {
-                                        type: 'Feature',
-                                        ...sect.feature.geometry
-                                    }
-                                }
-                            }).filter(f => !!f)
+                            sectionsIn.filter(s => Object.keys(s.feature).length > 0).map(sect => sect.feature)
                         }
-                        view={sectionsIn[0]?.feature.view}
                         style={{
                             height: '400px'
                         }}

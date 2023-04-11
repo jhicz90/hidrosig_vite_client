@@ -29,13 +29,9 @@ export const SectionBanner = () => {
                             className='my-0'
                             geometry={
                                 [
-                                    {
-                                        type: 'Feature',
-                                        ...data.feature.geometry
-                                    }
+                                    data.feature
                                 ]
                             }
-                            view={data.feature.view}
                             style={{
                                 height: '400px'
                             }}

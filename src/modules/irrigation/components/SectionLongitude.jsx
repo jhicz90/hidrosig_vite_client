@@ -71,13 +71,9 @@ export const SectionLongitude = () => {
                         <MapLocation
                             geometry={
                                 [
-                                    {
-                                        type: 'Feature',
-                                        ...watch('feature').geometry
-                                    }
+                                    watch('feature')
                                 ]
                             }
-                            view={watch('feature')?.view || {}}
                         />
                     }
                     <div className='d-flex justify-content-end gap-2'>
