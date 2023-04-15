@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { ButtonGroup, Card } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
+import { Card } from 'react-bootstrap'
+import { IoEyeSharp } from 'react-icons/io5'
 import { Avatar, DataTable, InputSearch, LinkBack, TagStatus, TagTimeAgo } from '../../../components'
 import { typeUserFarm } from '../../../helpers'
 import { farmApi, useGetListUserFarmByFarmQuery } from '../../../store/actions'
@@ -67,14 +67,15 @@ export const AreaFarmListHolder = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`/app/user_reg/user_farm/users/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

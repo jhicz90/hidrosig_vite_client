@@ -11,7 +11,7 @@ export const useNavigateState = (url = '') => {
     }
 
     const redirectEscape = () => {
-        navigate(`/app/err404`, { state: { from: location || null, replace: true } })
+        navigate(`/app/err404`, { state: { from: location || null }, replace: true })
     }
 
     return [redirect, redirectEscape]

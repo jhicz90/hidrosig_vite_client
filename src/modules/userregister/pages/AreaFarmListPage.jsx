@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FaPen } from 'react-icons/fa'
+import { IoEyeSharp } from 'react-icons/io5'
 import { InputSearch, LinkBack, DataTable, TagStatus, TagTimeAgo } from '../../../components'
 import { useGetListFarmQuery } from '../../../store/actions'
 
@@ -48,12 +48,13 @@ export const AreaFarmListPage = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <div className='btn-group'>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`/app/user_reg/user_farm/prps/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
                                 </div>
                         }

@@ -122,7 +122,7 @@ export const menuModule = [
                 detail: 'Lista y registro de caja chica, para un mejor control y detalle de los comprobantes.'
             },
             {
-                label: 'Recibos',
+                label: 'Comprobantes',
                 to: 'voucher',
                 meta: ['voucher'],
                 detail: 'Lista de comprobantes registrados en contabilidad.'

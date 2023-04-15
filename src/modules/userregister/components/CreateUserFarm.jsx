@@ -10,7 +10,7 @@ export const CreateUserFarm = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const { w } = Object.fromEntries([...searchParams])
-    const [state, redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/users')
+    const [redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/users')
 
     const [newUserFarm, { data = null, isLoading, isError }] = useLazyNewUserFarmQuery()
     const [addUserFarm, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddUserFarmMutation()

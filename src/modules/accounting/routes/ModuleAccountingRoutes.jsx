@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { PettyCashRoutes } from '..'
+import { PettyCashRoutes, VoucherRoutes } from '..'
 
 export const ModuleAccountingRoutes = () => {
     return (
@@ -12,6 +12,14 @@ export const ModuleAccountingRoutes = () => {
                 element={
                     <GuardRoute meta={['accounting']}>
                         <PettyCashRoutes />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`voucher/*`}
+                element={
+                    <GuardRoute meta={['accounting']}>
+                        <VoucherRoutes />
                     </GuardRoute>
                 }
             />

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { PettyCashListPage, PettyCashPage } from '../pages'
+import { PettyCashCreatePage, PettyCashListPage, PettyCashPage } from '../pages'
 
 export const PettyCashRoutes = () => {
     return (
@@ -13,6 +13,7 @@ export const PettyCashRoutes = () => {
                     </GuardRoute>
                 }
             />
+            <Route path={`create`} element={<PettyCashCreatePage />} />
             <Route path={`:pettycashid/*`} element={<PettyCashPage />} />
         </Routes>
     )

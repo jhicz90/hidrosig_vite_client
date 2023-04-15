@@ -1,28 +1,28 @@
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Button, Card } from 'react-bootstrap'
-import { MdAddPhotoAlternate } from 'react-icons/md'
 import { GridGallery } from '../../../components'
-import { pettycashApi, startModalResource, startUpdateImageIdPettyCash } from '../../../store/actions'
+import { startModalResource, startUpdateImageIdVoucher, voucherApi } from '../../../store/actions'
+import { MdAddPhotoAlternate } from 'react-icons/md'
 
-export const PettyCashImages = () => {
-
-    const { pettycashid } = useParams()
+export const VoucherImages = () => {
+    
+    const { voucherid } = useParams()
     const dispatch = useDispatch()
-    const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
+    const { data = null } = useSelector(voucherApi.endpoints.getVoucherById.select(voucherid))
 
-    const handleAddImage = (pettycash) => {
+    const handleAddImage = (voucher) => {
 
-        const images = pettycash?.images?.length || 0
+        const images = voucher?.images?.length || 0
         const limit = 4 - images
 
         if (images < 4) {
             dispatch(startModalResource({
-                tags: ['caja chica', `${pettycash.code}`, `${pettycash.name}`],
+                tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
                 groupTypes: 'images',
                 limit,
                 maxSize: 10,
-                setFiles: (data) => dispatch(startUpdateImageIdPettyCash(pettycash._id, data))
+                setFiles: (data) => dispatch(startUpdateImageIdVoucher(voucher._id, data))
             }))
         }
     }
@@ -31,7 +31,7 @@ export const PettyCashImages = () => {
         <Card>
             <Card.Body>
                 <Alert variant='info'>
-                    Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
+                    Ingrese las imagenes del comprobante.
                 </Alert>
                 <GridGallery
                     actionElement={

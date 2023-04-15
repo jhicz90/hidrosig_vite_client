@@ -8,6 +8,8 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
     // * MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
     // * TAMBIEN SE IMPLEMENTARA UN SOMBREADO O BACKGROUND ESPECIAL PARA LOS NUEVOS REGISTROS QUE APAREZCAN EN LA LISTA
 
+    const columnsTable = columns.filter(c => typeof c === 'object')
+
     const theme = useTheme([
         getTheme(),
         virtual
@@ -24,7 +26,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
                     height: ${height};
                     background-color: #f5f8fa;
                     grid-template-rows: 40px repeat(${rows.length}, minmax(50px, 60px));
-                    --data-table-library_grid-template-columns: ${columns.map(c => {
+                    --data-table-library_grid-template-columns: ${columnsTable.map(c => {
                         if (!c.width) {
                             if (!c.minWidth) {
                                 return 'minmax(200px, 1fr)'
@@ -42,6 +44,17 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
 
                     &.pin-right {
                         right: 0px;
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            bottom: 0;
+                            left: -20px;
+                            top: 0;
+                            width: 20px;
+                            box-shadow: inset -10px 0 8px -8px rgba(0,0,0,0.4);
+                            background-color: white;
+                        }
                     }
                 `,
                 Cell: `
@@ -50,6 +63,17 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
                     &.pin-right {
                         right: 0px;
                         background-color: #f5f8fa;
+
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            bottom: 0;
+                            left: -20px;
+                            top: 0;
+                            width: 20px;
+                            box-shadow: inset -10px 0 8px -8px rgba(0,0,0,0.4);
+                            height: calc(100% + 1px)
+                        }
                     }
                 `
             }
@@ -71,7 +95,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
                                     () => (
                                         <HeaderRow>
                                             {
-                                                columns.map((col, index) =>
+                                                columnsTable.map((col, index) =>
                                                     <HeaderCell key={`header_column_${index}`} resize={col.resize}>{col.label}</HeaderCell>
                                                 )
                                             }
@@ -82,7 +106,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
                                     (item, index) => (
                                         <Row key={`row_${item.id}`} item={item}>
                                             {
-                                                columns.map((col, index) =>
+                                                columnsTable.map((col, index) =>
                                                     <Cell key={`row_cell_${index}_${item.id}`}>{col.renderCell(item) || ''}</Cell>
                                                 )
                                             }
@@ -97,7 +121,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
                                 <Header>
                                     <HeaderRow>
                                         {
-                                            columns.map((col, index) =>
+                                            columnsTable.map((col, index) =>
                                                 <HeaderCell
                                                     key={`header_column_${index}`}
                                                     // resize={col.resize}
@@ -115,7 +139,7 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
                                         tableList.map((item) => (
                                             <Row key={`row_${item.id}`} item={item}>
                                                 {
-                                                    columns.map((col, index) =>
+                                                    columnsTable.map((col, index) =>
                                                         <Cell
                                                             key={`row_cell_${index}_${item.id}`}
                                                             pinLeft={col.pinLeft || undefined}

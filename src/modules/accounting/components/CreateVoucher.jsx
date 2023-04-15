@@ -6,7 +6,7 @@ import moment from 'moment'
 import validator from 'validator'
 import AsyncSelect from 'react-select/async'
 import { searchSocialReason, useAddVoucherMutation, useNewVoucherQuery } from '../../../store/actions'
-import { DatePicker, LoadingPage, OptionSocialReason } from '../../../components'
+import { DatePicker, Liner, LoadingPage, OptionSocialReason, TooltipInfo } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 
 export const CreateVoucher = () => {
@@ -28,7 +28,7 @@ const CreateVoucherWindow = ({ ptt = null }) => {
 
     const [show, setShow] = useState(true)
 
-    const [state, redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
+    const [redirect, redirectEscape] = useNavigateState('/app/acct/petty_cash')
 
     const { data = null, isLoading, isError } = useNewVoucherQuery(ptt, { refetchOnMountOrArgChange: true })
     const [addVoucher, { isLoading: isSaving }] = useAddVoucherMutation()
@@ -88,10 +88,11 @@ const CreateVoucherWindow = ({ ptt = null }) => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <form id='form-accounting-voucher-create' onSubmit={handleSubmit(handleSave)}>
+                                <Liner>Información</Liner>
                                 <div className='row'>
                                     <div className='col-12 col-md-6'>
                                         <Form.Group className='mb-3' controlId='newVoucherDay'>
-                                            <Form.Label>Fecha del comprobante</Form.Label>
+                                        <Form.Label>Fecha del comprobante <TooltipInfo message={'La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.'} /></Form.Label>
                                             <Controller
                                                 control={control}
                                                 name='voucherDay'
@@ -120,7 +121,7 @@ const CreateVoucherWindow = ({ ptt = null }) => {
                                     </div>
                                     <div className='col-12 col-md-6'>
                                         <Form.Group className='mb-3' controlId='newCancelDay'>
-                                            <Form.Label>Fecha de cancelación</Form.Label>
+                                        <Form.Label>Fecha de cancelación <TooltipInfo message={'Fecha en que se hizo la cancelación del comprobante.'} /></Form.Label>
                                             <Controller
                                                 control={control}
                                                 name='cancelDay'
@@ -213,6 +214,7 @@ const CreateVoucherWindow = ({ ptt = null }) => {
                                         </Form.Group>
                                     </div>
                                 </div>
+                                <Liner>Detalle</Liner>
                                 <div className='row'>
                                     <div className='col-12'>
                                         <Form.Group className='mb-3' controlId='newConcept'>

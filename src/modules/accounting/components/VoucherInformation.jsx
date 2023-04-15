@@ -1,47 +1,75 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import moment from 'moment'
 import AsyncSelect from 'react-select/async'
-import { searchSocialReason, startUpdateInformationVoucher } from '../../../store/actions'
+import { searchSocialReason, useUpdateVoucherByIdMutation, voucherApi } from '../../../store/actions'
 import { DatePicker, OptionSocialReason } from '../../../components'
 
-export const VoucherModuleInformation = () => {
+export const VoucherInformation = () => {
 
-    const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.voucher)
-    const { register, control, setValue, handleSubmit, reset } = useForm()
+    const { voucherid } = useParams()
+    const { data = null } = useSelector(voucherApi.endpoints.getVoucherById.select(voucherid))
+    const [updateVoucher, { isLoading: isUpdating }] = useUpdateVoucherByIdMutation()
+    const { register, control, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ voucherDay, cancelDay, typeReceipt, serie, numReceipt, socialReason, concept, typeIncomeExpenses, amountReceipt }) => {
-        dispatch(startUpdateInformationVoucher({
-            voucherDay,
-            cancelDay,
-            typeReceipt,
-            serie,
-            numReceipt,
-            socialReason,
-            idSocialReason: socialReason ? socialReason?.idSocialReason : '',
-            nameSocialReason: socialReason ? socialReason?.nameSocialReason : '',
-            concept,
-            typeIncomeExpenses,
-            amountReceipt
-        }))
+    const handleUpdate = async ({ socialReason, ...newData }) => {
+        try {
+            await updateVoucher({
+                id: data._id,
+                voucher: {
+                    ...newData,
+                    socialReason,
+                    idSocialReason: socialReason ? socialReason?.idSocialReason : '',
+                    nameSocialReason: socialReason ? socialReason?.nameSocialReason : '',
+                }
+            })
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     useEffect(() => {
         reset({
-            ...active
+            ...data
         })
-    }, [reset, active])
+    }, [reset, data])
+
+    // const dispatch = useDispatch()
+    // const { active, isSaving } = useSelector(state => state.voucher)
+    // const { register, control, setValue, handleSubmit, reset } = useForm()
+
+    // const handleSave = ({ voucherDay, cancelDay, typeReceipt, serie, numReceipt, socialReason, concept, typeIncomeExpenses, amountReceipt }) => {
+    //     dispatch(startUpdateInformationVoucher({
+    //         voucherDay,
+    //         cancelDay,
+    //         typeReceipt,
+    //         serie,
+    //         numReceipt,
+    //         socialReason,
+    //         idSocialReason: socialReason ? socialReason?.idSocialReason : '',
+    //         nameSocialReason: socialReason ? socialReason?.nameSocialReason : '',
+    //         concept,
+    //         typeIncomeExpenses,
+    //         amountReceipt
+    //     }))
+    // }
+
+    // useEffect(() => {
+    //     reset({
+    //         ...active
+    //     })
+    // }, [reset, active])
 
     return (
         <Card>
             <Card.Body>
-                <form onSubmit={handleSubmit(handleSave)}>
+                <form id='form-accounting-voucher-edit-info' onSubmit={handleSubmit(handleUpdate)}>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uVoucherDay'>
+                            <Form.Group className='mb-3' controlId='pVoucherDay'>
                                 <Form.Label>Fecha del comprobante</Form.Label>
                                 <Controller
                                     control={control}
@@ -51,11 +79,11 @@ export const VoucherModuleInformation = () => {
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            id='uVoucherDay'
+                                            id='pVoucherDay'
                                             value={value}
                                             onChange={(e) => {
-                                                if (moment(e).isBefore(active.pettycash.startDeclaration || new Date())) {
-                                                    setValue('cancelDay', active.pettycash.startDeclaration || new Date())
+                                                if (moment(e).isBefore(data.pettycash.startDeclaration || new Date())) {
+                                                    setValue('cancelDay', data.pettycash.startDeclaration || new Date())
                                                 } else {
                                                     setValue('cancelDay', e)
                                                 }
@@ -70,7 +98,7 @@ export const VoucherModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uCancelDay'>
+                            <Form.Group className='mb-3' controlId='pCancelDay'>
                                 <Form.Label>Fecha de cancelación</Form.Label>
                                 <Controller
                                     control={control}
@@ -80,22 +108,22 @@ export const VoucherModuleInformation = () => {
                                         field: { onChange, value },
                                     }) => (
                                         <DatePicker
-                                            id='uCancelDay'
-                                            minDate={moment(active.pettycash.startDeclaration || new Date()).toDate()}
+                                            id='pCancelDay'
+                                            minDate={moment(data.pettycash.startDeclaration || new Date()).toDate()}
                                             value={value}
                                             onChange={onChange}
                                         />
                                     )}
                                 />
-                                <div className='form-text'>
+                                <Form.Text>
                                     Fecha en que se hizo la cancelación del comprobante.
-                                </div>
+                                </Form.Text>
                             </Form.Group>
                         </div>
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='uTypeReceipt'>
+                            <Form.Group className='mb-3' controlId='pTypeReceipt'>
                                 <Form.Label>Tipo de comprobante</Form.Label>
                                 <Form.Select
                                     {...register('typeReceipt', { required: true })}
@@ -113,7 +141,7 @@ export const VoucherModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='uSerie'>
+                            <Form.Group className='mb-3' controlId='pSerie'>
                                 <Form.Label>Serie</Form.Label>
                                 <Form.Control
                                     {...register('serie', { required: true })}
@@ -123,8 +151,8 @@ export const VoucherModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='uNumReceipt'>
-                                <Form.Label>Número de comprobante</Form.Label>
+                            <Form.Group className='mb-3' controlId='pNumReceipt'>
+                                <Form.Label>Número</Form.Label>
                                 <Form.Control
                                     {...register('numReceipt', { required: true, min: 0.01 })}
                                     type='number'
@@ -137,7 +165,7 @@ export const VoucherModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12'>
-                            <Form.Group className='mb-3' controlId='uSocialReason'>
+                            <Form.Group className='mb-3' controlId='pSocialReason'>
                                 <Form.Label>Razón social</Form.Label>
                                 <Controller
                                     name='socialReason'
@@ -146,7 +174,7 @@ export const VoucherModuleInformation = () => {
                                     render={({ field }) =>
                                         <AsyncSelect
                                             {...field}
-                                            inputId='uSocialReason'
+                                            inputId='pSocialReason'
                                             classNamePrefix='rc-select'
                                             isClearable
                                             defaultOptions
@@ -166,7 +194,7 @@ export const VoucherModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12'>
-                            <Form.Group className='mb-3' controlId='uConcept'>
+                            <Form.Group className='mb-3' controlId='pConcept'>
                                 <Form.Label>Concepto</Form.Label>
                                 <Form.Control
                                     {...register('concept')}
@@ -179,7 +207,7 @@ export const VoucherModuleInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uTypeIncomeExpenses'>
+                            <Form.Group className='mb-3' controlId='pTypeIncomeExpenses'>
                                 <Form.Label>Ingreso / egreso</Form.Label>
                                 <Form.Select
                                     {...register('typeIncomeExpenses', { required: true })}
@@ -191,7 +219,7 @@ export const VoucherModuleInformation = () => {
                             </Form.Group>
                         </div>
                         <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='uAmountReceipt'>
+                            <Form.Group className='mb-3' controlId='pAmountReceipt'>
                                 <Form.Label>Importe rendido (S/.)</Form.Label>
                                 <Form.Control
                                     {...register('amountReceipt', {
@@ -208,7 +236,7 @@ export const VoucherModuleInformation = () => {
                     </div>
                     <div className='d-flex justify-content-end gap-2'>
                         <Button
-                            disabled={isSaving}
+                            disabled={isUpdating}
                             variant='primary'
                             type='submit'
                         >

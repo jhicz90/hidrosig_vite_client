@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { Button, ButtonGroup, Card } from 'react-bootstrap'
-import { FaPen, FaPlus, FaTrash } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Card } from 'react-bootstrap'
+import { IoAddSharp, IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { pettycashApi, startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery } from '../../../store/actions'
 import { DataTable, Image, InputSearch, LinkBack, TagDate, TagTimeAgo } from '../../../components'
 
@@ -11,6 +11,7 @@ export const PettyCashListVouchers = () => {
     const { pettycashid } = useParams()
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
+    const dispatch = useDispatch()
     const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
     const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: data?._id, search: '' }, { skip: !data })
 
@@ -51,7 +52,7 @@ export const PettyCashListVouchers = () => {
             <Card>
                 <div className='d-flex align-items-center'>
                     <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
-                    <LinkBack className='btn btn-neutral text-primary' to={`?w=voucher_create&ptt=${data._id}`}>Nuevo comprobante</LinkBack>
+                    <LinkBack className='btn btn-neutral text-primary' relative to={`/app/acct/voucher/create`} state={{ pettycashId: pettycashid }}>Nuevo comprobante</LinkBack>
                 </div>
                 <p className='px-3 py-2'>
                     {`${vouchersIn.length} Comprobantes - ${amountTotal.toFixed(2)} / ${(Number(data.remainingAmount) + Number(data.oldBalance) + Number(outTotal)).toFixed(2)}`}
@@ -128,20 +129,13 @@ export const PettyCashListVouchers = () => {
                                             {
                                                 item.images.length < 4
                                                 &&
-                                                <button
+                                                <Button
                                                     onClick={() => handleImageVoucher(data._id, item)}
-                                                    className='btn btn-sm btn-neutral shadow-sm'
-                                                    style={{
-                                                        padding: 0,
-                                                        width: '30px',
-                                                        height: '30px',
-                                                        display: 'flex',
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center'
-                                                    }}
+                                                    variant='neutral-primary-icon'
+                                                    style={{ padding: '0.5rem' }}
                                                 >
-                                                    <FaPlus />
-                                                </button>
+                                                    <IoAddSharp size={16} />
+                                                </Button>
                                             }
                                         </div>
                                     )
@@ -162,20 +156,22 @@ export const PettyCashListVouchers = () => {
                                 width: '120px',
                                 pinRight: true,
                                 renderCell: (item) =>
-                                    <ButtonGroup size='sm'>
+                                    <div className='d-flex gap-2 p-2'>
                                         <LinkBack
+                                            to={`/app/acct/voucher/${item._id}`}
                                             className='btn btn-neutral-icon'
-                                            to={`?w=voucher_edit&id=${item._id}`}
+                                            style={{ padding: '0.5rem' }}
                                         >
-                                            <FaPen />
+                                            <IoEyeSharp size={16} />
                                         </LinkBack>
                                         <Button
                                             onClick={() => handleDeleteVoucher(item)}
-                                            variant='danger'
+                                            variant='neutral-danger-icon'
+                                            style={{ padding: '0.5rem' }}
                                         >
-                                            <FaTrash />
+                                            <IoTrashSharp size={16} />
                                         </Button>
-                                    </ButtonGroup>
+                                    </div>
                             }
                         ]
                     }

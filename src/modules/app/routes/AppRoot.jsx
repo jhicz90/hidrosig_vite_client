@@ -15,7 +15,6 @@ import {
     CreateDocument,
     CreateJunta,
     CreateOccupation,
-    CreatePettyCash,
     CreateRole,
     CreateSection,
     CreateStructure,
@@ -166,7 +165,6 @@ export const AppRoot = () => {
                         <CreateCommittee />
                         <CreateDocument />
                         <CreateJunta />
-                        <CreatePettyCash />
                         <CreateSection />
                         <CreateStructure />
                         <CreateUserFarm />

@@ -84,74 +84,10 @@ export const {
     useGetListVoucherByPettyCashQuery,
     useGetListVoucherQuery,
     useGetVoucherByIdQuery,
+    useLazyNewVoucherQuery,
     useNewVoucherQuery,
     useUpdateVoucherByIdMutation,
 } = voucherApi
-
-export const startUpdateVoucher = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingVoucher(true))
-
-        const { active } = getState().voucher
-        const { _id } = active
-
-        const updateVoucher = {
-            ...active,
-            socialReason: active.socialReason !== null ? active.socialReason._id : null,
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `voucher/edit/${_id}`,
-            data: updateVoucher,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingVoucher(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Vchr']))
-            dispatch(setActiveVoucher(resp.voucher))
-        }
-    }
-}
-
-export const startUpdateInformationVoucher = ({ voucherDay, cancelDay, typeReceipt, serie, numReceipt, socialReason, idSocialReason, nameSocialReason, concept, typeIncomeExpenses, amountReceipt }) => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingVoucher(true))
-
-        const { active } = getState().voucher
-        const { _id } = active
-
-        const updateVoucher = {
-            voucherDay,
-            cancelDay,
-            typeReceipt,
-            serie,
-            numReceipt,
-            socialReason,
-            idSocialReason,
-            nameSocialReason,
-            concept,
-            typeIncomeExpenses,
-            amountReceipt,
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `voucher/edit/${_id}`,
-            data: updateVoucher,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingVoucher(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Vchr']))
-            dispatch(setActiveVoucher(resp.voucher))
-        }
-    }
-}
 
 export const startUpdateImageVoucher = (images) => {
     return async (dispatch, getState) => {
@@ -222,6 +158,49 @@ export const startAddSunatImageIdVoucher = (id) => {
             dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
         }
     }
+}
+
+export const questionDeleteVoucher = async (voucher) => {
+
+    const { serie, numReceipt } = voucher
+    const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true })
+
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar comprobante</div>
+                <div className="fs-5 fw-bold text-info mt-1">{`${serie}-${numReceipt}`}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar este comprobante?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }).then(({ value }) => {
+        return value
+    })
 }
 
 export const startDeleteVoucher = () => {

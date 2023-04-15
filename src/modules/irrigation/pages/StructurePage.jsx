@@ -1,6 +1,6 @@
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Card, Dropdown, Tab } from 'react-bootstrap'
-import { IoEllipsisVertical } from 'react-icons/io5'
+import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
 import { StructureAdditionalData, StructureBanner, StructureImages, StructureInformation, StructureListSection } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
@@ -42,8 +42,14 @@ export const StructurePage = () => {
                                 </div>
                                 <div className='col-12 col-md-auto'>
                                     <div className='d-flex gap-2'>
-                                        <Link to={`/app/schm/irrig`} className='btn btn-secondary'>RED DE RIEGO</Link>
-                                        <Link to={`/app/schm/irrig/str`} className='btn btn-secondary'>ESTRUCTURAS</Link>
+                                        <Link to={`/app/schm/irrig`} className='btn btn-neutral-secondary'>
+                                            <IoReturnUpBack size={24} />
+                                            RED DE RIEGO
+                                        </Link>
+                                        <Link to={`/app/schm/irrig/str`} className='btn btn-neutral-secondary'>
+                                            <IoReturnUpBack size={24} />
+                                            ESTRUCTURAS
+                                        </Link>
                                         <Dropdown className='dropdown-noarrow'>
                                             <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
                                                 <IoEllipsisVertical size={24} />

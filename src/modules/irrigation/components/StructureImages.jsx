@@ -32,6 +32,7 @@ export const StructureImages = () => {
                         <Button
                             onClick={() => handleAddImage(data)}
                             variant='neutral'
+                            className='align-items-center justify-content-center'
                         >
                             <MdAddPhotoAlternate size={40} />
                         </Button>

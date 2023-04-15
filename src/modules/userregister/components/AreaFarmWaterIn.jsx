@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Button, Card } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
+import { IoEyeSharp } from 'react-icons/io5'
 import { DataTable, LinkBack } from '../../../components'
 import { farmApi } from '../../../store/actions'
 
@@ -58,7 +59,15 @@ export const AreaFarmWaterIn = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <Button>Editar</Button>
+                                <div className='d-flex gap-2 p-2'>
+                                    <LinkBack
+                                        to={``}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
+                                    >
+                                        <IoEyeSharp size={16} />
+                                    </LinkBack>
+                                </div>
                         }
                     ]
                 }

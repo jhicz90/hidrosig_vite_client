@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { ButtonGroup, Card } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Card } from 'react-bootstrap'
+import { IoEyeSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
 import { useGetListDocumentByUserFarmQuery, userfarmApi } from '../../../store/actions'
 import { docTypes } from '../../../types'
@@ -24,7 +24,7 @@ export const UserFarmListDocument = () => {
                         {
                             label: 'NOMBRE',
                             renderCell: (item) =>
-                            <div className='d-flex flex-column'>
+                                <div className='d-flex flex-column'>
                                     <p
                                         className='d-block text-primary fw-bolder mb-0'
                                     >
@@ -53,14 +53,15 @@ export const UserFarmListDocument = () => {
                             width: '100px',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`?w=document_edit&id=${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

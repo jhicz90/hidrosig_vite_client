@@ -12,7 +12,7 @@ export const PettyCashBanner = () => {
     return (
         <Card>
             <Card.Body>
-                <div className='row align-items-center g-3 text-center text-xxl-start'>
+                <div className='row align-items-center g-3 text-center text-xl-start'>
                     <div className='col-12 col-sm-auto flex-1'>
                         <TagNewReg time={data.createdAt} />
                         <h3 className='fw-bolder mb-2'>{data.name}</h3>

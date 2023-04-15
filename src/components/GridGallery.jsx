@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { IoMdTrash } from 'react-icons/io'
 import { imageGet, imageSysGet } from '../helpers'
@@ -6,9 +6,10 @@ import { imageGet, imageSysGet } from '../helpers'
 export const GridGallery = ({ actionElement = null, elements = [] }) => {
 
     const navigate = useNavigate()
+    const location = useLocation()
 
     const handleLightbox = (images, index) => {
-        navigate(`?w=viewer`, { state: { files: images, index } })
+        navigate(`?w=viewer`, { state: { files: images, index, from: location || null } })
     }
 
     return (

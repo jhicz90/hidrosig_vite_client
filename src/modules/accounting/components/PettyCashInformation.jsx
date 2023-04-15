@@ -5,7 +5,7 @@ import { Button, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { pettycashApi, searchOrgz, useUpdatePettyCashByIdMutation } from '../../../store/actions'
-import { DatePicker, Liner, OptionOrgz } from '../../../components'
+import { DatePicker, Liner, OptionOrgz, TooltipInfo } from '../../../components'
 
 export const PettyCashInformation = () => {
 
@@ -13,40 +13,32 @@ export const PettyCashInformation = () => {
     const { lvlAccess } = useSelector(state => state.auth)
     const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
     const [updateUserFarm, { isLoading: isUpdating }] = useUpdatePettyCashByIdMutation()
-    const { register, control, handleSubmit, reset } = useForm({
-        defaultValues: {
-            organization: !!data?.organization?.orgId ? { _id: data?.organization?.orgId, name: data?.organization?.orgName, docid: data?.organization?.docId } : null
-        }
-    })
+    const { register, control, handleSubmit, reset } = useForm()
 
     const handleUpdate = ({ organization, ...updateData }) => {
         updateUserFarm({
             id: pettycashid,
             pettycash: {
                 ...updateData,
-                organization: {
-                    orgId: organization._id,
-                    orgName: organization.name,
-                    docId: organization.docid
-                }
+                organization: organization._id,
+                docModelOrg: organization.orgz
             }
         })
     }
 
     useEffect(() => {
         reset({
-            ...data,
-            organization: !!data?.organization?.orgId ? { _id: data?.organization?.orgId, name: data?.organization?.orgName, docid: data?.organization?.docId } : null
+            ...data
         })
     }, [reset, data])
 
     return (
         <Card>
             <Card.Body>
-                <form id='form-accounting-pettycash-edit' onSubmit={handleSubmit(handleUpdate)}>
+                <form id='form-accounting-pettycash-edit-info' onSubmit={handleSubmit(handleUpdate)}>
                     <Liner>Información</Liner>
                     <div className='row'>
-                        <div className='col-12 col-md-3'>
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pCode'>
                                 <Form.Label>Código</Form.Label>
                                 <Form.Control
@@ -58,7 +50,7 @@ export const PettyCashInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-3'>
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pYear'>
                                 <Form.Label>Año</Form.Label>
                                 <Form.Control
@@ -72,7 +64,7 @@ export const PettyCashInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-4 col-xl-6'>
                             <Form.Group className='mb-3' controlId='pName'>
                                 <Form.Label>Nombre</Form.Label>
                                 <Form.Control
@@ -97,11 +89,11 @@ export const PettyCashInformation = () => {
                             </Form.Group>
                         </div>
                     </div>
-                    <Liner>Detalle de efectivo</Liner>
+                    <Liner>Comprobante o ficha</Liner>
                     <div className='row'>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-5 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pStartDeclaration'>
-                                <Form.Label>Fecha del comprobante</Form.Label>
+                                <Form.Label>Fecha <TooltipInfo message={'La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.'} /></Form.Label>
                                 <Controller
                                     control={control}
                                     name='startDeclaration'
@@ -116,14 +108,11 @@ export const PettyCashInformation = () => {
                                         />
                                     )}
                                 />
-                                <Form.Text>
-                                    La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.
-                                </Form.Text>
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-5 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pReceipt'>
-                                <Form.Label>Número de comprobante</Form.Label>
+                                <Form.Label>Número</Form.Label>
                                 <Form.Control
                                     {...register('receipt', { required: true })}
                                     type='text'
@@ -132,10 +121,11 @@ export const PettyCashInformation = () => {
                             </Form.Group>
                         </div>
                     </div>
+                    <Liner>Cheque</Liner>
                     <div className='row'>
-                        <div className='col-12 col-md-4'>
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pDocId'>
-                                <Form.Label>Número de cheque</Form.Label>
+                                <Form.Label>Número</Form.Label>
                                 <Form.Control
                                     {...register('check', { required: true })}
                                     type='text'
@@ -143,9 +133,9 @@ export const PettyCashInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-4'>
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pRemainingAmount'>
-                                <Form.Label>Monto del cheque (S/.)</Form.Label>
+                                <Form.Label>Monto (S/.)</Form.Label>
                                 <Form.Control
                                     {...register('remainingAmount', {
                                         required: true,
@@ -158,9 +148,9 @@ export const PettyCashInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-4'>
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pOldBalance'>
-                                <Form.Label>Saldo anterior (S/.)</Form.Label>
+                                <Form.Label>Saldo (S/.) <TooltipInfo message={'Si al momento de iniciar esta declaración existe un saldo previo a esta caja.'} /></Form.Label>
                                 <Form.Control
                                     {...register('oldBalance', {
                                         required: true,
@@ -171,50 +161,50 @@ export const PettyCashInformation = () => {
                                     step={0.01}
                                     autoComplete='off'
                                 />
-                                <Form.Text>
-                                    Si al momento de iniciar esta declaración existe un saldo previo a esta caja.
-                                </Form.Text>
                             </Form.Group>
                         </div>
                     </div>
                     {
                         lvlAccess === 1
                         &&
-                        <div className='row'>
-                            <div className='col'>
-                                <Form.Group className='mb-3' controlId='pOrgz'>
-                                    <Form.Label>Organización</Form.Label>
-                                    <Controller
-                                        name='organization'
-                                        control={control}
-                                        rules={{ required: true }}
-                                        render={
-                                            ({ field }) =>
-                                                <AsyncSelect
-                                                    {...field}
-                                                    inputId='pOrgz'
-                                                    classNamePrefix='rc-select'
-                                                    styles={{
-                                                        control: (baseStyles, state) => ({
-                                                            ...baseStyles,
-                                                            minHeight: '90px',
-                                                        }),
-                                                    }}
-                                                    isClearable
-                                                    defaultOptions
-                                                    loadOptions={searchOrgz}
-                                                    menuPlacement={'auto'}
-                                                    placeholder={`Buscar...`}
-                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                    getOptionValue={e => e._id}
-                                                    getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                                />
-                                        }
-                                    />
-                                </Form.Group>
+                        <>
+                            <Liner>Organización</Liner>
+                            <div className='row'>
+                                <div className='col-12 col-md-4 col-xl-3'>
+                                    <Form.Group className='mb-3' controlId='pOrgz'>
+                                        <Form.Label>Junta o Comisión <TooltipInfo message={'Seleccione la organización a la que pertenecera esta caja chica.'} /></Form.Label>
+                                        <Controller
+                                            name='organization'
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={
+                                                ({ field }) =>
+                                                    <AsyncSelect
+                                                        {...field}
+                                                        inputId='pOrgz'
+                                                        classNamePrefix='rc-select'
+                                                        styles={{
+                                                            control: (baseStyles, state) => ({
+                                                                ...baseStyles,
+                                                                minHeight: '60px',
+                                                            }),
+                                                        }}
+                                                        isClearable
+                                                        defaultOptions
+                                                        loadOptions={searchOrgz}
+                                                        menuPlacement={'auto'}
+                                                        placeholder={`Buscar...`}
+                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                        getOptionValue={e => e._id}
+                                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                                    />
+                                            }
+                                        />
+                                    </Form.Group>
+                                </div>
                             </div>
-                        </div>
+                        </>
                     }
                     <div className='d-flex justify-content-end gap-2'>
                         <Button

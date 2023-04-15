@@ -28,7 +28,7 @@ export const pettycashApi = storeApi.injectEndpoints({
                 url: `pettycash/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.pettycash,
-            providesTags: (result, error, arg) => [{ type: 'Ptty', id: result._id }]
+            providesTags: ['Ptty']
         }),
         getListPettyCash: builder.query({
             query: (search) => ({
@@ -75,6 +75,7 @@ export const {
     useGetListPettyCashByUsrSysQuery,
     useGetListPettyCashQuery,
     useGetPettyCashByIdQuery,
+    useLazyNewPettyCashQuery,
     useNewPettyCashQuery,
     useUpdatePettyCashByIdMutation,
 } = pettycashApi
