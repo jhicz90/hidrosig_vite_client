@@ -34,7 +34,7 @@ export const AreaFarmInformation = () => {
                 <form id='form-userregister-areafarm-edit-info' onSubmit={handleSubmit(handleUpdate)}>
                     <Liner>Detalle</Liner>
                     <div className='row'>
-                        <div className='col-12 col-md-6 col-lg-3'>
+                        <div className='col-12 col-md-3 col-xl-2'>
                             <Form.Group className='mb-3' controlId='pCode'>
                                 <Form.Label>Código</Form.Label>
                                 <Form.Control
@@ -45,7 +45,7 @@ export const AreaFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-3'>
+                        <div className='col-12 col-md-3 col-xl-2'>
                             <Form.Group className='mb-3' controlId='pCadUnit'>
                                 <Form.Label>Unidad Catastral</Form.Label>
                                 <Form.Control
@@ -55,7 +55,7 @@ export const AreaFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-6'>
+                        <div className='col-12 col-md-6 col-xl-4'>
                             <Form.Group className='mb-3' controlId='pName'>
                                 <Form.Label>Nombre del predio</Form.Label>
                                 <Form.Control
@@ -81,7 +81,7 @@ export const AreaFarmInformation = () => {
                     </div>
                     <Liner>Área</Liner>
                     <div className='row'>
-                        <div className='col-12 col-md-6 col-lg-3'>
+                        <div className='col-12 col-md-3 col-xl-2'>
                             <Form.Group className='mb-3' controlId='pAreaTotal'>
                                 <Form.Label>Area total</Form.Label>
                                 <Form.Control
@@ -92,7 +92,7 @@ export const AreaFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-3'>
+                        <div className='col-12 col-md-3 col-xl-2'>
                             <Form.Group className='mb-3' controlId='pAreaLic'>
                                 <Form.Label>Area de licencia</Form.Label>
                                 <Form.Control
@@ -106,7 +106,7 @@ export const AreaFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-3'>
+                        <div className='col-12 col-md-3 col-xl-2'>
                             <Form.Group className='mb-3' controlId='pAreaPer'>
                                 <Form.Label>Area de permiso</Form.Label>
                                 <Form.Control
@@ -120,7 +120,7 @@ export const AreaFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6 col-lg-3'>
+                        <div className='col-12 col-md-3 col-xl-2'>
                             <Form.Group className='mb-3' controlId='pAreaUse'>
                                 <Form.Label>Area de uso</Form.Label>
                                 <Form.Control
@@ -134,11 +134,11 @@ export const AreaFarmInformation = () => {
                         </div>
                     </div>
                     <Liner>Bloque de riego y ubicación</Liner>
-                    {
-                        lvlAccess === 1
-                        &&
-                        <div className='row'>
-                            <div className='col-12 col-md-6'>
+                    <div className='row'>
+                        {
+                            lvlAccess === 1
+                            &&
+                            <div className='col-12 col-md-4 col-xl-3'>
                                 <Form.Group className='mb-3' controlId='pJunta'>
                                     <Form.Label>Junta de usuarios</Form.Label>
                                     <Controller
@@ -156,6 +156,12 @@ export const AreaFarmInformation = () => {
                                                     {...field}
                                                     inputId='pJunta'
                                                     classNamePrefix='rc-select'
+                                                    styles={{
+                                                        control: (baseStyles, state) => ({
+                                                            ...baseStyles,
+                                                            minHeight: '90px',
+                                                        }),
+                                                    }}
                                                     isClearable
                                                     defaultOptions
                                                     loadOptions={searchJunta}
@@ -170,10 +176,8 @@ export const AreaFarmInformation = () => {
                                     />
                                 </Form.Group>
                             </div>
-                        </div>
-                    }
-                    <div className='row'>
-                        <div className='col-12 col-md-6'>
+                        }
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pBlock'>
                                 <Form.Label>Bloque de riego</Form.Label>
                                 <Controller
@@ -208,7 +212,7 @@ export const AreaFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-4 col-xl-3'>
                             <Form.Group className='mb-3' controlId='pLocation'>
                                 <Form.Label>Localidad</Form.Label>
                                 <Controller
@@ -243,7 +247,7 @@ export const AreaFarmInformation = () => {
                         </div>
                     </div>
                     <div className='row'>
-                        <div className='col-12 col-md-6'>
+                        <div className='col-12 col-md-9 col-xl-6'>
                             <Form.Group className='mb-3' controlId='pPlace'>
                                 <Form.Label>Lugar de referencia</Form.Label>
                                 <Form.Control

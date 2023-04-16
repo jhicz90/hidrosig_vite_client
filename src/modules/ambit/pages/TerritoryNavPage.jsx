@@ -1,31 +1,27 @@
-import { useEffect } from 'react'
-import { Card, Nav, Tab } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
 import { NavLink, Outlet } from 'react-router-dom'
+import { Nav, Tab } from 'react-bootstrap'
 import { LinkBack } from '../../../components'
-import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
 
 export const TerritoryNavPage = () => {
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(clearToolbarActions())
-        dispatch(setToolbarTitle('TERRITORIO'))
-        dispatch(setToolbarActions(
-            <>
-                <LinkBack className='btn btn-neutral text-primary' to={`?w=zone_create&j=`}>Nueva zona</LinkBack>
-                <LinkBack className='btn btn-neutral text-primary' to={`?w=block_create&j=&c=`}>Nuevo bloque</LinkBack>
-            </>
-        ))
-
-        return () => {
-            dispatch(clearToolbarActions())
-        }
-    }, [dispatch])
-
     return (
         <>
+            <div className='container-fluid'>
+                <div className='row my-3'>
+                    <div className='col-12'>
+                        <div className='row align-items-center justify-content-between g-3'>
+                            <div className='col-12 col-md-auto'>
+                                <h4 className='mb-0'>TERRITORIO</h4>
+                            </div>
+                            <div className='col-12 col-md-auto'>
+                                <div className='d-flex gap-2'>
+                                    <LinkBack className='btn btn-neutral text-primary' to={`zone/create`}>Nueva zona</LinkBack>
+                                    <LinkBack className='btn btn-neutral text-primary' to={`block/create`}>Nuevo bloque</LinkBack>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className='row g-0 justify-content-center'>
                 <div className='col'>
                     <Tab.Container>

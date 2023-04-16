@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Card, Dropdown, Tab } from 'react-bootstrap'
 import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
@@ -20,12 +21,14 @@ export const StructurePage = () => {
         }
     }
 
+    useEffect(() => {
+        if (isError) {
+            redirectEscape()
+        }
+    }, [isError])
+
     if (isLoading) {
         return <LoadingPage />
-    }
-
-    if (isError) {
-        redirectEscape()
     }
 
     return (

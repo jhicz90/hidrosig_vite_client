@@ -76,6 +76,7 @@ export const {
     useGetListWaterSourceByJuntaQuery,
     useGetListWaterSourceQuery,
     useGetWaterSourceByIdQuery,
+    useLazyNewWaterSourceQuery,
     useNewWaterSourceQuery,
     useUpdateWaterSourceByIdMutation,
 } = watersourceApi
@@ -192,6 +193,48 @@ export const startUpdateDataWaterSourceInIrrigNet = (watersource) => {
             }
         }
     }
+}
+
+export const questionDeleteWaterSource = async (name) => {
+
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
+
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar fuente de agua</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta fuente de agua?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }).then(({ value }) => {
+        return value
+    })
 }
 
 export const startDeleteWaterSource = () => {

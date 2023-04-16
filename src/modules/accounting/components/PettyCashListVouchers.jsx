@@ -52,7 +52,7 @@ export const PettyCashListVouchers = () => {
             <Card>
                 <div className='d-flex align-items-center'>
                     <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
-                    <LinkBack className='btn btn-neutral text-primary' relative to={`/app/acct/voucher/create`} state={{ pettycashId: pettycashid }}>Nuevo comprobante</LinkBack>
+                    <LinkBack className='btn btn-primary' relative to={`/app/acct/voucher/create`} state={{ pettycashId: pettycashid }}>Nuevo comprobante</LinkBack>
                 </div>
                 <p className='px-3 py-2'>
                     {`${vouchersIn.length} Comprobantes - ${amountTotal.toFixed(2)} / ${(Number(data.remainingAmount) + Number(data.oldBalance) + Number(outTotal)).toFixed(2)}`}

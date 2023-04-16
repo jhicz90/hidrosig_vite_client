@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
-import { InputSearch, LinkBack, TableGrid, TagTimeAgo } from '../../../components'
+import { IoEyeSharp } from 'react-icons/io5'
+import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
 import { useGetListBlockQuery } from '../../../store/actions'
 
 export const BlockListPage = () => {
@@ -12,7 +11,7 @@ export const BlockListPage = () => {
     return (
         <>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-            <TableGrid
+            <DataTable
                 rows={list}
                 columns={
                     [
@@ -60,14 +59,15 @@ export const BlockListPage = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
-                                        to={`?w=block_edit&id=${item._id}`}
+                                        to={`${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

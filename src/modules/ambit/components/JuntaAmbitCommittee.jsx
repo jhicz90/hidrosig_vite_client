@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { ButtonGroup, Card } from 'react-bootstrap'
-import { IoMdEye } from 'react-icons/io'
-import { juntaApi, useGetListCommByJuntaQuery } from '../../../store/actions'
+import { useSelector } from 'react-redux'
+import { Card } from 'react-bootstrap'
+import { IoEyeSharp } from 'react-icons/io5'
 import { Avatar, DataTable, InputSearch, LinkBack, TagStatus } from '../../../components'
+import { juntaApi, useGetListCommByJuntaQuery } from '../../../store/actions'
 
 export const JuntaAmbitCommittee = () => {
 
@@ -50,14 +50,15 @@ export const JuntaAmbitCommittee = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`/app/ambit/orgz/comm/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <IoMdEye />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

@@ -64,6 +64,7 @@ export const {
     useDeleteJuntaByIdMutation,
     useGetJuntaByIdQuery,
     useGetListJuntaQuery,
+    useLazyNewJuntaQuery,
     useNewJuntaQuery,
     useUpdateJuntaByIdMutation,
 } = juntaApi

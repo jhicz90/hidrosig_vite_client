@@ -14,8 +14,8 @@ export const UserAndFarmNavPage = () => {
                             </div>
                             <div className='col-12 col-md-auto'>
                                 <div className='d-flex gap-2'>
-                                    <LinkBack className='btn btn-neutral text-primary' to={`?w=userfarm_create`}>Nuevo usuario</LinkBack>
-                                    <LinkBack className='btn btn-neutral text-primary' to={`?w=areafarm_create`}>Nuevo predio</LinkBack>
+                                    <LinkBack className='btn btn-neutral text-primary' to={`users/create`}>Nuevo usuario</LinkBack>
+                                    <LinkBack className='btn btn-neutral text-primary' to={`prps/create`}>Nuevo predio</LinkBack>
                                 </div>
                             </div>
                         </div>

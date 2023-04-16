@@ -86,158 +86,51 @@ export const {
     useGetListBlockByAmbitQuery,
     useGetListBlockByJuntaQuery,
     useGetListBlockQuery,
+    useLazyNewBlockQuery,
     useNewBlockQuery,
     useUpdateBlockByIdMutation,
 } = blockApi
 
-export const startAddNewBlock = () => {
-    return async (dispatch) => {
+export const questionDeleteBlock = async (name) => {
 
-        dispatch(addNewBlock())
+    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
-        const resp = await fetchByToken({
-            endpoint: `block/create/new`
-        })
-
-        dispatch(setSavingNewBlock(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewBlock(resp.block))
-        }
-    }
-}
-
-export const startSaveNewBlock = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingNewBlock(true))
-
-        const { activeNew } = getState().block
-
-        const newBlock = {
-            ...activeNew,
-            junta: activeNew.junta !== null ? activeNew.junta._id : null,
-            committee: activeNew.committee !== null ? activeNew.committee._id : null,
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `block/create/new`,
-            data: newBlock,
-            method: 'POST'
-        })
-
-        dispatch(setSavingNewBlock(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Trrt']))
-            dispatch(setActiveNewBlock(null))
-        }
-    }
-}
-
-export const startGetBlock = (id) => {
-    return async (dispatch) => {
-
-        dispatch(setSavingBlock(true))
-
-        const resp = await fetchByToken({
-            endpoint: `block/edit/${id}`
-        })
-
-        dispatch(setSavingBlock(false))
-
-        if (resp.ok) {
-            dispatch(setActiveBlock(resp.block))
-        }
-    }
-}
-
-export const startUpdateBlock = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingBlock(true))
-
-        const { active } = getState().block
-        const { _id } = active
-
-        const updateBlock = {
-            ...active
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `block/edit/${_id}`,
-            data: updateBlock,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingBlock(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Trrt']))
-            dispatch(setActiveBlock(resp.block))
-        }
-    }
-}
-
-export const startDeleteBlock = () => {
-    return async (dispatch, getState) => {
-        const { active } = getState().block
-        const { _id, name } = active
-
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
-
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Eliminar bloque de riego</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar este bloque de riego?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: `btn btn-warning`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar bloque de riego</div>
+                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar este bloque de riego?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
             }
-        }).then(async (result) => {
-            if (result.value) {
-
-                dispatch(setSavingBlock(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `block/delete/${_id}`,
-                    method: 'DELETE'
-                })
-
-                dispatch(setSavingBlock(false))
-
-                if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Trrt']))
-                    dispatch(setActiveBlock(null))
-                }
-            }
-        })
-    }
+        }
+    }).then(({ value }) => {
+        return value
+    })
 }
 
 export const searchBlock = async (search) => {

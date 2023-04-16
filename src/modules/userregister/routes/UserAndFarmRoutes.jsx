@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { UserAndFarmNavPage, UserFarmImportPage, UserFarmPage, UserFarmListPage, AreaFarmListPage, AreaFarmPage } from '..'
+import { UserAndFarmNavPage, UserFarmImportPage, UserFarmPage, UserFarmListPage, AreaFarmListPage, AreaFarmPage, UserFarmCreatePage, AreaFarmCreatePage, WaterInCreatePage } from '..'
 
 export const UserAndFarmRoutes = () => {
     return (
@@ -33,12 +33,24 @@ export const UserAndFarmRoutes = () => {
                 />
             </Route>
             <Route
+                path={`users/create`}
+                element={<UserFarmCreatePage />}
+            />
+            <Route
                 path={`users/:userid/*`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <UserFarmPage />
                     </GuardRoute>
                 }
+            />
+            <Route
+                path={`prps/create`}
+                element={<AreaFarmCreatePage />}
+            />
+            <Route
+                path={`wt/create`}
+                element={<WaterInCreatePage />}
             />
             <Route
                 path={`prps/:prpid/*`}

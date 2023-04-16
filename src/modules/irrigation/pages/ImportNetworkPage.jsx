@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { Button, Card, CardGroup } from 'react-bootstrap'
 import { startExportNet, startImportNet, startModalTempResource } from '../../../store/actions'
 
-export const ImportNetwork = () => {
+export const ImportNetworkPage = () => {
 
     const dispatch = useDispatch()
 

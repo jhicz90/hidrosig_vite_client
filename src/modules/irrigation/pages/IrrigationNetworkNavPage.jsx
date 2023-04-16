@@ -18,8 +18,8 @@ export const IrrigationNetworkNavPage = () => {
                             </div>
                             <div className='col-12 col-md-auto'>
                                 <div className='d-flex gap-2'>
-                                    <LinkBack className='btn btn-neutral text-primary' to={`?w=structure_create`} state={{ parent: id || '' }}>Nueva estructura</LinkBack>
-                                    <LinkBack className='btn btn-neutral text-primary' to={`?w=watersource_create`}>Nueva fuente de agua</LinkBack>
+                                    <LinkBack className='btn btn-neutral text-primary' to={`str/create`} state={{ parent: id || '' }}>Nueva estructura</LinkBack>
+                                    <LinkBack className='btn btn-neutral text-primary' to={`ws/create`}>Nueva fuente de agua</LinkBack>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { CommitteePage, JuntaPage, OrganizationNavPage, JuntaListPage, CommitteeListPage } from '..'
+import { CommitteePage, JuntaPage, OrganizationNavPage, JuntaListPage, CommitteeListPage, JuntaCreatePage, CommitteeCreatePage } from '..'
 
 export const OrganizationRoutes = () => {
     return (
@@ -25,12 +25,20 @@ export const OrganizationRoutes = () => {
                 />
             </Route>
             <Route
+                path={`junta/create`}
+                element={<JuntaCreatePage />}
+            />
+            <Route
                 path={`junta/:juntaid/*`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <JuntaPage />
                     </GuardRoute>
                 }
+            />
+            <Route
+                path={`comm/create`}
+                element={<CommitteeCreatePage />}
             />
             <Route
                 path={`comm/:commid/*`}

@@ -1,27 +1,28 @@
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import { IoEyeSharp } from 'react-icons/io5'
-import { DataTable, LinkBack } from '../../../components'
+import { DataTable, InputSearch, LinkBack } from '../../../components'
 import { farmApi } from '../../../store/actions'
 
 export const AreaFarmWaterIn = () => {
 
     const { prpid } = useParams()
-    const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
+    const [search, setSearch] = useState('')
+    const { data = null, isLoading } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
 
     return (
         <Card className='overflow-hidden'>
-            <div className='row p-3'>
-                <div className='col-auto'>
-                    <LinkBack
-                        className='btn btn-neutral text-primary'
-                        to={`?w=areafarm_create_waterin`}
-                        state={{ farm: data || '' }}
-                    >
-                        Agregar tramo
-                    </LinkBack>
-                </div>
+            <div className='d-flex align-items-center'>
+                <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+                <LinkBack
+                    className='btn btn-primary'
+                    to={`/app/user_reg/user_farm/wt/create`}
+                    state={{ farm: data || '' }}
+                >
+                    Agregar toma de agua
+                </LinkBack>
             </div>
             <DataTable
                 rows={data.inputIrrig}

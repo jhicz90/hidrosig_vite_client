@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { IrrigationNetworkNavPage, SectionPage, StructureListPage, StructurePage } from '../pages'
-import { ImportNetwork, ChannelSchemePage, VariableList, WaterSourceList } from '..'
+import { ChannelSchemePage, ImportNetworkPage, IrrigationNetworkNavPage, SectionCreatePage, SectionPage, StructureCreatePage, StructureListPage, StructurePage, VariableListPage, WaterSourceCreatePage, WaterSourceListPage, WaterSourcePage } from '../pages'
 
 export const IrrigationNetworkRoutes = () => {
     return (
@@ -28,7 +27,7 @@ export const IrrigationNetworkRoutes = () => {
                     path={`ws`}
                     element={
                         <GuardRoute meta={['watersource']}>
-                            <WaterSourceList />
+                            <WaterSourceListPage />
                         </GuardRoute>
                     }
                 />
@@ -36,7 +35,7 @@ export const IrrigationNetworkRoutes = () => {
                     path={`var`}
                     element={
                         <GuardRoute meta={['irrigation_variables']}>
-                            <VariableList />
+                            <VariableListPage />
                         </GuardRoute>
                     }
                 />
@@ -44,16 +43,48 @@ export const IrrigationNetworkRoutes = () => {
                     path={`import`}
                     element={
                         <GuardRoute meta={['import_network']}>
-                            <ImportNetwork />
+                            <ImportNetworkPage />
                         </GuardRoute>
                     }
                 />
             </Route>
             <Route
+                path={`str/create`}
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <StructureCreatePage />
+                    </GuardRoute>
+                }
+            />
+            <Route
                 path={`str/:strid/*`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <StructurePage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`ws/create`}
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <WaterSourceCreatePage />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path='ws/:wsid/*'
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <WaterSourcePage />
+                    </GuardRoute>
+                }
+            />
+             <Route
+                path='sct/create'
+                element={
+                    <GuardRoute meta={['organization_junta']}>
+                        <SectionCreatePage />
                     </GuardRoute>
                 }
             />

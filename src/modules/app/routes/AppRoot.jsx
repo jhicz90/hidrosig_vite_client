@@ -9,27 +9,12 @@ import { GuardRoute } from '../../../guards'
 
 import { DashboardPage, PageError404, PageError500 } from '../pages'
 import {
-    CreateAreaFarm,
-    CreateBlock,
-    CreateCommittee,
     CreateDocument,
-    CreateJunta,
     CreateOccupation,
     CreateRole,
-    CreateSection,
-    CreateStructure,
-    CreateUserFarm,
     CreateUserSys,
-    CreateVoucher,
-    CreateWaterIn,
-    CreateWaterSource,
-    CreateZone,
     DesignRoutes,
-    EditBlock,
     EditDocument,
-    EditVoucher,
-    EditWaterSource,
-    EditZone,
     FileViewer,
     ModuleAccountingRoutes,
     ModuleAmbitRoutes,
@@ -160,24 +145,9 @@ export const AppRoot = () => {
                 element={
                     <>
                         <Layout />
-                        <CreateAreaFarm />
-                        <CreateBlock />
-                        <CreateCommittee />
                         <CreateDocument />
-                        <CreateJunta />
-                        <CreateSection />
-                        <CreateStructure />
-                        <CreateUserFarm />
-                        <CreateVoucher />
-                        <CreateWaterSource />
-                        <CreateZone />
-                        <EditBlock />
                         <EditDocument />
-                        <EditVoucher />
-                        <EditWaterSource />
-                        <EditZone />
                         <FileViewer />
-                        <CreateWaterIn />
                     </>
                 }
             >

@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { FaPen } from 'react-icons/fa'
+import { IoEyeSharp } from 'react-icons/io5'
 import { useGetListCommQuery } from '../../../store/actions'
-import { TagStatus, Avatar, InputSearch, TagTimeAgo, DataTable } from '../../../components'
+import { TagStatus, Avatar, InputSearch, TagTimeAgo, DataTable, LinkBack } from '../../../components'
 
 export const CommitteeListPage = () => {
 
@@ -62,13 +61,14 @@ export const CommitteeListPage = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <div className='btn-group'>
-                                    <Link
-                                        className='btn btn-neutral'
+                                <div className='d-flex gap-2 p-2'>
+                                    <LinkBack
                                         to={`/app/ambit/orgz/comm/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
-                                    </Link>
+                                        <IoEyeSharp size={16} />
+                                    </LinkBack>
                                 </div>
                         }
                     ]

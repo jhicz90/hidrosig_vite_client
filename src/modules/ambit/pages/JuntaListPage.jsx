@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { FaPen } from 'react-icons/fa'
-import { TagStatus, Avatar, InputSearch, TagTimeAgo, DataTable } from '../../../components'
+import { IoEyeSharp } from 'react-icons/io5'
+import { TagStatus, Avatar, InputSearch, TagTimeAgo, DataTable, LinkBack } from '../../../components'
 import { useGetListJuntaQuery } from '../../../store/actions'
 
 export const JuntaListPage = () => {
@@ -56,13 +55,14 @@ export const JuntaListPage = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <div className='btn-group'>
-                                    <Link
-                                        className='btn btn-neutral'
+                                <div className='d-flex gap-2 p-2'>
+                                    <LinkBack
                                         to={`/app/ambit/orgz/junta/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
-                                    </Link>
+                                        <IoEyeSharp size={16} />
+                                    </LinkBack>
                                 </div>
                         }
                     ]

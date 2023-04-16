@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
+import { Liner } from '../../../components'
 import { committeeApi, useUpdateCommByIdMutation } from '../../../store/actions'
 
 export const CommitteeInformation = () => {
@@ -29,6 +30,7 @@ export const CommitteeInformation = () => {
         <Card>
             <Card.Body>
                 <form onSubmit={handleSubmit(handleUpdate)}>
+                    <Liner>Información</Liner>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
                             <Form.Group className='mb-3' controlId='pName'>
@@ -86,6 +88,7 @@ export const CommitteeInformation = () => {
                             </Form.Group>
                         </div>
                     </div>
+                    <Liner>Administración</Liner>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
                             <Form.Group className='mb-3' controlId='pDocId'>

@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { NavLink, Route, Routes, useParams } from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { AiFillNotification } from 'react-icons/ai'
-import { IoEllipsisVertical } from 'react-icons/io5'
+import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
 import { AreaFarmAdditionalData, AreaFarmAreaGeometry, AreaFarmBanner, AreaFarmImages, AreaFarmInformation, AreaFarmListHolder, AreaFarmWaterIn } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
@@ -28,7 +28,9 @@ export const AreaFarmPage = () => {
 
     const handleDelete = async (id, name) => {
         if (await questionDeleteFarm(name)) {
-            deleteFarm(id)
+            deleteFarm(id).unwrap().then(() => {
+                redirect()
+            })
         }
     }
 
@@ -54,6 +56,13 @@ export const AreaFarmPage = () => {
                         </div>
                         <div className='col-12 col-md-auto'>
                             <div className='d-flex gap-2'>
+                                <Link
+                                    to={`/app/user_reg/user_farm/prps`}
+                                    className='btn btn-neutral-secondary'
+                                >
+                                    <IoReturnUpBack size={24} />
+                                    LISTA PREDIOS
+                                </Link>
                                 <Button variant='primary' className='d-flex align-items-center gap-2'>
                                     <AiFillNotification size={24} />
                                     Generar notificación

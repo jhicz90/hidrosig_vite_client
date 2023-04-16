@@ -15,10 +15,27 @@ export const DataTable = ({ columns = [], rows = [], renderEmpty: NoResultsCompo
         virtual
             ?
             {
+                Table: `
+                    display: flex;
+                    --data-table-library_grid-template-columns: ${columnsTable.map(c => {
+                        if (!c.width) {
+                            if (!c.minWidth) {
+                                return 'minmax(140px, 1fr)'
+                            } else {
+                                return `minmax(${c.minWidth}, 1fr)`
+                            }
+                        } else {
+                            return c.width
+                        }
+                    }).join(' ')} !important;
+                `,
                 HeaderCell: `
                     background-color: #fff;
                     min-height: 50px;
                 `,
+                Cell: `
+                    padding: 0px 16px;
+                `
             }
             :
             {

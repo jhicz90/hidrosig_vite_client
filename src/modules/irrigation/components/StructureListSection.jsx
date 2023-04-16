@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, ButtonGroup, Card } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
-import { IoMdTrash } from 'react-icons/io'
+import { Button, Card } from 'react-bootstrap'
+import { IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
 import { startDeleteIdSection, structureApi, useGetListSectionByStructureQuery } from '../../../store/actions'
 
@@ -24,8 +23,8 @@ export const StructureListSection = () => {
                 <div className='col-auto'>
                     <LinkBack
                         className='btn btn-primary'
-                        to={`?w=section_create`}
-                        state={{ structureId: data._id || '' }}
+                        to={`/app/schm/irrig/sct/create`}
+                        state={{ structure: data._id || '' }}
                     >
                         Agregar tramo
                     </LinkBack>
@@ -62,21 +61,22 @@ export const StructureListSection = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`/app/schm/irrig/sct/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
                                     <Button
                                         onClick={() => dispatch(startDeleteIdSection(item))}
-                                        variant='neutral-icon'
-                                        className='text-danger'
+                                        variant='neutral-danger-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <IoMdTrash size={20} />
+                                        <IoTrashSharp size={16} />
                                     </Button>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
+import { IoEyeSharp } from 'react-icons/io5'
 import { InputSearch, LinkBack, DataTable, TagTimeAgo } from '../../../components'
 import { useGetListStructureQuery } from '../../../store/actions'
 
@@ -46,14 +45,15 @@ export const StructureListPage = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`/app/schm/irrig/str/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Alert, Button, ButtonGroup } from 'react-bootstrap'
-import { FaMapMarkedAlt } from 'react-icons/fa'
+import { Alert, Button } from 'react-bootstrap'
+import { IoMapSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack } from '../../../components'
 import { useGetListLocationQuery } from '../../../store/actions'
 
@@ -69,20 +69,22 @@ export const LocationListPage = () => {
                         {
                             label: 'ACCIÓN',
                             pinRight: true,
+                            minWidth: '230px',
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
                                         to={`?w=geopos_go&lat=${item.latitude}&lon=${item.longitude}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaMapMarkedAlt />
+                                        <IoMapSharp size={16} />
                                     </LinkBack>
                                     <Button
                                         variant='primary'
                                     >
                                         Actualizar datos
                                     </Button>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

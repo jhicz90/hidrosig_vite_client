@@ -21,10 +21,6 @@ export const VoucherPage = () => {
         }
     }
 
-    const handleBack = () => {
-        redirect()
-    }
-
     useEffect(() => {
         if (isError) {
             redirectEscape()
@@ -38,10 +34,10 @@ export const VoucherPage = () => {
     return (
         !!data
         &&
-        <div className='container-fluid my-3'>
-            <div className='row'>
+        <div className='container-fluid'>
+            <div className='row my-3'>
                 <div className='col-12'>
-                    <div className='row align-items-center justify-content-between g-3 mb-3'>
+                    <div className='row align-items-center justify-content-between g-3'>
                         <div className='col-12 col-md-auto'>
                             <h4 className='mb-0'>COMPROBANTE</h4>
                         </div>
@@ -52,7 +48,7 @@ export const VoucherPage = () => {
                                     className='btn btn-neutral-secondary'
                                 >
                                     <IoReturnUpBack size={24} />
-                                    CAJA CHICA / COMPROBANTES
+                                    CAJA CHICA - {data?.pettycash?.name}
                                 </Link>
                                 <Button
                                     onClick={() => handleDelete(voucherid, data)}

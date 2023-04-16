@@ -16,7 +16,10 @@ export const AreaFarmListHolder = () => {
 
     return (
         <Card>
-            <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+            <div className='d-flex align-items-center'>
+                <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+                <LinkBack className='btn btn-primary' relative to={``}>Agregar Posesionarios</LinkBack>
+            </div>
             <DataTable
                 rows={usersIn}
                 columns={

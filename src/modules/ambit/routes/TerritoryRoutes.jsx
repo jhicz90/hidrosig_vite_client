@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { TerritoryNavPage, ZoneListPage, BlockListPage, LocationListPage } from '..'
+import { TerritoryNavPage, ZoneListPage, BlockListPage, LocationListPage, ZoneCreatePage, BlockCreatePage, ZonePage, BlockPage } from '..'
 
 export const TerritoryRoutes = () => {
     return (
@@ -32,6 +32,22 @@ export const TerritoryRoutes = () => {
                     }
                 />
             </Route>
+            <Route
+                path={`zone/create`}
+                element={<ZoneCreatePage />}
+            />
+            <Route
+                path={`zone/:znid/*`}
+                element={<ZonePage />}
+            />
+            <Route
+                path={`block/create`}
+                element={<BlockCreatePage />}
+            />
+            <Route
+                path={`block/:blkid/*`}
+                element={<BlockPage />}
+            />
         </Routes>
     )
 }

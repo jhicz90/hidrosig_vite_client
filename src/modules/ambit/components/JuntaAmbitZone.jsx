@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { ButtonGroup, Card } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
-import { juntaApi, useGetListZoneByJuntaQuery } from '../../../store/actions'
+import { useSelector } from 'react-redux'
+import { Card } from 'react-bootstrap'
+import { IoEyeSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack } from '../../../components'
+import { juntaApi, useGetListZoneByJuntaQuery } from '../../../store/actions'
 
 export const JuntaAmbitZone = () => {
 
@@ -36,14 +36,15 @@ export const JuntaAmbitZone = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
-                                        to={`?w=zone_edit&id=${item._id}`}
+                                        to={`/app/ambit/trrty/zone/${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

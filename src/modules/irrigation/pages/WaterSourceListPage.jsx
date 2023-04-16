@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { ButtonGroup } from 'react-bootstrap'
-import { FaPen } from 'react-icons/fa'
-import { DataTable, InputSearch, LinkBack, TableGrid, TagTimeAgo, TypeWaterSource } from '../../../components'
+import { IoEyeSharp } from 'react-icons/io5'
+import { DataTable, InputSearch, LinkBack, TagTimeAgo, TypeWaterSource } from '../../../components'
 import { useGetListWaterSourceQuery } from '../../../store/actions'
 
-export const WaterSourceList = () => {
+export const WaterSourceListPage = () => {
 
     const [search, setSearch] = useState('')
     const { data: list = [], isFetching } = useGetListWaterSourceQuery(search)
@@ -49,14 +48,15 @@ export const WaterSourceList = () => {
                             label: 'ACCIÓN',
                             pinRight: true,
                             renderCell: (item) =>
-                                <ButtonGroup>
+                                <div className='d-flex gap-2 p-2'>
                                     <LinkBack
-                                        className='btn btn-neutral'
-                                        to={`?w=watersource_edit&id=${item._id}`}
+                                        to={`${item._id}`}
+                                        className='btn btn-neutral-icon'
+                                        style={{ padding: '0.5rem' }}
                                     >
-                                        <FaPen />
+                                        <IoEyeSharp size={16} />
                                     </LinkBack>
-                                </ButtonGroup>
+                                </div>
                         }
                     ]
                 }

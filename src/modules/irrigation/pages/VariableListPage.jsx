@@ -3,7 +3,7 @@ import { Accordion, Button, ButtonGroup, Form, ListGroup } from 'react-bootstrap
 import { useForm } from 'react-hook-form'
 import { useAddOrderChannelMutation, useAddRugosityMutation, useDeleteOrderChannelMutation, useDeleteRugosityMutation, useGetOrderChannelsQuery, useGetRugositysQuery, useUpdateOrderChannelMutation, useUpdateRugosityMutation } from '../../../store/storeApi'
 
-export const VariableList = () => {
+export const VariableListPage = () => {
 
     const { data: listRugosity = [] } = useGetRugositysQuery('')
     const { data: listOrderChannel = [] } = useGetOrderChannelsQuery('')

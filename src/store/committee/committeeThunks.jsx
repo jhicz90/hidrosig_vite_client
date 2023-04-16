@@ -75,6 +75,7 @@ export const {
     useGetCommByIdQuery,
     useGetListCommByJuntaQuery,
     useGetListCommQuery,
+    useLazyNewCommQuery,
     useNewCommQuery,
     useUpdateCommByIdMutation,
 } = committeeApi
@@ -123,7 +124,7 @@ export const questionStatusCommittee = async (status, name) => {
     })
 }
 
-export const questionDeleteCommittee = (name) => {
+export const questionDeleteCommittee = async (name) => {
 
     const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
@@ -165,6 +166,19 @@ export const questionDeleteCommittee = (name) => {
     })
 }
 
+export const searchCommittee = async (search) => {
+    const resp = await fetchByToken({
+        endpoint: `committee/search`,
+        params: { search },
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
+    }
+}
+
 export const searchCommitteeByJunta = async (junta, search) => {
     if (junta === '') {
         return []
@@ -172,7 +186,6 @@ export const searchCommitteeByJunta = async (junta, search) => {
         const resp = await fetchByToken({
             endpoint: `committee/search_by_junta/${junta}`,
             params: { search },
-            alert: false
         })
 
         if (resp.ok) {

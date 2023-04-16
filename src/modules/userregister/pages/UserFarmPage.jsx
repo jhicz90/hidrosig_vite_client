@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { NavLink, Route, Routes, useParams } from 'react-router-dom'
+import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { AiFillNotification, AiOutlineWhatsApp } from 'react-icons/ai'
-import { IoEllipsisVertical } from 'react-icons/io5'
+import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
 import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { UserFarmAdditionalData, UserFarmBanner, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
@@ -54,6 +54,13 @@ export const UserFarmPage = () => {
                         </div>
                         <div className='col-12 col-md-auto'>
                             <div className='d-flex gap-2'>
+                                <Link
+                                    to={`/app/user_reg/user_farm/users`}
+                                    className='btn btn-neutral-secondary'
+                                >
+                                    <IoReturnUpBack size={24} />
+                                    LISTA USUARIOS
+                                </Link>
                                 <Button variant='success' className='d-flex align-items-center gap-2'>
                                     <AiOutlineWhatsApp size={24} />
                                     Enviar mensaje

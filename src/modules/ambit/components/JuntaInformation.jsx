@@ -4,6 +4,7 @@ import { Button, Card, Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import { juntaApi, useUpdateJuntaByIdMutation } from '../../../store/actions'
 import { useParams } from 'react-router-dom'
+import { Liner } from '../../../components'
 
 export const JuntaInformation = () => {
 
@@ -29,6 +30,7 @@ export const JuntaInformation = () => {
         <Card>
             <Card.Body>
                 <form onSubmit={handleSubmit(handleUpdate)}>
+                    <Liner>Información</Liner>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
                             <Form.Group className='mb-3' controlId='pName'>
@@ -86,6 +88,7 @@ export const JuntaInformation = () => {
                             </Form.Group>
                         </div>
                     </div>
+                    <Liner>Administración</Liner>
                     <div className='row'>
                         <div className='col-12 col-md-6'>
                             <Form.Group className='mb-3' controlId='pDocId'>

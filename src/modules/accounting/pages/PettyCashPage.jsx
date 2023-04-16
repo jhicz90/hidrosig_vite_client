@@ -21,8 +21,6 @@ export const PettyCashPage = () => {
         }
     }
 
-    console.log(isError)
-
     useEffect(() => {
         if (isError) {
             redirectEscape()
@@ -36,10 +34,10 @@ export const PettyCashPage = () => {
     return (
         !!data
         &&
-        <div className='container-fluid my-3'>
-            <div className='row'>
+        <div className='container-fluid'>
+            <div className='row my-3'>
                 <div className='col-12'>
-                    <div className='row align-items-center justify-content-between g-3 mb-3'>
+                    <div className='row align-items-center justify-content-between g-3'>
                         <div className='col-12 col-md-auto'>
                             <h4 className='mb-0'>CAJA CHICA</h4>
                         </div>
