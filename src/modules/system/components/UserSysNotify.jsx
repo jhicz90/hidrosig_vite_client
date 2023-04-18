@@ -1,40 +1,49 @@
 import { useEffect } from 'react'
-import { Button, Card, Form, Table } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
+import { Button, Card, Form, Table } from 'react-bootstrap'
 import { MdEmail } from 'react-icons/md'
 import { TbWorld } from 'react-icons/tb'
-import { useDispatch, useSelector } from 'react-redux'
-import { startUpdateOptionsUserSys } from '../../../store/actions'
+import { useUpdateUserSysByIdMutation, usersysApi } from '../../../store/actions'
 
-export const UserSysModuleNotify = () => {
+export const UserSysNotify = () => {
 
-    const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.usersys)
+    const { userid } = useParams()
+    const { data = null } = useSelector(usersysApi.endpoints.getUserSysById.select(userid))
+    const [updateUserSys, { isLoading: isUpdating }] = useUpdateUserSysByIdMutation()
     const { register, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ activity_w, activity_e, organization_w, organization_e, onlyOnline_w, onlyOnline_e }) => {
-        dispatch(startUpdateOptionsUserSys({
-            activity: [activity_w, activity_e],
-            organization: [organization_w, organization_e],
-            onlyOnline: [onlyOnline_w, onlyOnline_e]
-        }))
+    const handleUpdate = ({ activity_w, activity_e, organization_w, organization_e, onlyOnline_w, onlyOnline_e }) => {
+        updateUserSys({
+            id: userid,
+            usersys: {
+                options: {
+                    notification: {
+                        activity: [activity_w, activity_e],
+                        organization: [organization_w, organization_e],
+                        onlyOnline: [onlyOnline_w, onlyOnline_e]
+                    }
+                }
+            }
+        })
     }
 
     useEffect(() => {
         reset({
-            activity_w: active.options.notification.activity[0],
-            activity_e: active.options.notification.activity[1],
-            organization_w: active.options.notification.organization[0],
-            organization_e: active.options.notification.organization[1],
-            onlyOnline_w: active.options.notification.onlyOnline[0],
-            onlyOnline_e: active.options.notification.onlyOnline[1]
+            activity_w: data.options.notification.activity[0],
+            activity_e: data.options.notification.activity[1],
+            organization_w: data.options.notification.organization[0],
+            organization_e: data.options.notification.organization[1],
+            onlyOnline_w: data.options.notification.onlyOnline[0],
+            onlyOnline_e: data.options.notification.onlyOnline[1]
         })
-    }, [reset, active])
+    }, [reset, data])
 
     return (
         <Card>
             <Card.Body>
-                <form onSubmit={handleSubmit(handleSave)}>
+                <form onSubmit={handleSubmit(handleUpdate)}>
                     <div className='row'>
                         <div className='col-12'>
                             <Form.Group className='mb-3'>
@@ -128,7 +137,7 @@ export const UserSysModuleNotify = () => {
                     </div>
                     <div className='d-flex justify-content-end gap-2'>
                         <Button
-                            disabled={isSaving}
+                            disabled={isUpdating}
                             variant='primary'
                             type='submit'
                         >

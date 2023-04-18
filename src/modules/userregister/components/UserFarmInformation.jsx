@@ -32,7 +32,7 @@ export const UserFarmInformation = () => {
                 <form id='form-userregister-userfarm-info' onSubmit={handleSubmit(handleUpdate)}>
                     <Liner>Información personal</Liner>
                     <div className='row'>
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-2'>
+                        <div className='col-12 col-md-6 col-lg-2'>
                             <Form.Group className='mb-3' controlId='pCode'>
                                 <Form.Label>Código</Form.Label>
                                 <Form.Control
@@ -43,7 +43,7 @@ export const UserFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-2'>
+                        <div className='col-12 col-md-6 col-lg-2'>
                             <Form.Group className='mb-3' controlId='pType'>
                                 <Form.Label>Tipo</Form.Label>
                                 <Form.Select
@@ -59,7 +59,7 @@ export const UserFarmInformation = () => {
                                 </Form.Select>
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-4'>
+                        <div className='col-12 col-md-6 col-lg-4'>
                             <Form.Group className='mb-3' controlId='pDocId'>
                                 <Form.Label>Documento de identidad o RUC</Form.Label>
                                 <Form.Control
@@ -69,7 +69,7 @@ export const UserFarmInformation = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <div className='col-12 col-sm-6 col-md-6 col-lg-4'>
+                        <div className='col-12 col-md-6 col-lg-4'>
                             <Form.Group className='mb-3' controlId='pStatus'>
                                 <Form.Label>Estado</Form.Label>
                                 <Form.Select

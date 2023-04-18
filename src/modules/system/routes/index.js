@@ -1,5 +1,5 @@
 export * from './ModuleSystemRoutes'
-export * from './OccupationRoutes'
-export * from './RoleRoutes'
+// export * from './OccupationRoutes'
+// export * from './RoleRoutes'
 export * from './SettingRoutes'
 export * from './UserSysRoutes'

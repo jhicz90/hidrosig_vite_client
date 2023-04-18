@@ -1,23 +1,26 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { UserSysActivePage, UserSysListPage } from '../pages'
+import { UserSysListPage, UserSysNavPage, UserSysPage } from '../pages'
 
 export const UserSysRoutes = () => {
     return (
         <Routes>
+            <Route element={<UserSysNavPage />}>
+                <Route index element={<Navigate to={`users`} replace />} />
+                <Route
+                    path={`users`}
+                    element={
+                        <GuardRoute meta={['organization_junta']}>
+                            <UserSysListPage />
+                        </GuardRoute>
+                    }
+                />
+            </Route>
             <Route
-                index
+                path={`users/:userid/*`}
                 element={
-                    <GuardRoute meta={['user_management']}>
-                        <UserSysListPage />
-                    </GuardRoute>
-                }
-            />
-            <Route
-                path={`/:userid`}
-                element={
-                    <GuardRoute meta={['user_management']}>
-                        <UserSysActivePage />
+                    <GuardRoute meta={['organization_junta']}>
+                        <UserSysPage />
                     </GuardRoute>
                 }
             />

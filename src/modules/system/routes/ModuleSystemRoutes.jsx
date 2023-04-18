@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
 import { SystemResumePage } from '../pages'
-import { OccupationRoutes, RoleRoutes, SettingRoutes, UserSysRoutes } from '.'
+import { SettingRoutes, UserSysRoutes } from '.'
 
 export const ModuleSystemRoutes = () => {
     return (
@@ -13,22 +13,6 @@ export const ModuleSystemRoutes = () => {
                 element={
                     <GuardRoute meta={['system_configuration']}>
                         <UserSysRoutes />
-                    </GuardRoute>
-                }
-            />
-            <Route
-                path={`occup/*`}
-                element={
-                    <GuardRoute meta={['system_configuration']}>
-                        <OccupationRoutes />
-                    </GuardRoute>
-                }
-            />
-            <Route
-                path={`role/*`}
-                element={
-                    <GuardRoute meta={['system_configuration']}>
-                        <RoleRoutes />
                     </GuardRoute>
                 }
             />

@@ -1,39 +1,44 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Alert, Button, Card } from 'react-bootstrap'
+import { Alert, Button, Card, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { startUpdateRoleUserSys, searchRole } from '../../../store/actions'
+import { Liner } from '../../../components'
+import { searchRole, useUpdateUserSysByIdMutation, usersysApi } from '../../../store/actions'
 
-export const UserSysModuleRole = () => {
+export const UserSysRole = () => {
 
-    const dispatch = useDispatch()
-    const { active, isSaving } = useSelector(state => state.usersys)
+    const { userid } = useParams()
+    const { data = null } = useSelector(usersysApi.endpoints.getUserSysById.select(userid))
+    const [updateUserSys, { isLoading: isUpdating }] = useUpdateUserSysByIdMutation()
     const { control, handleSubmit, reset } = useForm()
 
-    const handleSave = ({ role }) => {
-        dispatch(startUpdateRoleUserSys({
-            role: role !== null ? role._id : null
-        }))
+    const handleUpdate = ({ role }) => {
+        updateUserSys({
+            id: userid,
+            usersys: { role }
+        })
     }
 
     useEffect(() => {
         reset({
-            role: active.role
+            ...data
         })
-    }, [reset, active])
+    }, [reset, data])
 
     return (
         <Card>
             <Card.Body>
-                <form onSubmit={handleSubmit(handleSave)}>
+                <form id='form-system-usersys-edit-role' onSubmit={handleSubmit(handleUpdate)}>
+                    <Liner>Roles de usuario</Liner>
                     <div className='row'>
-                        <div className='col-12'>
-                            {
-                                !!active.role
-                                    ?
-                                    <div className='mb-3'>
-                                        <label htmlFor='uRole' className='form-label'>Rol de usuario</label>
+                        {
+                            data.role !== null
+                                ?
+                                <div className='col-12 col-md-6 col-lg-6'>
+                                    <Form.Group className='mb-3' controlId='pRole'>
+                                        <Form.Label>Rol</Form.Label>
                                         <Controller
                                             name='role'
                                             control={control}
@@ -42,13 +47,19 @@ export const UserSysModuleRole = () => {
                                                 ({ field }) =>
                                                     <AsyncSelect
                                                         {...field}
-                                                        inputId='uRole'
+                                                        inputId='pRole'
                                                         classNamePrefix='rc-select'
+                                                        styles={{
+                                                            control: (baseStyles, state) => ({
+                                                                ...baseStyles,
+                                                                minHeight: '90px',
+                                                            }),
+                                                        }}
                                                         isClearable
                                                         defaultOptions
                                                         loadOptions={searchRole}
                                                         getOptionLabel={e =>
-                                                            <div className='d-flex flex-column'>
+                                                            <div className='d-flex flex-column align-items-start' style={{ height: '100%' }}>
                                                                 <div>{e.name}</div>
                                                                 <div>Nivel de acceso: {e.levelRole}</div>
                                                                 {e.levelRole > 1 && <div>Junta: {e.junta.name}</div>}
@@ -64,8 +75,10 @@ export const UserSysModuleRole = () => {
                                                     />
                                             }
                                         />
-                                    </div>
-                                    :
+                                    </Form.Group>
+                                </div>
+                                :
+                                <div className='col'>
                                     <Alert variant='warning'>
                                         <Alert.Heading>Aviso</Alert.Heading>
                                         <p>
@@ -76,14 +89,13 @@ export const UserSysModuleRole = () => {
                                             Si necesitas algún cambio solicita los permisos necesarios al administrador.
                                         </p>
                                     </Alert>
-                            }
-                        </div>
+                                </div>
+                        }
                     </div>
-                    <p>Proximamente los CUSTOM PERMISSIONS iran en este apartado</p>
                     <div className='d-flex justify-content-end gap-2'>
                         <Button
-                            disabled={isSaving}
-                            variant={'primary'}
+                            disabled={isUpdating}
+                            variant='primary'
                             type='submit'
                         >
                             Guardar cambios
@@ -91,6 +103,6 @@ export const UserSysModuleRole = () => {
                     </div>
                 </form>
             </Card.Body>
-        </Card>
+        </Card >
     )
 }

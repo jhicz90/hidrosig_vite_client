@@ -2,113 +2,167 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { addNewUserSys, setActiveNewUserSys, setActiveUserSys, setSavingUserSys, setSavingNewUserSys } from './usersysSlice'
+import { storeApi } from '../storeApi'
 
 const SwalReact = withReactContent(Swal)
 
-export const startAddNewUserSys = () => {
+export const usersysApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // USERSYS
+        newUserSys: builder.query({
+            query: () => ({
+                url: `usersys/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.usersys
+        }),
+        addUserSys: builder.mutation({
+            query: (newUserSys) => ({
+                url: `usersys/create/new`,
+                method: 'post',
+                data: newUserSys
+            }),
+            invalidatesTags: ['UsrSys']
+        }),
+        getListUserSys: builder.query({
+            query: (search) => ({
+                url: `usersys/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['UsrSys']
+        }),
+        getUserSysById: builder.query({
+            query: (id) => ({
+                url: `usersys/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.usersys,
+            providesTags: ['UsrSys']
+        }),
+        updateUserSysById: builder.mutation({
+            query: ({ id, usersys }) => ({
+                url: `usersys/edit/${id}`,
+                method: 'put',
+                data: usersys
+            }),
+            invalidatesTags: ['UsrSys']
+        }),
+        updateEmailUserSysById: builder.mutation({
+            query: ({ id, email }) => ({
+                url: `usersys/change_email/${id}`,
+                method: 'put',
+                data: email
+            }),
+            invalidatesTags: ['UsrSys']
+        }),
+        deleteUserSysById: builder.mutation({
+            query: (id) => ({
+                url: `usersys/delete/${id}`,
+                method: 'delete'
+            }),
+            invalidatesTags: ['UsrSys']
+        })
+        // USERSYS
+    })
+})
+
+export const {
+    useAddUserSysMutation,
+    useDeleteUserSysByIdMutation,
+    useGetListUserSysQuery,
+    useGetUserSysByIdQuery,
+    useNewUserSysQuery,
+    useUpdateUserSysByIdMutation,
+} = usersysApi
+
+export const updateImageUserSysById = (id, image) => {
     return async (dispatch) => {
 
-        dispatch(addNewUserSys())
-
         const resp = await fetchByToken({
-            endpoint: `usersys/create/new`
-        })
-
-        dispatch(setSavingNewUserSys(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewUserSys(resp.usersys))
-        }
-    }
-}
-
-export const startSaveNewUserSys = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingNewUserSys(true))
-
-        const { activeNew } = getState().usersys
-
-        const newUsersys = {
-            ...activeNew,
-            occupation: activeNew.occupation !== null ? activeNew.occupation._id : null,
-            role: activeNew.role !== null ? activeNew.role._id : null
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/create/new`,
-            data: newUsersys,
-            method: 'POST'
-        })
-
-        dispatch(setSavingNewUserSys(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNewUserSys(null))
-        }
-    }
-}
-
-export const startGetUserSys = (id) => {
-    return async (dispatch) => {
-
-        dispatch(setSavingUserSys(true))
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/edit/${id}`
-        })
-
-        dispatch(setSavingUserSys(false))
-
-        if (resp.ok) {
-            dispatch(setActiveUserSys(resp.usersys))
-        }
-    }
-}
-
-export const startUpdateUserSys = () => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingUserSys(true))
-
-        const { active } = getState().usersys
-        const { _id } = active
-
-        const updateUserSys = {
-            ...active,
-            occupation: active.occupation !== null ? active.occupation._id : null,
-            permission: active.permission !== null ? active.permission._id : null
-        }
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/edit/${_id}`,
-            data: updateUserSys,
-            method: 'PUT'
-        })
-
-        dispatch(setSavingUserSys(false))
-
-        if (resp.ok) {
-            dispatch(setActiveUserSys(resp.usersys))
-        }
-    }
-}
-
-export const startUpdateImageUserSys = (image) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `usersys/image/${_id}`,
+            endpoint: `usersys/image/${id}`,
             data: { image },
             method: 'PUT'
         })
 
         if (resp.ok) {
-            dispatch(setActiveUserSys(resp.usersys))
+            dispatch(storeApi.util.invalidateTags(['UsrSys']))
         }
     }
+}
+
+export const questionStatusUserSys = async (usersys) => {
+
+    const { names, surnames } = usersys
+
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Estado</div>
+                <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de modificar el estado?</div>
+                <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de este usuario se reiniciaran.</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: !usersys.status ? 'Desactivar' : 'Activar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: !usersys.status ? 'btn btn-warning' : 'btn btn-success',
+            cancelButton: 'btn btn-neutral'
+        },
+        buttonsStyling: false,
+        reverseButtons: true
+    }).then(({ isConfirmed }) => {
+        return isConfirmed
+    })
+}
+
+export const questionDeleteUserSys = async (usersys) => {
+
+    const { names, surnames } = usersys
+    const wordConfirm = normalizeText(names, { lowerCase: true, removeSpaces: true })
+
+    return SwalReact.fire({
+        title:
+            <>
+                <div className='text-uppercase'>Eliminar cuenta de usuario</div>
+                <div className="fs-5 fw-bold text-info mt-1">{names} {surnames}</div>
+            </>,
+        html:
+            <>
+                <div className='fs-5 mb-2'>¿Estás seguro de eliminar este usuario de sistema?</div>
+                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
+            </>,
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        icon: 'question',
+        customClass: {
+            confirmButton: `btn btn-warning`,
+            cancelButton: `btn btn-neutral`
+        },
+        input: 'text',
+        inputAttributes: {
+            autocapitalize: 'off'
+        },
+        buttonsStyling: false,
+        reverseButtons: true,
+        preConfirm: (typed) => {
+            if (typed === wordConfirm) {
+                return true
+            } else {
+                return false
+            }
+        }
+    }).then(({ value }) => {
+        return value
+    })
 }
 
 export const startUpdateStatusUserSys = (status) => {
@@ -220,10 +274,10 @@ export const startUpdateOptionsUserSys = ({ upload, download, activity, organiza
     }
 }
 
-export const startUpdateEmailUserSys = ({ newEmail: email }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id, names, surnames } = active
+export const startUpdateEmailUserSysById = ({ id, usersys, newEmail: email }) => {
+    return async (dispatch) => {
+
+        const { names, surnames } = usersys
 
         SwalReact.fire({
             title:
@@ -254,30 +308,26 @@ export const startUpdateEmailUserSys = ({ newEmail: email }) => {
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSavingUserSys(true))
-
                 const passwordConfirm = result.value || ''
 
                 const resp = await fetchByToken({
-                    endpoint: `usersys/change_email/${_id}`,
+                    endpoint: `usersys/change_email/${id}`,
                     data: { passwordConfirm, email },
                     method: 'PUT'
                 })
 
-                dispatch(setSavingUserSys(false))
-
                 if (resp.ok) {
-                    dispatch(setActiveUserSys(resp.usersys))
+                    dispatch(storeApi.util.invalidateTags(['UsrSys']))
                 }
             }
         })
     }
 }
 
-export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) => {
-    return async (dispatch, getState) => {
-        const { active } = getState().usersys
-        const { _id, names, surnames } = active
+export const startUpdatePasswordUserSysById = ({ id, usersys, newPassword, newPasswordConfirm }) => {
+    return async (dispatch) => {
+
+        const { names, surnames } = usersys
 
         SwalReact.fire({
             title:
@@ -308,20 +358,16 @@ export const startUpdatePasswordUserSys = ({ newPassword, newPasswordConfirm }) 
         }).then(async (result) => {
             if (result.isConfirmed) {
 
-                dispatch(setSavingUserSys(true))
-
                 const password = result.value || ''
 
                 const resp = await fetchByToken({
-                    endpoint: `usersys/change_passw/${_id}`,
+                    endpoint: `usersys/change_passw/${id}`,
                     data: { password, newPassword, newPasswordConfirm },
                     method: 'PUT'
                 })
 
-                dispatch(setSavingUserSys(false))
-
                 if (resp.ok) {
-                    dispatch(setActiveUserSys(resp.usersys))
+                    dispatch(storeApi.util.invalidateTags(['UsrSys']))
                 }
             }
         })
@@ -558,25 +604,6 @@ export const startDeleteUserSys = ({ navigate = null }) => {
 //                 }
 //             }
 //         })
-//     }
-// }
-
-// export const startUpdateActiveUserSysNewData = ({ uid }) => {
-//     return async (dispatch, getState) => {
-//         const { active } = getState().usersys
-//         const { _id } = active
-
-//         if (uid === _id) {
-//             const resp = await fetchByToken({
-//                 endpoint: `usersys/edit/${_id}`
-//             })
-
-//             if (resp.ok) {
-//                 dispatch(loadActiveUserSys(resp.usersys))
-//                 dispatch(startListUserSys())
-//             }
-//         }
-
 //     }
 // }
 

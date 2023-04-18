@@ -10,9 +10,6 @@ import { GuardRoute } from '../../../guards'
 import { DashboardPage, PageError404, PageError500 } from '../pages'
 import {
     CreateDocument,
-    CreateOccupation,
-    CreateRole,
-    CreateUserSys,
     DesignRoutes,
     EditDocument,
     FileViewer,
