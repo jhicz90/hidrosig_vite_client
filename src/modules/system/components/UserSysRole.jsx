@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Alert, Button, Card, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
-import { Liner } from '../../../components'
+import { Liner, OptionRole } from '../../../components'
 import { searchRole, useUpdateUserSysByIdMutation, usersysApi } from '../../../store/actions'
 
 export const UserSysRole = () => {
@@ -58,19 +58,12 @@ export const UserSysRole = () => {
                                                         isClearable
                                                         defaultOptions
                                                         loadOptions={searchRole}
-                                                        getOptionLabel={e =>
-                                                            <div className='d-flex flex-column align-items-start' style={{ height: '100%' }}>
-                                                                <div>{e.name}</div>
-                                                                <div>Nivel de acceso: {e.levelRole}</div>
-                                                                {e.levelRole > 1 && <div>Junta: {e.junta.name}</div>}
-                                                                {e.levelRole === 3 && <div>Comision: {e.committee.name}</div>}
-                                                            </div>
-                                                        }
-                                                        getOptionValue={e => e._id}
                                                         menuPlacement={'auto'}
                                                         placeholder={`Buscar...`}
                                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                         noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                        getOptionValue={e => e._id}
+                                                        getOptionLabel={e => <OptionRole role={e} />}
 
                                                     />
                                             }
@@ -92,15 +85,19 @@ export const UserSysRole = () => {
                                 </div>
                         }
                     </div>
-                    <div className='d-flex justify-content-end gap-2'>
-                        <Button
-                            disabled={isUpdating}
-                            variant='primary'
-                            type='submit'
-                        >
-                            Guardar cambios
-                        </Button>
-                    </div>
+                    {
+                        !!data.role
+                        &&
+                        <div className='d-flex justify-content-end gap-2'>
+                            <Button
+                                disabled={isUpdating}
+                                variant='primary'
+                                type='submit'
+                            >
+                                Guardar cambios
+                            </Button>
+                        </div>
+                    }
                 </form>
             </Card.Body>
         </Card >

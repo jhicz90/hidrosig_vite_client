@@ -55,6 +55,7 @@ a.uppy-Dashboard-poweredBy {
 
 .rc-select__menu {
 	z-index: 1030 !important;
+	background-color: oldlace !important;
 }
 
 .swal2-actions {

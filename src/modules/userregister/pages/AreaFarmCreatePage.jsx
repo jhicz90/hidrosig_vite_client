@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { useNavigateState } from '../../../hooks'
-import { Liner, LoadingPage, OptionBlock, OptionLocation, OptionOrgz, OptionUserFarm } from '../../../components'
+import { Liner, LinkBack, LoadingPage, OptionBlock, OptionLocation, OptionOrgz, OptionUserFarm } from '../../../components'
 import { searchBlockByJunta, searchJunta, searchLocation, searchUserFarm, useAddFarmMutation, useDraftFarmMutation, useLazyNewFarmQuery } from '../../../store/actions'
-import { Button, Form } from 'react-bootstrap'
+import { Alert, Button, Form } from 'react-bootstrap'
 
 export const AreaFarmCreatePage = () => {
 
@@ -157,9 +157,13 @@ export const AreaFarmCreatePage = () => {
                                 <Form.Group className='mb-3' controlId='newAreaTotal'>
                                     <Form.Label>Area total</Form.Label>
                                     <Form.Control
-                                        {...register('areaTotal', { required: true })}
+                                        {...register('areaTotal', {
+                                            required: true,
+                                            min: 0.00001
+                                        })}
                                         type='number'
                                         min={0}
+                                        step={0.00001}
                                         autoComplete='off'
                                     />
                                 </Form.Group>
@@ -174,6 +178,7 @@ export const AreaFarmCreatePage = () => {
                                         })}
                                         type='number'
                                         min={0}
+                                        step={0.00001}
                                         autoComplete='off'
                                     />
                                 </Form.Group>
@@ -188,6 +193,7 @@ export const AreaFarmCreatePage = () => {
                                         })}
                                         type='number'
                                         min={0}
+                                        step={0.00001}
                                         autoComplete='off'
                                     />
                                 </Form.Group>
@@ -196,10 +202,11 @@ export const AreaFarmCreatePage = () => {
                                 <Form.Group className='mb-3' controlId='newAreaUse'>
                                     <Form.Label>Area de uso</Form.Label>
                                     <Form.Control
-                                        {...register('areaUse', { required: true })}
-                                        disabled={true}
+                                        {...register('areaUse', { required: true, min: 0.00001 })}
+                                        readOnly
                                         type='number'
                                         min={0}
+                                        step={0.00001}
                                         autoComplete='off'
                                     />
                                 </Form.Group>
@@ -332,6 +339,13 @@ export const AreaFarmCreatePage = () => {
                         </div>
                         <Liner>Posesionarios del predio</Liner>
                         <div className='row'>
+                            <div className='col-auto'>
+                                <Alert>
+                                    Si el o los posesionario(s) aun no se registran, acceda a este <LinkBack className='btn-link' to={`/app/user_reg/user_farm/users/create`}>enlace</LinkBack> para registrarlo.
+                                </Alert>
+                            </div>
+                        </div>
+                        <div className='row'>
                             <div className='col-12'>
                                 <Form.Group className='mb-3' controlId='newUserFarms'>
                                     <Form.Label>Usuarios o posesionarios</Form.Label>
@@ -355,7 +369,7 @@ export const AreaFarmCreatePage = () => {
                                                     defaultOptions
                                                     isMulti
                                                     loadOptions={searchUserFarm}
-                                                    menuPlacement={'auto'}
+                                                    menuPlacement={'top'}
                                                     placeholder={`Buscar...`}
                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}

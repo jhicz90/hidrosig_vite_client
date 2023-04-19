@@ -7,7 +7,7 @@ export const OptionUserFarm = ({ userfarm = null }) => {
             <Avatar
                 img={userfarm?.image?.metadata?.url || ''}
                 cloud={userfarm?.image?.cloud || false}
-                noImgTxt={userfarm.names}
+                noImgTxt={userfarm.type > 1 ? `${userfarm.socialReason}` : `${userfarm.names} ${userfarm.lastName} ${userfarm.motherLastName}`}
                 noImg={4004}
                 circle={true}
                 width={32}

@@ -62,7 +62,7 @@ export const UserFarmCreatePage = () => {
                 <div className='col-12'>
                     <div className='row align-items-center justify-content-between g-3'>
                         <div className='col-12 col-md-auto'>
-                            <h4 className='mb-0'>NUEVA USUARIO AGRARIO</h4>
+                            <h4 className='mb-0'>NUEVO USUARIO AGRARIO</h4>
                         </div>
                         <div className='col-12 col-md-auto'>
                             <div className='d-flex gap-2'>
