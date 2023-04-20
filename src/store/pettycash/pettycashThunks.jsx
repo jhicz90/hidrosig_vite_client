@@ -90,7 +90,7 @@ export const startUpdateImageIdPettyCash = (id, images) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id }]))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
         }
     }
 }
@@ -105,7 +105,7 @@ export const startDeleteImagePettyCash = (id, imageId) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id }]))
+            dispatch(storeApi.util.invalidateTags(['Ptty']))
         }
     }
 }
@@ -205,7 +205,7 @@ export const startDeletePettycash = () => {
                 dispatch(setSavingPettycash(false))
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags([{ type: 'Ptty', id: _id }]))
+                    dispatch(storeApi.util.invalidateTags(['Ptty']))
                     dispatch(setActivePettycash(null))
                 }
             }

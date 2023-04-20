@@ -32,7 +32,8 @@ export const voucherApi = storeApi.injectEndpoints({
                 url: `voucher/edit/${id}`,
             }),
             transformResponse: (response, meta, arg) => response.voucher,
-            providesTags: (result, error, arg) => [{ type: 'Vchr', id: result._id }]
+            providesTags: ['Vchr']
+            // providesTags: (result, error, arg) => [{ type: 'Vchr', id: result._id }]
         }),
         getListVoucher: builder.query({
             query: (search) => ({
@@ -52,11 +53,11 @@ export const voucherApi = storeApi.injectEndpoints({
                 }
             }),
             transformResponse: (response, meta, arg) => response.docs,
-            // providesTags: ['Ptty', 'Vchr']
-            providesTags: (result, error, arg) =>
-                result
-                    ? [...result.map(({ _id }) => ({ type: 'Vchr', id: _id })), 'Ptty']
-                    : ['Ptty', 'Vchr']
+            providesTags: ['Ptty', 'Vchr']
+            // providesTags: (result, error, arg) =>
+            //     result
+            //         ? [...result.map(({ _id }) => ({ type: 'Vchr', id: _id })), 'Ptty']
+            //         : ['Ptty', 'Vchr']
         }),
         updateVoucherById: builder.mutation({
             query: ({ id, voucher }) => ({
@@ -64,7 +65,8 @@ export const voucherApi = storeApi.injectEndpoints({
                 method: 'put',
                 data: voucher
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: 'Vchr', id }]
+            invalidatesTags: ['Vchr']
+            // invalidatesTags: (result, error, { id }) => [{ type: 'Vchr', id }]
         }),
         deleteVoucherById: builder.mutation({
             query: (id) => ({
@@ -89,29 +91,6 @@ export const {
     useUpdateVoucherByIdMutation,
 } = voucherApi
 
-export const startUpdateImageVoucher = (images) => {
-    return async (dispatch, getState) => {
-
-        dispatch(setSavingVoucher(true))
-
-        const { active } = getState().voucher
-        const { _id } = active
-
-        const resp = await fetchByToken({
-            endpoint: `voucher/image/${_id}`,
-            data: { images },
-            method: 'PUT'
-        })
-
-        dispatch(setSavingVoucher(false))
-
-        if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags(['Vchr']))
-            dispatch(setActiveVoucher(resp.voucher))
-        }
-    }
-}
-
 export const startUpdateImageIdVoucher = (id, images) => {
     return async (dispatch) => {
 
@@ -122,7 +101,7 @@ export const startUpdateImageIdVoucher = (id, images) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
+            dispatch(storeApi.util.invalidateTags(['Vchr', 'Ptty']))
         }
     }
 }
@@ -137,7 +116,7 @@ export const startDeleteImageVoucher = (id, imageId) => {
         })
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
+            dispatch(storeApi.util.invalidateTags(['Vchr', 'Ptty']))
         }
     }
 }
@@ -155,7 +134,7 @@ export const startAddSunatImageIdVoucher = (id) => {
         toast.dismiss(toastLoading)
 
         if (resp.ok) {
-            dispatch(storeApi.util.invalidateTags([{ type: 'Vchr', id }]))
+            dispatch(storeApi.util.invalidateTags(['Vchr', 'Ptty']))
         }
     }
 }
@@ -312,7 +291,7 @@ export const startDeleteIdVoucher = (voucher) => {
                 })
 
                 if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Acct']))
+                    dispatch(storeApi.util.invalidateTags(['Acct', 'Vchr']))
                 }
             }
         })
