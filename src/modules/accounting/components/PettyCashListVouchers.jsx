@@ -130,7 +130,7 @@ export const PettyCashListVouchers = () => {
                                                 item.images.length < 4
                                                 &&
                                                 <Button
-                                                    onClick={() => handleImageVoucher(data._id, item)}
+                                                    onClick={() => handleImageVoucher(item._id, item)}
                                                     variant='neutral-primary-icon'
                                                     style={{ padding: '0.5rem' }}
                                                 >

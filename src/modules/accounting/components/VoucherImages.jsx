@@ -2,11 +2,11 @@ import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Button, Card } from 'react-bootstrap'
 import { GridGallery } from '../../../components'
-import { startModalResource, startUpdateImageIdVoucher, voucherApi } from '../../../store/actions'
+import { startAddSunatImageIdVoucher, startModalResource, startUpdateImageIdVoucher, voucherApi } from '../../../store/actions'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 
 export const VoucherImages = () => {
-    
+
     const { voucherid } = useParams()
     const dispatch = useDispatch()
     const { data = null } = useSelector(voucherApi.endpoints.getVoucherById.select(voucherid))
@@ -27,10 +27,17 @@ export const VoucherImages = () => {
         }
     }
 
+    const handleAddSunatImage = (voucher) => {
+        dispatch(startAddSunatImageIdVoucher(voucher._id))
+    }
+
     return (
         <Card>
             <Card.Body>
-                <Alert variant='info'>
+                <div className='d-flex align-items-center'>
+                    <Button variant='primary' onClick={() => handleAddSunatImage(data)}>Agregar CPE SUNAT</Button>
+                </div>
+                <Alert variant='info' className='my-3'>
                     Ingrese las imagenes del comprobante.
                 </Alert>
                 <GridGallery
