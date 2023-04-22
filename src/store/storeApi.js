@@ -8,6 +8,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
     async ({ url, method, data, params }) => {
         try {
             const result = await axios({
+                withCredentials: true,
                 url: baseUrl + '/' + url,
                 method,
                 data,
@@ -19,7 +20,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
             })
 
             if (result.data.hasOwnProperty('msg')) {
-                msgFetchAlert(result.data)
+                !params?.alertFetch || msgFetchAlert(result.data)
             }
 
             return { data: result.data }
@@ -27,7 +28,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
             let err = axiosError
             console.log(err)
             if (err.response?.data.hasOwnProperty('msg')) {
-                msgFetchAlert(err.response?.data)
+                !params?.alertFetch || msgFetchAlert(err.response?.data)
             }
 
             return {

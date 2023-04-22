@@ -8,7 +8,7 @@ export const authSlice = createSlice({
         displayName: null,
         photoURL: null,
         lvlAccess: 0,
-        modAccess: [],
+        modules: [],
         options: {},
         tokenIat: null,
         tokenExp: null,
@@ -22,7 +22,7 @@ export const authSlice = createSlice({
             state.displayName = payload.names
             state.photoURL = payload.image
             state.lvlAccess = payload.access
-            state.modAccess = payload.modules
+            state.modules = payload.modules
             state.options = payload.options
             state.tokenIat = payload.iat
             state.tokenExp = payload.exp
@@ -35,7 +35,7 @@ export const authSlice = createSlice({
             state.displayName = null
             state.photoURL = null
             state.lvlAccess = 0
-            state.modAccess = []
+            state.modules = []
             state.options = {}
             state.tokenIat = null
             state.tokenExp = null
@@ -44,10 +44,10 @@ export const authSlice = createSlice({
         startCheckingLogin: (state) => {
             state.checkLogin = true
         },
-        checkingCredentials: (state) => {
+        startCheckingCredentials: (state) => {
             state.checkToken = true
         }
     }
 });
 
-export const { login, logout, startCheckingLogin, checkingCredentials } = authSlice.actions
+export const { login, logout, startCheckingLogin, startCheckingCredentials } = authSlice.actions

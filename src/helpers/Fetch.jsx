@@ -7,7 +7,7 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
     try {
         if (method === 'GET') {
             const resp = await axios({
-                withCredentials: false,
+                withCredentials: true,
                 method,
                 baseURL,
                 url: endpoint,
@@ -27,7 +27,7 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
             return bodyResponse
         } else {
             const resp = await axios({
-                withCredentials: false,
+                withCredentials: true,
                 method,
                 baseURL,
                 url: endpoint,
@@ -64,7 +64,7 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
         if (token !== '') {
             if (method === 'GET') {
                 const resp = await axios({
-                    withCredentials: false,
+                    withCredentials: true,
                     method,
                     baseURL,
                     headers: {
@@ -87,7 +87,7 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                 return bodyResponse
             } else {
                 const resp = await axios({
-                    withCredentials: false,
+                    withCredentials: true,
                     method,
                     baseURL,
                     headers: {
@@ -128,7 +128,7 @@ export const fetchUpFilesByToken = async ({ endpoint = '', data = {}, method = '
 
     try {
         const resp = await axios({
-            withCredentials: false,
+            withCredentials: true,
             method,
             baseURL,
             headers: {

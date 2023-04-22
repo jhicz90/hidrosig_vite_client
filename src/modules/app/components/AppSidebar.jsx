@@ -24,13 +24,13 @@ export const AppSidebar = () => {
 
     return (
         <>
-            <nav id="sidebar" className="sidebar-app sidebar-inverted">
+            <nav id='sidebar' className='sidebar-app sidebar-inverted'>
                 {/* <PerfectScrollbar>
                     <Sidebar />
                 </PerfectScrollbar> */}
                 <Sidebar />
                 <div
-                    className="nav-footer user-select-none"
+                    className='nav-footer user-select-none'
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -39,17 +39,17 @@ export const AppSidebar = () => {
                     }}
                 >
                     <FaWifi color={isOnline ? '#4caf50' : '#f44336'} />
-                    <span className="ms-1">{isOnline ? "Conectado" : "Desconectado"}</span>
+                    <span className='ms-1'>{isOnline ? 'Conectado' : 'Desconectado'}</span>
                 </div>
             </nav>
-            <button onClick={handleSidebar} className="sidebar-app-mobile-backdrop" />
+            <button onClick={handleSidebar} className='sidebar-app-mobile-backdrop' />
         </>
     )
 }
 
 const Sidebar = () => {
 
-    const { modAccess: modules } = useSelector(state => state.auth)
+    const { modules } = useSelector(state => state.auth)
 
     const menu = modules.find(m => m.key === MD5(secretAccess).toString()) ? menuModule : checkModules(menuModule, modules)
 
@@ -71,10 +71,10 @@ const NavItem = ({ item }) => {
         <NavLink
             end
             to={to}
-            className={({ isActive }) => isActive ? "active" : ""}
+            className={({ isActive }) => isActive ? 'active' : ''}
         >
             {item.icon && <IconNav />}
-            <span className={item.icon && "ms-2"}>{label}</span>
+            <span className={item.icon && 'ms-2'}>{label}</span>
         </NavLink>
     )
 }
@@ -97,11 +97,11 @@ const NavItemHeader = ({ item }) => {
             {
                 <>
                     <button
-                        className={`has-sub ${expanded ? "active" : ""}`}
+                        className={`has-sub ${expanded ? 'active' : ''}`}
                         onClick={onExpandChange}
                     >
                         {item.icon && <IconNav />}
-                        <span className={item.icon && "ms-2"}>{label}</span>
+                        <span className={item.icon && 'ms-2'}>{label}</span>
                     </button>
 
                     {expanded && (
@@ -129,10 +129,10 @@ const NavItemHeader = ({ item }) => {
                                         <NavLink
                                             key={key}
                                             to={resolveLinkPath(itemChildren.to, item.to)}
-                                            className={({ isActive }) => isActive ? "active" : ""}
+                                            className={({ isActive }) => isActive ? 'active' : ''}
                                         >
-                                            {Icon && <img src={imageSysGet(Icon)} alt="img" width="24" height="24" />}
-                                            <span className={Icon && "ms-1"}>{label}</span>
+                                            {Icon && <img src={imageSysGet(Icon)} alt='img' width='24' height='24' />}
+                                            <span className={Icon && 'ms-1'}>{label}</span>
                                         </NavLink>
                                     )
                                 })

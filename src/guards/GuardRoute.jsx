@@ -6,7 +6,7 @@ const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
 
 export const GuardRoute = ({ meta = [], children }) => {
 
-    const { modAccess: modules } = useSelector(state => state.auth)
+    const { modules } = useSelector(state => state.auth)
     const access = modules.filter(m => meta.find(me => m.key === MD5(me).toString()))
 
     if (modules.find(m => m.key === MD5(secretAccess).toString())) {

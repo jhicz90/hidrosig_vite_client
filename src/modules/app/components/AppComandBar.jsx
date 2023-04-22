@@ -19,7 +19,7 @@ export const AppComandBar = () => {
     const [page, setPage] = useState('root')
 
     const { cmkbar: { show } } = useSelector(state => state.app)
-    const { modAccess: modules } = useSelector(state => state.auth)
+    const { modules } = useSelector(state => state.auth)
     const actions = comandModules(modules.find(m => m.key === MD5(secretAccess).toString()) ? [...menuModule] : checkModules([...menuModule], modules))
 
     const rootItems = filterItems(

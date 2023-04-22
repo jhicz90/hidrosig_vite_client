@@ -4,15 +4,12 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { WebRoot, AppRoot, LoginPage } from '../modules'
 import { Loading } from '../components'
-import { checkingToken } from '../store/actions'
+import { checkingToken, useAuthRefreshQuery } from '../store/actions'
 
 export const Router = () => {
     const dispatch = useDispatch()
     const { uid, checkToken } = useSelector(state => state.auth)
-
-    useEffect(() => {
-        dispatch(checkingToken())
-    }, [])
+    const { isLoading } = useAuthRefreshQuery()
 
     useEffect(() => {
         onstorage = () => {
@@ -21,7 +18,7 @@ export const Router = () => {
         }
     }, [])
 
-    if (checkToken) {
+    if (checkToken || isLoading) {
         return <Loading />
     }
 
