@@ -62,6 +62,7 @@ export const FilesUploadModal = () => {
         <Modal
             show={showUpload}
             size='xl'
+            fullscreen='md-down'
             onHide={() => {
                 dispatch(finishModalResource())
                 uppy.close({ reason: 'unmount' })
@@ -70,7 +71,7 @@ export const FilesUploadModal = () => {
             <Modal.Header closeButton closeVariant='white' style={{ backgroundColor: 'gold' }}>
                 <Modal.Title>Subir archivos</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{ flexGrow: 0 }}>
                 {
                     options.typeUploadResource === 1
                     &&

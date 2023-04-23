@@ -46,6 +46,7 @@ export const FilesUploadTempModal = () => {
         <Modal
             show={showUploadTemp}
             size='xl'
+            fullscreen='md-down'
             onHide={() => {
                 dispatch(finishModalTempResource())
                 uppy.close({ reason: 'unmount' })

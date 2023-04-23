@@ -86,7 +86,7 @@ export const logoutAuth = () => {
 
         const resp = await fetchByToken({
             endpoint: 'auth/logout',
-            method: 'delete',
+            method: 'DELETE',
             alert: false,
         })
 
