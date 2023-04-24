@@ -24,6 +24,8 @@ export const InputSearch = ({ className = 'm-3', value, onChange, debounce = 500
                 onChange={(e) => setValueInput(e.target.value)}
                 autoComplete={autoComplete ? true : 'off'}
                 placeholder={placeholder}
+                type='text'
+                name='search'
             />
             <BsSearch className='search-box-icon' size={20} color='#8a94ad' />
             <div className='search-box-options'>

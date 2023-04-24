@@ -5,7 +5,12 @@ import '@egjs/react-flicking/dist/flicking.css'
 
 export const SliderNavFlip = ({ children }) => {
     return (
-        <FlipWrapper moveType='freeScroll' bound={true} align='prev'>
+        <FlipWrapper
+            moveType='freeScroll'
+            bound={true}
+            align='prev'
+            renderOnSameKey={true}
+        >
             {children}
         </FlipWrapper>
     )

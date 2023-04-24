@@ -87,7 +87,7 @@ export const menuModule = [
         label: 'Recaudación de tarifa',
         icon: IconSysSales,
         rcIcon: FcSalesPerformance,
-        to: 'collect',
+        to: 'colc',
         meta: ['ratecollect'],
         children: [
             {
