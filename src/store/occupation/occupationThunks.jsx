@@ -6,6 +6,68 @@ import { addNewOccupation, setActiveNewOccupation, setActiveOccupation, setSavin
 
 const SwalReact = withReactContent(Swal)
 
+export const occupationApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // OCCUPATION
+        newOccup: builder.query({
+            query: () => ({
+                url: `occupation/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.occupation
+        }),
+        addOccup: builder.mutation({
+            query: (newOccup) => ({
+                url: `occupation/create/new`,
+                method: 'POST',
+                data: newOccup
+            }),
+            invalidatesTags: ['Occup']
+        }),
+        getListOccup: builder.query({
+            query: (search) => ({
+                url: `occupation/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Occup']
+        }),
+        getOccupById: builder.query({
+            query: (id) => ({
+                url: `occupation/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.occupation,
+            providesTags: ['Occup']
+        }),
+        updateOccupById: builder.mutation({
+            query: ({ id, occupation }) => ({
+                url: `occupation/edit/${id}`,
+                method: 'PUT',
+                data: occupation
+            }),
+            invalidatesTags: ['Occup']
+        }),
+        deleteOccupById: builder.mutation({
+            query: (id) => ({
+                url: `occupation/delete/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Occup']
+        })
+        // OCCUPATION
+    })
+})
+
+export const {
+    useAddOccupMutation,
+    useDeleteOccupByIdMutation,
+    useGetListOccupQuery,
+    useGetOccupByIdQuery,
+    useNewOccupQuery,
+    useUpdateOccupByIdMutation,
+} = occupationApi
+
 export const startAddNewOccupation = () => {
     return async (dispatch) => {
 

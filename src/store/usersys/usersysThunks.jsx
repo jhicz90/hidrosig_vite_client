@@ -93,7 +93,7 @@ export const updateImageUserSysById = (id, image) => {
 
 export const questionStatusUserSys = async (usersys) => {
 
-    const { names, surnames } = usersys
+    const { names, surnames, status } = usersys
 
     return SwalReact.fire({
         title:
@@ -107,12 +107,12 @@ export const questionStatusUserSys = async (usersys) => {
                 <div className='alert alert-warning'>Recordar que al hacer el cambio las sesiones de este usuario se reiniciaran.</div>
             </>,
         showCancelButton: true,
-        confirmButtonText: !usersys.status ? 'Desactivar' : 'Activar',
+        confirmButtonText: status ? 'Desactivar' : 'Activar',
         cancelButtonText: 'Cancelar',
         allowOutsideClick: false,
         icon: 'question',
         customClass: {
-            confirmButton: !usersys.status ? 'btn btn-warning' : 'btn btn-success',
+            confirmButton: status ? 'btn btn-warning' : 'btn btn-success',
             cancelButton: 'btn btn-neutral'
         },
         buttonsStyling: false,

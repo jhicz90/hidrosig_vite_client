@@ -66,13 +66,17 @@ export const UserSysPage = () => {
                                     <IoLogoWhatsapp size={24} />
                                     Enviar mensaje
                                 </Button>
-                                <Button
-                                    onClick={() => handleActive(userid, data)}
-                                    disabled={isSaving || isLoading}
-                                    variant={data.status ? 'danger' : 'success'}
-                                >
-                                    {data.status ? 'Desactivar' : 'Activar'}
-                                </Button>
+                                {
+                                    data.role !== null
+                                    &&
+                                    <Button
+                                        onClick={() => handleActive(userid, data)}
+                                        disabled={isSaving || isLoading}
+                                        variant={data.status ? 'danger' : 'success'}
+                                    >
+                                        {data.status ? 'Desactivar' : 'Activar'}
+                                    </Button>
+                                }
                                 <Dropdown className='dropdown-noarrow'>
                                     <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
                                         <IoEllipsisVertical size={24} />

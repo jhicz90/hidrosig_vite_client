@@ -5,24 +5,25 @@ import { storeApi } from './'
 
 import { appSlice } from './app'
 import { authSlice } from './auth'
-import { occupationSlice } from './occupation'
-import { roleSlice } from './role'
-import { sigaSlice } from './siga'
-import { systemSlice } from './system'
-import { usersysSlice } from './usersys'
-import { juntaSlice } from './junta'
-import { committeeSlice } from './committee'
-import { zoneSlice } from './zone'
 import { blockSlice } from './block'
-import { watersourceSlice } from './watersource'
-import { structureSlice } from './structure'
-import { sectionSlice } from './section'
-import { irrigationnetworkSlice } from './irrigationnetwork'
-import { resourceSlice } from './resource'
-import { pettycashSlice } from './pettycash'
-import { voucherSlice } from './voucher'
+import { collectSlice } from './collect'
+import { committeeSlice } from './committee'
 import { documentSlice } from './document'
 import { geoobjectSlice } from './geoobject'
+import { irrigationnetworkSlice } from './irrigationnetwork'
+import { juntaSlice } from './junta'
+import { occupationSlice } from './occupation'
+import { pettycashSlice } from './pettycash'
+import { resourceSlice } from './resource'
+import { roleSlice } from './role'
+import { sectionSlice } from './section'
+import { sigaSlice } from './siga'
+import { structureSlice } from './structure'
+import { systemSlice } from './system'
+import { usersysSlice } from './usersys'
+import { voucherSlice } from './voucher'
+import { watersourceSlice } from './watersource'
+import { zoneSlice } from './zone'
 
 export const store = configureStore({
     reducer: {
@@ -46,6 +47,7 @@ export const store = configureStore({
         pettycash: pettycashSlice.reducer,
         voucher: voucherSlice.reducer,
         document: documentSlice.reducer,
+        collect: collectSlice.reducer,
         [storeApi.reducerPath]: storeApi.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({

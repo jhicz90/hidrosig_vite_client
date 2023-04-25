@@ -30,7 +30,7 @@ export const StructureBanner = () => {
                     <MapLocation
                         className='my-0'
                         geometry={
-                            sectionsIn.filter(s => Object.keys(s.feature).length > 0).map(sect => sect.feature)
+                            sectionsIn.filter(({ feature }) => feature !== null).map(sect => sect.feature)
                         }
                         style={{
                             height: '400px'

@@ -6,6 +6,68 @@ import { addNewRole, setActiveNewRole, setActiveRole, setSavingRole, setSavingNe
 
 const SwalReact = withReactContent(Swal)
 
+export const roleApi = storeApi.injectEndpoints({
+    endpoints: (builder) => ({
+        // ROLE
+        newRole: builder.query({
+            query: () => ({
+                url: `role/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.role
+        }),
+        addRole: builder.mutation({
+            query: (newRole) => ({
+                url: `role/create/new`,
+                method: 'POST',
+                data: newRole
+            }),
+            invalidatesTags: ['Role']
+        }),
+        getListRole: builder.query({
+            query: (search) => ({
+                url: `role/list`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Role']
+        }),
+        getRoleById: builder.query({
+            query: (id) => ({
+                url: `role/edit/${id}`
+            }),
+            transformResponse: (response, meta, arg) => response.role,
+            providesTags: ['Role']
+        }),
+        updateRoleById: builder.mutation({
+            query: ({ id, role }) => ({
+                url: `role/edit/${id}`,
+                method: 'PUT',
+                data: role
+            }),
+            invalidatesTags: ['Role']
+        }),
+        deleteRoleById: builder.mutation({
+            query: (id) => ({
+                url: `role/delete/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Role']
+        })
+        // ROLE
+    })
+})
+
+export const {
+    useAddRoleMutation,
+    useDeleteRoleByIdMutation,
+    useGetListRoleQuery,
+    useGetRoleByIdQuery,
+    useNewRoleQuery,
+    useUpdateRoleByIdMutation,
+} = roleApi
+
 export const startAddNewRole = () => {
     return async (dispatch) => {
 

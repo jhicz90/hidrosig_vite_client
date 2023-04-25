@@ -53,6 +53,16 @@ export const sectionApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Irrig']
         }),
+        getListFarmByStructure: builder.query({
+            query: ({ structure, search }) => ({
+                url: `farm/search_by_structure/${structure}`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
         updateSectionById: builder.mutation({
             query: ({ id, section }) => ({
                 url: `section/edit/${id}`,
@@ -84,6 +94,7 @@ export const {
     useAddSectionMutation,
     useDeleteSectionByIdMutation,
     useGetCalcPropertiesQuery,
+    useGetListFarmByStructureQuery,
     useGetListSectionByStructureQuery,
     useGetListSectionQuery,
     useGetSectionByIdQuery,

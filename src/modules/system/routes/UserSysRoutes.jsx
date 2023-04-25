@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { UserSysListPage, UserSysNavPage, UserSysPage } from '../pages'
+import { OccupationListPage, RoleListPage, UserSysListPage, UserSysNavPage, UserSysPage } from '../pages'
 
 export const UserSysRoutes = () => {
     return (
@@ -12,6 +12,22 @@ export const UserSysRoutes = () => {
                     element={
                         <GuardRoute meta={['organization_junta']}>
                             <UserSysListPage />
+                        </GuardRoute>
+                    }
+                />
+                <Route
+                    path={`role`}
+                    element={
+                        <GuardRoute meta={['role']}>
+                            <RoleListPage />
+                        </GuardRoute>
+                    }
+                />
+                <Route
+                    path={`occup`}
+                    element={
+                        <GuardRoute meta={['occup']}>
+                            <OccupationListPage />
                         </GuardRoute>
                     }
                 />

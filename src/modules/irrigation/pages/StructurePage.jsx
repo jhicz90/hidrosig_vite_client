@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Card, Dropdown, Tab } from 'react-bootstrap'
 import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
-import { StructureAdditionalData, StructureBanner, StructureImages, StructureInformation, StructureListSection } from '../components'
+import { StructureAdditionalData, StructureBanner, StructureImages, StructureInformation, StructureListFarm, StructureListSection } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
 import { questionDeleteStructure, useDeleteStructureByIdMutation, useGetStructureByIdQuery } from '../../../store/actions'
@@ -97,6 +97,7 @@ export const StructurePage = () => {
                                     <Routes>
                                         <Route index element={<StructureInformation />} />
                                         <Route path={`sct/*`} element={<StructureListSection />} />
+                                        <Route path={`prp`} element={<StructureListFarm />} />
                                         <Route path={`img`} element={<StructureImages />} />
                                         <Route path={`add`} element={<StructureAdditionalData />} />
                                         {/* <Route path={`area`} element={<AreaFarmAreaGeometry />} />

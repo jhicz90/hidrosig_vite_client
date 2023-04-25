@@ -39,6 +39,26 @@ export const menuModule = [
         ]
     },
     {
+        label: 'Esquema de riego',
+        icon: IconSysIrrigSchm,
+        to: 'schm',
+        meta: ['irrigschm'],
+        children: [
+            {
+                label: 'Red de riego',
+                to: 'irrig',
+                meta: ['irrignet'],
+                detail: 'Vista de la red de riego, se podrá registrar estructuras y tramos.'
+            },
+            {
+                label: 'Sectores de riego',
+                to: 'sector',
+                meta: ['sector'],
+                detail: 'Los sectores de riego son zonas a cargo de los delegados o algún usuario que se encargan de la distribución del recurso hídrico.'
+            },
+        ]
+    },
+    {
         label: 'Padrón de usuarios',
         icon: IconSysUserReg,
         to: 'user_reg',
@@ -64,30 +84,10 @@ export const menuModule = [
         ]
     },
     {
-        label: 'Esquema de riego',
-        icon: IconSysIrrigSchm,
-        to: 'schm',
-        meta: ['irrigschm'],
-        children: [
-            {
-                label: 'Red de riego',
-                to: 'irrig',
-                meta: ['irrignet'],
-                detail: 'Vista de la red de riego, se podrá registrar estructuras y tramos.'
-            },
-            {
-                label: 'Sectores de riego',
-                to: 'sector',
-                meta: ['sector'],
-                detail: 'Los sectores de riego son zonas a cargo de los delegados o algún usuario que se encargan de la distribución del recurso hídrico.'
-            },
-        ]
-    },
-    {
         label: 'Recaudación de tarifa',
         icon: IconSysSales,
         rcIcon: FcSalesPerformance,
-        to: 'colc',
+        to: 'coll',
         meta: ['ratecollect'],
         children: [
             {
@@ -208,18 +208,6 @@ export const menuModule = [
                 to: 'user_sys',
                 meta: ['usersys'],
                 detail: 'Lista de usuarios o cuentas de usuario registradas en el sistema.'
-            },
-            {
-                label: 'Roles de usuario',
-                to: 'role',
-                meta: ['role'],
-                detail: 'Lista de roles y restricciones de las cuentas de usuario.'
-            },
-            {
-                label: 'Ocupaciones',
-                to: 'occup',
-                meta: ['occupation'],
-                detail: 'Lista de ocupaciones que detallan la cuenta de usuario o su función.'
             },
             {
                 label: 'Configuración',

@@ -154,7 +154,7 @@ export const AppRoot = () => {
                 <Route path={`ambit/*`} element={<ModuleAmbitRoutes />} />
                 <Route path={`user_reg/*`} element={<ModuleUserRegisterRouter />} />
                 <Route path={`schm/*`} element={<ModuleIrrigationRoutes />} />
-                <Route path={`colc/*`} element={<ModuleCollectRoutes />} />
+                <Route path={`coll/*`} element={<ModuleCollectRoutes />} />
                 <Route path={`acct/*`} element={<ModuleAccountingRoutes />} />
                 <Route path={`tools/*`}>
                     <Route path={`design/*`} element={<GuardRoute meta={['tools']} component={DesignRoutes} />} />

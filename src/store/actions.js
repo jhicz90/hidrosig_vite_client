@@ -1,6 +1,7 @@
 export * from './app'
 export * from './auth'
 export * from './block'
+export * from './collect'
 export * from './committee'
 export * from './document'
 export * from './farm'

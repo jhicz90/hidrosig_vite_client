@@ -1,69 +1,40 @@
 import { useState } from 'react'
-import { Button, Card, Nav, Tab } from 'react-bootstrap'
-import { IoEyeSharp } from 'react-icons/io5'
-import { DataTable, InputSearch, LinkBack, SliderNavFlip } from '../../../components'
+import { useDispatch } from 'react-redux'
+import { Button, Tab } from 'react-bootstrap'
+import { IoEyeSharp, IoOpen } from 'react-icons/io5'
+import { DataTable, InputSearch, LinkBack, SliderNavFlip, TagStatus } from '../../../components'
+import { addSearched } from '../../../store/actions'
 
 export const FeeCollectSearchPage = () => {
 
+    const dispatch = useDispatch()
     const [search, setSearch] = useState('')
     const [typeSearch, setTypeSearch] = useState('user')
-    const [list, setList] = useState([])
+    const [list, setList] = useState([
+        { _id: '641370225b9141556de5b861', code: '2023-WT62B1Y7', names: 'José Hans', docid: '46891419', active: true },
+        { _id: '6418bf6065fc0130b66e925a', code: '2023-V96RAWFF', names: 'Dulce Maria', docid: '72212275', active: true }
+    ])
 
     return (
         <>
             <div className='container-fluid'>
-                <div className='row my-3'>
+                <div className='row mt-3'>
                     <div className='col-12'>
-                        <div className='row align-items-center justify-content-between g-3'>
-                            <div className='col-12 col-md-auto'>
-                                <h4 className='mb-0'>COBRANZA DE TARIFA</h4>
-                            </div>
-                            <div className='col-12 col-md-auto'>
-                                <div className='d-flex gap-2'>
-                                    <LinkBack className='btn btn-neutral text-primary' relative to={`create`}>Nueva busqueda</LinkBack>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col'>
                         <Tab.Container>
                             <SliderNavFlip>
                                 <Button
                                     variant='neutral'
-                                    onClick={() => setTypeSearch('user')}
-                                    className={`flicking-panel ${typeSearch === 'user' ? 'active' : ''}`}
+                                    onClick={() => setTypeSearch('usr')}
+                                    className={`flicking-panel ${typeSearch === 'usr' ? 'active' : ''}`}
                                 >
                                     Usuario
                                 </Button>
                                 <Button
                                     variant='neutral'
-                                    onClick={() => setTypeSearch('nompred')}
-                                    className={`flicking-panel ${typeSearch === 'nompred' ? 'active' : ''}`}
+                                    onClick={() => setTypeSearch('prp')}
+                                    className={`flicking-panel ${typeSearch === 'prp' ? 'active' : ''}`}
                                 >
-                                    Nombre de predio
-                                </Button>
-                                <Button
-                                    variant='neutral'
-                                    onClick={() => setTypeSearch('docid')}
-                                    className={`flicking-panel ${typeSearch === 'docid' ? 'active' : ''}`}
-                                >
-                                    Documento de identidad
-                                </Button>
-                                <Button
-                                    variant='neutral'
-                                    onClick={() => setTypeSearch('coduser')}
-                                    className={`flicking-panel ${typeSearch === 'coduser' ? 'active' : ''}`}
-                                >
-                                    Código de usuario
-                                </Button>
-                                <Button
-                                    variant='neutral'
-                                    onClick={() => setTypeSearch('codpred')}
-                                    className={`flicking-panel ${typeSearch === 'codpred' ? 'active' : ''}`}
-                                >
-                                    Código de predio
+                                    Predio
                                 </Button>
                             </SliderNavFlip>
                         </Tab.Container>
@@ -85,36 +56,46 @@ export const FeeCollectSearchPage = () => {
                                 {
                                     label: 'NOMBRE O RAZON SOCIAL',
                                     renderCell: (item) =>
-                                        item.social
+                                        item.names
                                 },
                                 {
                                     label: 'DOCUMENTO',
                                     renderCell: (item) =>
-                                        item.name
+                                        item.docid
                                 },
                                 {
-                                    label: 'CREADO',
+                                    label: 'ESTADO',
                                     renderCell: (item) =>
-                                        item.receipt
-                                },
-                                {
-                                    label: 'ACTUALIZADO',
-                                    renderCell: (item) =>
-                                        item.check
+                                        <TagStatus status={item.active} />
                                 },
                                 {
                                     label: 'ACCIÓN',
-                                    width: '100px',
+                                    width: '200px',
                                     pinRight: true,
                                     renderCell: (item) =>
                                         <div className='d-flex gap-2 p-2'>
-                                            <LinkBack
-                                                to={`/app/acct/petty_cash/${item._id}`}
+                                            <Button
+                                                onClick={() => dispatch(addSearched({ id: item._id, title: item.names, typeSearch: 'usr' }))}
+                                                variant='neutral-icon'
+                                                style={{ padding: '0.5rem' }}
+                                            >
+                                                <IoEyeSharp size={16} />
+                                            </Button>
+                                            {/* <LinkBack
+                                                to={`/app/coll/bill/usr/${item._id}`}
                                                 className='btn btn-neutral-icon'
                                                 style={{ padding: '0.5rem' }}
                                             >
                                                 <IoEyeSharp size={16} />
                                             </LinkBack>
+                                            <LinkBack
+                                                to={`/app/coll/bill/usr/${item._id}`}
+                                                className='btn btn-neutral-icon'
+                                                style={{ padding: '0.5rem' }}
+                                                target='_blank'
+                                            >
+                                                <IoOpen size={16} />
+                                            </LinkBack> */}
                                         </div>
                                 }
                             ]
