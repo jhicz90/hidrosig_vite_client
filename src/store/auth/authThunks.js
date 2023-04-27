@@ -8,9 +8,7 @@ export const authApi = storeApi.injectEndpoints({
         authRefresh: builder.query({
             query: () => ({
                 url: `auth/refresh`,
-                params: {
-                    alertFetch: false
-                }
+                alert: false
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {

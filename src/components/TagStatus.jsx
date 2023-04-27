@@ -1,5 +1,5 @@
 import { Badge } from 'react-bootstrap'
-import { FaCheck, FaMinusCircle } from 'react-icons/fa'
+import { FaCheck, FaLock, FaMinusCircle } from 'react-icons/fa'
 import moment from 'moment'
 
 export const TagStatus = ({ status }) => {
@@ -22,7 +22,7 @@ export const TagNewReg = ({ time = new Date() }) => {
             {
                 !moment(time).isBefore(new Date(), 'day')
                 &&
-                <Badge bg='success' style={{ width: 'min-content'}}>Nuevo</Badge>
+                <Badge bg='success' style={{ width: 'min-content' }}>Nuevo</Badge>
             }
         </>
     )

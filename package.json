@@ -1,7 +1,7 @@
 {
     "name": "hidrosig_client",
     "private": true,
-    "version": "2.6.0",
+    "version": "2.6.1",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -37,6 +37,7 @@
         "leaflet": "^1.9.3",
         "makerjs": "^0.17.6",
         "moment": "^2.29.4",
+        "rc-scrollbars": "^1.1.5",
         "react": "^18.2.0",
         "react-bootstrap": "^2.7.2",
         "react-checkbox-tree": "^1.8.0",

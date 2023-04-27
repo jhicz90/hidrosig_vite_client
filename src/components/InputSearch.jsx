@@ -16,6 +16,10 @@ export const InputSearch = ({ className = 'm-3', value, onChange, debounce = 500
         onChange(valueDebounce)
     }, [valueDebounce])
 
+    useEffect(() => {
+        setValueInput(value)
+    }, [value])
+
     return (
         <SearchBox className={className}>
             <Form.Control

@@ -3,7 +3,7 @@ export const collectSlice = createSlice({
     name: 'collect',
     initialState: {
         search: '',
-        typeSearch: '',// usr || prp
+        typeSearch: 'usr',// usr || prp
         listSearched: []// [{ id: '641370225b9141556de5b861', title: 'José Hans', typeSearch:'usr'}]
     },
     reducers: {
@@ -14,7 +14,7 @@ export const collectSlice = createSlice({
             state.typeSearch = payload
         },
         addSearched: (state, { payload }) => {
-            state.listSearched = [...state.listSearched.filter(ls => ls.id !== payload.id), payload]
+            state.listSearched = state.listSearched.find(ls => ls.id === payload.id) ? [...state.listSearched] : [...state.listSearched, payload]
         },
         deleteSearchedById: (state, { payload }) => {
             state.listSearched = state.listSearched.filter(ls => ls.id !== payload)

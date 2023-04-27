@@ -5,7 +5,7 @@ import { msgFetchAlert } from '../helpers'
 const baseURL = import.meta.env.VITE_APP_API_URL
 
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
-    async ({ url, method, data, params }) => {
+    async ({ url, method, data, params, alert = true }) => {
         try {
             const result = await axios({
                 withCredentials: true,
@@ -20,7 +20,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
             })
 
             if (result.data.hasOwnProperty('msg')) {
-                !params?.alertFetch || msgFetchAlert(result.data)
+                alert && msgFetchAlert(result.data)
             }
 
             return { data: result.data }
@@ -28,7 +28,7 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
             let err = axiosError
             console.log(err)
             if (err.response?.data.hasOwnProperty('msg')) {
-                !params?.alertFetch || msgFetchAlert(err.response?.data)
+                alert && msgFetchAlert(err.response?.data)
             }
 
             return {
@@ -45,7 +45,7 @@ export const storeApi = createApi({
     reducerPath: 'storeApi',
     keepUnusedDataFor: 60,
     refetchOnMountOrArgChange: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo', 'Cllc', 'YrRt'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),

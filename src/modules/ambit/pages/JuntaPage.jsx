@@ -5,7 +5,7 @@ import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
 import { useNavigateState } from '../../../hooks'
 import { LoadingPage, SliderNavFlip } from '../../../components'
-import { JuntaAmbitZone, JuntaBanner, JuntaInformation, JuntaAmbitWaterSource, JuntaAmbitCommittee } from '../components'
+import { JuntaAmbitZone, JuntaBanner, JuntaInformation, JuntaAmbitWaterSource, JuntaAmbitCommittee, JuntaYearRate } from '../components'
 import { questionDeleteJunta, questionStatusJunta, useDeleteJuntaByIdMutation, useGetJuntaByIdQuery, useUpdateJuntaByIdMutation } from '../../../store/actions'
 
 export const JuntaPage = () => {
@@ -103,17 +103,19 @@ export const JuntaPage = () => {
                         <Card className='p-2'>
                             <SliderNavFlip>
                                 <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
+                                <NavLink to={`yr`} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Años y Tarifas</NavLink>
+                                <NavLink to={`comm`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Comisiones</NavLink>
                                 <NavLink to={`zn`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Zonas</NavLink>
                                 <NavLink to={`ws`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Fuentes de agua</NavLink>
-                                <NavLink to={`comm`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Comisiones</NavLink>
                             </SliderNavFlip>
                         </Card>
                         <div className='mt-2'>
                             <Routes>
                                 <Route index element={<JuntaInformation />} />
+                                <Route path={`yr`} element={<JuntaYearRate />} />
+                                <Route path={`comm`} element={<JuntaAmbitCommittee />} />
                                 <Route path={`zn`} element={<JuntaAmbitZone />} />
                                 <Route path={`ws`} element={<JuntaAmbitWaterSource />} />
-                                <Route path={`comm`} element={<JuntaAmbitCommittee />} />
                             </Routes>
                         </div>
                     </Tab.Container>

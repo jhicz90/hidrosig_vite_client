@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { NavLink, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import Scrollbars from 'rc-scrollbars'
 import { FaWifi } from 'react-icons/fa'
 import { MD5 } from 'crypto-js'
-// import PerfectScrollbar from 'react-perfect-scrollbar'
-
 import { checkModules, imageSysGet } from '../../../helpers'
 import { UseStatusConnection } from '../../../hooks'
 import { menuModule } from '../../../types'
 
+// import PerfectScrollbar from 'react-perfect-scrollbar'
 // import 'react-perfect-scrollbar/dist/css/styles.css'
 
 const secretAccess = import.meta.env.VITE_APP_SECRET_ACCESS
@@ -28,7 +28,20 @@ export const AppSidebar = () => {
                 {/* <PerfectScrollbar>
                     <Sidebar />
                 </PerfectScrollbar> */}
-                <Sidebar />
+                <Scrollbars
+                    autoHide
+                    renderThumbVertical={({ style, ...props }) => {
+                        const finalStyle = {
+                            ...style,
+                            cursor: 'pointer',
+                            backgroundColor: '#0d6efd',
+                        }
+
+                        return <div style={finalStyle} {...props} />
+                    }}
+                >
+                    <Sidebar />
+                </Scrollbars>
                 <div
                     className='nav-footer user-select-none'
                     style={{

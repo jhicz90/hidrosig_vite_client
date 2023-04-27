@@ -1,13 +1,15 @@
+import { createRef } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Nav, Tab } from 'react-bootstrap'
-import { IoMdClose } from 'react-icons/io'
-import { LinkBack, SliderNavFlip } from '../../../components'
-import { clearSearched, deleteSearchedById } from '../../../store/actions'
+import { BsStar, BsStarFill, BsXLg } from 'react-icons/bs'
+import { SliderNavFlip } from '../../../components'
+import { addSearchedFav, clearSearched, deleteSearchedById, deleteSearchedFav, verifySearchedFavById } from '../../../store/actions'
 
 export const FeeCollectNavPage = () => {
 
     const dispatch = useDispatch()
+    const flicking = createRef()
     const { listSearched = [] } = useSelector(state => state.collect)
 
     return (
@@ -21,7 +23,13 @@ export const FeeCollectNavPage = () => {
                             </div>
                             <div className='col-12 col-md-auto'>
                                 <div className='d-flex gap-2'>
-                                    <LinkBack className='btn btn-neutral text-primary' relative to={`create`}>Nueva busqueda</LinkBack>
+                                    <Link
+                                        onClick={() => flicking.current.moveTo(0)}
+                                        className='btn btn-neutral text-primary'
+                                        to={`/app/coll/bill/search`}
+                                    >
+                                        Nueva busqueda
+                                    </Link>
                                     {
                                         listSearched.length > 0
                                         &&
@@ -42,14 +50,19 @@ export const FeeCollectNavPage = () => {
             <div className='row g-0 justify-content-center'>
                 <div className='col'>
                     <Tab.Container>
-                        <SliderNavFlip className='px-3 nav nav-tabs overflow-visible' spacingChilds={false}>
+                        <SliderNavFlip refSlider={flicking} className='px-3 nav nav-tabs' spacingChilds={false}>
                             <Nav.Item>
                                 <NavLink to={`search`} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Busqueda</NavLink>
                             </Nav.Item>
                             {
                                 listSearched.map(({ id, title, typeSearch }, index) =>
-                                    <Nav.Item key={`bill-nav-${index}-${id}`} >
-                                        <NavItemLink idLink={id} title={title} typeSearch={typeSearch} />
+                                    <Nav.Item key={`bill-nav-${index}-${id}`}>
+                                        <NavItemLink
+                                            onClick={() => flicking.current.moveTo(index + 1)}
+                                            idLink={id}
+                                            title={title}
+                                            typeSearch={typeSearch}
+                                        />
                                     </Nav.Item>
                                 )
                             }
@@ -62,7 +75,7 @@ export const FeeCollectNavPage = () => {
     )
 }
 
-const NavItemLink = ({ idLink, title, typeSearch }) => {
+const NavItemLink = ({ idLink, title, typeSearch, onClick = null }) => {
 
     const { pathname } = useLocation()
     const navigate = useNavigate()
@@ -70,7 +83,8 @@ const NavItemLink = ({ idLink, title, typeSearch }) => {
 
     return (
         <div
-            className={`nav-link d-flex flex-row gap-2 ${pathname === `/app/coll/bill/usr/${idLink}` || pathname === `/app/coll/bill/prp/${idLink}` ? 'active' : ''}`}
+            onClick={onClick}
+            className={`nav-link d-flex flex-row gap-2 p-2 ${pathname === `/app/coll/bill/usr/${idLink}` || pathname === `/app/coll/bill/prp/${idLink}` ? 'active' : ''}`}
         >
             <Link
                 to={`${typeSearch}/${idLink}`}
@@ -80,13 +94,32 @@ const NavItemLink = ({ idLink, title, typeSearch }) => {
             </Link>
             <button
                 onClick={() => {
+                    verifySearchedFavById(idLink)
+                        ?
+                        deleteSearchedFav(idLink)
+                        :
+                        addSearchedFav({ id: idLink, title, typeSearch })
+                }}
+                className='btn p-0 d-flex align-items-center'
+                size='sm'
+            >
+                {
+                    verifySearchedFavById(idLink)
+                        ?
+                        <BsStarFill color='gold' />
+                        :
+                        <BsStar />
+                }
+            </button>
+            <button
+                onClick={() => {
                     dispatch(deleteSearchedById(idLink))
                     navigate('/app/coll/bill/search', { replace: true })
                 }}
                 className='btn p-0 d-flex align-items-center'
                 size='sm'
             >
-                <IoMdClose size={16} />
+                <BsXLg />
             </button>
         </div>
     )

@@ -147,6 +147,11 @@ a.uppy-Dashboard-poweredBy {
 	}
 }
 
+.accordion {
+	--bs-accordion-border-radius: 9px;
+	--bs-accordion-inner-border-radius: 9px;
+}
+
 .offcanvas {
 	--bs-offcanvas-width: 600px;
 }
@@ -321,7 +326,7 @@ a.uppy-Dashboard-poweredBy {
 	}
 }
 /* LoginApp */
-/* SidebarApp */
+/* SIDEBAR */
 .sidebar-app nav a,
 .sidebar-app nav button {
 	padding: 7px 20px;
@@ -498,7 +503,7 @@ a.uppy-Dashboard-poweredBy {
 	flex-direction: column;
 	transition: all 0.3s ease;
 	padding-top: 20px;
-	height: 100vh;
+	height: calc(100vh - 60px);
 }
 
 .sidebar-app.sidebar-inverted {
@@ -531,11 +536,6 @@ a.uppy-Dashboard-poweredBy {
 	background: rgba(33, 40, 55, 0.5);
 }
 
-.sidebar-app .ps__thumb-y,
-.sidebar-app .ps__rail-y {
-	width: 0.45rem !important;
-}
-
 @media (max-width: 1199.98px) {
 	.sidebar-app,
 	.sidebar-app.sidebar-inverted {
@@ -543,9 +543,10 @@ a.uppy-Dashboard-poweredBy {
 		left: -220px;
 		border-right: none;
 		z-index: 1130;
+		height: 100vh;
 	}
 }
-/* SidebarApp */
+/* SIDEBAR */
 /* KEYBOARD */
 kbd {
 	font-family: Consolas, "Lucida Console", monospace;

@@ -3,9 +3,11 @@ import Flicking from '@egjs/react-flicking'
 
 import '@egjs/react-flicking/dist/flicking.css'
 
-export const SliderNavFlip = ({ className = '', spacingChilds = true, marginChilds = '0.5rem', children }) => {
+export const SliderNavFlip = ({ refSlider = null, className = '', spacingChilds = true, marginChilds = '0.5rem', children }) => {
+
     return (
         <FlipWrapper
+            ref={refSlider}
             moveType='freeScroll'
             bound={true}
             align='prev'

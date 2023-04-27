@@ -1,19 +1,17 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tab } from 'react-bootstrap'
-import { IoEyeSharp, IoOpen } from 'react-icons/io5'
-import { DataTable, InputSearch, LinkBack, SliderNavFlip, TagStatus } from '../../../components'
-import { addSearched } from '../../../store/actions'
+import { IoEyeSharp } from 'react-icons/io5'
+import { Avatar, DataTable, InputSearch, SliderNavFlip, TagStatus } from '../../../components'
+import { addSearched, setSearch, setTypeSearch } from '../../../store/actions'
+import { typeUserFarm } from '../../../helpers'
+import { useGetListCollectByPrpQuery, useGetListCollectByUsrQuery } from '../../../store/actions'
 
 export const FeeCollectSearchPage = () => {
 
     const dispatch = useDispatch()
-    const [search, setSearch] = useState('')
-    const [typeSearch, setTypeSearch] = useState('user')
-    const [list, setList] = useState([
-        { _id: '641370225b9141556de5b861', code: '2023-WT62B1Y7', names: 'José Hans', docid: '46891419', active: true },
-        { _id: '6418bf6065fc0130b66e925a', code: '2023-V96RAWFF', names: 'Dulce Maria', docid: '72212275', active: true }
-    ])
+    const { search, typeSearch } = useSelector(state => state.collect)
+    const { data: listUsr = [], isFetching: isLoadingUsr } = useGetListCollectByUsrQuery(search, { skip: !(typeSearch === 'usr' && search.length > 0) })
+    const { data: listPrp = [], isFetching: isLoadingPrp } = useGetListCollectByPrpQuery(search, { skip: !(typeSearch === 'prp' && search.length > 0) })
 
     return (
         <>
@@ -24,14 +22,20 @@ export const FeeCollectSearchPage = () => {
                             <SliderNavFlip>
                                 <Button
                                     variant='neutral'
-                                    onClick={() => setTypeSearch('usr')}
+                                    onClick={() => {
+                                        dispatch(setTypeSearch('usr'))
+                                        dispatch(setSearch(''))
+                                    }}
                                     className={`flicking-panel ${typeSearch === 'usr' ? 'active' : ''}`}
                                 >
                                     Usuario
                                 </Button>
                                 <Button
                                     variant='neutral'
-                                    onClick={() => setTypeSearch('prp')}
+                                    onClick={() => {
+                                        dispatch(setTypeSearch('prp'))
+                                        dispatch(setSearch(''))
+                                    }}
                                     className={`flicking-panel ${typeSearch === 'prp' ? 'active' : ''}`}
                                 >
                                     Predio
@@ -43,45 +47,77 @@ export const FeeCollectSearchPage = () => {
             </div>
             <div className='row g-0 justify-content-center'>
                 <div className='col'>
-                    <InputSearch value={search} onChange={(e) => setSearch(e)} />
+                    <InputSearch value={search} onChange={(e) => dispatch(setSearch(e))} loading={isLoadingUsr || isLoadingPrp} />
                     <DataTable
-                        rows={list}
+                        rows={
+                            typeSearch === 'usr'
+                                ?
+                                listUsr
+                                :
+                                listPrp
+                        }
                         columns={
-                            [
-                                {
-                                    label: 'CÓDIGO',
-                                    renderCell: (item) =>
-                                        item.code
-                                },
-                                {
-                                    label: 'NOMBRE O RAZON SOCIAL',
-                                    renderCell: (item) =>
-                                        item.names
-                                },
-                                {
-                                    label: 'DOCUMENTO',
-                                    renderCell: (item) =>
-                                        item.docid
-                                },
-                                {
-                                    label: 'ESTADO',
-                                    renderCell: (item) =>
-                                        <TagStatus status={item.active} />
-                                },
-                                {
-                                    label: 'ACCIÓN',
-                                    width: '200px',
-                                    pinRight: true,
-                                    renderCell: (item) =>
-                                        <div className='d-flex gap-2 p-2'>
-                                            <Button
-                                                onClick={() => dispatch(addSearched({ id: item._id, title: item.names, typeSearch: 'usr' }))}
-                                                variant='neutral-icon'
-                                                style={{ padding: '0.5rem' }}
-                                            >
-                                                <IoEyeSharp size={16} />
-                                            </Button>
-                                            {/* <LinkBack
+                            typeSearch === 'usr'
+                                ?
+                                [
+                                    {
+                                        label: 'CÓDIGO',
+                                        width: '160px',
+                                        renderCell: (item) =>
+                                            item.code
+                                    },
+                                    {
+                                        label: 'USUARIO',
+                                        minWidth: '300px',
+                                        renderCell: (item) => (
+                                            <div className='d-flex align-items-center px-2 py-1'>
+                                                <div className='flex-shrink-0 me-3'>
+                                                    <Avatar
+                                                        img={item.image?.metadata.url}
+                                                        cloud={item.image?.cloud}
+                                                        noImgTxt={item.type > 1 ? item.socialReason : item.names}
+                                                        noImg={4004}
+                                                        circle={true}
+                                                        width={40}
+                                                        height={40}
+                                                    />
+                                                </div>
+                                                <div className='d-flex flex-column'>
+                                                    <p
+                                                        className='d-block text-primary fw-bolder mb-0'
+                                                    >
+                                                        {item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}
+                                                    </p>
+                                                    <span>{typeUserFarm(item.type)}</span>
+                                                </div>
+                                            </div>
+                                        )
+                                    },
+                                    {
+                                        label: 'ESTADO',
+                                        width: '120px',
+                                        renderCell: (item) =>
+                                            <TagStatus status={item.active} />
+                                    },
+                                    {
+                                        label: 'ACCIÓN',
+                                        width: '200px',
+                                        pinRight: true,
+                                        renderCell: (item) =>
+                                            <div className='d-flex gap-2 p-2'>
+                                                <Button
+                                                    onClick={() =>
+                                                        dispatch(addSearched({
+                                                            id: item._id,
+                                                            title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr'
+                                                        }))
+                                                    }
+                                                    variant='neutral-icon'
+                                                    style={{ padding: '0.5rem' }}
+                                                >
+                                                    <IoEyeSharp size={16} />
+                                                </Button>
+                                                {/* <LinkBack
                                                 to={`/app/coll/bill/usr/${item._id}`}
                                                 className='btn btn-neutral-icon'
                                                 style={{ padding: '0.5rem' }}
@@ -96,9 +132,74 @@ export const FeeCollectSearchPage = () => {
                                             >
                                                 <IoOpen size={16} />
                                             </LinkBack> */}
-                                        </div>
-                                }
-                            ]
+                                            </div>
+                                    }
+                                ]
+                                :
+                                [
+                                    {
+                                        label: 'CÓDIGO',
+                                        width: '180px',
+                                        renderCell: (item) =>
+                                            item.code
+                                    },
+                                    {
+                                        label: 'PREDIO',
+                                        minWidth: '250px',
+                                        renderCell: (item) => (
+                                            <div className='d-flex flex-column'>
+                                                <p
+                                                    className='d-block text-primary fw-bolder mb-0'
+                                                >
+                                                    {item.name}
+                                                </p>
+                                                <span>{item.code}</span>
+                                            </div>
+                                        )
+                                    },
+                                    {
+                                        label: 'ESTADO',
+                                        width: '120px',
+                                        renderCell: (item) =>
+                                            <TagStatus status={item.active} />
+                                    },
+                                    {
+                                        label: 'ACCIÓN',
+                                        width: '200px',
+                                        pinRight: true,
+                                        renderCell: (item) =>
+                                            <div className='d-flex gap-2 p-2'>
+                                                <Button
+                                                    onClick={() =>
+                                                        dispatch(addSearched({
+                                                            id: item._id,
+                                                            title: item.name,
+                                                            typeSearch: 'prp'
+                                                        }))
+                                                    }
+                                                    variant='neutral-icon'
+                                                    style={{ padding: '0.5rem' }}
+                                                >
+                                                    <IoEyeSharp size={16} />
+                                                </Button>
+                                                {/* <LinkBack
+                                                to={`/app/coll/bill/usr/${item._id}`}
+                                                className='btn btn-neutral-icon'
+                                                style={{ padding: '0.5rem' }}
+                                            >
+                                                <IoEyeSharp size={16} />
+                                            </LinkBack>
+                                            <LinkBack
+                                                to={`/app/coll/bill/usr/${item._id}`}
+                                                className='btn btn-neutral-icon'
+                                                style={{ padding: '0.5rem' }}
+                                                target='_blank'
+                                            >
+                                                <IoOpen size={16} />
+                                            </LinkBack> */}
+                                            </div>
+                                    }
+                                ]
                         }
                     />
                 </div>
