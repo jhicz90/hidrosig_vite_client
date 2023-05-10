@@ -187,7 +187,8 @@ a.uppy-Dashboard-poweredBy {
 }
 
 .modal {
-	--bs-modal-border-radius: 10px;
+	--bs-modal-border-radius: 16px;
+	--bs-modal-inner-border-radius: calc(16px - 1px);
 }
 
 .modal .nav.nav-tabs,

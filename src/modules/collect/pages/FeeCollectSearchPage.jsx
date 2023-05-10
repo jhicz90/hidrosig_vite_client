@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tab } from 'react-bootstrap'
 import { IoEyeSharp } from 'react-icons/io5'
@@ -8,6 +9,7 @@ import { useGetListCollectByPrpQuery, useGetListCollectByUsrQuery } from '../../
 
 export const FeeCollectSearchPage = () => {
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { search, typeSearch } = useSelector(state => state.collect)
     const { data: listUsr = [], isFetching: isLoadingUsr } = useGetListCollectByUsrQuery(search, { skip: !(typeSearch === 'usr' && search.length > 0) })
@@ -106,12 +108,13 @@ export const FeeCollectSearchPage = () => {
                                         renderCell: (item) =>
                                             <div className='d-flex gap-2 p-2'>
                                                 <Button
-                                                    onClick={() =>
+                                                    onClick={() => {
                                                         dispatch(addSearched({
                                                             id: item._id,
                                                             title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr'
                                                         }))
-                                                    }
+                                                        navigate(`/app/coll/bill/usr/${item._id}`)
+                                                    }}
                                                     variant='neutral-icon'
                                                     style={{ padding: '0.5rem' }}
                                                 >
@@ -170,13 +173,14 @@ export const FeeCollectSearchPage = () => {
                                         renderCell: (item) =>
                                             <div className='d-flex gap-2 p-2'>
                                                 <Button
-                                                    onClick={() =>
+                                                    onClick={() => {
                                                         dispatch(addSearched({
                                                             id: item._id,
                                                             title: item.name,
                                                             typeSearch: 'prp'
                                                         }))
-                                                    }
+                                                        navigate(`/app/coll/bill/prp/${item._id}`)
+                                                    }}
                                                     variant='neutral-icon'
                                                     style={{ padding: '0.5rem' }}
                                                 >
@@ -203,7 +207,7 @@ export const FeeCollectSearchPage = () => {
                         }
                     />
                 </div>
-            </div>
+            </div >
         </>
     )
 }

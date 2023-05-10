@@ -1,3 +1,6 @@
+export * from './FeeCollectBillAreaFarmPage'
+export * from './FeeCollectBillDebt'
+export * from './FeeCollectBillPay'
 export * from './FeeCollectBillUserFarmPage'
 export * from './FeeCollectNavPage'
 export * from './FeeCollectSearchPage'

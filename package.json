@@ -1,7 +1,7 @@
 {
     "name": "hidrosig_client",
     "private": true,
-    "version": "2.6.1",
+    "version": "2.6.5",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -35,6 +35,7 @@
         "human-interval": "^2.0.1",
         "keen-slider": "^6.8.5",
         "leaflet": "^1.9.3",
+        "lodash": "^4.17.21",
         "makerjs": "^0.17.6",
         "moment": "^2.29.4",
         "rc-scrollbars": "^1.1.5",
@@ -60,7 +61,6 @@
         "react-spring-lightbox": "^1.7.1",
         "react-switch": "^7.0.0",
         "react-use-wizard": "^2.2.1",
-        "simplebar-react": "^3.2.3",
         "styled-components": "^5.3.9",
         "sweetalert2": "^11.7.3",
         "sweetalert2-react-content": "^5.0.7",

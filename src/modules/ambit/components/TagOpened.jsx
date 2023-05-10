@@ -8,7 +8,7 @@ export const TagOpened = ({ yearRateId = '', opened }) => {
 
     const renderTooltip = (props) => (
         <Tooltip {...props} className='text-start'>
-            Al dar click en esta etiqueta aperturara la campaña
+            Al dar click en esta etiqueta aperturara la campaña, y cerrara la activa si es que ahi alguna activada
         </Tooltip>
     )
 
@@ -40,7 +40,7 @@ export const TagOpened = ({ yearRateId = '', opened }) => {
                                 <Badge
                                     bg='secondary'
                                     pill
-                                    className='d-inline-flex px-2 py-1'
+                                    className='d-inline-flex px-2 py-1 animate__animated animate__fadeIn'
                                 >
                                     <FaHourglassEnd className='me-1' />Cerrando
                                 </Badge>
@@ -62,9 +62,9 @@ export const TagOpened = ({ yearRateId = '', opened }) => {
                             isLoading
                                 ?
                                 <Badge
-                                    bg='secondary'
+                                    bg='success'
                                     pill
-                                    className='d-inline-flex px-2 py-1'
+                                    className='d-inline-flex px-2 py-1 animate__animated animate__fadeIn'
                                 >
                                     <FaHourglassEnd className='me-1' />Aperturando
                                 </Badge>
@@ -76,9 +76,8 @@ export const TagOpened = ({ yearRateId = '', opened }) => {
                                 >
                                     <Badge
                                         onClick={handleOpened}
-                                        bg='warning'
+                                        bg='secondary'
                                         pill
-                                        text='dark'
                                         className='d-inline-flex px-2 py-1'
                                         style={{ cursor: 'pointer' }}
                                     >

@@ -45,7 +45,7 @@ export const storeApi = createApi({
     reducerPath: 'storeApi',
     keepUnusedDataFor: 60,
     refetchOnMountOrArgChange: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo', 'Cllc', 'YrRt'],
+    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo', 'Cllc', 'YrRt', 'VlRt', 'Comp', 'IrrSys', 'Crp'],
     baseQuery: axiosBaseQuery({
         baseUrl: baseURL
     }),

@@ -68,16 +68,3 @@ export const searchIrrigationNetworkByJunta = (junta) => {
         }
     }
 }
-
-export const searchIrrigationSystem = async (junta, search) => {
-    const resp = await fetchByToken({
-        endpoint: `irrigation_system/search_by_junta/${junta}`,
-        params: { search }
-    })
-
-    if (resp.ok) {
-        return resp.docs
-    } else {
-        return []
-    }
-}

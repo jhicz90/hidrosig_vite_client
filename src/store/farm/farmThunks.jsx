@@ -50,6 +50,13 @@ export const farmApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Frm']
         }),
+        getListInputIrrigByFarm: builder.query({
+            query: (farm) => ({
+                url: `farm/search_by_farm/${farm}`
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Frm']
+        }),
         getFarmById: builder.query({
             query: (id) => ({
                 url: `farm/edit/${id}`
@@ -91,6 +98,7 @@ export const {
     useGetFarmByIdQuery,
     useGetListFarmByUserFarmQuery,
     useGetListFarmQuery,
+    useGetListInputIrrigByFarmQuery,
     useLazyNewFarmQuery,
     useNewFarmQuery,
     useUpdateFarmByIdAddInputIrrigMutation,
@@ -250,5 +258,17 @@ export const startDeleteIdFarm = (farm) => {
                 }
             }
         })
+    }
+}
+
+export const searchInputIrrigByFarm = async (farm) => {
+    const resp = await fetchByToken({
+        endpoint: `farm/search_by_farm/${farm}`
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
     }
 }

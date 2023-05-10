@@ -31,12 +31,10 @@ export const ScrollbarsShadow = (props) => {
     }
     const handleUpdate = (values) => {
         const { scrollTop, scrollHeight, clientHeight } = values
-        console.log({ scrollTop, scrollHeight, clientHeight })
         const shadowTopOpacity = (1 / 20) * Math.min(scrollTop, 20)
         const bottomScrollTop = scrollHeight - clientHeight
         const shadowBottomOpacity =
             (1 / 20) * (bottomScrollTop - Math.max(scrollTop, bottomScrollTop - 20))
-        console.log({ shadowTopOpacity, shadowBottomOpacity })
         shadowTop.current.style.opacity = shadowTopOpacity
         shadowBottom.current.style.opacity = shadowBottomOpacity
     }

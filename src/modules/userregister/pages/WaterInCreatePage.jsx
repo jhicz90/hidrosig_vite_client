@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { useNavigateState } from '../../../hooks'
 import { Liner, LoadingPage, MapLocation, OptionGeometry } from '../../../components'
-import { searchIrrigationSystem, searchPointObject, searchStructureByJunta, useUpdateFarmByIdAddInputIrrigMutation } from '../../../store/actions'
+import { searchIrrigationSystemByJunta, searchPointObject, searchStructureByJunta, useUpdateFarmByIdAddInputIrrigMutation } from '../../../store/actions'
 
 export const WaterInCreatePage = () => {
 
@@ -137,7 +137,7 @@ export const WaterInCreatePage = () => {
                                                     isClearable
                                                     defaultOptions
                                                     loadOptions={async (e) => {
-                                                        return await searchIrrigationSystem(params?.farm?.block.junta._id || null, e)
+                                                        return await searchIrrigationSystemByJunta(params?.farm?.block.junta._id || null, e)
                                                     }}
                                                     menuPlacement={'auto'}
                                                     placeholder={`Buscar...`}

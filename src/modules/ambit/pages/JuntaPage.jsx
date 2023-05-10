@@ -5,7 +5,7 @@ import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
 import { useNavigateState } from '../../../hooks'
 import { LoadingPage, SliderNavFlip } from '../../../components'
-import { JuntaAmbitZone, JuntaBanner, JuntaInformation, JuntaAmbitWaterSource, JuntaAmbitCommittee, JuntaYearRate } from '../components'
+import { JuntaAmbitZone, JuntaBanner, JuntaInformation, JuntaAmbitWaterSource, JuntaAmbitCommittee, JuntaYearRate, JuntaComponents, JuntaCrops } from '../components'
 import { questionDeleteJunta, questionStatusJunta, useDeleteJuntaByIdMutation, useGetJuntaByIdQuery, useUpdateJuntaByIdMutation } from '../../../store/actions'
 
 export const JuntaPage = () => {
@@ -104,6 +104,8 @@ export const JuntaPage = () => {
                             <SliderNavFlip>
                                 <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
                                 <NavLink to={`yr`} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Años y Tarifas</NavLink>
+                                <NavLink to={`cmp`} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Componentes</NavLink>
+                                <NavLink to={`crp`} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Cultivos</NavLink>
                                 <NavLink to={`comm`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Comisiones</NavLink>
                                 <NavLink to={`zn`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Zonas</NavLink>
                                 <NavLink to={`ws`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Fuentes de agua</NavLink>
@@ -113,6 +115,8 @@ export const JuntaPage = () => {
                             <Routes>
                                 <Route index element={<JuntaInformation />} />
                                 <Route path={`yr`} element={<JuntaYearRate />} />
+                                <Route path={`cmp`} element={<JuntaComponents />} />
+                                <Route path={`crp`} element={<JuntaCrops />} />
                                 <Route path={`comm`} element={<JuntaAmbitCommittee />} />
                                 <Route path={`zn`} element={<JuntaAmbitZone />} />
                                 <Route path={`ws`} element={<JuntaAmbitWaterSource />} />

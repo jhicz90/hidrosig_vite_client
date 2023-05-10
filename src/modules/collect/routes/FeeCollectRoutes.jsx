@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { FeeCollectBillUserFarmPage, FeeCollectNavPage, FeeCollectSearchPage } from '../pages'
+import { FeeCollectBillAreaFarmPage, FeeCollectBillUserFarmPage, FeeCollectNavPage, FeeCollectSearchPage } from '../pages'
 
 export const FeeCollectRoutes = () => {
     return (
@@ -15,8 +15,8 @@ export const FeeCollectRoutes = () => {
                         </GuardRoute>
                     }
                 />
-                <Route path={`usr/:userid`} element={<FeeCollectBillUserFarmPage />} />
-                <Route path={`prp/:prpid`} element={<>Muestra el diseño de las deudas del predio</>} />
+                <Route path={`usr/:userid/*`} element={<FeeCollectBillUserFarmPage />} />
+                <Route path={`prp/:prpid`} element={<FeeCollectBillAreaFarmPage />} />
                 {/* <Route path={`create`} element={<PettyCashCreatePage />} /> */}
                 {/* <Route path={`:pettycashid/*`} element={<PettyCashPage />} /> */}
             </Route>

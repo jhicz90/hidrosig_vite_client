@@ -8,6 +8,8 @@ export const SliderNavFlip = ({ refSlider = null, className = '', spacingChilds 
     return (
         <FlipWrapper
             ref={refSlider}
+            autoResize={true}
+            renderOnlyVisible={false}
             moveType='freeScroll'
             bound={true}
             align='prev'

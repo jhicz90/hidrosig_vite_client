@@ -14,7 +14,7 @@ export const JuntaAmbitWaterSource = () => {
     const { data: waterSourcesIn = [], isLoading } = useGetListWaterSourceByJuntaQuery({ junta: data?._id, search }, { skip: !data })
 
     return (
-        <Card>
+        <Card style={{ backgroundColor: 'aliceblue' }}>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
             <DataTable
                 rows={waterSourcesIn}

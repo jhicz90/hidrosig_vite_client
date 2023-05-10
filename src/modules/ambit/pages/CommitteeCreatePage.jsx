@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Card, Form } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { useNavigateState } from '../../../hooks'
 import { upperCaseCatch } from '../../../helpers'
@@ -61,7 +61,8 @@ export const CommitteeCreatePage = () => {
                 <div className='col-12'>
                     <div className='row align-items-center justify-content-between g-3'>
                         <div className='col-12 col-md-auto'>
-                            <h4 className='mb-0'>NUEVA COMISIÓN DE USUARIOS</h4>
+                            <h2 className='mb-0'>NUEVA COMISIÓN DE USUARIOS</h2>
+                            <h5>Cree una comision detallando su información y zona</h5>
                         </div>
                         <div className='col-12 col-md-auto'>
                             <div className='d-flex gap-2'>
@@ -86,8 +87,8 @@ export const CommitteeCreatePage = () => {
                     </div>
                 </div>
             </div>
-            <div className='row g-0 justify-content-center'>
-                <div className='col'>
+            <div className='row'>
+                <div className='col-12 col-xl-8'>
                     <form id='form-ambit-committee-create' onSubmit={handleSubmit(handleSave)}>
                         <Liner>Información</Liner>
                         <div className='row'>
@@ -292,6 +293,13 @@ export const CommitteeCreatePage = () => {
                             }
                         </div>
                     </form>
+                </div>
+                <div className='col-12 col-xl-4'>
+                    <Card className='shadow-none'>
+                        <Card.Body>
+                            Información sobre la junta de usuarios actual
+                        </Card.Body>
+                    </Card>
                 </div>
             </div>
         </div>

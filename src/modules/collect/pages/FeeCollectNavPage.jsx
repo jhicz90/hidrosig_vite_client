@@ -1,16 +1,20 @@
-import { createRef } from 'react'
+import { useEffect, createRef } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Nav, Tab } from 'react-bootstrap'
 import { BsStar, BsStarFill, BsXLg } from 'react-icons/bs'
 import { SliderNavFlip } from '../../../components'
-import { addSearchedFav, clearSearched, deleteSearchedById, deleteSearchedFav, verifySearchedFavById } from '../../../store/actions'
+import { addSearchedFav, addingFavSaved, clearSearched, deleteSearchedById, deleteSearchedFav } from '../../../store/actions'
 
 export const FeeCollectNavPage = () => {
 
     const dispatch = useDispatch()
     const flicking = createRef()
     const { listSearched = [] } = useSelector(state => state.collect)
+
+    useEffect(() => {
+        dispatch(addingFavSaved())
+    }, [])
 
     return (
         <>
@@ -58,7 +62,10 @@ export const FeeCollectNavPage = () => {
                                 listSearched.map(({ id, title, typeSearch }, index) =>
                                     <Nav.Item key={`bill-nav-${index}-${id}`}>
                                         <NavItemLink
-                                            onClick={() => flicking.current.moveTo(index + 1)}
+                                            onClick={() => {
+                                                flicking.current.forceUpdate()
+                                                flicking.current.moveTo(index + 1)
+                                            }}
                                             idLink={id}
                                             title={title}
                                             typeSearch={typeSearch}
@@ -80,11 +87,12 @@ const NavItemLink = ({ idLink, title, typeSearch, onClick = null }) => {
     const { pathname } = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { listSearchedFav = [] } = useSelector(state => state.collect)
 
     return (
         <div
             onClick={onClick}
-            className={`nav-link d-flex flex-row gap-2 p-2 ${pathname === `/app/coll/bill/usr/${idLink}` || pathname === `/app/coll/bill/prp/${idLink}` ? 'active' : ''}`}
+            className={`nav-link d-flex flex-row gap-2 p-2 ${pathname.includes(`/app/coll/bill/usr/${idLink}`) || pathname.includes(`/app/coll/bill/prp/${idLink}`) ? 'active' : ''}`}
         >
             <Link
                 to={`${typeSearch}/${idLink}`}
@@ -92,25 +100,25 @@ const NavItemLink = ({ idLink, title, typeSearch, onClick = null }) => {
             >
                 {typeSearch === 'usr' ? `Usuario - ${title}` : `Predio - ${title}`}
             </Link>
-            <button
-                onClick={() => {
-                    verifySearchedFavById(idLink)
-                        ?
-                        deleteSearchedFav(idLink)
-                        :
-                        addSearchedFav({ id: idLink, title, typeSearch })
-                }}
-                className='btn p-0 d-flex align-items-center'
-                size='sm'
-            >
-                {
-                    verifySearchedFavById(idLink)
-                        ?
+            {
+                listSearchedFav.find(fav => fav.id === idLink)
+                    ?
+                    <button
+                        onClick={() => dispatch(deleteSearchedFav(idLink))}
+                        className='btn p-0 d-flex align-items-center'
+                        size='sm'
+                    >
                         <BsStarFill color='gold' />
-                        :
+                    </button>
+                    :
+                    <button
+                        onClick={() => dispatch(addSearchedFav({ id: idLink, title, typeSearch }))}
+                        className='btn p-0 d-flex align-items-center'
+                        size='sm'
+                    >
                         <BsStar />
-                }
-            </button>
+                    </button>
+            }
             <button
                 onClick={() => {
                     dispatch(deleteSearchedById(idLink))

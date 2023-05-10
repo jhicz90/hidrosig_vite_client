@@ -14,7 +14,7 @@ export const JuntaAmbitCommittee = () => {
     const { data: committeesIn = [], isLoading } = useGetListCommByJuntaQuery({ junta: data?._id, search }, { skip: !data })
 
     return (
-        <Card>
+        <Card style={{ backgroundColor: 'aliceblue' }}>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
             <DataTable
                 rows={committeesIn}

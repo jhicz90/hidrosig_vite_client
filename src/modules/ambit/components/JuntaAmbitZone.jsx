@@ -14,7 +14,7 @@ export const JuntaAmbitZone = () => {
     const { data: zonesIn = [], isLoading } = useGetListZoneByJuntaQuery({ junta: data?._id, search }, { skip: !data })
 
     return (
-        <Card>
+        <Card style={{ backgroundColor: 'aliceblue' }}>
             <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
             <DataTable
                 rows={zonesIn}

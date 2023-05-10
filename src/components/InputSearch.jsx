@@ -78,7 +78,7 @@ const SearchBox = styled.div`
         /* box-sizing: content-box; */
         position: absolute;
         top: 50%;
-        right: 1.75rem;
+        right: 10px;
         transform: translateY(-48%);
         display: inline-flex;
         align-items: center;

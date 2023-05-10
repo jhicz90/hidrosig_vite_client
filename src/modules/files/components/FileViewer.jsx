@@ -7,13 +7,14 @@ import { BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs'
 import Flicking, { ViewportSlot } from '@egjs/react-flicking'
 import { Arrow } from "@egjs/flicking-plugins";
 import { Document, Page } from 'react-pdf/dist/esm/entry.vite'
-import SimpleBar from 'simplebar-react'
+// import SimpleBar from 'simplebar-react'
+import Scrollbars from 'rc-scrollbars'
 import { getFileIcon, imageGet } from '../../../helpers'
 
 import '@egjs/react-flicking/dist/flicking.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
-import 'simplebar-react/dist/simplebar.min.css'
+// import 'simplebar-react/dist/simplebar.min.css'
 
 export const FileViewer = () => {
 
@@ -157,7 +158,7 @@ const ViewerDocPdf = forwardRef(({ src = '' }, ref) => {
 
     return (
         <ViewerDocPdfStyled ref={ref}>
-            <SimpleBar className='view-doc'>
+            {/* <SimpleBar className='view-doc'>
                 <Document
                     className='d-flex justify-content-center'
                     file={src}
@@ -165,7 +166,27 @@ const ViewerDocPdf = forwardRef(({ src = '' }, ref) => {
                 >
                     <Page pageNumber={pageNumber} height={1000} />
                 </Document>
-            </SimpleBar>
+            </SimpleBar> */}
+            <Scrollbars
+                autoHide
+                renderThumbVertical={({ style, ...props }) => {
+                    const finalStyle = {
+                        ...style,
+                        cursor: 'pointer',
+                        backgroundColor: '#0d6efd',
+                    }
+
+                    return <div style={finalStyle} {...props} />
+                }}
+            >
+                <Document
+                    className='d-flex justify-content-center'
+                    file={src}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                >
+                    <Page pageNumber={pageNumber} height={1000} />
+                </Document>
+            </Scrollbars>
             <div className='nav-pages mb-3 position-absolute bottom-0 start-50 translate-middle-x'>
                 <button
                     type='button'
