@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Button, Collapse, Dropdown } from 'react-bootstrap'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
@@ -9,12 +9,12 @@ import { DataTable, LoadingAction, TagStatus, TagTimeAgo } from '../../../compon
 import { useGetListFarmByUserFarmQuery } from '../../../store/actions'
 import { FeeCollectBillDebt, FeeCollectBillPay } from '..'
 
-export const FeeCollectBillUserFarmPage = () => {
+export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
 
     const navigate = useNavigate()
-    const { userid } = useParams()
     const [showFarms, setShowFarms] = useState(true)
-    const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: userid, search: '' })
+    const [activePrp, setActivePrp] = useState(null)
+    const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: usrId, search: '' })
 
     return (
         <>
@@ -103,7 +103,7 @@ export const FeeCollectBillUserFarmPage = () => {
                                                         <Button
                                                             onClick={() => {
                                                                 setShowFarms(false)
-                                                                navigate(`${item._id}/pay`)
+                                                                setActivePrp(item._id)
                                                             }}
                                                             variant='neutral-icon'
                                                             style={{ padding: '0.5rem' }}
@@ -113,7 +113,6 @@ export const FeeCollectBillUserFarmPage = () => {
                                                         <Button
                                                             onClick={() => {
                                                                 setShowFarms(false)
-                                                                navigate(`${item._id}/debt`)
                                                             }}
                                                             variant='neutral-icon'
                                                             style={{ padding: '0.5rem' }}
@@ -130,10 +129,11 @@ export const FeeCollectBillUserFarmPage = () => {
                 </div>
             </Collapse>
             <div className='mt-2'>
-                <Routes>
-                    <Route path={`:collect_prpid/pay`} element={<FeeCollectBillPay />} />
-                    <Route path={`:collect_prpid/debt`} element={<FeeCollectBillDebt />} />
-                </Routes>
+                {
+                    !!activePrp
+                    &&
+                    <FeeCollectBillPay prpId={activePrp} />
+                }
             </div>
         </>
     )

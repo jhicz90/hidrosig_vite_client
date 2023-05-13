@@ -7,11 +7,11 @@ import { addSearched, setSearch, setTypeSearch } from '../../../store/actions'
 import { typeUserFarm } from '../../../helpers'
 import { useGetListCollectByPrpQuery, useGetListCollectByUsrQuery } from '../../../store/actions'
 
-export const FeeCollectSearchPage = () => {
+export const FeeCollectSearchPage = ({ navToTab = null }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { search, typeSearch } = useSelector(state => state.collect)
+    const { search, typeSearch, listSearched = [] } = useSelector(state => state.collect)
     const { data: listUsr = [], isFetching: isLoadingUsr } = useGetListCollectByUsrQuery(search, { skip: !(typeSearch === 'usr' && search.length > 0) })
     const { data: listPrp = [], isFetching: isLoadingPrp } = useGetListCollectByPrpQuery(search, { skip: !(typeSearch === 'prp' && search.length > 0) })
 
@@ -113,28 +113,16 @@ export const FeeCollectSearchPage = () => {
                                                             id: item._id,
                                                             title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr'
                                                         }))
-                                                        navigate(`/app/coll/bill/usr/${item._id}`)
+                                                        navToTab(item._id, [...listSearched, {
+                                                            id: item._id,
+                                                            title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr'
+                                                        }])
                                                     }}
                                                     variant='neutral-icon'
                                                     style={{ padding: '0.5rem' }}
                                                 >
                                                     <IoEyeSharp size={16} />
                                                 </Button>
-                                                {/* <LinkBack
-                                                to={`/app/coll/bill/usr/${item._id}`}
-                                                className='btn btn-neutral-icon'
-                                                style={{ padding: '0.5rem' }}
-                                            >
-                                                <IoEyeSharp size={16} />
-                                            </LinkBack>
-                                            <LinkBack
-                                                to={`/app/coll/bill/usr/${item._id}`}
-                                                className='btn btn-neutral-icon'
-                                                style={{ padding: '0.5rem' }}
-                                                target='_blank'
-                                            >
-                                                <IoOpen size={16} />
-                                            </LinkBack> */}
                                             </div>
                                     }
                                 ]
@@ -179,28 +167,13 @@ export const FeeCollectSearchPage = () => {
                                                             title: item.name,
                                                             typeSearch: 'prp'
                                                         }))
-                                                        navigate(`/app/coll/bill/prp/${item._id}`)
+                                                        navToTab(item._id)
                                                     }}
                                                     variant='neutral-icon'
                                                     style={{ padding: '0.5rem' }}
                                                 >
                                                     <IoEyeSharp size={16} />
                                                 </Button>
-                                                {/* <LinkBack
-                                                to={`/app/coll/bill/usr/${item._id}`}
-                                                className='btn btn-neutral-icon'
-                                                style={{ padding: '0.5rem' }}
-                                            >
-                                                <IoEyeSharp size={16} />
-                                            </LinkBack>
-                                            <LinkBack
-                                                to={`/app/coll/bill/usr/${item._id}`}
-                                                className='btn btn-neutral-icon'
-                                                style={{ padding: '0.5rem' }}
-                                                target='_blank'
-                                            >
-                                                <IoOpen size={16} />
-                                            </LinkBack> */}
                                             </div>
                                     }
                                 ]

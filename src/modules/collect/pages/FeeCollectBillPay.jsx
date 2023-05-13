@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
 import { Accordion, Button, Card, Form, ListGroup, Modal } from 'react-bootstrap'
 import { IoMdClose } from 'react-icons/io'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
@@ -7,18 +6,17 @@ import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import { AreaFarmDataInfo } from '../components'
 import { DatePicker, Liner, LoadingPage, OptionInputIrrig, OptionYearRate, ScrollbarsShadow } from '../../../components'
-import { searchCropByJunta, searchInputIrrigByFarm, searchIrrigationSystemByJunta, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery, useGetListDebtByFarmQuery, useUpdateCollectAddFarmCropMutation } from '../../../store/actions'
+import { searchCropByJunta, searchInputIrrigByFarm, searchIrrigationSystemByJunta, searchYearRateByJunta, useGetFarmByIdQuery, useGetListDebtByFarmQuery, useUpdateCollectAddFarmCropMutation } from '../../../store/actions'
 import { getYearActive } from '../../../helpers'
 
-export const FeeCollectBillPay = () => {
+export const FeeCollectBillPay = ({ prpId = '' }) => {
 
-    const { collect_prpid } = useParams()
     const [showAddCrop, setShowAddCrop] = useState(false)
-    const { data = null, isLoading } = useGetFarmByIdQuery(collect_prpid)
-    const { data: listDebts = [] } = useGetListDebtByFarmQuery(collect_prpid)
+    const { data = null, isFetching, isLoading } = useGetFarmByIdQuery(prpId)
+    const { data: listDebts = [] } = useGetListDebtByFarmQuery(prpId)
     const yearActive = useMemo(() => getYearActive(listDebts), [listDebts])
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return <LoadingPage />
     }
 
@@ -83,7 +81,7 @@ export const FeeCollectBillPay = () => {
                                             </Accordion.Item>
                                             {
                                                 listDebts.filter(d => String(d._id) === yearActive).map(debt =>
-                                                    <Accordion.Item key={debt._id} eventKey={String(debt._id)}>
+                                                    <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>
                                                         <Accordion.Header>
                                                             {`${yearActive === String(debt._id) ? `ACTUAL - ${debt._id}` : debt._id}`}
                                                         </Accordion.Header>
@@ -91,8 +89,8 @@ export const FeeCollectBillPay = () => {
                                                             <ListGroup variant='flush'>
                                                                 {
                                                                     debt.campaigns.map(c =>
-                                                                        <ListGroup.Item variant='info' action>
-                                                                            Campaña {c.campaign === 1 ? `CHICA I ${c.opened && ' (A)'}` : `GRANDE II ${c.opened && ' (A)'}`}
+                                                                        <ListGroup.Item key={`campaign_${c._id}`} variant='info' action>
+                                                                            Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
                                                                         </ListGroup.Item>
                                                                     )
                                                                 }
@@ -107,7 +105,7 @@ export const FeeCollectBillPay = () => {
                                                     <ScrollbarsShadow autoHide style={{ height: 200 }}>
                                                         {
                                                             listDebts.filter(d => String(d._id) !== yearActive).map(debt =>
-                                                                <Accordion.Item key={debt._id} eventKey={String(debt._id)}>
+                                                                <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>
                                                                     <Accordion.Header>
                                                                         {debt._id}
                                                                     </Accordion.Header>
@@ -115,8 +113,8 @@ export const FeeCollectBillPay = () => {
                                                                         <ListGroup variant='flush'>
                                                                             {
                                                                                 debt.campaigns.map(c =>
-                                                                                    <ListGroup.Item variant='info' action>
-                                                                                        Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ''}` : `GRANDE II ${c.opened ? ' (A)' : ''}`}
+                                                                                    <ListGroup.Item key={`campaign_${c._id}`} variant='info' action>
+                                                                                        Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
                                                                                     </ListGroup.Item>
                                                                                 )
                                                                             }
@@ -130,7 +128,7 @@ export const FeeCollectBillPay = () => {
                                                     <>
                                                         {
                                                             listDebts.filter(d => String(d._id) !== yearActive).map(debt =>
-                                                                <Accordion.Item key={debt._id} eventKey={String(debt._id)}>
+                                                                <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>
                                                                     <Accordion.Header>
                                                                         {debt._id}
                                                                     </Accordion.Header>
@@ -138,8 +136,8 @@ export const FeeCollectBillPay = () => {
                                                                         <ListGroup variant='flush'>
                                                                             {
                                                                                 debt.campaigns.map(c =>
-                                                                                    <ListGroup.Item variant='info' action>
-                                                                                        Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ''}` : `GRANDE II ${c.opened ? ' (A)' : ''}`}
+                                                                                    <ListGroup.Item key={`campaign_${c._id}`} variant='info' action>
+                                                                                        Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
                                                                                     </ListGroup.Item>
                                                                                 )
                                                                             }
@@ -178,8 +176,6 @@ const AddCrop = ({ show, setShow, areaFarm }) => {
     const { _id: farmId, junta: { _id: juntaId } } = areaFarm
     const { control, register, handleSubmit, reset, watch } = useForm({
         defaultValues: {
-            // desc: '',
-            // active: true,
             farm: farmId,
             inputIrrig: null,
             yearRate: null,
@@ -200,16 +196,15 @@ const AddCrop = ({ show, setShow, areaFarm }) => {
         control,
         name: 'farmCrops',
     })
-    // const [genDebt, { isLoading }] = useGenerateDebtMutation()
     const [addFarmCrop, { isLoading }] = useUpdateCollectAddFarmCropMutation()
 
     const handleSave = (data) => {
         addFarmCrop({
-            ...data
+            ...data,
+            inputIrrig: data.inputIrrig?._id || null,
+            yearRate: data.yearRate?._id || null,
         }).unwrap().then(() => {
             reset({
-                // desc: '',
-                // active: true,
                 farm: farmId,
                 inputIrrig: null,
                 yearRate: null,
@@ -366,7 +361,7 @@ const AddCrop = ({ show, setShow, areaFarm }) => {
                                                         <Form.Group>
                                                             <Form.Label>Area sembrada o por sembrar</Form.Label>
                                                             <Form.Control
-                                                                {...register(`farmCrops.${index}.areaPlanted`, { required: true, min: 0.00001 })}
+                                                                {...register(`farmCrops.${index}.areaPlanted`, { required: true, min: 0.00001, valueAsNumber: true })}
                                                                 type='number'
                                                                 autoComplete='off'
                                                             />

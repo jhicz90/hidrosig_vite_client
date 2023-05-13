@@ -22,6 +22,9 @@ body {
 	cursor: pointer;
 }
 
+.w-100-310px {
+	width: calc(100% - 310px);
+}
 .table-virtual .table > :not(caption) > * > * {
 	padding: 0 !important;
 }
