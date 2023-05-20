@@ -9,7 +9,6 @@ import { useGetListCollectByPrpQuery, useGetListCollectByUsrQuery } from '../../
 
 export const FeeCollectSearchPage = ({ navToTab = null }) => {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { search, typeSearch, listSearched = [] } = useSelector(state => state.collect)
     const { data: listUsr = [], isFetching: isLoadingUsr } = useGetListCollectByUsrQuery(search, { skip: !(typeSearch === 'usr' && search.length > 0) })
@@ -109,14 +108,17 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                             <div className='d-flex gap-2 p-2'>
                                                 <Button
                                                     onClick={() => {
-                                                        dispatch(addSearched({
+
+                                                        const usrNav = {
                                                             id: item._id,
-                                                            title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr'
-                                                        }))
-                                                        navToTab(item._id, [...listSearched, {
-                                                            id: item._id,
-                                                            title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr'
-                                                        }])
+                                                            title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr',
+                                                            navOption: 'debt',
+                                                            prpId: null,
+                                                            campId: null,
+                                                        }
+
+                                                        dispatch(addSearched(usrNav))
+                                                        navToTab(item._id, [...listSearched, usrNav])
                                                     }}
                                                     variant='neutral-icon'
                                                     style={{ padding: '0.5rem' }}
@@ -162,12 +164,16 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                             <div className='d-flex gap-2 p-2'>
                                                 <Button
                                                     onClick={() => {
-                                                        dispatch(addSearched({
+
+                                                        const prpNav = {
                                                             id: item._id,
                                                             title: item.name,
-                                                            typeSearch: 'prp'
-                                                        }))
-                                                        navToTab(item._id)
+                                                            typeSearch: 'prp',
+                                                            navOption: 'debt'
+                                                        }
+
+                                                        dispatch(addSearched(prpNav))
+                                                        navToTab(item._id, [...listSearched, prpNav])
                                                     }}
                                                     variant='neutral-icon'
                                                     style={{ padding: '0.5rem' }}

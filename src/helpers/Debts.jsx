@@ -3,3 +3,12 @@ export const getYearActive = (years = []) => {
 
     return String(findYear?._id || new Date().getFullYear())
 }
+
+export const getCampaignActive = (year = '', listYears = []) => {
+
+    const yearActive = listYears.find(y => String(y._id) === String(year))
+    
+    const findCampaign = yearActive?.campaigns?.find(camp => camp.opened === true)
+
+    return String(findCampaign?._id || null)
+}

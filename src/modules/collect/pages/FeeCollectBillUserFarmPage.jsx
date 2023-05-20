@@ -1,20 +1,21 @@
-import { useState } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { useState, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Collapse, Dropdown } from 'react-bootstrap'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
-import { TbReportMoney } from 'react-icons/tb'
 import { GiReceiveMoney } from 'react-icons/gi'
 import { DataTable, LoadingAction, TagStatus, TagTimeAgo } from '../../../components'
-import { useGetListFarmByUserFarmQuery } from '../../../store/actions'
-import { FeeCollectBillDebt, FeeCollectBillPay } from '..'
+import { setActivePrpIdInUsrNav, useGetListFarmByUserFarmQuery } from '../../../store/actions'
+import { FeeCollectAddCrop, FeeCollectBillPay } from '..'
 
 export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
 
-    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [showFarms, setShowFarms] = useState(true)
-    const [activePrp, setActivePrp] = useState(null)
+    const { listSearched = [] } = useSelector(state => state.collect)
     const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: usrId, search: '' })
+    const prpActive = useMemo(() => listSearched.find(ls => ls.id === usrId)?.prpId || null, [listSearched])
+    const navOption = useMemo(() => listSearched.find(ls => ls.id === usrId)?.navOption || '', [listSearched])
 
     return (
         <>
@@ -49,7 +50,7 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                     </div>
                 </div>
             </div>
-            <Collapse in={showFarms}>
+            <Collapse in={showFarms || !prpActive}>
                 <div
                     className='row g-0 justify-content-center'
                     style={{ borderTop: '2px solid blue', borderBottom: '2px solid blue' }}
@@ -103,21 +104,12 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                                                         <Button
                                                             onClick={() => {
                                                                 setShowFarms(false)
-                                                                setActivePrp(item._id)
+                                                                dispatch(setActivePrpIdInUsrNav({ id: usrId, prpId: item._id }))
                                                             }}
                                                             variant='neutral-icon'
                                                             style={{ padding: '0.5rem' }}
                                                         >
                                                             <GiReceiveMoney size={16} />
-                                                        </Button>
-                                                        <Button
-                                                            onClick={() => {
-                                                                setShowFarms(false)
-                                                            }}
-                                                            variant='neutral-icon'
-                                                            style={{ padding: '0.5rem' }}
-                                                        >
-                                                            <TbReportMoney size={16} />
                                                         </Button>
                                                     </div>
                                             }
@@ -128,13 +120,26 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                     </div>
                 </div>
             </Collapse>
-            <div className='mt-2'>
-                {
-                    !!activePrp
-                    &&
-                    <FeeCollectBillPay prpId={activePrp} />
-                }
-            </div>
+            {
+                !!prpActive
+                &&
+                <>
+                    <div className='mt-2' >
+                        {
+                            {
+                                'debt': (
+                                    <FeeCollectBillPay tabId={usrId} />
+                                ),
+                                'crop': (
+                                    <FeeCollectAddCrop tabId={usrId} />
+                                )
+                            }[navOption] || (
+                                <FeeCollectBillPay tabId={usrId} />
+                            )
+                        }
+                    </div>
+                </>
+            }
         </>
     )
 }

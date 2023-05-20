@@ -1,25 +1,23 @@
-import { useEffect, createRef, forwardRef } from 'react'
+import { useEffect, createRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Nav, Tab } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { BsStar, BsStarFill, BsXLg } from 'react-icons/bs'
 import { FeeCollectBillAreaFarmPage, FeeCollectBillUserFarmPage, FeeCollectSearchPage } from '..'
 import { SliderNavFlip } from '../../../components'
-import { addSearchedFav, addingFavSaved, clearSearched, deleteSearchedById, deleteSearchedFav } from '../../../store/actions'
-import { useState } from 'react'
+import { addSearchedFav, addingFavSaved, clearSearched, deleteSearchedById, deleteSearchedFav, setActiveTab } from '../../../store/actions'
 
 export const FeeCollectNavPage = () => {
 
     const dispatch = useDispatch()
     const flicking = createRef()
-    const { listSearched = [] } = useSelector(state => state.collect)
-    const [activeTab, setActiveTab] = useState('search')
+    const { listSearched = [], tabActive } = useSelector(state => state.collect)
 
     const handleChangeActiveTab = (nameKey, list) => {
         const index = list.findIndex(ls => ls.id === nameKey)
 
         flicking.current.forceUpdate()
         flicking.current.moveTo(index)
-        setActiveTab(nameKey)
+        dispatch(setActiveTab(nameKey))
     }
 
     useEffect(() => {
@@ -52,7 +50,7 @@ export const FeeCollectNavPage = () => {
                                         &&
                                         <Button
                                             onClick={() => {
-                                                setActiveTab('search')
+                                                dispatch(setActiveTab('search'))
                                                 dispatch(clearSearched())
                                             }}
                                             variant='neutral'
@@ -74,8 +72,7 @@ export const FeeCollectNavPage = () => {
                             <TabNavItem
                                 idTab={'search'}
                                 title={'Busqueda'}
-                                activeTab={activeTab}
-                                actionClick={() => setActiveTab('search')}
+                                actionClick={() => dispatch(setActiveTab('search'))}
                                 actions={false}
                             />
                         </li>
@@ -85,13 +82,10 @@ export const FeeCollectNavPage = () => {
                                     <TabNavItem
                                         idTab={id}
                                         title={title}
-                                        activeTab={activeTab}
-                                        setActiveTab={setActiveTab}
-                                        typeSearch={typeSearch}
                                         actionClick={() => {
                                             flicking.current.forceUpdate()
                                             flicking.current.moveTo(index + 1)
-                                            setActiveTab(id)
+                                            dispatch(setActiveTab(id))
                                         }}
                                     />
                                 </li>
@@ -99,7 +93,7 @@ export const FeeCollectNavPage = () => {
                         }
                     </SliderNavFlip>
                     <div className='tab-content'>
-                        <TabContent idTab='search' activeTab={activeTab}>
+                        <TabContent idTab='search'>
                             <FeeCollectSearchPage navToTab={handleChangeActiveTab} />
                         </TabContent>
                         {
@@ -107,7 +101,7 @@ export const FeeCollectNavPage = () => {
                                 <TabContent
                                     key={`bill-pane-${index}-${id}`}
                                     idTab={id}
-                                    activeTab={activeTab}
+                                    activeTab={tabActive}
                                 >
                                     {
                                         typeSearch === 'usr'
@@ -126,18 +120,18 @@ export const FeeCollectNavPage = () => {
     )
 }
 
-const TabNavItem = ({ idTab, title, activeTab, setActiveTab, actionClick, typeSearch = '', actions = true }) => {
+const TabNavItem = ({ idTab, title, actionClick, actions = true }) => {
 
     const dispatch = useDispatch()
-    const { listSearchedFav = [] } = useSelector(state => state.collect)
+    const { listSearchedFav = [], tabActive } = useSelector(state => state.collect)
 
     const handleClose = () => {
-        setActiveTab('search')
+        dispatch(setActiveTab('search'))
         dispatch(deleteSearchedById(idTab))
     }
 
     return (
-        <span className={`nav-link d-flex p-0 align-items-center ${activeTab === idTab ? 'active' : ''}`}>
+        <span className={`nav-link d-flex p-0 align-items-center ${tabActive === idTab ? 'active' : ''}`}>
             <span onClick={actionClick} className='p-2'>{title}</span>
             {
                 actions
@@ -155,7 +149,7 @@ const TabNavItem = ({ idTab, title, activeTab, setActiveTab, actionClick, typeSe
                             </button>
                             :
                             <button
-                                onClick={() => dispatch(addSearchedFav({ id: idTab, title, typeSearch }))}
+                                onClick={() => dispatch(addSearchedFav(idTab))}
                                 className='btn p-0 px-1 d-flex align-items-center'
                                 size='sm'
                             >
@@ -179,9 +173,12 @@ const TabNavItem = ({ idTab, title, activeTab, setActiveTab, actionClick, typeSe
     )
 }
 
-const TabContent = ({ idTab, activeTab, children }) => {
+const TabContent = ({ idTab, children }) => {
+
+    const { tabActive } = useSelector(state => state.collect)
+
     return (
-        <div className={`tab-pane fade ${activeTab === idTab ? 'show active' : ''}`}>
+        <div className={`tab-pane fade ${tabActive === idTab ? 'show active' : ''}`}>
             {children}
         </div>
     )

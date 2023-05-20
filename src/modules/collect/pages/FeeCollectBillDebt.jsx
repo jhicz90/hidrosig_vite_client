@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async'
 import { IoMdClose } from 'react-icons/io'
 import { AreaFarmDataInfo } from '../components'
 import { DatePicker, Liner, LoadingPage, OptionInputIrrig, OptionYearRate } from '../../../components'
-import { searchCropByJunta, searchInputIrrigByFarm, searchIrrigationSystemByJunta, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
+import { searchCropVarietyByJunta, searchInputIrrigByFarm, searchIrrigationSystemByJunta, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
 
 export const FeeCollectBillDebt = () => {
 
@@ -318,7 +318,7 @@ const GenerateDebt = ({ show, setShow, areaFarm }) => {
                                                                             isClearable
                                                                             defaultOptions
                                                                             loadOptions={async (e) =>
-                                                                                await searchCropByJunta(juntaId, e)
+                                                                                await searchCropVarietyByJunta(juntaId, e)
                                                                             }
                                                                             menuPlacement={'auto'}
                                                                             placeholder={`Buscar...`}

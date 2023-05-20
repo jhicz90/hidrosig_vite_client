@@ -9,6 +9,7 @@ import { checkingAuthentication } from '../../../store/actions'
 
 import backgroundLogin from '../../../assets/slider2.jpg'
 import logoApp from '../../../assets/logo192.png'
+import { BeatLoader } from 'react-spinners'
 
 export const LoginPage = () => {
 
@@ -97,13 +98,25 @@ export const LoginPage = () => {
                                     />
                                     <Link to='/recoverpassw' className='d-block small text-decoration-none'>¿Se olvido de la contraseña?</Link>
                                 </div>
-                                <div className='d-grid'>
-                                    <button
+                                <div className='d-flex justify-content-center'>
+                                    {
+                                        isAuthenticating
+                                            ?
+                                            <BeatLoader size={32} speedMultiplier={0.5} style={{ opacity: 0.5, display: 'flex', marginTop: '1rem' }} />
+                                            :
+                                            <button
+                                                disabled={isAuthenticating}
+                                                onClick={handleLogin}
+                                                className='btn btn-login btn-primary fw-bold w-100' type='submit'>
+                                                Iniciar sesión
+                                            </button>
+                                    }
+                                    {/* <button
                                         disabled={isAuthenticating}
                                         onClick={handleLogin}
                                         className='btn btn-login btn-primary fw-bold' type='submit'>
                                         Iniciar sesión
-                                    </button>
+                                    </button> */}
                                 </div>
                             </form>
                         </div>

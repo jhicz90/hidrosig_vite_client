@@ -69,7 +69,7 @@ export const cropApi = storeApi.injectEndpoints({
 })
 
 export const {
-    useAddCropMutation, 
+    useAddCropMutation,
     useDeleteCropByIdMutation,
     useGetCropByIdQuery,
     useGetListCropByJuntaQuery,
@@ -78,9 +78,9 @@ export const {
     useUpdateCropByIdMutation,
 } = cropApi
 
-export const searchCropByJunta = async (junta, search) => {
+export const searchCropVarietyByJunta = async (junta, search) => {
     const resp = await fetchByToken({
-        endpoint: `crop/search_by_junta/${junta}`,
+        endpoint: `crop/variety/search_by_junta/${junta}`,
         params: { search }
     })
 

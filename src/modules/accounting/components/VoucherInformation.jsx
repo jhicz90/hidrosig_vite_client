@@ -13,7 +13,7 @@ export const VoucherInformation = () => {
     const { voucherid } = useParams()
     const { data = null } = useSelector(voucherApi.endpoints.getVoucherById.select(voucherid))
     const [updateVoucher, { isLoading: isUpdating }] = useUpdateVoucherByIdMutation()
-    const { register, control, handleSubmit, reset } = useForm()
+    const { register, control, handleSubmit, reset, setValue } = useForm()
 
     const handleUpdate = async ({ socialReason, ...newData }) => {
         try {

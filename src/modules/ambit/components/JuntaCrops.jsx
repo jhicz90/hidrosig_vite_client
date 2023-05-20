@@ -47,7 +47,7 @@ export const JuntaCrops = () => {
                             {
                                 label: 'VARIEDADES',
                                 renderCell: (item) =>
-                                    item.cropVarieties.length
+                                    item.varieties.length
                             },
                         ]
                     }
@@ -63,7 +63,7 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
         defaultValues: {
             name: '',
             type: 0,
-            cropVarieties: [
+            varieties: [
                 {
                     name: '',
                     period: 0,
@@ -76,7 +76,7 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
     })
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'cropVarieties',
+        name: 'varieties',
         rules: {
             minLength: 1
         }
@@ -91,7 +91,7 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
             reset({
                 name: '',
                 type: 0,
-                cropVarieties: [
+                varieties: [
                     {
                         name: '',
                         period: 0,
@@ -178,7 +178,7 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
                                                             <Form.Group controlId={`newVariety`}>
                                                                 <Form.Label>Nombre de la variedad</Form.Label>
                                                                 <Form.Control
-                                                                    {...register(`cropVarieties.${index}.name`, { required: true })}
+                                                                    {...register(`varieties.${index}.name`, { required: true })}
                                                                     type='text'
                                                                     autoComplete='off'
                                                                 />
@@ -188,7 +188,7 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
                                                             <Form.Group>
                                                                 <Form.Label>Periodo (meses)</Form.Label>
                                                                 <Form.Control
-                                                                    {...register(`cropVarieties.${index}.period`, { required: true, min: 1 })}
+                                                                    {...register(`varieties.${index}.period`, { required: true, min: 1 })}
                                                                     type='number'
                                                                     min={1}
                                                                     max={12}
@@ -200,15 +200,15 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
                                                             <Form.Group>
                                                                 <Form.Label>Machaco</Form.Label>
                                                                 <Form.Check
-                                                                    {...register(`cropVarieties.${index}.crush`, {
+                                                                    {...register(`varieties.${index}.crush`, {
                                                                         onChange: () => {
-                                                                            const monthlyVolume = getValues(`cropVarieties.${index}.monthlyVolume`);
-                                                                            setValue(`cropVarieties.${index}.monthlyVolume`, {});
+                                                                            const monthlyVolume = getValues(`varieties.${index}.monthlyVolume`);
+                                                                            setValue(`varieties.${index}.monthlyVolume`, {});
 
                                                                             [...Array(
-                                                                                Number(watch(`cropVarieties.${index}.period`)) + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 1 : 0)
+                                                                                Number(watch(`varieties.${index}.period`)) + (Boolean(watch(`varieties.${index}.crush`)) ? 1 : 0)
                                                                             )].fill(undefined).forEach((_, indexVariety) => {
-                                                                                setValue(`cropVarieties.${index}.monthlyVolume.${indexVariety + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 0 : 1)}`, monthlyVolume[`${indexVariety + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 0 : 1)}`] || 0)
+                                                                                setValue(`varieties.${index}.monthlyVolume.${indexVariety + (Boolean(watch(`varieties.${index}.crush`)) ? 0 : 1)}`, monthlyVolume[`${indexVariety + (Boolean(watch(`varieties.${index}.crush`)) ? 0 : 1)}`] || 0)
                                                                             })
                                                                         }
                                                                     })}
@@ -222,18 +222,18 @@ const CropCreate = ({ show = false, setShow = null, juntaId = '' }) => {
                                                     <div className='row mb-2'>
                                                         {
                                                             [...Array(
-                                                                Number(watch(`cropVarieties.${index}.period`)) + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 1 : 0)
+                                                                Number(watch(`varieties.${index}.period`)) + (Boolean(watch(`varieties.${index}.crush`)) ? 1 : 0)
                                                             )].fill(undefined).map((_, indexVariety) => {
                                                                 return (
-                                                                    <div key={`cropVarieties.${index}.volume.${indexVariety + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 0 : 1)}`} className='col-4'>
+                                                                    <div key={`varieties.${index}.volume.${indexVariety + (Boolean(watch(`varieties.${index}.crush`)) ? 0 : 1)}`} className='col-4'>
                                                                         <Form.Group className='mb-2'>
                                                                             <Form.Label>
                                                                                 Volumen ({
-                                                                                    Boolean(watch(`cropVarieties.${index}.crush`)) && indexVariety === 0 ? 'Machaco' : `Mes ${indexVariety + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 0 : 1)}`
+                                                                                    Boolean(watch(`varieties.${index}.crush`)) && indexVariety === 0 ? 'Machaco' : `Mes ${indexVariety + (Boolean(watch(`varieties.${index}.crush`)) ? 0 : 1)}`
                                                                                 })
                                                                             </Form.Label>
                                                                             <Form.Control
-                                                                                {...register(`cropVarieties.${index}.monthlyVolume.${indexVariety + (Boolean(watch(`cropVarieties.${index}.crush`)) ? 0 : 1)}`, { required: true, valueAsNumber: true, min: 1 })}
+                                                                                {...register(`varieties.${index}.monthlyVolume.${indexVariety + (Boolean(watch(`varieties.${index}.crush`)) ? 0 : 1)}`, { required: true, valueAsNumber: true, min: 1 })}
                                                                                 type='number'
                                                                                 min={0}
                                                                                 autoComplete='off'
