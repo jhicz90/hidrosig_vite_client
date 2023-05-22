@@ -107,6 +107,7 @@ export const DatePicker = (props) => {
                 props.onChange(moment(date).toISOString() || moment().toISOString())
             }}
             className='form-control'
+            disabled={props.disabled || false}
         />
     )
 }

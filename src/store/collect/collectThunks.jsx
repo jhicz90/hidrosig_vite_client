@@ -1,5 +1,5 @@
 import { fetchByToken } from '../../helpers'
-import { addToSearched, setListSearchedFav } from './collectSlice'
+import { onAddToSearched, onSetListSearchedFav } from './collectSlice'
 import { storeApi } from '../storeApi'
 
 export const collectApi = storeApi.injectEndpoints({
@@ -13,15 +13,30 @@ export const collectApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Cllc']
         }),
-        updateCollectAddFarmCrop: builder.mutation({
-            query: (collect) => ({
-                url: `collect/add/farm_crop`,
-                method: 'put',
-                data: collect
+        addFarmCropInCollectByYearRate: builder.mutation({
+            query: ({ campaign, farmCrop }) => ({
+                url: `collect/add/farm_crop/${campaign}`,
+                method: 'post',
+                data: farmCrop
             }),
             invalidatesTags: ['Cllc']
         }),
-        getListDebtByFarm: builder.query({
+        updateFarmCropInCollect: builder.mutation({
+            query: ({ collect, farmCrop }) => ({
+                url: `collect/update/farm_crop/${collect}`,
+                method: 'put',
+                data: farmCrop
+            }),
+            invalidatesTags: ['Cllc']
+        }),
+        deleteFarmCropInCollect: builder.mutation({
+            query: ({ collect, farmCrop }) => ({
+                url: `collect/delete/farm_crop/${collect}/${farmCrop}`,
+                method: 'delete',
+            }),
+            invalidatesTags: ['Cllc']
+        }),
+        getListYearDebtByFarm: builder.query({
             query: (farm) => ({
                 url: `collect/list/yeardebt/${farm}`
             }),
@@ -38,9 +53,9 @@ export const collectApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
         }),
-        getListCropByCollect: builder.query({
-            query: (collect) => ({
-                url: `collect/list/crop/${collect}`
+        getListCropByCampaign: builder.query({
+            query: (campaign) => ({
+                url: `collect/list/crop/${campaign}`
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Crp', 'Cllc']
@@ -74,12 +89,14 @@ export const {
     useGetListCollectByFarmQuery,
     useGetListCollectByPrpQuery,
     useGetListCollectByUsrQuery,
-    useGetListCropByCollectQuery,
-    useGetListDebtByFarmQuery,
-    useUpdateCollectAddFarmCropMutation,
+    useGetListCropByCampaignQuery,
+    useGetListYearDebtByFarmQuery,
+    useUpdateFarmCropInCollectMutation,
+    useDeleteFarmCropInCollectMutation,
+    useAddFarmCropInCollectByYearRateMutation,
 } = collectApi
 
-export const addSearchedFav = (payload) => {
+export const onAddFav = (payload) => {
     return async (dispatch, getState) => {
         if (!localStorage.getItem('favSearched')) {
             localStorage.setItem('favSearched', JSON.stringify([]))
@@ -90,12 +107,12 @@ export const addSearchedFav = (payload) => {
         if (!!newFav) {
             const favSearched = [...JSON.parse(localStorage.getItem('favSearched') || '[]'), newFav]
             localStorage.setItem('favSearched', JSON.stringify(favSearched))
-            dispatch(setListSearchedFav(favSearched))
+            dispatch(onSetListSearchedFav(favSearched))
         }
     }
 }
 
-export const deleteSearchedFav = (payload) => {
+export const onDeleteFavSaved = (payload) => {
     return async (dispatch) => {
         if (!localStorage.getItem('favSearched')) {
             localStorage.setItem('favSearched', JSON.stringify([]))
@@ -103,7 +120,7 @@ export const deleteSearchedFav = (payload) => {
 
         const favSearched = [...JSON.parse(localStorage.getItem('favSearched')).filter(fav => fav.id !== payload)]
         localStorage.setItem('favSearched', JSON.stringify(favSearched))
-        dispatch(setListSearchedFav(favSearched))
+        dispatch(onSetListSearchedFav(favSearched))
     }
 }
 
@@ -119,14 +136,14 @@ export const verifySearchedFavById = (payload) => {
     }
 }
 
-export const addingFavSaved = () => {
+export const onSetFavSaved = () => {
     return async (dispatch) => {
         if (!localStorage.getItem('favSearched')) {
             localStorage.setItem('favSearched', JSON.stringify([]))
         }
 
-        dispatch(addToSearched(JSON.parse(localStorage.getItem('favSearched')) || []))
-        dispatch(setListSearchedFav(JSON.parse(localStorage.getItem('favSearched')) || []))
+        dispatch(onAddToSearched(JSON.parse(localStorage.getItem('favSearched')) || []))
+        dispatch(onSetListSearchedFav(JSON.parse(localStorage.getItem('favSearched')) || []))
     }
 }
 

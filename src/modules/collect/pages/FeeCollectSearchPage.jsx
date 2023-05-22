@@ -1,16 +1,13 @@
-import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { Button, Tab } from 'react-bootstrap'
 import { IoEyeSharp } from 'react-icons/io5'
 import { Avatar, DataTable, InputSearch, SliderNavFlip, TagStatus } from '../../../components'
-import { addSearched, setSearch, setTypeSearch } from '../../../store/actions'
 import { typeUserFarm } from '../../../helpers'
+import { useCollectStore } from '../../../hooks'
 import { useGetListCollectByPrpQuery, useGetListCollectByUsrQuery } from '../../../store/actions'
 
 export const FeeCollectSearchPage = ({ navToTab = null }) => {
 
-    const dispatch = useDispatch()
-    const { search, typeSearch, listSearched = [] } = useSelector(state => state.collect)
+    const { search, typeSearch, listSearched, setSearch, setTypeSearch, addTab } = useCollectStore()
     const { data: listUsr = [], isFetching: isLoadingUsr } = useGetListCollectByUsrQuery(search, { skip: !(typeSearch === 'usr' && search.length > 0) })
     const { data: listPrp = [], isFetching: isLoadingPrp } = useGetListCollectByPrpQuery(search, { skip: !(typeSearch === 'prp' && search.length > 0) })
 
@@ -24,8 +21,8 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                 <Button
                                     variant='neutral'
                                     onClick={() => {
-                                        dispatch(setTypeSearch('usr'))
-                                        dispatch(setSearch(''))
+                                        setTypeSearch('usr')
+                                        setSearch('')
                                     }}
                                     className={`flicking-panel ${typeSearch === 'usr' ? 'active' : ''}`}
                                 >
@@ -34,8 +31,8 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                 <Button
                                     variant='neutral'
                                     onClick={() => {
-                                        dispatch(setTypeSearch('prp'))
-                                        dispatch(setSearch(''))
+                                        setTypeSearch('prp')
+                                        setSearch('')
                                     }}
                                     className={`flicking-panel ${typeSearch === 'prp' ? 'active' : ''}`}
                                 >
@@ -48,7 +45,7 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
             </div>
             <div className='row g-0 justify-content-center'>
                 <div className='col'>
-                    <InputSearch value={search} onChange={(e) => dispatch(setSearch(e))} loading={isLoadingUsr || isLoadingPrp} />
+                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoadingUsr || isLoadingPrp} />
                     <DataTable
                         rows={
                             typeSearch === 'usr'
@@ -117,7 +114,7 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                                             campId: null,
                                                         }
 
-                                                        dispatch(addSearched(usrNav))
+                                                        addTab(usrNav)
                                                         navToTab(item._id, [...listSearched, usrNav])
                                                     }}
                                                     variant='neutral-icon'
@@ -172,7 +169,7 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                                             navOption: 'debt'
                                                         }
 
-                                                        dispatch(addSearched(prpNav))
+                                                        addTab(prpNav)
                                                         navToTab(item._id, [...listSearched, prpNav])
                                                     }}
                                                     variant='neutral-icon'

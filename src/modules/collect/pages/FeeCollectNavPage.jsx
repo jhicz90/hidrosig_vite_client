@@ -1,27 +1,25 @@
 import { useEffect, createRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { BsStar, BsStarFill, BsXLg } from 'react-icons/bs'
 import { FeeCollectBillAreaFarmPage, FeeCollectBillUserFarmPage, FeeCollectSearchPage } from '..'
 import { SliderNavFlip } from '../../../components'
-import { addSearchedFav, addingFavSaved, clearSearched, deleteSearchedById, deleteSearchedFav, setActiveTab } from '../../../store/actions'
+import { useCollectStore } from '../../../hooks'
 
 export const FeeCollectNavPage = () => {
 
-    const dispatch = useDispatch()
     const flicking = createRef()
-    const { listSearched = [], tabActive } = useSelector(state => state.collect)
+    const { listSearched, activeTab, setActiveTab, loadFavsSaved, clearSearches } = useCollectStore()
 
     const handleChangeActiveTab = (nameKey, list) => {
         const index = list.findIndex(ls => ls.id === nameKey)
 
         flicking.current.forceUpdate()
         flicking.current.moveTo(index)
-        dispatch(setActiveTab(nameKey))
+        setActiveTab(nameKey)
     }
 
     useEffect(() => {
-        dispatch(addingFavSaved())
+        loadFavsSaved()
     }, [])
 
     return (
@@ -50,8 +48,8 @@ export const FeeCollectNavPage = () => {
                                         &&
                                         <Button
                                             onClick={() => {
-                                                dispatch(setActiveTab('search'))
-                                                dispatch(clearSearched())
+                                                setActiveTab('search')
+                                                clearSearches()
                                             }}
                                             variant='neutral'
                                             className='text-danger'
@@ -72,7 +70,7 @@ export const FeeCollectNavPage = () => {
                             <TabNavItem
                                 idTab={'search'}
                                 title={'Busqueda'}
-                                actionClick={() => dispatch(setActiveTab('search'))}
+                                actionClick={() => setActiveTab('search')}
                                 actions={false}
                             />
                         </li>
@@ -85,7 +83,7 @@ export const FeeCollectNavPage = () => {
                                         actionClick={() => {
                                             flicking.current.forceUpdate()
                                             flicking.current.moveTo(index + 1)
-                                            dispatch(setActiveTab(id))
+                                            setActiveTab(id)
                                         }}
                                     />
                                 </li>
@@ -101,7 +99,7 @@ export const FeeCollectNavPage = () => {
                                 <TabContent
                                     key={`bill-pane-${index}-${id}`}
                                     idTab={id}
-                                    activeTab={tabActive}
+                                    activeTab={activeTab}
                                 >
                                     {
                                         typeSearch === 'usr'
@@ -122,16 +120,15 @@ export const FeeCollectNavPage = () => {
 
 const TabNavItem = ({ idTab, title, actionClick, actions = true }) => {
 
-    const dispatch = useDispatch()
-    const { listSearchedFav = [], tabActive } = useSelector(state => state.collect)
+    const { listSearchedFav, activeTab, setActiveTab, deleteTab, deleteFav, addFav } = useCollectStore()
 
     const handleClose = () => {
-        dispatch(setActiveTab('search'))
-        dispatch(deleteSearchedById(idTab))
+        setActiveTab('search')
+        deleteTab(idTab)
     }
 
     return (
-        <span className={`nav-link d-flex p-0 align-items-center ${tabActive === idTab ? 'active' : ''}`}>
+        <span className={`nav-link d-flex p-0 align-items-center ${activeTab === idTab ? 'active' : ''}`}>
             <span onClick={actionClick} className='p-2'>{title}</span>
             {
                 actions
@@ -141,7 +138,7 @@ const TabNavItem = ({ idTab, title, actionClick, actions = true }) => {
                         listSearchedFav.find(fav => fav.id === idTab)
                             ?
                             <button
-                                onClick={() => dispatch(deleteSearchedFav(idTab))}
+                                onClick={() => deleteFav(idTab)}
                                 className='btn p-0 px-1 d-flex align-items-center'
                                 size='sm'
                             >
@@ -149,7 +146,7 @@ const TabNavItem = ({ idTab, title, actionClick, actions = true }) => {
                             </button>
                             :
                             <button
-                                onClick={() => dispatch(addSearchedFav(idTab))}
+                                onClick={() => addFav(idTab)}
                                 className='btn p-0 px-1 d-flex align-items-center'
                                 size='sm'
                             >
@@ -175,10 +172,10 @@ const TabNavItem = ({ idTab, title, actionClick, actions = true }) => {
 
 const TabContent = ({ idTab, children }) => {
 
-    const { tabActive } = useSelector(state => state.collect)
+    const { activeTab } = useCollectStore()
 
     return (
-        <div className={`tab-pane fade ${tabActive === idTab ? 'show active' : ''}`}>
+        <div className={`tab-pane fade ${activeTab === idTab ? 'show active' : ''}`}>
             {children}
         </div>
     )

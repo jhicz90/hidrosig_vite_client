@@ -1,4 +1,4 @@
-export * from './AreaFarmCollectCampaign'
+export * from './CollectCampaign'
 export * from './AreaFarmDataInfo'
 export * from './AreaFarmListCampaign'
 export * from './CropCampaignEdit'

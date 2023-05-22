@@ -1,15 +1,23 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useMemo } from 'react'
 import { Button, Card } from 'react-bootstrap'
 import { IoMap } from 'react-icons/io5'
-import { farmApi, setOptionOfIdNav } from '../../../store/actions'
+import { useGetFarmByIdQuery } from '../../../store/actions'
+import { useCollectStore } from '../../../hooks'
+import { LoadingPage } from '../../../components'
 
-export const AreaFarmDataInfo = ({ tabId = '', prpId = '' }) => {
+export const AreaFarmDataInfo = ({ tabId = '' }) => {
 
-    const dispatch = useDispatch()
-    const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpId))
+    const { listSearched, setOptionActiveNav } = useCollectStore()
+    const prpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
+    const { data = null, isLoading } = useGetFarmByIdQuery(prpActive)
+
+    if (isLoading) {
+        return <LoadingPage />
+    }
 
     return (
+        !!data
+        &&
         <Card>
             <Card.Header>
                 <div className='row'>
@@ -24,7 +32,7 @@ export const AreaFarmDataInfo = ({ tabId = '', prpId = '' }) => {
                     <div className='col'>
                         <div className='d-inline-flex gap-2 flex-wrap'>
                             <Button
-                                onClick={() => dispatch(setOptionOfIdNav({ id: tabId, navOption: 'debt' }))}
+                                onClick={() => setOptionActiveNav({ id: tabId, navOption: 'debt' })}
                                 variant='primary'
                                 size='sm'
                                 className='d-flex align-items-center gap-2'
@@ -32,7 +40,7 @@ export const AreaFarmDataInfo = ({ tabId = '', prpId = '' }) => {
                                 Pago tarifa
                             </Button>
                             <Button
-                                onClick={() => dispatch(setOptionOfIdNav({ id: tabId, navOption: 'crop' }))}
+                                onClick={() => setOptionActiveNav({ id: tabId, navOption: 'crop' })}
                                 variant='success'
                                 size='sm'
                                 className='d-flex align-items-center gap-2'

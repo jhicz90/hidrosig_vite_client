@@ -4,39 +4,39 @@ export const collectSlice = createSlice({
     initialState: {
         search: '',
         typeSearch: 'usr',// usr || prp
-        tabActive: 'search',
+        activeTab: 'search',
         listSearched: [],
         listSearchedFav: []// [{ id: '641370225b9141556de5b861', title: 'José Hans', typeSearch:'usr', navOption:'', prpId: null, campId: null}]
     },
     reducers: {
-        setSearch: (state, { payload }) => {
+        onSetSearch: (state, { payload }) => {
             state.search = payload
         },
-        setTypeSearch: (state, { payload }) => {
+        onSetTypeSearch: (state, { payload }) => {
             state.typeSearch = payload
         },
-        setListSearched: (state, { payload }) => {
+        onSetListSearched: (state, { payload }) => {
             state.listSearched = payload
         },
-        setListSearchedFav: (state, { payload }) => {
+        onSetListSearchedFav: (state, { payload }) => {
             state.listSearchedFav = payload
         },
-        addToSearched: (state, { payload }) => {
+        onAddToSearched: (state, { payload }) => {
             state.listSearched = [...payload, ...state.listSearched].filter((v, i, a) => a.findIndex(v2 => (v2.id === v.id)) === i)
         },
-        addSearched: (state, { payload }) => {
+        onAddSearched: (state, { payload }) => {
             state.listSearched = state.listSearched.find(ls => ls.id === payload.id) ? [...state.listSearched] : [...state.listSearched, payload]
         },
-        deleteSearchedById: (state, { payload }) => {
+        onDeleteSearchedById: (state, { payload }) => {
             state.listSearched = state.listSearched.filter(ls => ls.id !== payload)
         },
-        clearSearched: (state) => {
+        onClearListSearched: (state) => {
             state.listSearched = []
         },
-        setActiveTab: (state, { payload }) => {
-            state.tabActive = payload
+        onSetActiveTab: (state, { payload }) => {
+            state.activeTab = payload
         },
-        setActivePrpIdInUsrNav: (state, { payload }) => {
+        onSetActivePrpIdInUsrNav: (state, { payload }) => {
             const { id, prpId } = payload
 
             state.listSearched = state.listSearched.map(ls => {
@@ -50,19 +50,19 @@ export const collectSlice = createSlice({
                 }
             })
         },
-        setActiveCmpIdInUsrNav: (state, { payload }) => {
+        onSetCmpActiveNav: (state, { payload }) => {
             const { id, campId } = payload
 
             state.listSearched = state.listSearched.map(ls => {
                 if (ls.id === id) {
                     return {
                         ...ls,
-                        campId
+                        campId,
                     }
                 }
             })
         },
-        setOptionOfIdNav: (state, { payload }) => {
+        onSetOptionActiveNav: (state, { payload }) => {
             const { id, navOption } = payload
 
             state.listSearched = state.listSearched.map(ls => {
@@ -78,16 +78,16 @@ export const collectSlice = createSlice({
 });
 
 export const {
-    addSearched,
-    addToSearched,
-    clearSearched,
-    deleteSearchedById,
-    setActiveCmpIdInUsrNav,
-    setActivePrpIdInUsrNav,
-    setActiveTab,
-    setListSearched,
-    setListSearchedFav,
-    setOptionOfIdNav,
-    setSearch,
-    setTypeSearch,
+    onAddSearched,
+    onAddToSearched,
+    onClearListSearched,
+    onDeleteSearchedById,
+    onSetActiveTab,
+    onSetListSearched,
+    onSetListSearchedFav,
+    onSetSearch,
+    onSetTypeSearch,
+    onSetCmpActiveNav,
+    onSetActivePrpIdInUsrNav,
+    onSetOptionActiveNav,
 } = collectSlice.actions

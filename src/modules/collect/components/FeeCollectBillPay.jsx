@@ -1,16 +1,16 @@
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { Alert, Form, Modal } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { AreaFarmCollectCampaign, AreaFarmDataInfo, AreaFarmListCampaign } from '.'
+import { CollectCampaign, AreaFarmDataInfo, AreaFarmListCampaign } from '.'
 import { Liner, LoadingPage, OptionYearRate } from '../../../components'
 import { searchCollectByFarm, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
+import { useCollectStore } from '../../../hooks'
 
 export const FeeCollectBillPay = ({ tabId = '' }) => {
 
-    const { listSearched = [] } = useSelector(state => state.collect)
+    const { listSearched } = useCollectStore()
     const prpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
     const { data = null, isLoading } = useGetFarmByIdQuery(prpActive)
 
@@ -35,7 +35,7 @@ export const FeeCollectBillPay = ({ tabId = '' }) => {
                         </div>
                     </div>
                     <div className='col-12 col-xxl-8'>
-                        <AreaFarmCollectCampaign tabId={tabId} />
+                        <CollectCampaign tabId={tabId} />
                     </div>
                 </div>
             </div>

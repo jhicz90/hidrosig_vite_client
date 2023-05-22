@@ -1,23 +1,23 @@
 import { useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Accordion, Card, ListGroup } from 'react-bootstrap'
 import { ScrollbarsShadow } from '../../../components'
-import { setActiveCmpIdInUsrNav, useGetListDebtByFarmQuery } from '../../../store/actions'
+import { useGetListYearDebtByFarmQuery } from '../../../store/actions'
 import { getCampaignActive, getYearActive } from '../../../helpers'
+import { useCollectStore } from '../../../hooks'
 
 export const AreaFarmListCampaign = ({ tabId = '' }) => {
 
     const dispatch = useDispatch()
-    const { listSearched = [] } = useSelector(state => state.collect)
+    const { listSearched, setCampaignActiveNav } = useCollectStore()
     const prpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
-    const { data: listDebts = [] } = useGetListDebtByFarmQuery(prpActive)
+    const { data: listDebts = [] } = useGetListYearDebtByFarmQuery(prpActive)
     const yearActive = useMemo(() => getYearActive(listDebts), [listDebts])
     const campaignActive = useMemo(() => getCampaignActive(yearActive, listDebts), [listDebts, yearActive])
 
     useEffect(() => {
-        dispatch(setActiveCmpIdInUsrNav({ id: tabId, campId: campaignActive }))
-
-        return () => dispatch(setActiveCmpIdInUsrNav({ id: tabId, campId: null }))
+        setCampaignActiveNav({ id: tabId, campId: campaignActive })
+        return () => setCampaignActiveNav({ id: tabId, campId: null })
     }, [campaignActive])
 
     return (
@@ -49,7 +49,7 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                 debt.campaigns.map(c =>
                                                     <ListGroup.Item
                                                         key={`campaign_${c._id}`}
-                                                        onClick={() => dispatch(setActiveCmpIdInUsrNav({ id: tabId, campId: c._id }))}
+                                                        onClick={() => setCampaignActiveNav({ id: tabId, campId: c._id })}
                                                         variant='info'
                                                         action
                                                     >
@@ -78,7 +78,7 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                             debt.campaigns.map(c =>
                                                                 <ListGroup.Item
                                                                     key={`campaign_${c._id}`}
-                                                                    onClick={() => dispatch(setActiveCmpIdInUsrNav({ id: tabId, campId: c._id }))}
+                                                                    onClick={() => setCampaignActiveNav({ id: tabId, campId: c._id })}
                                                                     variant='info'
                                                                     action
                                                                 >
@@ -106,7 +106,7 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                             debt.campaigns.map(c =>
                                                                 <ListGroup.Item
                                                                     key={`campaign_${c._id}`}
-                                                                    onClick={() => dispatch(setActiveCmpIdInUsrNav({ id: tabId, campId: c._id }))}
+                                                                    onClick={() => setCampaignActiveNav({ id: tabId, campId: c._id })}
                                                                     variant='info'
                                                                     action
                                                                 >
