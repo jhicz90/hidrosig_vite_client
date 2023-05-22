@@ -1,4 +1,4 @@
-import { Body, Cell, Header, HeaderCell, HeaderRow, Row, Table } from '@table-library/react-table-library/table'
+import { Body, Cell, Footer, FooterCell, FooterRow, Header, HeaderCell, HeaderRow, Row, Table } from '@table-library/react-table-library/table'
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { Virtualized } from '@table-library/react-table-library/virtualized'
@@ -13,11 +13,14 @@ export const DataTable = ({
     virtual = false,
     height = '400px',
     selected = false,
-    selectedChange = null
+    selectedChange = null,
+    footer = false,
 }) => {
 
     // * MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
     // * TAMBIEN SE IMPLEMENTARA UN SOMBREADO O BACKGROUND ESPECIAL PARA LOS NUEVOS REGISTROS QUE APAREZCAN EN LA LISTA
+
+    let subTotal = 0
 
     const columnsTable = columns.filter(c => typeof c === 'object')
 
@@ -224,6 +227,26 @@ export const DataTable = ({
                                         ))
                                     }
                                 </Body>
+                                {
+                                    footer
+                                    &&
+                                    <Footer>
+                                        <FooterRow>
+                                            {
+                                                columnsTable.map((col, index) =>
+                                                    <FooterCell
+                                                        key={`footer_column_${index}`}
+                                                        // resize={col.resize}
+                                                        pinLeft={col.pinLeft || undefined}
+                                                        pinRight={col.pinRight || undefined}
+                                                    >
+                                                        <CellSubTotal column={col} list={tableList} />
+                                                    </FooterCell>
+                                                )
+                                            }
+                                        </FooterRow>
+                                    </Footer>
+                                }
                             </>
                         )
                 }
@@ -235,5 +258,31 @@ export const DataTable = ({
 const NoResults = () => {
     return (
         <strong className='mx-3 fs-5'>No ahi datos para mostrar</strong>
+    )
+}
+
+const CellSubTotal = ({ column, list }) => {
+
+    let subTotal = 0
+
+    return (
+        <>
+            {
+                column.hasOwnProperty('subTotal')
+                    ?
+                    <>
+                        {
+                            list.forEach(item => {
+                                subTotal = subTotal + Number(column.renderCell(item))
+                            })
+                        }
+                        {subTotal.toFixed(5)}
+                    </>
+                    :
+                    <>
+                        {column.label}
+                    </>
+            }
+        </>
     )
 }

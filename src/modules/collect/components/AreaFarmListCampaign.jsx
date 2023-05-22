@@ -1,24 +1,28 @@
 import { useEffect, useMemo } from 'react'
-import { useDispatch } from 'react-redux'
 import { Accordion, Card, ListGroup } from 'react-bootstrap'
-import { ScrollbarsShadow } from '../../../components'
+import { LoadingPage, ScrollbarsShadow } from '../../../components'
 import { useGetListYearDebtByFarmQuery } from '../../../store/actions'
 import { getCampaignActive, getYearActive } from '../../../helpers'
 import { useCollectStore } from '../../../hooks'
+import styled from 'styled-components'
 
 export const AreaFarmListCampaign = ({ tabId = '' }) => {
 
-    const dispatch = useDispatch()
-    const { listSearched, setCampaignActiveNav } = useCollectStore()
-    const prpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
-    const { data: listDebts = [] } = useGetListYearDebtByFarmQuery(prpActive)
+    const { setCampaignActiveNav, getPrpActiveByTabId, getCmpActiveByTabId } = useCollectStore()
+    const prpActive = getPrpActiveByTabId(tabId)
+    const cmpActive = getCmpActiveByTabId(tabId)
+    const { data: listDebts = [], isFetching } = useGetListYearDebtByFarmQuery(prpActive)
     const yearActive = useMemo(() => getYearActive(listDebts), [listDebts])
-    const campaignActive = useMemo(() => getCampaignActive(yearActive, listDebts), [listDebts, yearActive])
+    const campaignOpened = useMemo(() => getCampaignActive(yearActive, listDebts), [listDebts, yearActive])
 
     useEffect(() => {
-        setCampaignActiveNav({ id: tabId, campId: campaignActive })
+        setCampaignActiveNav({ id: tabId, campId: campaignOpened })
         return () => setCampaignActiveNav({ id: tabId, campId: null })
-    }, [campaignActive])
+    }, [campaignOpened])
+
+    if (isFetching) {
+        return <LoadingPage />
+    }
 
     return (
         <Card style={{ overflow: 'hidden', minHeight: '100%' }}>
@@ -47,14 +51,14 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                         <ListGroup variant='flush'>
                                             {
                                                 debt.campaigns.map(c =>
-                                                    <ListGroup.Item
+                                                    <ListGroupCampaign
                                                         key={`campaign_${c._id}`}
-                                                        onClick={() => setCampaignActiveNav({ id: tabId, campId: c._id })}
-                                                        variant='info'
+                                                        onClick={() => setCampaignActiveNav({ id: tabId, campId: `${c._id}-${c.inputIrrigId}` })}
                                                         action
+                                                        selected={cmpActive === `${c._id}-${c.inputIrrigId}` ? true : false}
                                                     >
                                                         Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                    </ListGroup.Item>
+                                                    </ListGroupCampaign>
                                                 )
                                             }
                                         </ListGroup>
@@ -76,14 +80,14 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                     <ListGroup variant='flush'>
                                                         {
                                                             debt.campaigns.map(c =>
-                                                                <ListGroup.Item
+                                                                <ListGroupCampaign
                                                                     key={`campaign_${c._id}`}
-                                                                    onClick={() => setCampaignActiveNav({ id: tabId, campId: c._id })}
-                                                                    variant='info'
+                                                                    onClick={() => setCampaignActiveNav({ id: tabId, campId: `${c._id}-${c.inputIrrigId}` })}
                                                                     action
+                                                                    selected={cmpActive === `${c._id}-${c.inputIrrigId}` ? true : false}
                                                                 >
                                                                     Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                </ListGroup.Item>
+                                                                </ListGroupCampaign>
                                                             )
                                                         }
                                                     </ListGroup>
@@ -104,14 +108,14 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                     <ListGroup variant='flush'>
                                                         {
                                                             debt.campaigns.map(c =>
-                                                                <ListGroup.Item
+                                                                <ListGroupCampaign
                                                                     key={`campaign_${c._id}`}
-                                                                    onClick={() => setCampaignActiveNav({ id: tabId, campId: c._id })}
-                                                                    variant='info'
+                                                                    onClick={() => setCampaignActiveNav({ id: tabId, campId: `${c._id}-${c.inputIrrigId}` })}
                                                                     action
+                                                                    selected={cmpActive === `${c._id}-${c.inputIrrigId}` ? true : false}
                                                                 >
                                                                     Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                </ListGroup.Item>
+                                                                </ListGroupCampaign>
                                                             )
                                                         }
                                                     </ListGroup>
@@ -130,3 +134,24 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
         </Card>
     )
 }
+
+const ListGroupCampaign = styled(ListGroup.Item)`
+    & {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    &::before {
+        content: '';
+        display: ${props => props.selected ? 'block' : 'none'};
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 8px 0 8px 13.9px;
+        border-color: transparent transparent transparent #0d6efd;
+        transform: rotate(0deg);
+        position: absolute;
+        left: 0;
+        top: 30%;
+    }
+`

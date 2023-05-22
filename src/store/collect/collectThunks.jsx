@@ -53,9 +53,9 @@ export const collectApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Orgz', 'Trrt']
         }),
-        getListCropByCampaign: builder.query({
-            query: (campaign) => ({
-                url: `collect/list/crop/${campaign}`
+        getListCropByCampaignAndInputIrrig: builder.query({
+            query: ({ campaign, inputIrrig }) => ({
+                url: `collect/list/crop/${campaign}/${inputIrrig}`
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Crp', 'Cllc']
@@ -89,7 +89,7 @@ export const {
     useGetListCollectByFarmQuery,
     useGetListCollectByPrpQuery,
     useGetListCollectByUsrQuery,
-    useGetListCropByCampaignQuery,
+    useGetListCropByCampaignAndInputIrrigQuery,
     useGetListYearDebtByFarmQuery,
     useUpdateFarmCropInCollectMutation,
     useDeleteFarmCropInCollectMutation,

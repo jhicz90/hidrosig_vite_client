@@ -1,66 +1,72 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
-import { DatePicker, Liner, LoadingPage, OptionInputIrrig } from '../../../components'
-import { searchCropVarietyByJunta, searchInputIrrigByFarm, useAddFarmCropInCollectByYearRateMutation, useDeleteFarmCropInCollectMutation, useGetFarmByIdQuery, useGetListCropByCampaignQuery, useUpdateFarmCropInCollectMutation } from '../../../store/actions'
+import validator from 'validator'
+import { DatePicker, Liner, LoadingPage, OptionCropVariety, OptionInputIrrig } from '../../../components'
+import { searchCropVarietyByJunta, searchInputIrrigByFarm, useAddFarmCropInCollectByYearRateMutation, useDeleteFarmCropInCollectMutation, useGetFarmByIdQuery, useGetListCropByCampaignAndInputIrrigQuery, useUpdateFarmCropInCollectMutation } from '../../../store/actions'
 import { useCollectStore } from '../../../hooks'
 
-export const FeeCollectAddCrop = ({ tabId = '' }) => {
+export const CollectManageCrop = ({ tabId = '' }) => {
 
-    const { listSearched } = useCollectStore()
-    const prpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
-    const cmpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.campId || null, [listSearched])
-    const { data = null, isLoading } = useGetFarmByIdQuery(prpActive)
-    const { data: listFarmCrops = [] } = useGetListCropByCampaignQuery(cmpActive)
+    const { getPrpActiveByTabId, getCmpActiveByTabId } = useCollectStore()
+    const prpActive = getPrpActiveByTabId(tabId)
+    const cmpActive = getCmpActiveByTabId(tabId)
+    const cmp = cmpActive.split('-')
+    const { data = null, isLoading: loadingFarm } = useGetFarmByIdQuery(prpActive)
+    const { data: listFarmCrops = [], isFetching: loadingFarmsCrop } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: cmp[0], inputIrrig: cmp[1] })
 
-    if (isLoading) {
+    if (loadingFarm) {
         return <LoadingPage />
     }
 
     return (
-        !!data
+        validator.isMongoId(String(cmp[0])) && !!data
         &&
         <Card>
             <Card.Body>
                 <Liner>Cultivos</Liner>
-                {
-                    listFarmCrops.length > 0
-                    &&
-                    <div className='row'>
-                        <div className='col-12'>
-                            <div className='d-grid' style={{ overflowX: 'auto', gap: '8px', gridTemplateColumns: '150px 400px 300px 200px 200px 200px 200px' }}>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Opciones</div>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Toma</div>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Cultivo / Variedad</div>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Area de cultivo</div>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Fecha de siembra</div>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Fecha de cosecha</div>
-                                <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Observación</div>
-                                <FarmCropCreate data={data} campaign={cmpActive} />
-                                {
-                                    listFarmCrops.map(frmCrop =>
-                                        <FarmCropItem
-                                            key={`crop_var_${frmCrop._id}`}
-                                            data={frmCrop}
-                                        />
-                                    )
-                                }
-                            </div>
+                <div className='row'>
+                    <div className='col-12'>
+                        <div className='d-grid' style={{ overflowX: 'auto', gap: '8px', gridTemplateColumns: '150px 300px 120px 150px 150px 200px' }}>
+                            <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Opciones</div>
+                            {/* <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Toma</div> */}
+                            <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Cultivo / Variedad</div>
+                            <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Area de cultivo</div>
+                            <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Fecha de siembra</div>
+                            <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Fecha de cosecha</div>
+                            <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Observación</div>
+                            <FarmCropCreate data={data} campaign={cmp[0]} inputIrrig={cmp[1]} />
+                            {
+                                loadingFarmsCrop
+                                    ?
+                                    <p>Cargando...</p>
+                                    :
+                                    <>
+                                        {
+                                            listFarmCrops.map(frmCrop =>
+                                                <FarmCropItem
+                                                    key={`crop_var_${frmCrop._id}`}
+                                                    data={frmCrop}
+                                                />
+                                            )
+                                        }
+                                    </>
+                            }
                         </div>
                     </div>
-                }
+                </div>
             </Card.Body>
         </Card>
     )
 }
 
-const FarmCropCreate = ({ data, campaign }) => {
+const FarmCropCreate = ({ data, campaign, inputIrrig }) => {
 
     const { control, register, handleSubmit, reset, setValue, watch } = useForm({
         defaultValues: {
-            inputIrrig: null,
+            inputIrrig,
             cropVariety: null,
             areaPlanted: 0,
             seedTime: new Date(),
@@ -79,7 +85,7 @@ const FarmCropCreate = ({ data, campaign }) => {
             }
         }).unwrap().then(() =>
             reset({
-                inputIrrig: null,
+                inputIrrig,
                 cropVariety: null,
                 areaPlanted: 0,
                 seedTime: new Date(),
@@ -95,12 +101,13 @@ const FarmCropCreate = ({ data, campaign }) => {
                 <Button
                     type='submit'
                     variant='success'
+                    size='sm'
                     disabled={isLoading}
                 >
                     Grabar nuevo
                 </Button>
             </div>
-            <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
+            {/* <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Form.Group style={{ flex: '1 1 auto' }}>
                     <Controller
                         name={`inputIrrig`}
@@ -127,7 +134,7 @@ const FarmCropCreate = ({ data, campaign }) => {
                         }
                     />
                 </Form.Group>
-            </div>
+            </div> */}
             <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Form.Group style={{ flex: '1 1 auto' }}>
                     <Controller
@@ -150,7 +157,7 @@ const FarmCropCreate = ({ data, campaign }) => {
                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                     getOptionValue={e => e._id}
-                                    getOptionLabel={e => e.hasOwnProperty('nameCropVariety') ? e.nameCropVariety : `${e.crop.name} - ${e.name}`}
+                                    getOptionLabel={e => <OptionCropVariety crop={e} />}
                                 />
                         }
                     />
@@ -249,6 +256,14 @@ const FarmCropItem = ({ data }) => {
         })
     }, [reset, data])
 
+    useEffect(() => {
+        if (!editing) {
+            reset({
+                ...data
+            })
+        }
+    }, [editing])
+
     return (
         <form onSubmit={handleSubmit(handleUpdate)} style={{ display: 'contents' }}>
             <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
@@ -257,6 +272,7 @@ const FarmCropItem = ({ data }) => {
                         onClick={() => setEditing(!editing)}
                         type='button'
                         variant={editing ? 'secondary' : 'primary'}
+                        disabled={isDeleting}
                     >
                         {editing ? 'Cancel' : 'Editar'}
                     </Button>
@@ -281,7 +297,8 @@ const FarmCropItem = ({ data }) => {
                     }
                 </ButtonGroup>
             </div>
-            <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
+            {/* <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
+                <OptionInputIrrig inputIrrig={data.inputIrrig} />
                 <Form.Group style={{ flex: '1 1 auto' }}>
                     <Controller
                         name={`inputIrrig`}
@@ -308,7 +325,7 @@ const FarmCropItem = ({ data }) => {
                         }
                     />
                 </Form.Group>
-            </div>
+            </div> */}
             <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Form.Group style={{ flex: '1 1 auto' }}>
                     <Controller

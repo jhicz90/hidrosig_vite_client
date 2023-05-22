@@ -7,16 +7,16 @@ export const getYearActive = (years = []) => {
 export const getCampaignActive = (year = '', listYears = []) => {
 
     const yearActive = listYears.find(y => String(y._id) === String(year))
-    
+
     const findCampaign = yearActive?.campaigns?.find(camp => camp.opened === true)
 
-    return String(findCampaign?._id || null)
+    return String(`${findCampaign?._id}-${findCampaign?.inputIrrigId}` || null)
 }
 
 export const getCollectActive = (year = '', listYears = []) => {
 
     const yearActive = listYears.find(y => String(y._id) === String(year))
-    
+
     const findCampaign = yearActive?.campaigns?.find(camp => camp.opened === true)
 
     return String(findCampaign?.collectId || null)

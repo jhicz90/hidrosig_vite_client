@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { onAddFav, onAddSearched, onClearListSearched, onDeleteFavSaved, onDeleteSearchedById, onSetActivePrpIdInUsrNav, onSetActiveTab, onSetCmpActiveNav, onSetFavSaved, onSetOptionActiveNav, onSetSearch, onSetTypeSearch } from '../store/collect'
 
@@ -54,6 +55,10 @@ export const useCollectStore = () => {
         dispatch(onSetCmpActiveNav({ id, campId }))
     }
 
+    const getPrpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
+
+    const getCmpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.campId || null, [listSearched])
+
     return {
         //* PROPIEDADES
         search,
@@ -74,5 +79,7 @@ export const useCollectStore = () => {
         setActivePrp,
         setOptionActiveNav,
         setCampaignActiveNav,
+        getPrpActiveByTabId,
+        getCmpActiveByTabId,
     }
 }

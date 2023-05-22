@@ -7,8 +7,8 @@ import { LoadingPage } from '../../../components'
 
 export const AreaFarmDataInfo = ({ tabId = '' }) => {
 
-    const { listSearched, setOptionActiveNav } = useCollectStore()
-    const prpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
+    const { setOptionActiveNav, getPrpActiveByTabId } = useCollectStore()
+    const prpActive = getPrpActiveByTabId(tabId)
     const { data = null, isLoading } = useGetFarmByIdQuery(prpActive)
 
     if (isLoading) {

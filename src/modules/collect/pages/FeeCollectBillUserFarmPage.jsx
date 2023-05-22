@@ -5,7 +5,7 @@ import { IoEllipsisVertical } from 'react-icons/io5'
 import { GiReceiveMoney } from 'react-icons/gi'
 import { DataTable, LoadingAction, TagStatus, TagTimeAgo } from '../../../components'
 import { useGetListFarmByUserFarmQuery } from '../../../store/actions'
-import { CollectCampaign, AreaFarmDataInfo, AreaFarmListCampaign, FeeCollectAddCrop, FeeCollectBillPay } from '..'
+import { CollectCampaign, AreaFarmDataInfo, AreaFarmListCampaign, CollectManageCrop, FeeCollectBillPay } from '..'
 import { useCollectStore } from '../../../hooks'
 
 export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
@@ -15,6 +15,7 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
     const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: usrId, search: '' })
     const prpActive = useMemo(() => listSearched.find(ls => ls.id === usrId)?.prpId || null, [listSearched])
     const navOption = useMemo(() => listSearched.find(ls => ls.id === usrId)?.navOption || '', [listSearched])
+    const campaignActive = useMemo(() => listSearched.find(ls => ls.id === usrId)?.campId || null, [listSearched])
 
     return (
         <>
@@ -118,7 +119,7 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                         }
                     </div>
                 </div>
-            </Collapse >
+            </Collapse>
             {
                 !!prpActive
                 &&
@@ -137,16 +138,22 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                             </div>
                             <div className='col-12 col-xxl-9'>
                                 {
-                                    {
-                                        'debt': (
-                                            <CollectCampaign tabId={usrId} />
-                                        ),
-                                        'crop': (
-                                            <FeeCollectAddCrop tabId={usrId} />
-                                        )
-                                    }[navOption] || (
-                                        <FeeCollectBillPay tabId={usrId} />
-                                    )
+                                    !!campaignActive
+                                    &&
+                                    <>
+                                        {
+                                            {
+                                                'debt': (
+                                                    <CollectCampaign tabId={usrId} />
+                                                ),
+                                                'crop': (
+                                                    <CollectManageCrop tabId={usrId} />
+                                                )
+                                            }[navOption] || (
+                                                <CollectCampaign tabId={usrId} />
+                                            )
+                                        }
+                                    </>
                                 }
                             </div>
                         </div>

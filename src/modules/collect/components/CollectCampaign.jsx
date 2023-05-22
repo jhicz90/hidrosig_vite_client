@@ -1,22 +1,27 @@
-import { useMemo } from 'react'
-import { Button, Card } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import validator from 'validator'
 import { useCollectStore } from '../../../hooks'
 import { CropCampaignEdit } from '..'
+import { Liner } from '../../../components'
 
 export const CollectCampaign = ({ tabId = '' }) => {
 
-    const { listSearched } = useCollectStore()
-    const cmpActive = useMemo(() => listSearched.find(ls => ls.id === tabId)?.campId || null, [listSearched])
+    const { getCmpActiveByTabId } = useCollectStore()
+    const cmpActive = getCmpActiveByTabId(tabId)
+    const cmp = cmpActive.split('-')
 
     return (
-        validator.isMongoId(String(cmpActive))
+        validator.isMongoId(String(cmp[0])) && cmpActive
         &&
         <Card style={{ overflow: 'hidden' }}>
-            <div className='d-flex p-3'>
-                <Button>Hola</Button>
+            <Card.Body>
+                <Liner>Pago Tarifa</Liner>
+            </Card.Body>
+            <div className='row'>
+                <div className='col-12'>
+                    <CropCampaignEdit campaignId={cmp[0]} inputIrrig={cmp[1]} />
+                </div>
             </div>
-            <CropCampaignEdit campaignId={cmpActive} />
             <Card.Body>
                 Aqui iran las opciones de como pagar
             </Card.Body>
