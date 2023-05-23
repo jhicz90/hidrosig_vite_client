@@ -1,16 +1,18 @@
 import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, Collapse, Dropdown } from 'react-bootstrap'
 import { AiFillNotification } from 'react-icons/ai'
 import { IoEllipsisVertical } from 'react-icons/io5'
 import { GiReceiveMoney } from 'react-icons/gi'
 import { DataTable, LoadingAction, TagStatus, TagTimeAgo } from '../../../components'
 import { useGetListFarmByUserFarmQuery } from '../../../store/actions'
-import { CollectCampaign, AreaFarmDataInfo, AreaFarmListCampaign, CollectManageCrop, FeeCollectBillPay } from '..'
+import { CollectCampaign, AreaFarmDataInfo, AreaFarmListCampaign, CollectManageCrop, FeeCollectBillPay, AreaFarmInputIrrigDataInfo } from '..'
 import { useCollectStore } from '../../../hooks'
 
 export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
 
     const [showFarms, setShowFarms] = useState(true)
+    const navigate = useNavigate()
     const { listSearched, setActivePrp, setOptionActiveNav } = useCollectStore()
     const { data: farmsIn = [], isLoading } = useGetListFarmByUserFarmQuery({ userfarm: usrId, search: '' })
     const prpActive = useMemo(() => listSearched.find(ls => ls.id === usrId)?.prpId || null, [listSearched])
@@ -25,9 +27,33 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                         <div className='row align-items-center justify-content-between g-3'>
                             <div className='col-12 col-md-auto'>
                                 <div className='d-flex gap-2'>
-                                    <Button variant='primary' className='d-flex align-items-center gap-2'>
-                                        <AiFillNotification size={24} />
-                                        Generar notificación
+                                    <Button
+                                        onClick={() => setOptionActiveNav({ id: usrId, navOption: 'cllc' })}
+                                        variant='primary'
+                                        className='d-flex align-items-center gap-2'
+                                    >
+                                        Pago tarifa
+                                    </Button>
+                                    <Button
+                                        onClick={() => setOptionActiveNav({ id: usrId, navOption: 'crop' })}
+                                        variant='success'
+                                        className='d-flex align-items-center gap-2'
+                                    >
+                                        Cultivos
+                                    </Button>
+                                    <Button
+                                        onClick={() => navigate(`/app/coll/cllc/${prpActive}`)}
+                                        variant='neutral'
+                                        className='d-flex align-items-center gap-2'
+                                    >
+                                        Generar cuenta
+                                    </Button>
+                                    <Button
+                                        onClick={() => setOptionActiveNav({ id: usrId, navOption: 'vol' })}
+                                        variant='neutral'
+                                        className='d-flex align-items-center gap-2'
+                                    >
+                                        Volumen
                                     </Button>
                                     <Button
                                         onClick={() => setShowFarms(!showFarms)}
@@ -50,7 +76,7 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                     </div>
                 </div>
             </div>
-            <Collapse in={showFarms || !prpActive}>
+            <Collapse in={showFarms}>
                 <div
                     className='row g-0 justify-content-center'
                     style={{ borderTop: '2px solid blue', borderBottom: '2px solid blue' }}
@@ -126,59 +152,40 @@ export const FeeCollectBillUserFarmPage = ({ usrId = '' }) => {
                 <>
                     <div className='container-fluid'>
                         <div className='row my-3'>
-                            <div className='col-12 col-xxl-3 order-1 order-xxl-0'>
-                                <div className='row mt-2 mt-xxl-0 g-3 g-xxl-0'>
-                                    <div className='col-12 col-md-5 col-xxl-12 mb-xxl-3'>
-                                        <AreaFarmListCampaign tabId={usrId} />
-                                    </div>
-                                    <div className='col-12 col-md-7 col-xxl-12 mb-xxl-3'>
+                            <div className='col-12 col-xxl-3'>
+                                <div className='row'>
+                                    <div className='col-12 col-md-5 col-xxl-12 mb-xxl-2'>
                                         <AreaFarmDataInfo tabId={usrId} />
+                                    </div>
+                                    <div className='col-12 col-md-7 col-xxl-12'>
+                                        <AreaFarmListCampaign tabId={usrId} />
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-12 col-xxl-9 order-0 order-xxl-1'>
+                            <div className='col-12 col-xxl-9'>
                                 {
                                     !!campaignActive
                                     &&
                                     <>
-                                        <div className='d-inline-flex gap-2 flex-wrap w-100 mb-2 p-2 border border-1 rounded-3 shadow'>
-                                            <Button
-                                                onClick={() => setOptionActiveNav({ id: usrId, navOption: 'cllc' })}
-                                                variant='primary'
-                                                size='sm'
-                                                className='d-flex align-items-center gap-2'
-                                            >
-                                                Pago tarifa
-                                            </Button>
-                                            <Button
-                                                onClick={() => setOptionActiveNav({ id: usrId, navOption: 'crop' })}
-                                                variant='success'
-                                                size='sm'
-                                                className='d-flex align-items-center gap-2'
-                                            >
-                                                Cultivos
-                                            </Button>
-                                            <Button
-                                                onClick={() => setOptionActiveNav({ id: usrId, navOption: 'debt' })}
-                                                variant='warning'
-                                                size='sm'
-                                                className='d-flex align-items-center gap-2'
-                                            >
-                                                Cuenta tarifa
-                                            </Button>
+                                        <div className='row'>
+                                            <div className='col-12 mb-xxl-2'>
+                                                <AreaFarmInputIrrigDataInfo tabId={usrId} />
+                                            </div>
+                                            <div className='col-12'>
+                                                {
+                                                    {
+                                                        'cllc': (
+                                                            <CollectCampaign tabId={usrId} />
+                                                        ),
+                                                        'crop': (
+                                                            <CollectManageCrop tabId={usrId} />
+                                                        )
+                                                    }[navOption] || (
+                                                        <CollectCampaign tabId={usrId} />
+                                                    )
+                                                }
+                                            </div>
                                         </div>
-                                        {
-                                            {
-                                                'cllc': (
-                                                    <CollectCampaign tabId={usrId} />
-                                                ),
-                                                'crop': (
-                                                    <CollectManageCrop tabId={usrId} />
-                                                )
-                                            }[navOption] || (
-                                                <CollectCampaign tabId={usrId} />
-                                            )
-                                        }
                                     </>
                                 }
                             </div>

@@ -1,4 +1,5 @@
 export * from './AreaFarmDataInfo'
+export * from './AreaFarmInputIrrigDataInfo'
 export * from './AreaFarmListCampaign'
 export * from './CollectCampaign'
 export * from './CollectManageCrop'

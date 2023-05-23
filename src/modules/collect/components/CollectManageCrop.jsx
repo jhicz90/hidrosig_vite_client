@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, ButtonGroup, Card, Form } from 'react-bootstrap'
+import { TbPlant } from 'react-icons/tb'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
@@ -25,8 +26,14 @@ export const CollectManageCrop = ({ tabId = '' }) => {
         validator.isMongoId(String(cmp[0])) && !!data
         &&
         <Card>
+            <Card.Header>
+                <div className='row justify-content-end'>
+                    <div className='col-auto'>
+                        <h6 className='text-uppercase fw-bold m-0'>CULTIVOS <TbPlant size={20} /></h6>
+                    </div>
+                </div>
+            </Card.Header>
             <Card.Body>
-                <Liner>Cultivos</Liner>
                 <div className='row'>
                     <div className='col-12'>
                         <div className='d-grid' style={{ overflowX: 'auto', gap: '8px', gridTemplateColumns: '150px 300px 120px 150px 150px 200px' }}>

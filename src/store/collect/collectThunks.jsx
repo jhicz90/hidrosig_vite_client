@@ -6,10 +6,10 @@ export const collectApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // COLLECT
         generateDebt: builder.mutation({
-            query: (newBlock) => ({
+            query: (newCollect) => ({
                 url: `collect/gendebt`,
                 method: 'post',
-                data: newBlock
+                data: newCollect
             }),
             invalidatesTags: ['Cllc']
         }),

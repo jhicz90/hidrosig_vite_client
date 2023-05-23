@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { FeeCollectRoutes } from '..'
+import { FeeCollectRoutes, GenCollectRoutes } from '..'
 
 export const ModuleCollectRoutes = () => {
     return (
@@ -12,6 +12,14 @@ export const ModuleCollectRoutes = () => {
                 element={
                     <GuardRoute meta={['collect']}>
                         <FeeCollectRoutes />
+                    </GuardRoute>
+                }
+            />
+            <Route
+                path={`cllc/*`}
+                element={
+                    <GuardRoute meta={['collect']}>
+                        <GenCollectRoutes />
                     </GuardRoute>
                 }
             />

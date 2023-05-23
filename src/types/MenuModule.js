@@ -97,6 +97,12 @@ export const menuModule = [
                 detail: 'Sub módulo de cobranza coactiva, aqui se verán los saldos o cuentas por usuario o predio, según el consumo declarado.'
             },
             {
+                label: 'Cuentas',
+                to: 'cllc',
+                meta: ['collect'],
+                detail: 'Declaración de cuentas de tarifa.'
+            },
+            {
                 label: 'Volumen de cultivos',
                 to: 'vol',
                 meta: ['volumestatement'],

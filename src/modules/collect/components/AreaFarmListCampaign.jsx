@@ -26,7 +26,7 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
     }
 
     return (
-        <Card style={{ overflow: 'hidden', minHeight: '100%' }}>
+        <Card style={{ overflow: 'hidden' }}>
             <Card.Header>
                 <div className='row justify-content-end'>
                     <div className='col-auto'>
@@ -78,7 +78,7 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                         {
                             listDebts.filter(d => String(d._id) !== yearActive).length > 3
                                 ?
-                                <ScrollbarsShadow autoHide style={{ height: 200 }}>
+                                <ScrollbarsShadow autoHide style={{ height: 160 }}>
                                     {
                                         listDebts.filter(d => String(d._id) !== yearActive).map(debt =>
                                             <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>

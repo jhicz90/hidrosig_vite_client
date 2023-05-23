@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Card, Form, ListGroup, Modal } from 'react-bootstrap'
-import { Controller, useFieldArray, useForm } from 'react-hook-form'
+import { Button, Card, Form, Modal } from 'react-bootstrap'
+import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { IoMdClose } from 'react-icons/io'
-import { AreaFarmDataInfo } from '../components'
-import { DatePicker, Liner, LoadingPage, OptionInputIrrig, OptionYearRate } from '../../../components'
-import { searchCropVarietyByJunta, searchInputIrrigByFarm, searchIrrigationSystemByJunta, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
+import { Liner, LoadingPage, OptionInputIrrig, OptionYearRate } from '../../../components'
+import { searchInputIrrigByFarm, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
 
 export const FeeCollectBillDebt = () => {
 
@@ -28,7 +26,6 @@ export const FeeCollectBillDebt = () => {
                     <div className='col-12'>
                         <Card>
                             <Card.Body>
-                                <AreaFarmDataInfo areaFarm={data} />
                                 <div className='row align-items-center'>
                                     <div className='col-12 col-md-auto'>
                                         <div className='d-flex gap-2'>
@@ -70,27 +67,8 @@ const GenerateDebt = ({ show, setShow, areaFarm }) => {
             farm: farmId,
             inputIrrig: null,
             yearRate: null,
-            farmCrops: [
-                {
-                    obs: '',
-                    areaPlanted: 0,
-                    seedTime: new Date(),
-                    harvestTime: new Date(),
-                    cropVariety: null,
-                    irrigSystem: null,
-                    regulation: 0,
-                    month: 1,
-                    week: 1,
-                    quantity: 0,
-                    amount: 0
-                }
-            ]
         },
         mode: 'onChange'
-    })
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: 'farmCrops',
     })
     const [genDebt, { isLoading }] = useGenerateDebtMutation()
 
@@ -104,29 +82,7 @@ const GenerateDebt = ({ show, setShow, areaFarm }) => {
                 farm: farmId,
                 inputIrrig: null,
                 yearRate: null,
-                farmCrops: [
-                    {
-                        obs: '',
-                        areaPlanted: 0,
-                        seedTime: new Date(),
-                        harvestTime: new Date(),
-                        cropVariety: null,
-                        irrigSystem: null
-                    }
-                ]
             })
-        })
-    }
-
-    const handleAddFarmCrop = () => {
-        append({
-            obs: '',
-            areaPlanted: 0,
-            seedTime: new Date(),
-            harvestTime: new Date(),
-            cropVariety: null,
-            irrigSystem: null,
-            active: true
         })
     }
 
@@ -221,215 +177,6 @@ const GenerateDebt = ({ show, setShow, areaFarm }) => {
                             </Form.Group>
                         </div>
                     </div>
-                    <Liner>Cultivos</Liner>
-                    <div className='row mb-1'>
-                        <div className='col-12'>
-                            <Button
-                                onClick={handleAddFarmCrop}
-                                className='w-100'
-                                variant='success'
-                            >
-                                Agregar cultivo
-                            </Button>
-                        </div>
-                    </div>
-                    {
-                        fields.length > 0
-                        &&
-                        <div className='row'>
-                            <div className='col-12'>
-                                <ListGroup>
-                                    {
-                                        fields.map((field, index) =>
-                                            <ListGroup.Item key={`farmCrop_cllc_${index}`} className='border border-success'>
-                                                <div className='row mb-3'>
-                                                    <div className='col-8'>
-                                                        <Form.Group>
-                                                            <Form.Label>Observación</Form.Label>
-                                                            <Form.Control
-                                                                {...register(`farmCrops.${index}.obs`, { required: true })}
-                                                                type='text'
-                                                                autoComplete='off'
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                    <div className='col-4'>
-                                                        <Form.Group>
-                                                            <Form.Label>Area sembrada o por sembrar</Form.Label>
-                                                            <Form.Control
-                                                                {...register(`farmCrops.${index}.areaPlanted`, { required: true })}
-                                                                type='number'
-                                                                autoComplete='off'
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                </div>
-                                                <div className='row mb-3'>
-                                                    <div className='col'>
-                                                        <Form.Group>
-                                                            <Form.Label>Fecha de siembra</Form.Label>
-                                                            <Controller
-                                                                control={control}
-                                                                name={`farmCrops.${index}.seedTime`}
-                                                                rules={{ required: true }}
-                                                                render={({
-                                                                    field: { onChange, value },
-                                                                }) => (
-                                                                    <DatePicker
-                                                                        value={value}
-                                                                        onChange={onChange}
-                                                                    />
-                                                                )}
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                    <div className='col'>
-                                                        <Form.Group>
-                                                            <Form.Label>Fecha de cosecha</Form.Label>
-                                                            <Controller
-                                                                control={control}
-                                                                name={`farmCrops.${index}.harvestTime`}
-                                                                rules={{ required: true }}
-                                                                render={({
-                                                                    field: { onChange, value },
-                                                                }) => (
-                                                                    <DatePicker
-                                                                        value={value}
-                                                                        onChange={onChange}
-                                                                    />
-                                                                )}
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                </div>
-                                                <div className='row mb-3'>
-                                                    <div className='col'>
-                                                        <Form.Group>
-                                                            <Form.Label>Cultivo / Variedad</Form.Label>
-                                                            <Controller
-                                                                name={`farmCrops.${index}.cropVariety`}
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={
-                                                                    ({ field }) =>
-                                                                        <AsyncSelect
-                                                                            {...field}
-                                                                            classNamePrefix='rc-select'
-                                                                            isClearable
-                                                                            defaultOptions
-                                                                            loadOptions={async (e) =>
-                                                                                await searchCropVarietyByJunta(juntaId, e)
-                                                                            }
-                                                                            menuPlacement={'auto'}
-                                                                            placeholder={`Buscar...`}
-                                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                                            getOptionValue={e => e._id}
-                                                                            getOptionLabel={e => e.name}
-                                                                        />
-                                                                }
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                    <div className='col'>
-                                                        <Form.Group>
-                                                            <Form.Label>Sistema de riego</Form.Label>
-                                                            <Controller
-                                                                name={`farmCrops.${index}.irrigSystem`}
-                                                                control={control}
-                                                                rules={{ required: true }}
-                                                                render={
-                                                                    ({ field }) =>
-                                                                        <AsyncSelect
-                                                                            {...field}
-                                                                            classNamePrefix='rc-select'
-                                                                            isClearable
-                                                                            defaultOptions
-                                                                            loadOptions={async (e) =>
-                                                                                await searchIrrigationSystemByJunta(juntaId, e)
-                                                                            }
-                                                                            menuPlacement={'auto'}
-                                                                            placeholder={`Buscar...`}
-                                                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                                            getOptionValue={e => e._id}
-                                                                            getOptionLabel={e => e.name}
-                                                                        />
-                                                                }
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                </div>
-                                                <div className='row mb-3'>
-                                                    <div className='col-6'>
-                                                        <Form.Group>
-                                                            <Form.Label>Mes</Form.Label>
-                                                            <Form.Control
-                                                                {...register(`farmCrops.${index}.month`, { required: true })}
-                                                                type='number'
-                                                                min={1}
-                                                                max={12}
-                                                                autoComplete='off'
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                    <div className='col-6'>
-                                                        <Form.Group>
-                                                            <Form.Label>Semana</Form.Label>
-                                                            <Form.Control
-                                                                {...register(`farmCrops.${index}.week`, { required: true })}
-                                                                type='number'
-                                                                min={1}
-                                                                max={6}
-                                                                autoComplete='off'
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                </div>
-                                                <div className='row mb-3'>
-                                                    <div className='col-6'>
-                                                        <Form.Group>
-                                                            <Form.Label>Volumen (m3)</Form.Label>
-                                                            <Form.Control
-                                                                {...register(`farmCrops.${index}.quantity`, { required: true })}
-                                                                type='number'
-                                                                min={0.01}
-                                                                step={0.01}
-                                                                autoComplete='off'
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                    <div className='col-6'>
-                                                        <Form.Group>
-                                                            <Form.Label>Monto (S/.)</Form.Label>
-                                                            <Form.Control
-                                                                {...register(`farmCrops.${index}.amount`, { required: true })}
-                                                                type='number'
-                                                                min={0.01}
-                                                                step={0.01}
-                                                                autoComplete='off'
-                                                            />
-                                                        </Form.Group>
-                                                    </div>
-                                                </div>
-                                                {
-                                                    index > 0
-                                                    &&
-                                                    <div className='row'>
-                                                        <div className='col-auto'>
-                                                            <Button onClick={() => remove(index)} variant='danger'>
-                                                                <IoMdClose size={20} />
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                }
-                                            </ListGroup.Item>
-                                        )
-                                    }
-                                </ListGroup>
-                            </div>
-                        </div>
-                    }
                 </form>
             </Modal.Body>
             <Modal.Footer>

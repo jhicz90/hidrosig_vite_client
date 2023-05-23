@@ -41,11 +41,20 @@ export const collectSlice = createSlice({
 
             state.listSearched = state.listSearched.map(ls => {
                 if (ls.id === id) {
-                    return {
-                        ...ls,
-                        navOption: 'debt',
-                        campId: null,
-                        prpId,
+                    if (ls.prpId === prpId) {
+                        return {
+                            ...ls,
+                            navOption: 'debt',
+                            // campId: null,
+                            prpId,
+                        }
+                    } else {
+                        return {
+                            ...ls,
+                            navOption: 'debt',
+                            campId: null,
+                            prpId,
+                        }
                     }
                 }
             })
