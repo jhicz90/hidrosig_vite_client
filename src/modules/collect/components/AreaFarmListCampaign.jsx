@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from 'react'
 import { Accordion, Card, ListGroup } from 'react-bootstrap'
+import { IoTime } from 'react-icons/io5'
+import styled from 'styled-components'
 import { LoadingPage, ScrollbarsShadow } from '../../../components'
 import { useGetListYearDebtByFarmQuery } from '../../../store/actions'
 import { getCampaignActive, getYearActive } from '../../../helpers'
 import { useCollectStore } from '../../../hooks'
-import styled from 'styled-components'
 
 export const AreaFarmListCampaign = ({ tabId = '' }) => {
 
@@ -26,6 +27,13 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
 
     return (
         <Card style={{ overflow: 'hidden', minHeight: '100%' }}>
+            <Card.Header>
+                <div className='row justify-content-end'>
+                    <div className='col-auto'>
+                        <h6 className='text-uppercase fw-bold m-0'>CAMPAÑAS <IoTime size={20} /></h6>
+                    </div>
+                </div>
+            </Card.Header>
             {
                 listDebts.length > 0
                     ?
@@ -52,12 +60,13 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                             {
                                                 debt.campaigns.map(c =>
                                                     <ListGroupCampaign
-                                                        key={`campaign_${c._id}`}
+                                                        key={`campaign_${c._id}_${c.inputIrrigId}`}
                                                         onClick={() => setCampaignActiveNav({ id: tabId, campId: `${c._id}-${c.inputIrrigId}` })}
                                                         action
                                                         selected={cmpActive === `${c._id}-${c.inputIrrigId}` ? true : false}
                                                     >
                                                         Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
+                                                        <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
                                                     </ListGroupCampaign>
                                                 )
                                             }
@@ -81,12 +90,13 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                         {
                                                             debt.campaigns.map(c =>
                                                                 <ListGroupCampaign
-                                                                    key={`campaign_${c._id}`}
+                                                                    key={`campaign_${c._id}_${c.inputIrrigId}`}
                                                                     onClick={() => setCampaignActiveNav({ id: tabId, campId: `${c._id}-${c.inputIrrigId}` })}
                                                                     action
                                                                     selected={cmpActive === `${c._id}-${c.inputIrrigId}` ? true : false}
                                                                 >
                                                                     Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
+                                                                    <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
                                                                 </ListGroupCampaign>
                                                             )
                                                         }
@@ -109,12 +119,13 @@ export const AreaFarmListCampaign = ({ tabId = '' }) => {
                                                         {
                                                             debt.campaigns.map(c =>
                                                                 <ListGroupCampaign
-                                                                    key={`campaign_${c._id}`}
+                                                                    key={`campaign_${c._id}_${c.inputIrrigId}`}
                                                                     onClick={() => setCampaignActiveNav({ id: tabId, campId: `${c._id}-${c.inputIrrigId}` })}
                                                                     action
                                                                     selected={cmpActive === `${c._id}-${c.inputIrrigId}` ? true : false}
                                                                 >
                                                                     Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
+                                                                    <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
                                                                 </ListGroupCampaign>
                                                             )
                                                         }

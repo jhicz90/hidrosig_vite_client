@@ -21,12 +21,6 @@ export const CropCampaignEdit = ({ campaignId = '', inputIrrig = '' }) => {
                     columns={
                         [
                             {
-                                label: 'CÓDIGO TOMA',
-                                width: '400px',
-                                renderCell: (item) =>
-                                    <OptionInputIrrig inputIrrig={item.inputIrrig} a={false} />
-                            },
-                            {
                                 label: 'CULTIVO / VARIEDAD',
                                 width: '200px',
                                 renderCell: (item) =>
