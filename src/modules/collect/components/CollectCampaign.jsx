@@ -2,7 +2,6 @@ import { Card } from 'react-bootstrap'
 import validator from 'validator'
 import { BsCashCoin } from 'react-icons/bs'
 import { CropCampaignEdit } from '..'
-import { Liner } from '../../../components'
 import { useCollectStore } from '../../../hooks'
 
 export const CollectCampaign = ({ tabId = '' }) => {

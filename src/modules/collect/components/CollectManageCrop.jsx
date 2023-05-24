@@ -5,8 +5,8 @@ import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import validator from 'validator'
-import { DatePicker, Liner, LoadingPage, OptionCropVariety, OptionInputIrrig } from '../../../components'
-import { searchCropVarietyByJunta, searchInputIrrigByFarm, useAddFarmCropInCollectByYearRateMutation, useDeleteFarmCropInCollectMutation, useGetFarmByIdQuery, useGetListCropByCampaignAndInputIrrigQuery, useUpdateFarmCropInCollectMutation } from '../../../store/actions'
+import { DatePicker, LoadingPage, OptionCropVariety } from '../../../components'
+import { searchCropVarietyByJunta, useAddFarmCropInCollectByYearRateMutation, useDeleteFarmCropInCollectMutation, useGetFarmByIdQuery, useGetListCropByCampaignAndInputIrrigQuery, useUpdateFarmCropInCollectMutation } from '../../../store/actions'
 import { useCollectStore } from '../../../hooks'
 
 export const CollectManageCrop = ({ tabId = '' }) => {
@@ -23,7 +23,7 @@ export const CollectManageCrop = ({ tabId = '' }) => {
     }
 
     return (
-        validator.isMongoId(String(cmp[0])) && !!data
+        validator.isMongoId(String(cmp[0])) && !!data && cmpActive
         &&
         <Card>
             <Card.Header>

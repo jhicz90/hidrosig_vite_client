@@ -22,7 +22,7 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
             <Card.Header>
                 <div className='row justify-content-end'>
                     <div className='col-auto'>
-                        <h6 className='text-uppercase fw-bold m-0'>TOMAS DE RIEGO <IoWater size={20} /></h6>
+                        <h6 className='text-uppercase fw-bold m-0'>TOMA DE RIEGO <IoWater size={20} /></h6>
                     </div>
                 </div>
             </Card.Header>
@@ -30,29 +30,27 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
                 data?.inputIrrig.filter(ip => ip._id === cmp[1]).map((inputIrr, index) =>
                     <div key={`inputirrig_${inputIrr._id}`} className='container-fluid py-2'>
                         <div className='row'>
-                            <div className='col-6'>
+                            <div className='col-12 col-md-4'>
                                 <div className='row'>
                                     <div className='col-sm-4 col-5'>
-                                        <div className='fw-semi-bold mb-1'>Código de toma de riego</div>
+                                        <div className='fw-semi-bold mb-1'>Código de toma</div>
                                     </div>
                                     <div className='col-7'>
                                         <div className='mb-1'><b>{inputIrr?.code}</b></div>
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-6'>
+                            <div className='col-12 col-md-4'>
                                 <div className='row'>
                                     <div className='col-sm-4 col-5'>
-                                        <div className='fw-semi-bold mb-1'>Estructura de riego</div>
+                                        <div className='fw-semi-bold mb-1'>Sistema de riego</div>
                                     </div>
                                     <div className='col-7'>
-                                        <div className='mb-1'>{inputIrr?.structure.name}</div>
+                                        <div className='mb-1'>{inputIrr?.irrigSystem.name}</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-6'>
+                            <div className='col-12 col-md-4'>
                                 <div className='row'>
                                     <div className='col-sm-4 col-5'>
                                         <div className='fw-semi-bold mb-1'>Area de uso</div>
@@ -62,13 +60,15 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-6'>
+                        </div>
+                        <div className='row'>
+                            <div className='col-12'>
                                 <div className='row'>
                                     <div className='col-sm-4 col-5'>
-                                        <div className='fw-semi-bold mb-1'>Sistema de riego</div>
+                                        <div className='fw-semi-bold mb-1'>Estructura de riego</div>
                                     </div>
-                                    <div className='col-7'>
-                                        <div className='mb-1'>{inputIrr?.irrigSystem.name}</div>
+                                    <div className='col-auto'>
+                                        <div className='mb-1'>{inputIrr?.fullNetStructure}</div>
                                     </div>
                                 </div>
                             </div>

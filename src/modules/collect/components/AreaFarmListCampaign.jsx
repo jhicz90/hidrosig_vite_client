@@ -163,6 +163,6 @@ const ListGroupCampaign = styled(ListGroup.Item)`
         transform: rotate(0deg);
         position: absolute;
         left: 0;
-        top: 30%;
+        top: 40%;
     }
 `

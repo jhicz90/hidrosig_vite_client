@@ -59,6 +59,8 @@ export const useCollectStore = () => {
 
     const getCmpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.campId || null, [listSearched])
 
+    const getOptActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.navOption || null, [listSearched])
+
     return {
         //* PROPIEDADES
         search,
@@ -81,5 +83,6 @@ export const useCollectStore = () => {
         setCampaignActiveNav,
         getPrpActiveByTabId,
         getCmpActiveByTabId,
+        getOptActiveByTabId,
     }
 }
