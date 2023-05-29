@@ -4,7 +4,7 @@ export const collectSlice = createSlice({
     initialState: {
         search: '',
         typeSearch: 'usr',// usr || prp
-        activeTab: 'search',
+        activeTab: 0,
         listSearched: [],
         listSearchedFav: []// [{ id: '641370225b9141556de5b861', title: 'José Hans', typeSearch:'usr', navOption:'', prpId: null, campId: null}]
     },
@@ -26,6 +26,7 @@ export const collectSlice = createSlice({
         },
         onAddSearched: (state, { payload }) => {
             state.listSearched = state.listSearched.find(ls => ls.id === payload.id) ? [...state.listSearched] : [...state.listSearched, payload]
+            state.activeTab = state.listSearched.findIndex(ls => ls.id === payload.id) + 1 || 0
         },
         onDeleteSearchedById: (state, { payload }) => {
             state.listSearched = state.listSearched.filter(ls => ls.id !== payload)
@@ -37,37 +38,40 @@ export const collectSlice = createSlice({
             state.activeTab = payload
         },
         onSetActivePrpIdInUsrNav: (state, { payload }) => {
-            const { id, prpId } = payload
+            const { id, prpActive } = payload
 
             state.listSearched = state.listSearched.map(ls => {
                 if (ls.id === id) {
-                    if (ls.prpId === prpId) {
+                    if (ls.prpActive === prpActive) {
                         return {
                             ...ls,
                             navOption: 'debt',
-                            // campId: null,
-                            prpId,
+                            prpActive,
                         }
                     } else {
                         return {
                             ...ls,
                             navOption: 'debt',
-                            campId: null,
-                            prpId,
+                            prpActive,
+                            campActive: {},
                         }
                     }
+                } else {
+                    return ls
                 }
             })
         },
         onSetCmpActiveNav: (state, { payload }) => {
-            const { id, campId } = payload
+            const { id, campActive } = payload
 
             state.listSearched = state.listSearched.map(ls => {
                 if (ls.id === id) {
                     return {
                         ...ls,
-                        campId,
+                        campActive,
                     }
+                }else {
+                    return ls
                 }
             })
         },

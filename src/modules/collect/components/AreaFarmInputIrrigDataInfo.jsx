@@ -10,7 +10,6 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
     const { getPrpActiveByTabId, getCmpActiveByTabId } = useCollectStore()
     const prpActive = getPrpActiveByTabId(tabId)
     const cmpActive = getCmpActiveByTabId(tabId)
-    const cmp = cmpActive.split('-')
     const { data = null, isLoading } = useGetFarmByIdQuery(prpActive)
 
     if (isLoading) {
@@ -18,6 +17,8 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
     }
 
     return (
+        Object.keys(cmpActive).length === 2
+        &&
         <Card style={{ overflow: 'hidden' }}>
             <Card.Header>
                 <div className='row justify-content-end'>
@@ -27,7 +28,7 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
                 </div>
             </Card.Header>
             {
-                data?.inputIrrig.filter(ip => ip._id === cmp[1]).map((inputIrr, index) =>
+                data?.inputIrrig.filter(ip => ip._id === cmpActive.inputIrrig).map((inputIrr, index) =>
                     <div key={`inputirrig_${inputIrr._id}`} className='container-fluid py-2'>
                         <div className='row'>
                             <div className='col-12 col-md-4'>
@@ -68,7 +69,7 @@ export const AreaFarmInputIrrigDataInfo = ({ tabId = '' }) => {
                                         <div className='fw-semi-bold mb-1'>Estructura de riego</div>
                                     </div>
                                     <div className='col-auto'>
-                                        <div className='mb-1'>{inputIrr?.fullNetStructure}</div>
+                                        <div className='mb-1'>{inputIrr?.structureRoute}</div>
                                     </div>
                                 </div>
                             </div>

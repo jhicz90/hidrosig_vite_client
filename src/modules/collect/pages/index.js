@@ -1,5 +1,5 @@
+export * from './FeeCollectAreaFarmNavPage'
 export * from './FeeCollectBillAreaFarmPage'
 export * from './FeeCollectBillDebt'
 export * from './FeeCollectBillUserFarmPage'
-export * from './FeeCollectNavPage'
 export * from './FeeCollectSearchPage'

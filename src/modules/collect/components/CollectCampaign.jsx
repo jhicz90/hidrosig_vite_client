@@ -1,29 +1,21 @@
 import { Card } from 'react-bootstrap'
+import { useSearchParams } from 'react-router-dom'
 import validator from 'validator'
-import { BsCashCoin } from 'react-icons/bs'
 import { CropCampaignEdit } from '..'
-import { useCollectStore } from '../../../hooks'
 
-export const CollectCampaign = ({ tabId = '' }) => {
+export const CollectCampaign = () => {
 
-    const { getCmpActiveByTabId } = useCollectStore()
-    const cmpActive = getCmpActiveByTabId(tabId)
-    const cmp = cmpActive.split('-')
-
+    const [searchParams, setSearchParams] = useSearchParams()
+    const { cmp, irr } = Object.fromEntries([...searchParams])
+    const valid = validator.isMongoId(cmp || '') && validator.isMongoId(irr || '')
+    
     return (
-        validator.isMongoId(String(cmp[0])) && cmpActive
+        valid
         &&
         <Card style={{ overflow: 'hidden' }}>
-            <Card.Header>
-                <div className='row justify-content-end'>
-                    <div className='col-auto'>
-                        <h6 className='text-uppercase fw-bold m-0'>PAGO DE TARIFA <BsCashCoin size={20} /></h6>
-                    </div>
-                </div>
-            </Card.Header>
             <div className='row'>
                 <div className='col-12'>
-                    <CropCampaignEdit campaignId={cmp[0]} inputIrrig={cmp[1]} />
+                    <CropCampaignEdit campaignId={cmp} inputIrrig={irr} />
                 </div>
             </div>
             <Card.Body>

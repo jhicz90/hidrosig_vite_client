@@ -10,7 +10,7 @@ export const getCampaignActive = (year = '', listYears = []) => {
 
     const findCampaign = yearActive?.campaigns?.find(camp => camp.opened === true)
 
-    return String(`${findCampaign?._id}-${findCampaign?.inputIrrigId}` || null)
+    return ({ camp: findCampaign?._id, inputIrrig: findCampaign?.inputIrrigId } || {})
 }
 
 export const getCollectActive = (year = '', listYears = []) => {

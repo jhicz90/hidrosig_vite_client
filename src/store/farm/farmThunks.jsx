@@ -41,7 +41,7 @@ export const farmApi = storeApi.injectEndpoints({
             providesTags: ['Frm']
         }),
         getListFarmByUserFarm: builder.query({
-            query: ({ userfarm, search }) => ({
+            query: ({ userfarm, search = '' }) => ({
                 url: `farm/search_by_userfarm/${userfarm}`,
                 params: {
                     search

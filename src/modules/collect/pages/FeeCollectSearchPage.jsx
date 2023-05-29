@@ -1,18 +1,36 @@
+import { Link } from 'react-router-dom'
 import { Button, Tab } from 'react-bootstrap'
-import { IoEyeSharp } from 'react-icons/io5'
+import { IoEyeSharp, IoOpen } from 'react-icons/io5'
 import { Avatar, DataTable, InputSearch, SliderNavFlip, TagStatus } from '../../../components'
 import { typeUserFarm } from '../../../helpers'
 import { useCollectStore } from '../../../hooks'
 import { useGetListCollectByPrpQuery, useGetListCollectByUsrQuery } from '../../../store/actions'
 
-export const FeeCollectSearchPage = ({ navToTab = null }) => {
+export const FeeCollectSearchPage = () => {
 
-    const { search, typeSearch, listSearched, setSearch, setTypeSearch, addTab } = useCollectStore()
+    const { search, typeSearch, setSearch, setTypeSearch } = useCollectStore()
     const { data: listUsr = [], isFetching: isLoadingUsr } = useGetListCollectByUsrQuery(search, { skip: !(typeSearch === 'usr' && search.length > 0) })
     const { data: listPrp = [], isFetching: isLoadingPrp } = useGetListCollectByPrpQuery(search, { skip: !(typeSearch === 'prp' && search.length > 0) })
 
     return (
         <>
+            <div className='container-fluid'>
+                <div className='row my-3'>
+                    <div className='col-12'>
+                        <div className='row align-items-center justify-content-between g-3'>
+                            <div className='col-12 col-md-auto'>
+                                <h4 className='mb-0'>CORBANZA DE TARIFA</h4>
+                            </div>
+                            {/* <div className='col-12 col-md-auto'>
+                                <div className='d-flex gap-2'>
+                                    {lvlAccess < 3 && <LinkBack className='btn btn-neutral text-primary' to={`junta/create`}>Nueva junta</LinkBack>}
+                                    <LinkBack className='btn btn-neutral text-primary' to={`comm/create`}>Nuevo comisión</LinkBack>
+                                </div>
+                            </div> */}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div className='container-fluid'>
                 <div className='row mt-3'>
                     <div className='col-12'>
@@ -99,29 +117,25 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                     },
                                     {
                                         label: 'ACCIÓN',
-                                        width: '200px',
+                                        width: '160px',
                                         pinRight: true,
                                         renderCell: (item) =>
                                             <div className='d-flex gap-2 p-2'>
-                                                <Button
-                                                    onClick={() => {
-
-                                                        const usrNav = {
-                                                            id: item._id,
-                                                            title: `${item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}`, typeSearch: 'usr',
-                                                            navOption: 'debt',
-                                                            prpId: null,
-                                                            campId: null,
-                                                        }
-
-                                                        addTab(usrNav)
-                                                        navToTab(item._id, [...listSearched, usrNav])
-                                                    }}
-                                                    variant='neutral-icon'
-                                                    style={{ padding: '0.5rem' }}
+                                                <Link
+                                                    to={`/app/coll/bill/usr/${item._id}`}
+                                                    className='btn btn-neutral-icon'
+                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
                                                 >
-                                                    <IoEyeSharp size={16} />
-                                                </Button>
+                                                    <IoEyeSharp size={20} />
+                                                </Link>
+                                                <Link
+                                                    to={`/app/coll/bill/usr/${item._id}`}
+                                                    target='_blank'
+                                                    className='btn btn-neutral-icon'
+                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
+                                                >
+                                                    <IoOpen size={20} />
+                                                </Link>
                                             </div>
                                     }
                                 ]
@@ -159,24 +173,21 @@ export const FeeCollectSearchPage = ({ navToTab = null }) => {
                                         pinRight: true,
                                         renderCell: (item) =>
                                             <div className='d-flex gap-2 p-2'>
-                                                <Button
-                                                    onClick={() => {
-
-                                                        const prpNav = {
-                                                            id: item._id,
-                                                            title: item.name,
-                                                            typeSearch: 'prp',
-                                                            navOption: 'debt'
-                                                        }
-
-                                                        addTab(prpNav)
-                                                        navToTab(item._id, [...listSearched, prpNav])
-                                                    }}
-                                                    variant='neutral-icon'
-                                                    style={{ padding: '0.5rem' }}
+                                                <Link
+                                                    to={`/app/coll/bill/prp/${item._id}`}
+                                                    className='btn btn-neutral-icon'
+                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
                                                 >
-                                                    <IoEyeSharp size={16} />
-                                                </Button>
+                                                    <IoEyeSharp size={20} />
+                                                </Link>
+                                                <Link
+                                                    to={`/app/coll/bill/prp/${item._id}`}
+                                                    target='_blank'
+                                                    className='btn btn-neutral-icon'
+                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
+                                                >
+                                                    <IoOpen size={20} />
+                                                </Link>
                                             </div>
                                     }
                                 ]

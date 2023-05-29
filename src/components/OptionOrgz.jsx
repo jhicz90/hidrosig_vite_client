@@ -14,8 +14,6 @@ export const OptionOrgz = ({ orgz = null }) => {
             />
             <div className='d-flex flex-column align-self-center ms-2'>
                 <div className='fw-bold' style={{ fontSize: '0.75rem', textTransform: 'uppercase' }}>{orgz?.name}</div>
-                <div className='text-muted' style={{ fontSize: '0.75rem' }}>COMISIONES: {orgz?.committee?.length || 0}</div>
-                <div className='text-muted' style={{ fontSize: '0.75rem' }}>ZONAS: {orgz?.zone?.length || 0}</div>
             </div>
         </div>
     )

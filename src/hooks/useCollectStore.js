@@ -11,8 +11,8 @@ export const useCollectStore = () => {
         dispatch(onSetSearch(search))
     }
 
-    const setTypeSearch = (search) => {
-        dispatch(onSetTypeSearch())
+    const setTypeSearch = (typesearch) => {
+        dispatch(onSetTypeSearch(typesearch))
     }
 
     const addTab = (tab) => {
@@ -43,21 +43,21 @@ export const useCollectStore = () => {
         dispatch(onDeleteFavSaved(idTab))
     }
 
-    const setActivePrp = ({ id = '', prpId = '' }) => {
-        dispatch(onSetActivePrpIdInUsrNav({ id, prpId }))
+    const setActivePrp = ({ id = '', prpActive = '' }) => {
+        dispatch(onSetActivePrpIdInUsrNav({ id, prpActive }))
     }
 
     const setOptionActiveNav = ({ id = '', navOption = '' }) => {
         dispatch(onSetOptionActiveNav({ id, navOption }))
     }
 
-    const setCampaignActiveNav = ({ id = '', campId = '' }) => {
-        dispatch(onSetCmpActiveNav({ id, campId }))
+    const setCampaignActiveNav = ({ id = '', campActive = {} }) => {
+        dispatch(onSetCmpActiveNav({ id, campActive }))
     }
 
-    const getPrpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpId || null, [listSearched])
+    const getPrpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.prpActive || null, [listSearched])
 
-    const getCmpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.campId || null, [listSearched])
+    const getCmpActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.campActive || null, [listSearched])
 
     const getOptActiveByTabId = (tabId) => useMemo(() => listSearched.find(ls => ls.id === tabId)?.navOption || null, [listSearched])
 
