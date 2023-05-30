@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { Button, ButtonGroup, Card, Form } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
 import validator from 'validator'
-import { CardLoader, DatePicker, OptionCropVariety } from '../../../components'
-import { searchCropVarietyByJunta, useAddFarmCropInCollectByYearRateMutation, useDeleteFarmCropInCollectMutation, useGetFarmByIdQuery, useGetListCropByCampaignAndInputIrrigQuery, useUpdateFarmCropInCollectMutation } from '../../../store/actions'
+import { DatePicker, LoadingPage, OptionCropVariety } from '../../../components'
+import { searchCropVarietyByJunta, searchIrrigationSystemByJunta, useAddFarmCropInCollectByYearRateMutation, useDeleteFarmCropInCollectMutation, useGetFarmInputIrrigByIdQuery, useGetListCropByCampaignAndInputIrrigQuery, useUpdateFarmCropInCollectMutation } from '../../../store/actions'
 
 export const CollectManageCrop = () => {
 
@@ -14,29 +14,29 @@ export const CollectManageCrop = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const { cmp, irr } = Object.fromEntries([...searchParams])
     const valid = validator.isMongoId(cmp || '') && validator.isMongoId(irr || '')
-    const { data = null, isFetching: isLoadingFarm } = useGetFarmByIdQuery(prpid)
-    const { data: listFarmCrops = [], isFetching: isLoadingFarmsCrop } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: cmp, inputIrrig: irr })
+    const { data: listFarmCrops = [], isFetching } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: cmp, inputIrrig: irr })
 
     return (
         <Card>
             {
-                isLoadingFarm && isLoadingFarmsCrop && valid
+                isFetching && valid
                     ?
-                    <CardLoader />
+                    <LoadingPage />
                     :
                     <Card.Body>
                         <div className='row'>
                             <div className='col-12'>
-                                <div className='d-grid' style={{ overflowX: 'auto', gap: '8px', gridTemplateColumns: '150px 300px 120px 150px 150px 200px' }}>
+                                <div className='d-grid' style={{ overflowX: 'auto', gap: '8px', gridTemplateColumns: '150px 300px 300px 120px 150px 150px 200px' }}>
                                     <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Opciones</div>
+                                    <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Tipo de riego</div>
                                     <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Cultivo / Variedad</div>
                                     <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Area de cultivo</div>
                                     <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Fecha de siembra</div>
                                     <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Fecha de cosecha</div>
                                     <div style={{ verticalAlign: 'middle', textAlign: 'center', backgroundColor: 'darkgray', color: 'white' }}>Observación</div>
-                                    <FarmCropCreate data={data} campaign={cmp} inputIrrig={irr} />
+                                    <FarmCropCreate farm={prpid} campaign={cmp} inputIrrig={irr} />
                                     {
-                                        isLoadingFarmsCrop
+                                        isFetching
                                             ?
                                             <p>Cargando...</p>
                                             :
@@ -60,11 +60,14 @@ export const CollectManageCrop = () => {
     )
 }
 
-const FarmCropCreate = ({ data, campaign, inputIrrig }) => {
+const FarmCropCreate = ({ farm, campaign, inputIrrig }) => {
 
+    const { data = null } = useGetFarmInputIrrigByIdQuery({ farm, inputIrrig })
+    
     const { control, register, handleSubmit, reset, setValue, watch } = useForm({
         defaultValues: {
             inputIrrig,
+            irrigSystem: null,
             cropVariety: null,
             areaPlanted: 0,
             seedTime: new Date(),
@@ -84,6 +87,7 @@ const FarmCropCreate = ({ data, campaign, inputIrrig }) => {
         }).unwrap().then(() =>
             reset({
                 inputIrrig,
+                irrigSystem: data?.inputIrrig.irrigSystem || null,
                 cropVariety: null,
                 areaPlanted: 0,
                 seedTime: new Date(),
@@ -93,7 +97,21 @@ const FarmCropCreate = ({ data, campaign, inputIrrig }) => {
         )
     }
 
+    useEffect(() => {
+        reset({
+            inputIrrig,
+            irrigSystem: data?.inputIrrig.irrigSystem || null,
+            cropVariety: null,
+            areaPlanted: 0,
+            seedTime: new Date(),
+            harvestTime: new Date(),
+            obs: ''
+        })
+    }, [reset, data])
+
     return (
+        !!data
+        &&
         <form onSubmit={handleSubmit(handleSave)} style={{ display: 'contents' }}>
             <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Button
@@ -104,6 +122,34 @@ const FarmCropCreate = ({ data, campaign, inputIrrig }) => {
                 >
                     Grabar nuevo
                 </Button>
+            </div>
+            <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
+                <Form.Group style={{ flex: '1 1 auto' }}>
+                    <Controller
+                        name={`irrigSystem`}
+                        control={control}
+                        rules={{ required: true }}
+                        render={
+                            ({ field }) =>
+                                <AsyncSelect
+                                    {...field}
+                                    isDisabled={isLoading || data?.inputIrrig.regulation === 2}
+                                    classNamePrefix='rc-select'
+                                    menuPosition='fixed'
+                                    hideSelectedOptions
+                                    isClearable
+                                    defaultOptions
+                                    loadOptions={async (e) => await searchIrrigationSystemByJunta(data.junta, e)}
+                                    menuPlacement={'auto'}
+                                    placeholder={`Busque y seleccione tipo de riego...`}
+                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                    getOptionValue={e => e._id}
+                                    getOptionLabel={e => e.name}
+                                />
+                        }
+                    />
+                </Form.Group>
             </div>
             <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Form.Group style={{ flex: '1 1 auto' }}>
@@ -121,7 +167,7 @@ const FarmCropCreate = ({ data, campaign, inputIrrig }) => {
                                     hideSelectedOptions
                                     isClearable
                                     defaultOptions
-                                    loadOptions={async (e) => await searchCropVarietyByJunta(data.junta._id, e)}
+                                    loadOptions={async (e) => await searchCropVarietyByJunta(data.junta, e)}
                                     menuPlacement={'auto'}
                                     placeholder={`Busque y seleccione cultivo...`}
                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
@@ -214,7 +260,7 @@ const FarmCropItem = ({ data }) => {
     const { control, register, handleSubmit, reset, setValue, watch } = useForm()
     const [updateFarmCrop] = useUpdateFarmCropInCollectMutation()
     const [deleteFarmCrop, { isLoading: isDeleting }] = useDeleteFarmCropInCollectMutation()
-
+    
     const handleUpdate = (farmCrop) => {
         setEditing(false)
         updateFarmCrop({ collect: data.collectId, farmCrop })
@@ -267,35 +313,34 @@ const FarmCropItem = ({ data }) => {
                     }
                 </ButtonGroup>
             </div>
-            {/* <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
-                <OptionInputIrrig inputIrrig={data.inputIrrig} />
+            <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Form.Group style={{ flex: '1 1 auto' }}>
                     <Controller
-                        name={`inputIrrig`}
+                        name={`irrigSystem`}
                         control={control}
                         rules={{ required: true }}
                         render={
                             ({ field }) =>
                                 <AsyncSelect
                                     {...field}
-                                    isDisabled={!editing}
+                                    isDisabled={!editing || data.inputIrrig.regulation === 2}
                                     classNamePrefix='rc-select'
                                     menuPosition='fixed'
                                     hideSelectedOptions
                                     isClearable
                                     defaultOptions
-                                    loadOptions={async () => await searchInputIrrigByFarm(data.farm._id)}
+                                    loadOptions={async (e) => await searchIrrigationSystemByJunta(data.farm.junta, e)}
                                     menuPlacement={'auto'}
                                     placeholder={`Buscar...`}
                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                     getOptionValue={e => e._id}
-                                    getOptionLabel={e => <OptionInputIrrig inputIrrig={e} />}
+                                    getOptionLabel={e => e.name}
                                 />
                         }
                     />
                 </Form.Group>
-            </div> */}
+            </div>
             <div style={{ padding: '4px', display: 'flex', alignItems: 'center' }}>
                 <Form.Group style={{ flex: '1 1 auto' }}>
                     <Controller

@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import { NavLink, useNavigate, useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Button, Card, ListGroup, Modal } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
+import { IoArrowForward } from 'react-icons/io5'
 import { typeUserFarm } from '../../../helpers'
-import { Avatar, CellGrid, CellRow, DataTable, FarmsLoader, HeaderGrid, ScrollbarsShadow, TagNewReg } from '../../../components'
+import { Avatar, DataTable, FarmsLoader, TagNewReg } from '../../../components'
 import { useGetListFarmByUserFarmQuery, userfarmApi } from '../../../store/actions'
 import { AreaFarmListCampaign } from '..'
 
 export const CollectBanner = ({ children }) => {
 
     const { usrid } = useParams()
-    const navigate = useNavigate()
     const { data = null } = useSelector(userfarmApi.endpoints.getUserFarmById.select(usrid))
     const { data: listFarms = [], isFetching } = useGetListFarmByUserFarmQuery({ userfarm: usrid })
 
@@ -54,6 +53,8 @@ export const CollectBanner = ({ children }) => {
                                     :
                                     <DataTable
                                         height='200px'
+                                        maxHeightRow='60px'
+                                        minHeightRowCell='30px'
                                         rows={listFarms}
                                         columns={
                                             [
@@ -69,55 +70,55 @@ export const CollectBanner = ({ children }) => {
                                                     renderCell: (item) =>
                                                         <NavLink
                                                             to={`${item._id}`}
-                                                            className={({ isActive }) => `${isActive ? `text-decoration-none text-primary` : `text-decoration-none text-secondary`}`}
+                                                            className={({ isActive }) => `${isActive ? `text-decoration-none text-primary w-100 d-block` : `text-decoration-none text-secondary w-100 d-block`}`}
                                                         >
-                                                            {item.name}
+                                                            {item.name} <IoArrowForward />
                                                         </NavLink>
                                                 },
                                                 {
                                                     label: 'UNIDAD CATASTRAL',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     renderCell: (item) =>
                                                         item.cadUnit
                                                 },
                                                 {
                                                     label: 'AREA TOTAL',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     isNumber: true,
                                                     renderCell: (item) =>
                                                         item.areaTotal.toFixed(5)
                                                 },
                                                 {
                                                     label: 'AREA BAJO RIEGO',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     isNumber: true,
                                                     renderCell: (item) =>
                                                         item.areaUse.toFixed(5)
                                                 },
                                                 {
                                                     label: 'SALDO ACTUAL',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     isNumber: true,
                                                     renderCell: (item) =>
                                                         Number(100).toFixed(2)
                                                 },
                                                 {
                                                     label: 'SALDO ATRASADO',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     isNumber: true,
                                                     renderCell: (item) =>
                                                         Number(200).toFixed(2)
                                                 },
                                                 {
                                                     label: 'SALDO CONVENIO',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     isNumber: true,
                                                     renderCell: (item) =>
                                                         Number(0).toFixed(2)
                                                 },
                                                 {
                                                     label: 'SALDO TOTAL',
-                                                    width: '100px',
+                                                    width: '120px',
                                                     isNumber: true,
                                                     renderCell: (item) =>
                                                         Number(300).toFixed(2)
@@ -125,49 +126,6 @@ export const CollectBanner = ({ children }) => {
                                             ]
                                         }
                                     />
-                                // <div
-                                //     className='d-grid'
-                                //     style={{
-                                //         overflowX: 'auto',
-                                //         // gap: '2px',
-                                //         gridTemplateColumns: '150px 300px 100px 100px 100px 100px 100px 100px auto',
-                                //         gridTemplateRows: '50px'
-                                //     }}
-                                // >
-                                //     <HeaderGrid>Código</HeaderGrid>
-                                //     <HeaderGrid>Nombre predio</HeaderGrid>
-                                //     <HeaderGrid>Unidad Catastral</HeaderGrid>
-                                //     <HeaderGrid>Area total</HeaderGrid>
-                                //     <HeaderGrid>Area bajo riego</HeaderGrid>
-                                //     <HeaderGrid>Saldo actual</HeaderGrid>
-                                //     <HeaderGrid>Saldo atrasado</HeaderGrid>
-                                //     <HeaderGrid>Saldo convenio</HeaderGrid>
-                                //     <HeaderGrid>Saldo total</HeaderGrid>
-                                //     <ScrollbarsShadow autoHide autoHeight autoHeightMin={200} autoHeightMax={200}>
-                                //     {
-                                //         listFarms.map(frm =>
-                                //             <NavLink
-                                //                 key={frm._id}
-                                //                 to={`${frm._id}`}
-                                //                 style={{ display: 'contents', color: 'black' }}
-                                //                 className={({ isActive }) => `${isActive ? `text-primary` : ``}`}
-                                //             >
-                                //                 <CellRow>
-                                //                     <CellGrid>{frm.code}</CellGrid>
-                                //                     <CellGrid>{frm.name}</CellGrid>
-                                //                     <CellGrid>{frm.cadUnit}</CellGrid>
-                                //                     <CellGrid isNumber={true}>{frm.areaTotal.toFixed(5)}</CellGrid>
-                                //                     <CellGrid isNumber={true}>{frm.areaUse.toFixed(5)}</CellGrid>
-                                //                     <CellGrid isNumber={true}>{Number(100).toFixed(2)}</CellGrid>
-                                //                     <CellGrid isNumber={true}>{Number(200).toFixed(2)}</CellGrid>
-                                //                     <CellGrid isNumber={true}>{Number(0).toFixed(2)}</CellGrid>
-                                //                     <CellGrid isNumber={true}>{Number(300).toFixed(2)}</CellGrid>
-                                //                 </CellRow>
-                                //             </NavLink>
-                                //         )
-                                //     }
-                                //     </ScrollbarsShadow>
-                                // </div>
                             }
                         </Card>
                         {children}

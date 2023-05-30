@@ -2,7 +2,7 @@ import { Body, Cell, Footer, FooterCell, FooterRow, Header, HeaderCell, HeaderRo
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { Virtualized } from '@table-library/react-table-library/virtualized'
-import { HeaderCellSelect, CellSelect, SelectClickTypes, SelectTypes, useRowSelect } from '@table-library/react-table-library/select'
+import { HeaderCellSelect, CellSelect, SelectClickTypes, useRowSelect } from '@table-library/react-table-library/select'
 
 export const DataTable = ({
     columns = [],
@@ -15,6 +15,9 @@ export const DataTable = ({
     selected = false,
     selectedChange = null,
     footer = false,
+    maxHeightRow = '40px',
+    minHeightRowCell = '50px',
+    maxHeightRowCell = '60px'
 }) => {
 
     // * MAS ADELANTE SE IMPLEMENTARA LOS ESTILOS CON STYLED COMPONENT PARA PASAR PROPIEDADES Y TENER UN ESTILO DINAMICO
@@ -56,7 +59,7 @@ export const DataTable = ({
                 Table: `
                     height: ${height};
                     background-color: #f5f8fa;
-                    grid-template-rows: 40px repeat(${rows.length}, minmax(50px, 60px));
+                    grid-template-rows: ${maxHeightRow} repeat(${rows.length}, minmax(${minHeightRowCell}, ${maxHeightRowCell}));
                     --data-table-library_grid-template-columns:${selected ? ' 50px' : ''} ${columnsTable.map(c => {
                     if (!c.width) {
                         if (!c.minWidth) {
@@ -71,7 +74,13 @@ export const DataTable = ({
                 `,
                 HeaderCell: `
                     background-color: #fff !important;
-                    max-height: 40px;
+                    max-height: ${maxHeightRow};
+
+                    & > div {
+                        overflow: auto;
+                        white-space: inherit;
+                        text-overflow: inherit;
+                    }
 
                     &.stiff > div {
                         display: flex;
@@ -96,6 +105,9 @@ export const DataTable = ({
                             background-color: white;
                         }
                     }
+                `,
+                HeaderRow: `
+                    font-size: inherit;
                 `,
                 Row: `
                     &.row-select-clickable { 
