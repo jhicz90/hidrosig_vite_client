@@ -14,15 +14,13 @@ export const CollectManageCrop = () => {
     const [searchParams, setSearchParams] = useSearchParams()
     const { cmp, irr } = Object.fromEntries([...searchParams])
     const valid = validator.isMongoId(cmp || '') && validator.isMongoId(irr || '')
-    const { data = null } = useGetFarmByIdQuery(prpid)
-    const { data: listFarmCrops = [], isFetching: isLoadingFarmsCrop } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: cmp, inputIrrig: irr }, { skip: !valid })
+    const { data = null, isFetching: isLoadingFarm } = useGetFarmByIdQuery(prpid)
+    const { data: listFarmCrops = [], isFetching: isLoadingFarmsCrop } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: cmp, inputIrrig: irr })
 
     return (
-        !!data && valid
-        &&
         <Card>
             {
-                isLoadingFarmsCrop
+                isLoadingFarm && isLoadingFarmsCrop && valid
                     ?
                     <CardLoader />
                     :

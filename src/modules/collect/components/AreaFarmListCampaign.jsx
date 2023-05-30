@@ -66,67 +66,34 @@ export const AreaFarmListCampaign = () => {
                                             </Accordion.Item>
                                         )
                                     }
-                                    {
-                                        listDebts.filter(d => String(d._id) !== yearActive).length > 3
-                                            ?
-                                            <ScrollbarsShadow autoHide autoHeight autoHeightMin={200} autoHeightMax={400}>
-                                                {
-                                                    listDebts.filter(d => String(d._id) !== yearActive).map(debt =>
-                                                        <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>
-                                                            <Accordion.Header>
-                                                                {debt._id}
-                                                            </Accordion.Header>
-                                                            <Accordion.Body className='p-0'>
-                                                                <ListGroup variant='flush'>
-                                                                    {
-                                                                        debt.campaigns.map(c =>
-                                                                            <ListGroupCampaign
-                                                                                key={`campaign_${c._id}_${c.inputIrrigId}`}
-                                                                                onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigId}`)}
-                                                                                action
-                                                                                selected={(cmp === c._id && irr === c.inputIrrigId) ? true : false}
-                                                                            >
-                                                                                Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                                <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
-                                                                            </ListGroupCampaign>
-                                                                        )
-                                                                    }
-                                                                </ListGroup>
-                                                            </Accordion.Body>
-                                                        </Accordion.Item>
-                                                    )
-                                                }
-                                            </ScrollbarsShadow>
-                                            :
-                                            <>
-                                                {
-                                                    listDebts.filter(d => String(d._id) !== yearActive).map(debt =>
-                                                        <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>
-                                                            <Accordion.Header>
-                                                                {debt._id}
-                                                            </Accordion.Header>
-                                                            <Accordion.Body className='p-0'>
-                                                                <ListGroup variant='flush'>
-                                                                    {
-                                                                        debt.campaigns.map(c =>
-                                                                            <ListGroupCampaign
-                                                                                key={`campaign_${c._id}_${c.inputIrrigId}`}
-                                                                                onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigId}`)}
-                                                                                action
-                                                                                selected={(cmp === c._id && irr === c.inputIrrigId) ? true : false}
-                                                                            >
-                                                                                Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                                <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
-                                                                            </ListGroupCampaign>
-                                                                        )
-                                                                    }
-                                                                </ListGroup>
-                                                            </Accordion.Body>
-                                                        </Accordion.Item>
-                                                    )
-                                                }
-                                            </>
-                                    }
+                                    <ScrollbarsShadow autoHide autoHeight autoHeightMin={200} autoHeightMax={200}>
+                                        {
+                                            listDebts.filter(d => String(d._id) !== yearActive).map(debt =>
+                                                <Accordion.Item key={`year_${debt._id}`} eventKey={String(debt._id)}>
+                                                    <Accordion.Header>
+                                                        {debt._id}
+                                                    </Accordion.Header>
+                                                    <Accordion.Body className='p-0'>
+                                                        <ListGroup variant='flush'>
+                                                            {
+                                                                debt.campaigns.map(c =>
+                                                                    <ListGroupCampaign
+                                                                        key={`campaign_${c._id}_${c.inputIrrigId}`}
+                                                                        onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigId}`)}
+                                                                        action
+                                                                        selected={(cmp === c._id && irr === c.inputIrrigId) ? true : false}
+                                                                    >
+                                                                        Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
+                                                                        <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
+                                                                    </ListGroupCampaign>
+                                                                )
+                                                            }
+                                                        </ListGroup>
+                                                    </Accordion.Body>
+                                                </Accordion.Item>
+                                            )
+                                        }
+                                    </ScrollbarsShadow>
                                 </Accordion>
                                 :
                                 <div className='d-flex p-4 justify-content-center'>

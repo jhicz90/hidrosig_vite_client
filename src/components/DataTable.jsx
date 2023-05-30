@@ -196,6 +196,7 @@ export const DataTable = ({
                                                     // resize={col.resize}
                                                     pinLeft={col.pinLeft || undefined}
                                                     pinRight={col.pinRight || undefined}
+                                                    className={col.isNumber ? `text-end` : ``}
                                                 >
                                                     {col.label}
                                                 </HeaderCell>
@@ -218,6 +219,7 @@ export const DataTable = ({
                                                             key={`row_cell_${index}_${item.id}`}
                                                             pinLeft={col.pinLeft || undefined}
                                                             pinRight={col.pinRight || undefined}
+                                                            className={col.isNumber ? `text-end` : ``}
                                                         >
                                                             {col.renderCell(item) || ''}
                                                         </Cell>

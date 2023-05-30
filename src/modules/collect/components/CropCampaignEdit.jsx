@@ -26,10 +26,10 @@ export const CropCampaignEdit = ({ campaignId = '', inputIrrig = '' }) => {
                                 renderCell: (item) =>
                                     <div className='d-flex flex-column'>
                                         <div>
-                                            {`${item.cropVariety.crop.name} - ${item.cropVariety.name}`}
+                                            {`${item?.cropVariety.crop.name} - ${item?.cropVariety.name}`}
                                         </div>
                                         <div>
-                                            {item.irrigSystem.name}
+                                            {item?.irrigSystem?.name}
                                         </div>
                                     </div>
                             },
@@ -42,22 +42,23 @@ export const CropCampaignEdit = ({ campaignId = '', inputIrrig = '' }) => {
                             {
                                 label: 'AREA CULTIVO',
                                 width: '160px',
-                                subTotal: true,
+                                isNumber: true,
                                 renderCell: (item) =>
                                     item.areaPlanted.toFixed(5)
                             },
                             {
                                 label: 'COSTO',
                                 width: '120px',
-                                subTotal: true,
+                                isNumber: true,
                                 renderCell: (item) =>
                                     item.amount.toFixed(2)
                             },
                             {
                                 label: 'VOLUMEN',
                                 minWidth: '120px',
+                                isNumber: true,
                                 renderCell: (item) =>
-                                    item.consumption.toFixed(2)
+                                    item.volume.toFixed(2)
                             },
                         ]
                     }

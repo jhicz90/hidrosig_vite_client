@@ -1,14 +1,14 @@
 import { Card } from 'react-bootstrap'
 import { useSearchParams } from 'react-router-dom'
 import validator from 'validator'
-import { CropCampaignEdit } from '..'
+import { CollectManagePay, CropCampaignEdit } from '..'
 
 export const CollectCampaign = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const { cmp, irr } = Object.fromEntries([...searchParams])
     const valid = validator.isMongoId(cmp || '') && validator.isMongoId(irr || '')
-    
+
     return (
         valid
         &&
@@ -19,7 +19,7 @@ export const CollectCampaign = () => {
                 </div>
             </div>
             <Card.Body>
-                Aqui iran las opciones de como pagar
+                <CollectManagePay campaignId={cmp} inputIrrig={irr} />
             </Card.Body>
         </Card>
     )

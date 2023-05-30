@@ -44,11 +44,10 @@ export const FeeCollectBillUserFarmPage = () => {
                 </div>
             </div>
             <div className='row'>
-                <div className='col-12 col-lg-5 col-xl-3'>
-                    <CollectBanner />
-                </div>
-                <div className='col-12 col-lg-7 col-xl-9'>
-                    <Outlet />
+                <div className='col-12'>
+                    <CollectBanner>
+                        <Outlet />
+                    </CollectBanner>
                 </div>
             </div>
         </div>

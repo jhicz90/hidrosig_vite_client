@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { FeeCollectAreaFarmNavPage, FeeCollectBillAreaFarmPage, FeeCollectBillUserFarmPage, FeeCollectNavPage, FeeCollectSearchPage } from '../pages'
+import { FeeCollectAreaFarmNavPage, FeeCollectBillAreaFarmPage, FeeCollectBillUserFarmPage, FeeCollectSearchPage } from '../pages'
 
 export const FeeCollectRoutes = () => {
     return (
