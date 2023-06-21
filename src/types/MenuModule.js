@@ -1,4 +1,4 @@
-import { FcCalculator, FcConferenceCall, FcHome, FcOpenedFolder, FcOrganization, FcPuzzle, FcSalesPerformance, FcSettings, FcSupport, FcTreeStructure } from 'react-icons/all'
+import { FcCalculator, FcOpenedFolder, FcPuzzle, FcSalesPerformance, FcSettings, FcSupport } from 'react-icons/fc'
 import { IconSysAccount, IconSysConfig, IconSysFiles, IconSysHome, IconSysIrrigSchm, IconSysOrg, IconSysSales, IconSysSIGA, IconSysTools, IconSysUserReg } from '../icons'
 
 export const menuModule = [

@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { fetchByToken } from '../../helpers'
 import { storeApi } from '../storeApi'
 
 const SwalReact = withReactContent(Swal)
@@ -68,10 +69,18 @@ export const valuerateApi = storeApi.injectEndpoints({
         }),
         getValueRateByJuntaAndComm: builder.query({
             query: ({ yearrate, junta, comm }) => ({
-                url: `valuerate/edit/yr/${yearrate}/junta/${junta}/comm/${comm}`,
+                url: `valuerate/edit/yrjuco/yr/${yearrate}/junta/${junta}/comm/${comm}`,
                 alert: false
             }),
             transformResponse: (response, meta, arg) => response.valuerates,
+            providesTags: ['VlRt']
+        }),
+        getValueRateByYrAndIrr: builder.query({
+            query: ({ yearrate, inputirrig }) => ({
+                url: `valuerate/edit/yrir/yr/${yearrate}/irr/${inputirrig}`,
+                alert: false
+            }),
+            transformResponse: (response, meta, arg) => response.valuerate,
             providesTags: ['VlRt']
         }),
         updateValueRateById: builder.mutation({
@@ -105,4 +114,17 @@ export const {
     useLazyGetValueRateByJuntaAndCommQuery,
     useNewValueRateQuery,
     useUpdateValueRateByIdMutation,
+    useGetValueRateByYrAndIrrQuery,
 } = valuerateApi
+
+export const searchValueRateByJuntaAndComm = async (junta, comm) => {
+    const resp = await fetchByToken({
+        endpoint: `valuerate/search_by_junta_comm/${junta}/${comm}`,
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
+    }
+}

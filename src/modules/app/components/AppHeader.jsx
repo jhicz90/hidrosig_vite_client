@@ -39,7 +39,7 @@ export const AppHeader = () => {
             <div className='brand'>
                 <Link to={`/app`} className='brand-logo'>
                     HIDRO SIHG
-                    <img className='ms-1' src={logoApp} alt='' height='30' />
+                    <img className='ms-1' src={logoApp} alt='' width={30} height={30} />
                 </Link>
             </div>
             <div className='menu'>

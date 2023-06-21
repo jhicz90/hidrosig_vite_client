@@ -11,12 +11,13 @@ const LinerWrapper = styled.h5`
     display: flex;
 	align-items: flex-start;
 	text-align: left;
+    color: rgb(107 114 128 / 1);
 
     &::after {
         content: "";
         flex-grow: 1;
         height: 2px;
-        background: #ffc107;
+        background: rgb(209 213 219 / 1);
         min-width: 20px;
         margin: auto;
     }

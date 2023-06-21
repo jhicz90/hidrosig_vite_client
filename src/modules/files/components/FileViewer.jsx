@@ -6,7 +6,8 @@ import { IoMdArrowBack, IoMdArrowForward, IoMdDownload, IoMdPhotos, IoMdPrint, I
 import { BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs'
 import Flicking, { ViewportSlot } from '@egjs/react-flicking'
 import { Arrow } from "@egjs/flicking-plugins";
-import { Document, Page } from 'react-pdf/dist/esm/entry.vite'
+// import { Document, Page } from 'react-pdf/dist/esm/entry.vite'
+import { Document, Page } from 'react-pdf'
 // import SimpleBar from 'simplebar-react'
 import Scrollbars from 'rc-scrollbars'
 import { getFileIcon, imageGet } from '../../../helpers'

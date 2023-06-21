@@ -7,9 +7,8 @@ export const FeeCollectRoutes = () => {
         <Routes>
             <Route index element={<Navigate to={`search`} replace />} />
             <Route path={`search`} element={<FeeCollectSearchPage />} />
-            <Route path={`usr/:usrid/*`} element={<FeeCollectBillUserFarmPage />} >
-                <Route path={`:prpid/*`} element={<FeeCollectAreaFarmNavPage />} />
-            </Route>
+            <Route path={`usr/:usrid`} element={<FeeCollectBillUserFarmPage />} />
+            <Route path={`usr/:usrid/:prpid/*`} element={<FeeCollectBillAreaFarmPage />} />
             <Route path={`prp/:prpid/*`} element={<FeeCollectBillAreaFarmPage />} />
         </Routes>
     )

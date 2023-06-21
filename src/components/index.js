@@ -27,6 +27,7 @@
 // export * from './WindowBox'
 export * from './Avatar'
 export * from './AvatarProfile'
+export * from './CalendarFullYear'
 export * from './ChannelNetworkTree'
 export * from './ContentLoaders'
 export * from './Cover'

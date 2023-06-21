@@ -15,7 +15,7 @@ export const DataTable = ({
     selected = false,
     selectedChange = null,
     footer = false,
-    maxHeightRow = '40px',
+    maxHeightHeaderRow = '40px',
     minHeightRowCell = '50px',
     maxHeightRowCell = '60px'
 }) => {
@@ -57,9 +57,11 @@ export const DataTable = ({
             :
             {
                 Table: `
-                    height: ${height};
+                    height: 100%;
+                    margin: 0;
                     background-color: #f5f8fa;
-                    grid-template-rows: ${maxHeightRow} repeat(${rows.length}, minmax(${minHeightRowCell}, ${maxHeightRowCell}));
+                    border-radius: 9px;
+                    grid-template-rows: ${maxHeightHeaderRow} repeat(${rows.length}, minmax(${minHeightRowCell}, ${maxHeightRowCell}));
                     --data-table-library_grid-template-columns:${selected ? ' 50px' : ''} ${columnsTable.map(c => {
                     if (!c.width) {
                         if (!c.minWidth) {
@@ -74,7 +76,7 @@ export const DataTable = ({
                 `,
                 HeaderCell: `
                     background-color: #fff !important;
-                    max-height: ${maxHeightRow};
+                    max-height: ${maxHeightHeaderRow};
 
                     & > div {
                         overflow: auto;
@@ -102,7 +104,7 @@ export const DataTable = ({
                             top: 0;
                             width: 20px;
                             box-shadow: inset -10px 0 8px -8px rgba(0,0,0,0.4);
-                            background-color: white;
+                            background-color: transparent;
                         }
                     }
                 `,
@@ -158,7 +160,7 @@ export const DataTable = ({
     })
 
     return (
-        <div style={{ height, ...style }} className={`${virtual ? 'table-virtual' : ''}`}>
+        <div style={{ height, overflow: 'hidden', borderRadius: '9px', ...style }} className={`${virtual ? 'table-virtual' : ''}`}>
             <Table theme={theme} data={data} layout={{ fixedHeader: true, horizontalScroll: true }} select={selected ? select : null}>
                 {
                     virtual

@@ -30,8 +30,8 @@ export const PettyCashListVouchers = () => {
     }
 
     const handleImageVoucher = (id, voucher) => {
-        if (voucher.images.length < 4) {
-            const limit = 4 - voucher.images.length
+        if (voucher.images.length < 6) {
+            const limit = 6 - voucher.images.length
 
             dispatch(startModalResource({
                 tags: ['comprobante', `${voucher.serie}-${voucher.numReceipt}`],
@@ -90,7 +90,7 @@ export const PettyCashListVouchers = () => {
                             },
                             {
                                 label: 'COMPROBANTE',
-                                width: '160px',
+                                width: '200px',
                                 renderCell: (item) =>
                                     `${item.serie}-${item.numReceipt}`
                             },
@@ -127,7 +127,7 @@ export const PettyCashListVouchers = () => {
                                                 )
                                             }
                                             {
-                                                item.images.length < 4
+                                                item.images.length < 6
                                                 &&
                                                 <Button
                                                     onClick={() => handleImageVoucher(item._id, item)}

@@ -3,7 +3,7 @@
 body {
 	/* background-color: #ebeef4; */
 	background-color: #f5f8fa;
-	font-size: 0.875rem;
+	font-size: 14px;
 	position: relative;
 	font-family: "Nunito Sans", sans-serif;
 }
@@ -18,6 +18,14 @@ body {
 	}
 }
 
+svg {
+	display: inline-block;
+}
+
+.zIndex-1000 {
+	z-index: 1000;
+}
+
 .cursor-pointer {
 	cursor: pointer;
 }
@@ -25,6 +33,15 @@ body {
 .w-100-310px {
 	width: calc(100% - 310px);
 }
+
+.min-w-0 {
+	min-width: 0;
+}
+
+.card > div > table.table thead tr th {
+	border-top: none;
+}
+
 .table-virtual .table > :not(caption) > * > * {
 	padding: 0 !important;
 }
@@ -540,7 +557,7 @@ a.uppy-Dashboard-poweredBy {
 	background: rgba(33, 40, 55, 0.5);
 }
 
-@media (max-width: 1199.98px) {
+@media (max-width: 1200px) {
 	.sidebar-app,
 	.sidebar-app.sidebar-inverted {
 		top: 0;

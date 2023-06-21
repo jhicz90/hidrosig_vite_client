@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { CampaignsLoader, ScrollbarsShadow } from '../../../components'
 import { useGetListYearDebtByFarmQuery } from '../../../store/actions'
 import { getYearActive } from '../../../helpers'
+import { GenerateFeeAccount } from './GenerateFeeAccount'
 
 export const AreaFarmListCampaign = () => {
 
@@ -18,7 +19,7 @@ export const AreaFarmListCampaign = () => {
     return (
         !!prpid
         &&
-        <Card style={{ overflow: 'hidden', height: '100%' }}>
+        <Card style={{ overflow: 'hidden' }}>
             {
                 isFetching
                     ?
@@ -57,7 +58,7 @@ export const AreaFarmListCampaign = () => {
                                                                     selected={(cmp === c._id && irr === c.inputIrrigId) ? true : false}
                                                                 >
                                                                     Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                    <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
+                                                                    <div className='text-muted' style={{ fontSize: '0.75rem' }}>TRAMO #{c.inputIrrig.code.slice(-5)}</div>
                                                                 </ListGroupCampaign>
                                                             )
                                                         }
@@ -96,8 +97,9 @@ export const AreaFarmListCampaign = () => {
                                     </ScrollbarsShadow>
                                 </Accordion>
                                 :
-                                <div className='d-flex p-4 justify-content-center'>
+                                <div className='d-flex flex-column gap-2 p-4 justify-content-center'>
                                     EL PREDIO NO TIENE NINGUNA DECLARACION O CAMPAÑA
+                                    <GenerateFeeAccount prpId={prpid} />
                                 </div>
                         }
                     </>

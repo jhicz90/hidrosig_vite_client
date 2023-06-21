@@ -14,8 +14,8 @@ export const collectApi = storeApi.injectEndpoints({
             invalidatesTags: ['Cllc']
         }),
         addFarmCropInCollectByYearRate: builder.mutation({
-            query: ({ campaign, farmCrop }) => ({
-                url: `collect/add/farm_crop/${campaign}`,
+            query: ({ yearRate, farmCrop }) => ({
+                url: `collect/add/farm_crop/${yearRate}`,
                 method: 'post',
                 data: farmCrop
             }),
@@ -85,6 +85,8 @@ export const collectApi = storeApi.injectEndpoints({
 })
 
 export const {
+    useAddFarmCropInCollectByYearRateMutation,
+    useDeleteFarmCropInCollectMutation,
     useGenerateDebtMutation,
     useGetListCollectByFarmQuery,
     useGetListCollectByPrpQuery,
@@ -92,8 +94,6 @@ export const {
     useGetListCropByCampaignAndInputIrrigQuery,
     useGetListYearDebtByFarmQuery,
     useUpdateFarmCropInCollectMutation,
-    useDeleteFarmCropInCollectMutation,
-    useAddFarmCropInCollectByYearRateMutation,
 } = collectApi
 
 export const onAddFav = (payload) => {

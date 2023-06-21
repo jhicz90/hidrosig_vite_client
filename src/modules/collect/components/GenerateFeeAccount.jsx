@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { Liner, OptionInputIrrig, OptionYearRate } from '../../../components'
-import { searchInputIrrigByFarm, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
+import { Liner, OptionDocument, OptionInputIrrig, OptionYearRate } from '../../../components'
+import { searchDocument, searchInputIrrigByFarm, searchYearRateByJunta, useGenerateDebtMutation, useGetFarmByIdQuery } from '../../../store/actions'
 
 export const GenerateFeeAccount = ({ prpId = '' }) => {
 
@@ -13,24 +13,30 @@ export const GenerateFeeAccount = ({ prpId = '' }) => {
         defaultValues: {
             desc: '',
             active: true,
-            farm: data?._id,
+            farm: prpId,
             inputIrrig: null,
             yearRate: null,
+            document: null,
         },
         mode: 'onChange'
     })
     const [genDebt, { isLoading }] = useGenerateDebtMutation()
 
     const handleSave = (data) => {
+        console.log(data)
         genDebt({
-            ...data
+            ...data,
+            inputIrrig: data.inputIrrig._id,
+            yearRate: data.yearRate._id,
+            document: !!data.document ? data.document._id : null
         }).unwrap().then(() => {
             reset({
                 desc: '',
                 active: true,
-                farm: data?._id,
+                farm: prpId,
                 inputIrrig: null,
                 yearRate: null,
+                document: null,
             })
         })
     }
@@ -39,8 +45,8 @@ export const GenerateFeeAccount = ({ prpId = '' }) => {
         <>
             <Button
                 onClick={() => setShow(true)}
-                variant='warning'
-                className='d-flex align-items-center gap-2'
+                variant='info'
+                className='d-flex justify-content-center gap-2'
             >
                 Generar cuenta
             </Button>
@@ -53,7 +59,7 @@ export const GenerateFeeAccount = ({ prpId = '' }) => {
             >
                 <Modal.Header closeButton closeVariant='white'>
                     <Modal.Title>
-                        Generar deuda
+                        Generar cuenta
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -89,7 +95,7 @@ export const GenerateFeeAccount = ({ prpId = '' }) => {
                                                     isClearable
                                                     defaultOptions
                                                     loadOptions={async () =>
-                                                        await searchInputIrrigByFarm(data?._id)
+                                                        await searchInputIrrigByFarm(prpId)
                                                     }
                                                     menuPlacement={'auto'}
                                                     placeholder={`Buscar...`}
@@ -128,6 +134,35 @@ export const GenerateFeeAccount = ({ prpId = '' }) => {
                                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
                                                     getOptionValue={e => e._id}
                                                     getOptionLabel={e => <OptionYearRate yearRate={e} />}
+                                                />
+                                        }
+                                    />
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <Liner>Documento</Liner>
+                        <div className='row'>
+                            <div className='col-12'>
+                                <Form.Group className='mb-3' controlId='pResolution'>
+                                    <Form.Label>Documento (Puede anexar un documeto como un informe)</Form.Label>
+                                    <Controller
+                                        name='document'
+                                        control={control}
+                                        render={
+                                            ({ field }) =>
+                                                <AsyncSelect
+                                                    {...field}
+                                                    inputId='pResolution'
+                                                    classNamePrefix='rc-select'
+                                                    isClearable
+                                                    defaultOptions
+                                                    loadOptions={searchDocument}
+                                                    menuPlacement={'auto'}
+                                                    placeholder={`Buscar...`}
+                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                    getOptionValue={e => e._id}
+                                                    getOptionLabel={e => <OptionDocument docm={e} />}
                                                 />
                                         }
                                     />

@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Button } from 'react-bootstrap'
-import { useGetListCropByCampaignAndInputIrrigQuery } from '../../../store/actions'
-import { DataTable, LoadingPage, TagDate } from '../../../components'
+import { ManageCollectCampaignContext } from '../context'
+import { DataTable, LoadingPage, TagDate } from '../../../../../components'
+import { useGetListCropByCampaignAndInputIrrigQuery } from '../../../../../store/actions'
 
-export const CropCampaignEdit = ({ campaignId = '', inputIrrig = '' }) => {
+export const TableFarmCropCollect = () => {
 
-    const { data: listFarmCrops = [], isFetching, isSuccess } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrig })
+    const [{ campaignId, inputIrrigId }, setContext] = useContext(ManageCollectCampaignContext)
+
+    const { data: listFarmCrops = [], isFetching, isSuccess } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrig: inputIrrigId })
 
     if (isFetching) {
         return <LoadingPage />
@@ -48,14 +51,14 @@ export const CropCampaignEdit = ({ campaignId = '', inputIrrig = '' }) => {
                                     item.areaPlanted.toFixed(5)
                             },
                             {
-                                label: 'COSTO',
+                                label: 'COSTO (S/.)',
                                 width: '120px',
                                 isNumber: true,
                                 renderCell: (item) =>
                                     item.amount.toFixed(2)
                             },
                             {
-                                label: 'VOLUMEN',
+                                label: 'VOLUMEN (m3)',
                                 minWidth: '140px',
                                 isNumber: true,
                                 renderCell: (item) =>
@@ -66,9 +69,14 @@ export const CropCampaignEdit = ({ campaignId = '', inputIrrig = '' }) => {
                                 width: '200px',
                                 pinRight: true,
                                 renderCell: (item) =>
-                                    <div className='d-flex gap-2 p-2'>
-                                        <Button>Volumen</Button>
-                                    </div>
+                                    <Button
+                                        onClick={() => setContext(v => ({ ...v, farmCropEditShow: true, farmCropEditData: item }))}
+                                        variant='link'
+                                        size='sm'
+                                        className='text-decoration-none'
+                                    >
+                                        Editar
+                                    </Button>
                             }
                         ]
                     }

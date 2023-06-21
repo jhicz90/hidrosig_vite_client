@@ -1,25 +1,21 @@
-import { Card } from 'react-bootstrap'
+import React from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { Card } from 'react-bootstrap'
 import validator from 'validator'
-import { CollectManagePay, ManageCollectCampaign } from '..'
+import { CalendarVolumeFullYear } from '..'
 
-export const CollectCampaign = () => {
+export const CollectManageVolume = () => {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const { cmp, irr } = Object.fromEntries([...searchParams])
     const valid = validator.isMongoId(cmp || '') && validator.isMongoId(irr || '')
 
     return (
-        valid
-        &&
         <Card>
-            <ManageCollectCampaign
+            <CalendarVolumeFullYear
                 campaign={cmp}
                 inputIrrig={irr}
             />
-            <Card.Body>
-                <CollectManagePay campaignId={cmp} inputIrrig={irr} />
-            </Card.Body>
         </Card>
     )
 }

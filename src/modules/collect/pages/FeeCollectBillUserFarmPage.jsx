@@ -1,53 +1,78 @@
-import { Link, Outlet, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
-import { AiFillNotification } from 'react-icons/ai'
-import { IoReturnUpBack } from 'react-icons/io5'
+import { HiArrowUturnLeft, HiCalendar, HiChatBubbleLeftRight, HiCurrencyDollar, HiPrinter, HiUser, HiUserCircle } from 'react-icons/hi2'
 import { LoadingPage } from '../../../components'
+import { FarmCollectList } from '..'
 import { useGetUserFarmByIdQuery } from '../../../store/actions'
-import { CollectBanner } from '..'
 
 export const FeeCollectBillUserFarmPage = () => {
 
     const { usrid } = useParams()
-    const { data = null, isLoading } = useGetUserFarmByIdQuery(usrid)
+    const { data = null, isLoading, isSuccess } = useGetUserFarmByIdQuery(usrid)
 
     if (isLoading) {
         return <LoadingPage />
     }
 
     return (
-        !!data
+        isSuccess
         &&
         <div className='container-fluid'>
-            <div className='row my-3'>
-                <div className='col-12'>
-                    <div className='row align-items-center justify-content-between g-3'>
-                        <div className='col-12 col-md-auto'>
-                            <h4 className='mb-0 text-uppercase'>{data.names} {data.lastName} {data.motherLastName}</h4>
+            <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
+                <div className='min-w-0 flex-1'>
+                    <h4 className='mb-0 text-uppercase'>{data.names} {data.lastName} {data.motherLastName}</h4>
+                    <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiUserCircle size={20} />
+                            Natural
                         </div>
-                        <div className='col-12 col-md-auto'>
-                            <div className='d-flex gap-2'>
-                                <Link
-                                    to={`/app/coll/bill/search`}
-                                    className='btn btn-neutral-secondary'
-                                >
-                                    <IoReturnUpBack size={24} />
-                                    NUEVA BUSQUEDA
-                                </Link>
-                                <Button variant='primary' className='d-flex align-items-center gap-2'>
-                                    <AiFillNotification size={24} />
-                                    Enviar notificación
-                                </Button>
-                            </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiCurrencyDollar size={20} />
+                            2000.00
+                        </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiCalendar size={20} />
+                            Actualizado el 12 Junio, 2023
                         </div>
                     </div>
+                </div>
+                <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
+                    <Link
+                        to={`/app/coll/bill/search`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Nueva busqueda
+                    </Link>
+                    <Button
+                        variant='neutral'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <HiUser />
+                        Ver usuario
+                    </Button>
+                    <Button
+                        variant='neutral'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <HiChatBubbleLeftRight />
+                        Enviar mensaje
+                    </Button>
+                    <Button
+                        variant='primary'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <HiPrinter />
+                        Generar reporte
+                    </Button>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <CollectBanner>
-                        <Outlet />
-                    </CollectBanner>
+                    <FarmCollectList />
                 </div>
             </div>
         </div>
