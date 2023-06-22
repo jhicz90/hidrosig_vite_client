@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { CalendarContext } from '../context'
 import moment from 'moment'
+import { LoadingOverlay } from '../../../../../components'
 import { CalendarContainer, CalendarMonth, DayCell, DaysContainer, DaysMonthContainer, DaysWeekContainer, MonthName } from './'
 import { useLazyGetListVolByCmpAndIrrAndFrpQuery } from '../../../../../store/actions'
 
@@ -10,7 +11,7 @@ export const CalendarBody = () => {
 
     const year = useMemo(() => campaign?.year ?? new Date().getFullYear(), [campaign])
 
-    const [loadVolDays, { data: events = [] }] = useLazyGetListVolByCmpAndIrrAndFrpQuery()
+    const [loadVolDays, { data: events = [], isLoading }] = useLazyGetListVolByCmpAndIrrAndFrpQuery()
 
     useEffect(() => {
         if (events.length > 0) {
@@ -31,6 +32,11 @@ export const CalendarBody = () => {
     return (
         <React.Fragment>
             <CalendarContainer>
+                {
+                    isLoading
+                    &&
+                    <LoadingOverlay />
+                }
                 {
                     new Array(12).fill(null).map((_, month) =>
                         <CalendarMonth key={`month-${month}`}>

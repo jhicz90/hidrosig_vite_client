@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { WebRoot, AppRoot, LoginPage } from '../modules'
-import { Loading } from '../components'
+import { LoadingOverlay } from '../components'
 import { checkingToken, useAuthRefreshQuery } from '../store/actions'
 
 export const Router = () => {
@@ -19,7 +19,16 @@ export const Router = () => {
     }, [])
 
     if (checkToken || isLoading) {
-        return <Loading />
+        return (
+            <div
+                style={{
+                    position: 'relative',
+                    height: '100vh'
+                }}
+            >
+                <LoadingOverlay bgTransparent={true} />
+            </div>
+        )
     }
 
     return (

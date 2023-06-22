@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { CalendarContext } from '../context'
-import { Button } from 'react-bootstrap'
+import { Badge, Button } from 'react-bootstrap'
 import { DataTable, LoadingPage, TagDate } from '../../../../../components'
 import { useGetListCropByCampaignAndInputIrrigQuery } from '../../../../../store/actions'
 
 export const TableFarmCropCollect = () => {
 
-    const [{ campaignId, inputIrrigId }, setContext] = useContext(CalendarContext)
+    const [{ farmCrop, campaignId, inputIrrigId }, setContext] = useContext(CalendarContext)
 
     const { data: listFarmCrops = [], isFetching, isSuccess } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrig: inputIrrigId })
 
@@ -69,14 +69,23 @@ export const TableFarmCropCollect = () => {
                                 width: '200px',
                                 pinRight: true,
                                 renderCell: (item) =>
-                                    <Button
-                                        onClick={() => setContext(v => ({ ...v, farmCrop: item }))}
-                                        variant='link'
-                                        size='sm'
-                                        className='text-decoration-none'
-                                    >
-                                        Seleccionar
-                                    </Button>
+                                    <React.Fragment>
+                                        {
+                                            item._id === farmCrop?._id
+                                                ?
+                                                <Badge bg='primary'>Seleccionado</Badge>
+                                                :
+                                                <Button
+                                                    onClick={() => setContext(v => ({ ...v, farmCrop: item }))}
+                                                    variant='link'
+                                                    size='sm'
+                                                    className='text-decoration-none'
+                                                >
+                                                    Seleccionar
+                                                </Button>
+
+                                        }
+                                    </React.Fragment>
                             }
                         ]
                     }
