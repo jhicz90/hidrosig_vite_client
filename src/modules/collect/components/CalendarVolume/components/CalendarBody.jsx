@@ -11,7 +11,7 @@ export const CalendarBody = () => {
 
     const year = useMemo(() => campaign?.year ?? new Date().getFullYear(), [campaign])
 
-    const [loadVolDays, { data: events = [], isLoading }] = useLazyGetListVolByCmpAndIrrAndFrpQuery()
+    const [loadVolDays, { data: events = [], isFetching }] = useLazyGetListVolByCmpAndIrrAndFrpQuery()
 
     useEffect(() => {
         if (events.length > 0) {
@@ -33,7 +33,7 @@ export const CalendarBody = () => {
         <React.Fragment>
             <CalendarContainer>
                 {
-                    isLoading
+                    isFetching
                     &&
                     <LoadingOverlay />
                 }
