@@ -1,20 +1,25 @@
 import { Button } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
-import { startImportShapes, startModalTempResource } from '../../../store/actions'
+import { FaFileImport } from 'react-icons/fa'
+import { useGeoObjectStore, useResourceStore } from '../../../hooks'
 
 export const ImportGeoObject = () => {
-    const dispatch = useDispatch()
+
+    const { initResourceTemp } = useResourceStore()
+    const { importShapes } = useGeoObjectStore()
 
     return (
         <Button
-            variant='neutral'
             onClick={() => {
-                dispatch(startModalTempResource({
-                    groupTypesTemp: 'geodata',
-                    setFilesTemp: (data) => dispatch(startImportShapes(data))
-                }))
+                initResourceTemp({
+                    groupTypes: 'geodata',
+                    setFiles: data => importShapes(data)
+                })
             }}
+            variant='neutral'
+            size='sm'
+            className='d-flex align-items-center gap-2'
         >
+            <FaFileImport />
             Importar
         </Button>
     )

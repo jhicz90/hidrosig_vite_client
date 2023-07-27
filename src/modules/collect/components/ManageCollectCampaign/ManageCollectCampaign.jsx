@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import { ManageCollectCampaignContext } from './context'
 import { useGetInputIrrigByIdQuery, useGetYearRateByIdQuery } from '../../../../store/actions'
 import { LoadingPage } from '../../../../components'
-import { ManageCollectContent } from './components'
+import { ManageCollectContent, ResumeCollectContent } from './components'
 
 export const ManageCollectCampaign = memo(function ManageCollectCampaign({
     campaign = null,
@@ -18,6 +18,8 @@ export const ManageCollectCampaign = memo(function ManageCollectCampaign({
         campaignId: campaign,
         inputIrrig: inputIrrigDetail,
         inputIrrigId: inputIrrig,
+        payCollectRateShow: false,
+        amountToPay: 0,
         farmCropNewShow: false,
         farmCropEditShow: false,
         farmCropEditData: null
@@ -38,6 +40,7 @@ export const ManageCollectCampaign = memo(function ManageCollectCampaign({
                         value={[context, setContext]}
                     >
                         <ManageCollectContent />
+                        <ResumeCollectContent />
                     </ManageCollectCampaignContext.Provider>
             }
         </React.Fragment>

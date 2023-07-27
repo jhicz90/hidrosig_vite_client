@@ -1,20 +1,19 @@
-import { toast } from 'react-hot-toast'
 import { fetchUpFilesByToken } from '../../helpers'
-import { resetResource, resetResourceTemp, setFileTypes, setGroupTypes, setInitOptions, setLimit, setMaxSize, setModalResource, setModalResourceTemp, setSetFiles, setShowResource, setShowResourceTemp, setTags, setUploading } from './resourceSlice'
+import { resetResource, resetResourceTemp, setFileTypes, setGroupTypes, setInitOptions, setLimit, setMaxSize, setModalResource, setModalResourceTemp, setSetFiles, setShowResource, setShowResourceTemp, setTags } from './resourceSlice'
 
 export const startModalResource = ({
-    init = [true, true, true],
-    tags = [],
-    fileTypes = [],
-    groupTypes = '',
-    limit = 1,
-    maxSize = 1,
-    setFiles = null,
+    init,
+    tags,
+    fileTypes,
+    groupTypes,
+    limit,
+    maxSize,
+    setFiles,
 }) => {
     return async (dispatch) => {
         dispatch(resetResource())
         dispatch(setModalResource({
-            showUpload: true,
+            show: true,
             initOptions: init,
             tags,
             fileTypes,
@@ -27,36 +26,38 @@ export const startModalResource = ({
 }
 
 export const startModalTempResource = ({
-    fileTypesTemp = [],
-    groupTypesTemp = '',
-    setFilesTemp = null,
+    fileTypes,
+    groupTypes,
+    limit,
+    maxSize,
+    setFiles,
 }) => {
     return async (dispatch) => {
         dispatch(resetResourceTemp())
         dispatch(setModalResourceTemp({
-            showUploadTemp: true,
-            fileTypesTemp,
-            groupTypesTemp,
-            setFilesTemp
+            show: true,
+            fileTypes,
+            groupTypes,
+            limit,
+            maxSize,
+            setFiles
         }))
     }
 }
 
 export const finishModalResource = () => {
     return async (dispatch) => {
-        dispatch(setShowResource(false))
         dispatch(resetResource())
     }
 }
 
 export const finishModalTempResource = () => {
     return async (dispatch) => {
-        dispatch(setShowResourceTemp(false))
         dispatch(resetResourceTemp())
     }
 }
 
-export const startUploadResources = ({ files, setFiles = null, tags, access = 1, cloud = false }) => {
+export const startUploadResources = ({ files, setFiles = null, tags, access = 1 }) => {
     return async (dispatch) => {
 
         dispatch(setShowResource(false))
@@ -69,23 +70,12 @@ export const startUploadResources = ({ files, setFiles = null, tags, access = 1,
 
         formData.append('tags', JSON.stringify(tags))
 
-        formData.append('cloud', cloud)
-
         formData.append('access_mode', access)
 
-        const toastLoading = toast.loading('Subiendo archivos...')
-
-        const resp = cloud
-            ? await fetchUpFilesByToken({
-                endpoint: 'resource/v1/up',
-                data: formData
-            })
-            : await fetchUpFilesByToken({
-                endpoint: 'resource/db/up',
-                data: formData
-            })
-
-        toast.dismiss(toastLoading)
+        const resp = await fetchUpFilesByToken({
+            endpoint: 'resource/v1/up',
+            data: formData
+        })
 
         if (resp.ok) {
             if (setFiles && resp.files.length === 1) {
@@ -108,14 +98,10 @@ export const startUploadTempResources = ({ files, setFilesTemp = null }) => {
             formData.append('temp', item)
         })
 
-        const toastLoading = toast.loading('Subiendo archivos...')
-
         const resp = await fetchUpFilesByToken({
             endpoint: 'resource/temp/up',
             data: formData
         })
-
-        toast.dismiss(toastLoading)
 
         if (resp.ok) {
             if (setFilesTemp && resp.filesTemp.length === 1) {

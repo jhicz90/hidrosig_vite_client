@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { toast } from 'react-hot-toast'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
 import { addNewPettycash, setActiveNewPettycash, setActivePettycash, setSavingPettycash, setSavingNewPettycash } from './pettycashSlice'
@@ -110,122 +111,29 @@ export const startDeleteImagePettyCash = (id, imageId) => {
     }
 }
 
-export const questionDeletePettycash = async (name) => {
-
-    const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
-
-    return SwalReact.fire({
-        title:
-            <>
-                <div className='text-uppercase'>Eliminar caja chica</div>
-                <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-            </>,
-        html:
-            <>
-                <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta caja chica?</div>
-                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-            </>,
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
-        allowOutsideClick: false,
-        icon: 'question',
-        customClass: {
-            confirmButton: `btn btn-warning`,
-            cancelButton: `btn btn-neutral`
-        },
-        input: 'text',
-        inputAttributes: {
-            autocapitalize: 'off'
-        },
-        buttonsStyling: false,
-        reverseButtons: true,
-        preConfirm: (typed) => {
-            if (typed === wordConfirm) {
-                return true
-            } else {
-                return false
-            }
-        }
-    }).then(({ value }) => {
-        return value
-    })
-}
-
-export const startDeletePettycash = () => {
-    return async (dispatch, getState) => {
-        const { active } = getState().pettycash
-        const { _id, name } = active
-
-        const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
-
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Eliminar caja chica</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta caja chica?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: `btn btn-warning`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        }).then(async (result) => {
-            if (result.value) {
-
-                dispatch(setSavingPettycash(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `pettycash/delete/${_id}`,
-                    method: 'DELETE'
-                })
-
-                dispatch(setSavingPettycash(false))
-
-                if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Ptty']))
-                    dispatch(setActivePettycash(null))
-                }
-            }
-        })
-    }
-}
-
-export const startExportExcelActivePettyCash = (id) => {
+export const startExportExcelPettyCashById = (id) => {
     return async () => {
+
+        const toastLoading = toast.loading('Exportando comprobantes a un archivo de excel...')
+
         await fetchByToken({
             endpoint: `pettycash/export/excel/${id}`
         })
+
+        toast.dismiss(toastLoading)
     }
 }
 
-export const startExportPdfActivePettyCash = (id) => {
+export const startExportPdfPettyCashById = (id) => {
     return async () => {
+
+        const toastLoading = toast.loading('Exportando las imagenes de los comprobantes a un archivo de pdf...')
+
         await fetchByToken({
             endpoint: `pettycash/export/pdf/${id}`
         })
+
+        toast.dismiss(toastLoading)
     }
 }
 

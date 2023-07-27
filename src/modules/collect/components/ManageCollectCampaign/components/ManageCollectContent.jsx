@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { ManageCollectCampaignContext } from '../context'
 import { Button } from 'react-bootstrap'
-import { FaLeaf } from 'react-icons/fa'
+import { FaHistory, FaLeaf, FaMoneyBillWave } from 'react-icons/fa'
 import { FarmCropCreate, TableFarmCropCollect, FarmCropEdit } from '.'
 import { CardHeaderStyled } from '../../../../../style'
 
@@ -28,6 +28,14 @@ export const ManageCollectContent = () => {
                             <FaLeaf />
                             Agregar cultivo
                         </Button>
+                        <Button
+                            variant='neutral'
+                            size='sm'
+                            className='d-flex align-items-center gap-2'
+                        >
+                            <FaHistory />
+                            Historial de cultivos
+                        </Button>
                     </div>
                 </div>
             </CardHeaderStyled>
@@ -36,7 +44,6 @@ export const ManageCollectContent = () => {
                     <TableFarmCropCollect />
                 </div>
             </div>
-            {/* AQUI IRA EL COMPONENTE QUE PERMITIRA PAGAR */}
         </React.Fragment>
     )
 }

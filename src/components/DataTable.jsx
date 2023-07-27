@@ -2,7 +2,8 @@ import { Body, Cell, Footer, FooterCell, FooterRow, Header, HeaderCell, HeaderRo
 import { useTheme } from '@table-library/react-table-library/theme'
 import { getTheme } from '@table-library/react-table-library/baseline'
 import { Virtualized } from '@table-library/react-table-library/virtualized'
-import { HeaderCellSelect, CellSelect, SelectClickTypes, useRowSelect } from '@table-library/react-table-library/select'
+import { HeaderCellSelect, CellSelect, SelectClickTypes, SelectTypes, useRowSelect } from '@table-library/react-table-library/select'
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 
 export const DataTable = ({
     columns = [],
@@ -14,6 +15,8 @@ export const DataTable = ({
     height = '400px',
     selected = false,
     selectedChange = null,
+    disabledSelect = null,
+    iconDisabledSelect = <IoMdCheckmarkCircleOutline size={20} />,
     footer = false,
     maxHeightHeaderRow = '40px',
     minHeightRowCell = '50px',
@@ -160,7 +163,7 @@ export const DataTable = ({
     })
 
     return (
-        <div style={{ height, overflow: 'hidden', borderRadius: '9px', ...style }} className={`${virtual ? 'table-virtual' : ''}`}>
+        <div style={{ height, overflow: 'hidden', borderRadius: '9px', ...style }} className={`${virtual ? 'table-data table-virtual' : `table-data ${className}`}`}>
             <Table theme={theme} data={data} layout={{ fixedHeader: true, horizontalScroll: true }} select={selected ? select : null}>
                 {
                     virtual
@@ -223,9 +226,16 @@ export const DataTable = ({
                                         tableList.map((item) => (
                                             <Row key={`row_${item.id}`} item={item}>
                                                 {
-                                                    selected
+                                                    selected && disabledSelect(item)
                                                     &&
                                                     <CellSelect item={item} />
+                                                }
+                                                {
+                                                    selected && !disabledSelect(item)
+                                                    &&
+                                                    <td className='td stiff d-flex justify-content-center align-items-center'>
+                                                        {iconDisabledSelect}
+                                                    </td>
                                                 }
                                                 {
                                                     columnsTable.map((col, index) =>

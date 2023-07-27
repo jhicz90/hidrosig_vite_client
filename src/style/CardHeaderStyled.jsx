@@ -3,16 +3,14 @@ import styled from 'styled-components'
 
 export const CardHeaderStyled = styled(Card.Header)`
     background-color: white;
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
+    padding: 1rem;
 
     & > div.card-header-wrapper {
         display: flex;
         flex-wrap: nowrap;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
 
         & > div.card-header-tittle {
             & > h3 {
@@ -25,7 +23,11 @@ export const CardHeaderStyled = styled(Card.Header)`
         }
 
         & > div.card-header-actions {
-            flex-shrink: 0;
+            display: flex;
+            flex-direction: row;
+            gap: 8px;
+            flex-wrap: wrap;
+            flex-shrink: 1;
         }
     }
 `

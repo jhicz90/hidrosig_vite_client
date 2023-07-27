@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap'
 import { useSearchParams } from 'react-router-dom'
 import validator from 'validator'
-import { CollectManagePay, ManageCollectCampaign } from '..'
+import { ManageCollectCampaign } from '..'
 
 export const CollectCampaign = () => {
 
@@ -17,9 +17,6 @@ export const CollectCampaign = () => {
                 campaign={cmp}
                 inputIrrig={irr}
             />
-            <Card.Body>
-                <CollectManagePay campaignId={cmp} inputIrrig={irr} />
-            </Card.Body>
         </Card>
     )
 }

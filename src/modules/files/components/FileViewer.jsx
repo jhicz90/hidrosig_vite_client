@@ -1,11 +1,13 @@
-import { useState, useEffect, forwardRef } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Modal } from 'react-bootstrap'
 import { IoMdArrowBack, IoMdArrowForward, IoMdDownload, IoMdPhotos, IoMdPrint, IoMdTrash } from 'react-icons/io'
+import { TbZoomIn, TbZoomOut, TbZoomReset } from 'react-icons/tb'
 import { BsCaretLeftFill, BsCaretRightFill } from 'react-icons/bs'
 import Flicking, { ViewportSlot } from '@egjs/react-flicking'
-import { Arrow } from "@egjs/flicking-plugins";
+import { Arrow } from '@egjs/flicking-plugins'
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 // import { Document, Page } from 'react-pdf/dist/esm/entry.vite'
 import { Document, Page } from 'react-pdf'
 // import SimpleBar from 'simplebar-react'
@@ -126,7 +128,51 @@ const ViewerUnknownFile = forwardRef(({ file }, ref) => {
 const ViewerImage = forwardRef(({ src = '' }, ref) => {
     return (
         <ViewerImageStyled ref={ref}>
-            <img src={imageGet(src, { cloud: true, size: 900 })} alt={src} loading='lazy' />
+            <TransformWrapper
+                maxScale={4}
+                initialScale={0.9}
+                centerOnInit={true}
+            >
+                {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+                    <React.Fragment>
+                        <div className='image-tools'>
+                            <Button
+                                variant='light'
+                                style={{ backgroundColor: 'transparent', border: 'none' }}
+                                onClick={() => zoomIn()}
+                            >
+                                <TbZoomIn color='white' size={30} />
+                            </Button>
+                            <Button
+                                variant='light'
+                                style={{ backgroundColor: 'transparent', border: 'none' }}
+                                onClick={() => zoomOut()}
+                            >
+                                <TbZoomOut color='white' size={30} />
+                            </Button>
+                            <Button
+                                variant='light'
+                                style={{ backgroundColor: 'transparent', border: 'none' }}
+                                onClick={() => resetTransform()}
+                            >
+                                <TbZoomReset color='white' size={30} />
+                            </Button>
+                        </div>
+                        <TransformComponent
+                            wrapperStyle={{
+                                height: 'calc(100vh - 60px)',
+                                width: '90%',
+                            }}
+                            contentStyle={{
+                                height: 'calc(100vh - 60px)',
+                                width: '90%',
+                            }}
+                        >
+                            <img src={imageGet(src, { cloud: true, size: 900 })} alt={src} loading='lazy' />
+                        </TransformComponent>
+                    </React.Fragment>
+                )}
+            </TransformWrapper>
         </ViewerImageStyled>
     )
 })
@@ -261,15 +307,31 @@ const ViewerUnknownFileStyled = styled.div`
 
 const ViewerImageStyled = styled.div`
     height: calc(100vh - 60px);
+    /* min-height: calc(100vh - 60px); */
     overflow: hidden;
     display: flex;
+    /* display: block; */
+    position: relative;
     align-items: center;
+    justify-content: center;
 
     & img {
         object-fit: scale-down;
         padding: 1rem;
         width: 100%;
         height: 100%;
+    }
+
+    & .image-tools {
+        z-index: 1;
+        position: absolute;
+        bottom: 20px;
+        padding: 8px;
+        display: flex;
+        flex-direction: row;
+        gap: 2px;
+        background-color: rgba(17,24,39,0.8);
+        border-radius: 8px;
     }
 `
 

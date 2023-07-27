@@ -1,28 +1,6 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { ImportGeoObject, MapGeoObject, NewGeoObject } from '..'
-import { clearToolbarActions, setToolbarActions, setToolbarTitle } from '../../../store/actions'
-import { SaveGeoObject } from '../components/SaveGeoObject'
+import { MapGeoObject } from '..'
 
 export const MapGeographicPage = () => {
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(clearToolbarActions())
-        dispatch(setToolbarTitle('MAPA GEOGRAFICO'))
-        dispatch(setToolbarActions(
-            <>
-                <NewGeoObject />
-                <SaveGeoObject />
-                <ImportGeoObject />
-            </>
-        ))
-
-        return () => {
-            dispatch(clearToolbarActions())
-        }
-    }, [dispatch])
 
     return (
         <MapGeoObject />

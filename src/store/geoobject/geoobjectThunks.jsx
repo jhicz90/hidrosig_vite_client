@@ -1,6 +1,10 @@
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken } from '../../helpers'
 import { storeApi } from '../storeApi'
 import { addNewGeometrys, clearFeatureCollection, setFeatureCollection, setSavingNewGeometry } from './geoobjectSlice'
+
+const SwalReact = withReactContent(Swal)
 
 export const geoobjectApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -139,16 +143,42 @@ export const startImportShapes = (fileName) => {
         })
 
         if (resp.ok) {
-            const importFeatures = resp.shapes?.features.map(f => {
-                if (f.geometry.type === 'Polygon' && !f.properties.hasOwnProperty('shape')) return {
-                    ...f,
-                    properties: {
-                        ...f.properties,
-                        shape: 'Polygon'
+            const { featureCollection } = getState().geoobject
+            
+            if (featureCollection.features.length > 0) {
+                SwalReact.fire({
+                    title: <div>Importación</div>,
+                    html:
+                        <>
+                            <div className='fs-5 mb-2'>¿Desea eliminar los objetos actuales del mapa?</div>
+                        </>,
+                    showCancelButton: true,
+                    confirmButtonText: 'Eliminar',
+                    cancelButtonText: 'Agregar a los demás',
+                    allowOutsideClick: false,
+                    icon: 'question',
+                    customClass: {
+                        confirmButton: `btn btn-danger`,
+                        cancelButton: `btn btn-success`
+                    },
+                    buttonsStyling: false,
+                    reverseButtons: true,
+                }).then(async (result) => {
+                    if (result.value) {
+                        if (resp.hasOwnProperty('featureCollection')) {
+                            dispatch(setFeatureCollection(resp.featureCollection))
+                        }
+                    } else {
+                        if (resp.hasOwnProperty('featureCollection')) {
+                            dispatch(addNewGeometrys(resp.featureCollection.features))
+                        }
                     }
+                })
+            } else {
+                if (resp.hasOwnProperty('featureCollection')) {
+                    dispatch(setFeatureCollection(resp.featureCollection))
                 }
-            })
-            dispatch(addNewGeometrys(importFeatures))
+            }
         }
     }
 }

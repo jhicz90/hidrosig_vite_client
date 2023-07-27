@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { toast } from 'react-hot-toast'
+import { ProgressBar } from 'react-bootstrap'
 import { msgFetchAlert } from './ManagerMsg'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
@@ -126,6 +128,13 @@ export const fetchUpFilesByToken = async ({ endpoint = '', data = {}, method = '
 
     const token = localStorage.getItem('token') || ''
 
+    const toastLoading = toast.loading(t => (
+        <div className='d-flex flex-column'>
+            <div>Subiendo archivos...</div>
+            <ProgressBar now={0} style={{ height: '5px' }} />
+        </div>
+    ))
+
     try {
         const resp = await axios({
             withCredentials: true,
@@ -136,7 +145,19 @@ export const fetchUpFilesByToken = async ({ endpoint = '', data = {}, method = '
                 'Authorization': token
             },
             url: endpoint,
-            data
+            data,
+            onUploadProgress: (progressEvent) => {
+                let progress = Math.round(100 * (progressEvent.loaded / progressEvent.total))
+
+                toast.loading(t => (
+                    <div className='d-flex flex-column'>
+                        <div>Subiendo archivos...</div>
+                        <ProgressBar now={progress} style={{ height: '5px' }} />
+                    </div>
+                ), {
+                    id: toastLoading
+                })
+            },
         })
 
         const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>
@@ -149,11 +170,14 @@ export const fetchUpFilesByToken = async ({ endpoint = '', data = {}, method = '
             msgFetchAlert(bodyResponse)
         }
 
+        toast.dismiss(toastLoading)
+
         return bodyResponse
     } catch (err) {
         console.log(err)
         const errorFetch = { ok: false, msg: err.hasOwnProperty('response') ? err.response.data.msg : [{ content: err.message, delay: 5000, type: 'error' }] }
 
+        toast.remove(toastLoading)
         if (alert) msgFetchAlert(errorFetch)
 
         return errorFetch

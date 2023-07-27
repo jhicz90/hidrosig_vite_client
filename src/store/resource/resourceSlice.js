@@ -2,117 +2,154 @@ import { createSlice } from '@reduxjs/toolkit'
 export const resourceSlice = createSlice({
     name: 'resource',
     initialState: {
-        showUpload: false,
-        showUploadTemp: false,
-        filesSelected: [],
-        initOptions: [true, true, true], // 1:Archivos de sistema, 2:Archivos subidos, 3:Archivos por subir
-        tags: [],
-        fileTypes: [],
-        fileTypesTemp: [],
-        groupTypes: 'images',
-        groupTypesTemp: 'images',
-        limit: 1,
-        maxSize: 1,
-        setFiles: null,
-        setFilesTemp: null,
-        uploading: false,
+        uploadManageFiles: {
+            show: false,
+            title: '',
+            filesSelected: [], // Seleccionar archivos ya subidos
+            initOptions: [false, false, false], // 1:Archivos de sistema, 2:Archivos subidos, 3:Archivos por subir
+            tags: [],
+            fileTypes: [],
+            groupTypes: '', // Si no ahi ningun grupo seleccionado se desabilita el upload y esto servira como filtro
+            limit: 1,
+            maxSize: 1,
+            setFiles: null,
+        },
+        uploadManageFilesTemp: {
+            show: false,
+            title: '',
+            filesSelected: [], // Seleccionar archivos ya subidos
+            initOptions: [false, false, false], // 1:Archivos de sistema, 2:Archivos subidos, 3:Archivos por subir
+            fileTypes: [],
+            groupTypes: '', //  Si no ahi ningun grupo seleccionado se desabilita el upload y esto servira como filtro
+            limit: 1,
+            maxSize: 1,
+            setFiles: null,
+        }
     },
     reducers: {
         setModalResource: (state, { payload }) => {
-            state.showUpload = payload.showUpload || false
-            state.filesSelected = payload.filesSelected || []
-            state.initOptions = payload.initOptions || [true, true, true]
-            state.tags = payload.tags || []
-            state.fileTypes = payload.fileTypes || []
-            state.groupTypes = payload.groupTypes || ''
-            state.limit = payload.limit || 1
-            state.maxSize = payload.maxSize || 1
-            state.setFiles = payload.setFiles || null
-            state.uploading = payload.uploading || false
+            state.uploadManageFiles = {
+                show: payload.show || false,
+                title: payload.title || '',
+                filesSelected: payload.filesSelected || [],
+                initOptions: payload.initOptions || [false, false, false],
+                tags: payload.tags || [],
+                fileTypes: payload.fileTypes || [],
+                groupTypes: payload.groupTypes || '',
+                limit: payload.limit || 1,
+                maxSize: payload.maxSize || 1,
+                setFiles: payload.setFiles || null,
+            }
         },
         setModalResourceTemp: (state, { payload }) => {
-            state.showUploadTemp = payload.showUploadTemp || false
-            state.fileTypesTemp = payload.fileTypesTemp || []
-            state.groupTypesTemp = payload.groupTypesTemp || ''
-            state.setFilesTemp = payload.setFilesTemp || null
+            state.uploadManageFilesTemp = {
+                show: payload.show || false,
+                title: payload.title || '',
+                filesSelected: payload.filesSelected || [],
+                initOptions: payload.initOptions || [false, false, false],
+                fileTypes: payload.fileTypes || [],
+                groupTypes: payload.groupTypes || '',
+                limit: payload.limit || 1,
+                maxSize: payload.maxSize || 1,
+                setFiles: payload.setFiles || null,
+            }
         },
         setShowResource: (state, { payload }) => {
-            state.showUpload = payload
+            state.uploadManageFiles.show = payload
         },
         setShowResourceTemp: (state, { payload }) => {
-            state.showUploadTemp = payload
+            state.uploadManageFilesTemp.show = payload
         },
         setFilesSelected: (state, { payload }) => {
-            state.filesSelected = payload
+            state.uploadManageFiles.filesSelected = payload
         },
-        addFilesSelected: (state, { payload }) => {
-            state.filesSelected = [...state.filesSelected, payload]
+        setFilesSelectedTemp: (state, { payload }) => {
+            state.uploadManageFilesTemp.filesSelected = payload
         },
         setInitOptions: (state, { payload }) => {
-            state.initOptions = payload
+            state.uploadManageFiles.initOptions = payload
+        },
+        setInitOptionsTemp: (state, { payload }) => {
+            state.uploadManageFilesTemp.initOptions = payload
         },
         setTags: (state, { payload }) => {
-            state.tags = payload
+            state.uploadManageFiles.tags = payload
         },
         setFileTypes: (state, { payload }) => {
-            state.fileTypes = payload
+            state.uploadManageFiles.fileTypes = payload
         },
         setFileTypesTemp: (state, { payload }) => {
-            state.fileTypesTemp = payload
+            state.uploadManageFilesTemp.fileTypes = payload
         },
         setGroupTypes: (state, { payload }) => {
-            state.groupTypes = payload
+            state.uploadManageFiles.groupTypes = payload
         },
         setGroupTypesTemp: (state, { payload }) => {
-            state.groupTypesTemp = payload
+            state.uploadManageFilesTemp.groupTypes = payload
         },
         setLimit: (state, { payload }) => {
-            state.limit = payload
+            state.uploadManageFiles.limit = payload
+        },
+        setLimitTemp: (state, { payload }) => {
+            state.uploadManageFilesTemp.limit = payload
         },
         setMaxSize: (state, { payload }) => {
-            state.maxSize = payload
+            state.uploadManageFiles.maxSize = payload
+        },
+        setMaxSizeTemp: (state, { payload }) => {
+            state.uploadManageFilesTemp.maxSize = payload
         },
         setSetFiles: (state, { payload }) => {
-            state.setFiles = payload
+            state.uploadManageFiles.setFiles = payload
         },
         setSetFilesTemp: (state, { payload }) => {
-            state.setFilesTemp = payload
-        },
-        setUploading: (state, { payload }) => {
-            state.uploading = payload
+            state.uploadManageFilesTemp.setFiles = payload
         },
         resetResource: (state) => {
-            state.showUpload = false
-            state.filesSelected = []
-            state.initOptions = [true, true, true]
-            state.tags = []
-            state.fileTypes = []
-            state.groupTypes = 'images'
-            state.limit = 1
-            state.maxSize = 1
-            state.setFiles = null
-            state.uploading = false
+            state.uploadManageFiles = {
+                show: false,
+                title: '',
+                filesSelected: [],
+                initOptions: [false, false, false],
+                tags: [],
+                fileTypes: [],
+                groupTypes: '',
+                limit: 1,
+                maxSize: 1,
+                setFiles: null,
+            }
         },
         resetResourceTemp: (state) => {
-            state.showUploadTemp = false
-            state.fileTypesTemp = []
-            state.groupTypesTemp = 'images'
+            state.uploadManageFilesTemp = {
+                show: false,
+                title: '',
+                filesSelected: [],
+                initOptions: [false, false, false],
+                fileTypes: [],
+                groupTypes: '',
+                limit: 1,
+                maxSize: 1,
+                setFiles: null,
+            }
         },
     }
 })
 
 export const {
-    addFilesSelected,
     resetResource,
     resetResourceTemp,
     setFilesSelected,
+    setFilesSelectedTemp,
     setFileTypes,
     setFileTypesTemp,
     setGroupTypes,
     setGroupTypesTemp,
     setInitOptions,
+    setInitOptionsTemp,
     setLimit,
+    setLimitTemp,
     setMaxSize,
+    setMaxSizeTemp,
     setModalResource,
     setModalResourceTemp,
     setSetFiles,
@@ -120,5 +157,4 @@ export const {
     setShowResource,
     setShowResourceTemp,
     setTags,
-    setUploading,
 } = resourceSlice.actions

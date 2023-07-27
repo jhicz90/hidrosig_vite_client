@@ -65,7 +65,8 @@ export const PettyCashListVouchers = () => {
                             v.numReceipt.toLowerCase().includes(search.toLowerCase()) ||
                             v.nameSocialReason.toLowerCase().includes(search.toLowerCase()) ||
                             v.idSocialReason.toLowerCase().includes(search.toLowerCase()) ||
-                            v.concept.toLowerCase().includes(search.toLowerCase())
+                            v.concept.toLowerCase().includes(search.toLowerCase()) || 
+                            v.amountReceipt.toFixed(2).includes(search.toLowerCase())
                         )
                     }
                     columns={

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Dropdown } from 'react-bootstrap'
 import styled from 'styled-components'
 import { FaBell, FaEnvelope, FaSearch } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import { MenuItemControlTypePay } from '.'
 
 import { logoutAuth, setCmkbarShow } from '../../../store/actions'
 
@@ -54,6 +55,7 @@ export const AppHeader = () => {
                         <kbd>CTRL+K</kbd>
                     </div>
                 </div>
+                <MenuItemControlTypePay />
                 <Dropdown className='menu-item dropdown-noarrow'>
                     <Dropdown.Toggle as='a' variant='light' className='menu-link'>
                         <div className='menu-icon'>
