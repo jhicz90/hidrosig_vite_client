@@ -12,7 +12,7 @@ export const ImportGeoObject = () => {
             onClick={() => {
                 initResourceTemp({
                     groupTypes: 'geodata',
-                    setFiles: data => importShapes(data)
+                    setFiles: importShapes
                 })
             }}
             variant='neutral'
