@@ -1,10 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
-import { toast } from 'react-hot-toast'
-import { ProgressBar } from 'react-bootstrap'
 import { finishModalResource, finishModalTempResource, setShowResource, setShowResourceTemp, startModalResource, startModalTempResource, startUploadResources, startUploadTempResources } from '../store/resource'
-
-const baseURL = import.meta.env.VITE_APP_API_URL
 
 export const useResourceStore = () => {
 

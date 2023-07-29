@@ -87,7 +87,7 @@ export const startUploadResources = ({ files, setFiles = null, tags, access = 1 
     }
 }
 
-export const startUploadTempResources = ({ files, setFilesTemp = null }) => {
+export const startUploadTempResources = ({ files, setFiles = null }) => {
     return async (dispatch) => {
 
         dispatch(setShowResourceTemp(false))
@@ -104,10 +104,10 @@ export const startUploadTempResources = ({ files, setFilesTemp = null }) => {
         })
 
         if (resp.ok) {
-            if (setFilesTemp && resp.filesTemp.length === 1) {
-                setFilesTemp(resp.filesTemp[0])
-            } else if (setFilesTemp && resp.filesTemp.length > 1) {
-                setFilesTemp(resp.filesTemp)
+            if (setFiles && resp.filesTemp.length === 1) {
+                setFiles(resp.filesTemp[0])
+            } else if (setFiles && resp.filesTemp.length > 1) {
+                setFiles(resp.filesTemp)
             }
         }
     }
