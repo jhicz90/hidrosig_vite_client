@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { useDebounce } from 'use-debounce'
 import { SYSCONST } from '../types'
 
-export const InputSearch = ({ className = 'm-3', value, onChange, debounce = 500, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
+export const InputSearch = ({ className = 'my-3', value, onChange, debounce = 500, autoComplete = false, loading = false, placeholder = 'Buscar...', controlId = 'search' }) => {
 
     const [valueInput, setValueInput] = useState(value)
     const [valueDebounce] = useDebounce(valueInput, debounce <= 500 ? debounce : SYSCONST.searchDebounce)

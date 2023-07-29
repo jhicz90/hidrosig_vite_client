@@ -51,7 +51,7 @@ export const ControlListMonthPay = () => {
                         width: '80px',
                         isNumber: true,
                         renderCell: (item) =>
-                            <div style={{ textAlign: 'right' }}>{0}</div>
+                            <div style={{ textAlign: 'right' }}>{Number(item.debtTotal + item.debtInterest).toFixed(2)}</div>
                     },
                     {
                         label: 'DEUDA GENERADA',
@@ -78,14 +78,14 @@ export const ControlListMonthPay = () => {
                         width: '100px',
                         isNumber: true,
                         renderCell: (item) =>
-                            <div style={{ textAlign: 'right' }}>{0}</div>
+                            <div style={{ textAlign: 'right' }}>{item.debtDays}</div>
                     },
                     {
                         label: 'INTERES',
                         width: '100px',
                         isNumber: true,
                         renderCell: (item) =>
-                            <div style={{ textAlign: 'right' }}>{0}</div>
+                            <div style={{ textAlign: 'right' }}>{item.debtInterest.toFixed(2)}</div>
                     },
                     // {
                     //     label: 'ACCIÓN',

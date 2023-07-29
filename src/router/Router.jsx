@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 import { WebRoot, AppRoot, LoginPage } from '../modules'
-import { LoadingOverlay, LoadingLottie } from '../components'
+import { LoadingLottie } from '../components'
 import { checkingToken, useAuthRefreshQuery } from '../store/actions'
 
 export const Router = () => {

@@ -61,140 +61,143 @@ export const FeeCollectSearchPage = () => {
                     </div>
                 </div>
             </div>
-            <div className='row g-0 justify-content-center'>
-                <div className='col'>
-                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoadingUsr || isLoadingPrp} />
-                    <DataTable
-                        rows={
-                            typeSearch === 'usr'
-                                ?
-                                listUsr
-                                :
-                                listPrp
-                        }
-                        columns={
-                            typeSearch === 'usr'
-                                ?
-                                [
-                                    {
-                                        label: 'CÓDIGO',
-                                        width: '160px',
-                                        renderCell: (item) =>
-                                            item.code
-                                    },
-                                    {
-                                        label: 'USUARIO',
-                                        minWidth: '300px',
-                                        renderCell: (item) => (
-                                            <div className='d-flex align-items-center px-2 py-1'>
-                                                <div className='flex-shrink-0 me-3'>
-                                                    <Avatar
-                                                        img={item.image?.metadata.url}
-                                                        cloud={item.image?.cloud}
-                                                        noImgTxt={item.type > 1 ? item.socialReason : item.names}
-                                                        noImg={4004}
-                                                        circle={true}
-                                                        width={40}
-                                                        height={40}
-                                                    />
+            <div className='container-fluid'>
+                <div className='row justify-content-center'>
+                    <div className='col'>
+                        <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoadingUsr || isLoadingPrp} />
+                        <DataTable
+                            className='border border-2 border-light-subtle'
+                            rows={
+                                typeSearch === 'usr'
+                                    ?
+                                    listUsr
+                                    :
+                                    listPrp
+                            }
+                            columns={
+                                typeSearch === 'usr'
+                                    ?
+                                    [
+                                        {
+                                            label: 'CÓDIGO',
+                                            width: '160px',
+                                            renderCell: (item) =>
+                                                item.code
+                                        },
+                                        {
+                                            label: 'USUARIO',
+                                            minWidth: '300px',
+                                            renderCell: (item) => (
+                                                <div className='d-flex align-items-center px-2 py-1'>
+                                                    <div className='flex-shrink-0 me-3'>
+                                                        <Avatar
+                                                            img={item.image?.metadata.url}
+                                                            cloud={item.image?.cloud}
+                                                            noImgTxt={item.type > 1 ? item.socialReason : item.names}
+                                                            noImg={4004}
+                                                            circle={true}
+                                                            width={40}
+                                                            height={40}
+                                                        />
+                                                    </div>
+                                                    <div className='d-flex flex-column'>
+                                                        <p
+                                                            className='d-block text-primary fw-bolder mb-0'
+                                                        >
+                                                            {item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}
+                                                        </p>
+                                                        <span>{typeUserFarm(item.type)}</span>
+                                                    </div>
                                                 </div>
+                                            )
+                                        },
+                                        {
+                                            label: 'ESTADO',
+                                            width: '120px',
+                                            renderCell: (item) =>
+                                                <TagStatus status={item.active} />
+                                        },
+                                        {
+                                            label: 'ACCIÓN',
+                                            width: '160px',
+                                            pinRight: true,
+                                            renderCell: (item) =>
+                                                <div className='d-flex gap-2 p-2'>
+                                                    <Link
+                                                        to={`/app/coll/bill/usr/${item._id}`}
+                                                        className='btn btn-neutral-icon'
+                                                        style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
+                                                    >
+                                                        <IoEyeSharp size={20} />
+                                                    </Link>
+                                                    <Link
+                                                        to={`/app/coll/bill/usr/${item._id}`}
+                                                        target='_blank'
+                                                        className='btn btn-neutral-icon'
+                                                        style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
+                                                    >
+                                                        <IoOpen size={20} />
+                                                    </Link>
+                                                </div>
+                                        }
+                                    ]
+                                    :
+                                    [
+                                        {
+                                            label: 'CÓDIGO',
+                                            width: '180px',
+                                            renderCell: (item) =>
+                                                item.code
+                                        },
+                                        {
+                                            label: 'PREDIO',
+                                            minWidth: '250px',
+                                            renderCell: (item) => (
                                                 <div className='d-flex flex-column'>
                                                     <p
                                                         className='d-block text-primary fw-bolder mb-0'
                                                     >
-                                                        {item.type > 1 ? `${item.socialReason}` : `${item.names} ${item.lastName} ${item.motherLastName}`}
+                                                        {item.name}
                                                     </p>
-                                                    <span>{typeUserFarm(item.type)}</span>
+                                                    <span>{item.code}</span>
                                                 </div>
-                                            </div>
-                                        )
-                                    },
-                                    {
-                                        label: 'ESTADO',
-                                        width: '120px',
-                                        renderCell: (item) =>
-                                            <TagStatus status={item.active} />
-                                    },
-                                    {
-                                        label: 'ACCIÓN',
-                                        width: '160px',
-                                        pinRight: true,
-                                        renderCell: (item) =>
-                                            <div className='d-flex gap-2 p-2'>
-                                                <Link
-                                                    to={`/app/coll/bill/usr/${item._id}`}
-                                                    className='btn btn-neutral-icon'
-                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
-                                                >
-                                                    <IoEyeSharp size={20} />
-                                                </Link>
-                                                <Link
-                                                    to={`/app/coll/bill/usr/${item._id}`}
-                                                    target='_blank'
-                                                    className='btn btn-neutral-icon'
-                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
-                                                >
-                                                    <IoOpen size={20} />
-                                                </Link>
-                                            </div>
-                                    }
-                                ]
-                                :
-                                [
-                                    {
-                                        label: 'CÓDIGO',
-                                        width: '180px',
-                                        renderCell: (item) =>
-                                            item.code
-                                    },
-                                    {
-                                        label: 'PREDIO',
-                                        minWidth: '250px',
-                                        renderCell: (item) => (
-                                            <div className='d-flex flex-column'>
-                                                <p
-                                                    className='d-block text-primary fw-bolder mb-0'
-                                                >
-                                                    {item.name}
-                                                </p>
-                                                <span>{item.code}</span>
-                                            </div>
-                                        )
-                                    },
-                                    {
-                                        label: 'ESTADO',
-                                        width: '120px',
-                                        renderCell: (item) =>
-                                            <TagStatus status={item.active} />
-                                    },
-                                    {
-                                        label: 'ACCIÓN',
-                                        width: '200px',
-                                        pinRight: true,
-                                        renderCell: (item) =>
-                                            <div className='d-flex gap-2 p-2'>
-                                                <Link
-                                                    to={`/app/coll/bill/prp/${item._id}`}
-                                                    className='btn btn-neutral-icon'
-                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
-                                                >
-                                                    <IoEyeSharp size={20} />
-                                                </Link>
-                                                <Link
-                                                    to={`/app/coll/bill/prp/${item._id}`}
-                                                    target='_blank'
-                                                    className='btn btn-neutral-icon'
-                                                    style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
-                                                >
-                                                    <IoOpen size={20} />
-                                                </Link>
-                                            </div>
-                                    }
-                                ]
-                        }
-                    />
+                                            )
+                                        },
+                                        {
+                                            label: 'ESTADO',
+                                            width: '120px',
+                                            renderCell: (item) =>
+                                                <TagStatus status={item.active} />
+                                        },
+                                        // {
+                                        //     label: 'ACCIÓN',
+                                        //     width: '200px',
+                                        //     pinRight: true,
+                                        //     renderCell: (item) =>
+                                        //         <div className='d-flex gap-2 p-2'>
+                                        //             <Link
+                                        //                 to={`/app/coll/bill/prp/${item._id}`}
+                                        //                 className='btn btn-neutral-icon'
+                                        //                 style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
+                                        //             >
+                                        //                 <IoEyeSharp size={20} />
+                                        //             </Link>
+                                        //             <Link
+                                        //                 to={`/app/coll/bill/prp/${item._id}`}
+                                        //                 target='_blank'
+                                        //                 className='btn btn-neutral-icon'
+                                        //                 style={{ padding: '0.25rem', justifyContent: 'center', width: '40px', height: '40px' }}
+                                        //             >
+                                        //                 <IoOpen size={20} />
+                                        //             </Link>
+                                        //         </div>
+                                        // }
+                                    ]
+                            }
+                        />
+                    </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }

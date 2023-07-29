@@ -20,9 +20,10 @@ export const authApi = storeApi.injectEndpoints({
 
                     const { uid, names, image, access, modules, options, token } = data
 
-                    localStorage.setItem('token', `Bearer ${token}`)
-
-                    dispatch(login({ uid, names, image, access, modules, options, token }))
+                    setTimeout(() => {
+                        localStorage.setItem('token', `Bearer ${token}`)
+                        dispatch(login({ uid, names, image, access, modules, options, token }))
+                    }, 3000)
                 } catch (error) {
                     dispatch(logout())
                 }
@@ -51,9 +52,10 @@ export const checkingAuthentication = ({ userpass, password, remenber }) => {
 
         const { uid, names, image, access, modules, options, token } = resp
 
-        localStorage.setItem('token', `Bearer ${token}`)
-
-        dispatch(login({ uid, names, image, access, modules, options, token }))
+        setTimeout(() => {
+            localStorage.setItem('token', `Bearer ${token}`)
+            dispatch(login({ uid, names, image, access, modules, options, token }))
+        }, 3000)
     }
 }
 
@@ -71,9 +73,10 @@ export const checkingToken = () => {
 
         const { uid, names, image, access, modules, options, token } = resp
 
-        localStorage.setItem('token', `Bearer ${token}`)
-
-        dispatch(login({ uid, names, image, access, modules, options, token }))
+        setTimeout(() => {
+            localStorage.setItem('token', `Bearer ${token}`)
+            dispatch(login({ uid, names, image, access, modules, options, token }))
+        }, 3000)
     }
 }
 

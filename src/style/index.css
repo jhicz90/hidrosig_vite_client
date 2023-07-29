@@ -1054,7 +1054,7 @@ kbd.type-writer,
 }
 
 .table-data > table.table thead tr th {
-	border-top: 1px solid #dde2eb;
+	/* border-top: 1px solid #dde2eb; */
 	background-color: white;
 }
 
