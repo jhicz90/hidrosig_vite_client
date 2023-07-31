@@ -11,7 +11,6 @@ import { store } from './store'
 const SIHGApp = () => {
     return (
         <Provider store={store}>
-            <Router />
             <Toaster reverseOrder={false} position='bottom-right'>
                 {(t) => (
                     <ToastBar toast={t}>
@@ -37,6 +36,7 @@ const SIHGApp = () => {
                     </ToastBar>
                 )}
             </Toaster>
+            <Router />
         </Provider>
     )
 }

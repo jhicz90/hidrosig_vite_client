@@ -1,8 +1,17 @@
+import { Mutex } from 'async-mutex'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import axios from 'axios'
 import { msgFetchAlert } from '../helpers'
+import { login, logout } from './auth'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
+
+// Create a new mutex
+const mutex = new Mutex();
+
+const baseQuery = fetchBaseQuery({
+    baseUrl: `${baseURL}/`,
+})
 
 const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
     async ({ url, method, data, params, alert = true }) => {
@@ -40,15 +49,54 @@ const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
         }
     }
 
+const customBaseQuery = async (args, api, extraOptions) => {
+
+    await mutex.waitForUnlock()
+    
+    let result = await baseQuery(args, api, extraOptions)
+
+    if (result.error && result.error.status === 401) {
+        if (!mutex.isLocked()) {
+
+            const release = await mutex.acquire()
+
+            try {
+                const refreshResult = await baseQuery(
+                    { credentials: 'include', url: 'auth/refresh' },
+                    api,
+                    extraOptions
+                )
+
+                if (refreshResult.data.ok) {
+                    // Retry the initial query
+                    result = await baseQuery(args, api, extraOptions)
+                } else {
+                    api.dispatch(logout())
+                    // window.location.href = '/login'
+                }
+            } finally {
+                // release must be called once the mutex should be released again.
+                release()
+            }
+        } else {
+            // wait until the mutex is available without locking it
+            await mutex.waitForUnlock()
+            result = await baseQuery(args, api, extraOptions)
+        }
+    }
+
+    return result
+}
 
 export const storeApi = createApi({
     reducerPath: 'storeApi',
     keepUnusedDataFor: 60,
     refetchOnMountOrArgChange: true,
     tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo', 'Cllc', 'YrRt', 'VlRt', 'Comp', 'IrrSys', 'Crp'],
-    baseQuery: axiosBaseQuery({
-        baseUrl: baseURL
-    }),
+    baseQuery: customBaseQuery,
+    // baseQuery: axiosBaseQuery({
+    //     baseUrl: baseURL
+    // }),
     // baseQuery: fetchBaseQuery({
     //     baseUrl: `${baseURL}`,
     //     prepareHeaders: (headers, { getState }) => {
@@ -62,6 +110,20 @@ export const storeApi = createApi({
     //     }
     // }),
     endpoints: (builder) => ({
+        getMe: builder.query({
+            query: () => ({
+                url: `usersys/me`,
+                credentials: 'include',
+                method: 'GET'
+            }),
+            onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+                try {
+                    const { data } = await queryFulfilled
+                    const { uid, names, image, access, modules } = data
+                    dispatch(login({ uid, names, image, access, modules }))
+                } catch (error) { }
+            },
+        }),
         // USUARIOS DE SISTEMA
         getUsrsSysByOccup: builder.query({
             query: ({ id, search }) => ({

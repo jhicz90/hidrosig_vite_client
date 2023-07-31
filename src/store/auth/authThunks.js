@@ -5,36 +5,49 @@ import { startCheckingLogin, login, logout, startCheckingCredentials } from './'
 export const authApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // AUTH
-        authRefresh: builder.query({
-            query: () => ({
-                url: `auth/refresh`,
-                alert: false
+        authLogin: builder.query({
+            query: (data) => ({
+                url: `auth/login`,
+                body: data,
+                method: 'POST',
+                credentials: 'include'
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
-                    dispatch(startCheckingCredentials())
-
-                    const { data } = await queryFulfilled
-
-                    if (!data.ok) return dispatch(logout())
-
-                    const { uid, names, image, access, modules, options, token } = data
-
-                    setTimeout(() => {
-                        localStorage.setItem('token', `Bearer ${token}`)
-                        dispatch(login({ uid, names, image, access, modules, options, token }))
-                    }, 3000)
-                } catch (error) {
-                    dispatch(logout())
-                }
+                    await queryFulfilled
+                    await dispatch(storeApi.endpoints.getMe.initiate(null))
+                } catch (error) { }
             },
+        }),
+        authLogout: builder.query({
+            query: () => ({
+                url: `auth/logout`,
+                method: 'DELETE',
+                credentials: 'include'
+            }),
+            onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+                try {
+                    await queryFulfilled
+                    dispatch(logout())
+                } catch (error) { }
+            },
+        }),
+        authRefresh: builder.query({
+            query: () => ({
+                url: `auth/refresh`,
+                credentials: 'include',
+                alert: false,
+            })
         }),
         // AUTH
     })
 })
 
 export const {
-    useAuthRefreshQuery
+    useAuthLoginQuery,
+    useAuthRefreshQuery,
+    useLazyAuthLoginQuery,
+    useLazyAuthLogoutQuery,
 } = authApi
 
 export const checkingAuthentication = ({ userpass, password, remenber }) => {
@@ -83,7 +96,8 @@ export const checkingToken = () => {
 export const logoutAuth = () => {
     return async (dispatch) => {
 
-        dispatch(startCheckingCredentials())
+        // dispatch(startCheckingCredentials())
+        dispatch(logout())
 
         const resp = await fetchByToken({
             endpoint: 'auth/logout',
@@ -92,8 +106,8 @@ export const logoutAuth = () => {
         })
 
         if (resp.ok) {
-            localStorage.removeItem('token')
-            dispatch(logout())
+            console.log('Se respondio')
+            // localStorage.removeItem('token')
         }
     }
 }

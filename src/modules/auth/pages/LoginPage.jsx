@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { FormCheck } from 'react-bootstrap'
 import { IoReturnUpBack } from 'react-icons/io5'
 
 import { UseForm } from '../../../hooks'
-import { checkingAuthentication } from '../../../store/actions'
+import { checkingAuthentication, useLazyAuthLoginQuery } from '../../../store/actions'
 
 import backgroundLogin from '../../../assets/slider2.jpg'
 import logoApp from '../../../assets/logo192.png'
@@ -13,13 +13,13 @@ import { BeatLoader } from 'react-spinners'
 
 export const LoginPage = () => {
 
-    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [formLoginValues, , handleLoginInputChange] = UseForm({
         userpass: '',
         password: '',
         remenber: false
     })
+    const [login] = useLazyAuthLoginQuery()
     const { userpass, password, remenber } = formLoginValues
 
     const { checkLogin } = useSelector(state => state.auth)
@@ -28,7 +28,8 @@ export const LoginPage = () => {
 
     const handleLogin = (e) => {
         e?.preventDefault()
-        dispatch(checkingAuthentication(formLoginValues))
+        // dispatch(checkingAuthentication(formLoginValues))
+        login(formLoginValues)
     }
 
     const handleBackWeb = () => {
@@ -71,7 +72,7 @@ export const LoginPage = () => {
                                     type='text'
                                     id='inputEmail'
                                     className='form-control form-control-input-login'
-                                    placeholder='Usuario o Correo electrónico'
+                                    placeholder='Usuario o Correo'
                                     autoFocus
                                     autoComplete='off'
                                 />

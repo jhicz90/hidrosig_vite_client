@@ -92,9 +92,6 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                     withCredentials: true,
                     method,
                     baseURL,
-                    headers: {
-                        'Authorization': token
-                    },
                     url: endpoint,
                     data
                 })
