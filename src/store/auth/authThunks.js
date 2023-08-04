@@ -1,6 +1,6 @@
 import { fetchByToken, fetchNoToken } from '../../helpers'
 import { storeApi } from '../storeApi'
-import { startCheckingLogin, login, logout, startCheckingCredentials } from './'
+import { logout } from './'
 
 export const authApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -8,9 +8,8 @@ export const authApi = storeApi.injectEndpoints({
         authLogin: builder.query({
             query: (data) => ({
                 url: `auth/login`,
-                body: data,
                 method: 'POST',
-                credentials: 'include'
+                data,
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
@@ -23,7 +22,7 @@ export const authApi = storeApi.injectEndpoints({
             query: () => ({
                 url: `auth/logout`,
                 method: 'DELETE',
-                credentials: 'include'
+                alert: false
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
@@ -35,7 +34,6 @@ export const authApi = storeApi.injectEndpoints({
         authRefresh: builder.query({
             query: () => ({
                 url: `auth/refresh`,
-                credentials: 'include',
                 alert: false,
             })
         }),
@@ -49,74 +47,3 @@ export const {
     useLazyAuthLoginQuery,
     useLazyAuthLogoutQuery,
 } = authApi
-
-export const checkingAuthentication = ({ userpass, password, remenber }) => {
-    return async (dispatch) => {
-
-        dispatch(startCheckingLogin())
-
-        const resp = await fetchNoToken({
-            endpoint: 'auth/login',
-            data: { userpass, password, remenber },
-            method: 'POST'
-        })
-
-        if (!resp.ok) return dispatch(logout())
-
-        const { uid, names, image, access, modules, options, token } = resp
-
-        setTimeout(() => {
-            localStorage.setItem('token', `Bearer ${token}`)
-            dispatch(login({ uid, names, image, access, modules, options, token }))
-        }, 3000)
-    }
-}
-
-export const checkingToken = () => {
-    return async (dispatch) => {
-
-        dispatch(startCheckingCredentials())
-
-        const resp = await fetchByToken({
-            endpoint: 'auth/refresh',
-            alert: false
-        })
-
-        if (!resp.ok) return dispatch(logout())
-
-        const { uid, names, image, access, modules, options, token } = resp
-
-        setTimeout(() => {
-            localStorage.setItem('token', `Bearer ${token}`)
-            dispatch(login({ uid, names, image, access, modules, options, token }))
-        }, 3000)
-    }
-}
-
-export const logoutAuth = () => {
-    return async (dispatch) => {
-
-        // dispatch(startCheckingCredentials())
-        dispatch(logout())
-
-        const resp = await fetchByToken({
-            endpoint: 'auth/logout',
-            method: 'DELETE',
-            alert: false,
-        })
-
-        if (resp.ok) {
-            console.log('Se respondio')
-            // localStorage.removeItem('token')
-        }
-    }
-}
-
-// export const startChecking = () => {
-//     return async (dispatch) => {
-//         dispatch(initChecking())
-//         await dispatch(checkInitAdmin())
-//         await dispatch(checkToken())
-//         dispatch(finishChecking())
-//     }
-// }

@@ -2,7 +2,7 @@
 
 body {
 	/* background-color: #ebeef4; */
-	background-color: #f5f8fa;
+	/* background-color: #f5f8fa; */
 	font-size: 14px;
 	position: relative;
 	font-family: "Nunito Sans", sans-serif;
@@ -271,69 +271,6 @@ a.uppy-Dashboard-poweredBy {
 	z-index: 999999;
 }
 /* LOADING */
-/* LoginApp */
-.login {
-	align-items: stretch;
-	justify-content: stretch;
-	display: flex;
-	flex-basis: 100%;
-	min-height: 100vh;
-	width: 100%;
-	background-color: #fff;
-}
-
-.login .login-content {
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: stretch;
-	justify-content: stretch;
-	width: 100%;
-}
-
-.login .login-content .banner {
-	/* background-image: url("../assets/slider2.jpg"); */
-	background-color: rgba(0, 0, 0, 0);
-	background-position: center center;
-	background-size: cover;
-	position: relative;
-}
-
-.login .login-content .banner > .banner-overlay {
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	display: block;
-	opacity: 0.5;
-}
-
-.login .login-content .login-form {
-	background-color: white;
-}
-
-.form-control-input-login {
-	padding: 14px 16px;
-	font-size: 20px;
-	height: 50px;
-	line-height: 16px;
-	vertical-align: middle;
-	border-radius: 6px;
-	margin: 10px 0;
-}
-
-.btn-login {
-	padding: 8px 16px;
-	border-radius: 6px;
-	font-size: 24px;
-}
-
-@media (max-width: 992px) {
-	.login .login-content {
-		justify-content: center;
-	}
-}
-/* LoginApp */
 /* SIDEBAR */
 .sidebar-app nav a,
 .sidebar-app nav button {
@@ -1074,3 +1011,12 @@ kbd.type-writer,
 	--bs-list-group-border-radius: 9px;
 }
 /* LIST */
+.nav-underline.nav-flip .nav-link {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.nav-underline.nav-flip .nav-link:focus,
+.nav-underline.nav-flip .nav-link:hover {
+	background-color: transparent;
+}

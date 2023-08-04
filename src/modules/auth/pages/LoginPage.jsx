@@ -1,129 +1,126 @@
 import React, { useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { FormCheck } from 'react-bootstrap'
-import { IoReturnUpBack } from 'react-icons/io5'
-
-import { UseForm } from '../../../hooks'
-import { checkingAuthentication, useLazyAuthLoginQuery } from '../../../store/actions'
-
-import backgroundLogin from '../../../assets/slider2.jpg'
-import logoApp from '../../../assets/logo192.png'
-import { BeatLoader } from 'react-spinners'
+import { Link } from 'react-router-dom'
+import { FloatingLabel, Form } from 'react-bootstrap'
+import styled from 'styled-components'
+import { useForm } from 'react-hook-form'
+import { useLazyAuthLoginQuery } from '../../../store/actions'
 
 export const LoginPage = () => {
 
-    const navigate = useNavigate()
-    const [formLoginValues, , handleLoginInputChange] = UseForm({
-        userpass: '',
-        password: '',
-        remenber: false
+    const { register, handleSubmit } = useForm({
+        defaultValues: {
+            userpass: '',
+            password: '',
+            remenber: false
+        }
     })
-    const [login] = useLazyAuthLoginQuery()
-    const { userpass, password, remenber } = formLoginValues
+    const [login, { isLoading, isFetching }] = useLazyAuthLoginQuery()
 
-    const { checkLogin } = useSelector(state => state.auth)
+    const isAuthenticating = useMemo(() => isLoading || isFetching, [isLoading, isFetching])
 
-    const isAuthenticating = useMemo(() => checkLogin === true, [checkLogin])
-
-    const handleLogin = (e) => {
-        e?.preventDefault()
-        // dispatch(checkingAuthentication(formLoginValues))
-        login(formLoginValues)
-    }
-
-    const handleBackWeb = () => {
-        navigate('/web')
+    const handleLogin = (data) => {
+        login(data)
     }
 
     return (
-        <div className='login'>
-            <div className='login-content'>
-                <div
-                    onClick={handleBackWeb}
-                    className='btn btn-link text-decoration-none position-fixed'
-                    style={{ right: '10px', top: '10px' }}
-                >
-                    <IoReturnUpBack size={24} />
-                    <span className='ms-1'>Regresar a la página principal</span>
-                </div>
-                <div className='banner d-none d-lg-flex col-xl-8 col-lg-7 align-items-center p-5' style={{ backgroundImage: `url('${backgroundLogin}')` }}>
-                    <div className='banner-overlay bg-dark'></div>
-                    <div className='w-100 text-white px-5' style={{ zIndex: '1' }}>
-                        <h1 className='display-2 fw-bold mb-4'>BIENVENIDO A HIDROSIHG</h1>
-                        <div className='fs-4 fw-light'>
-                            Con la misión de mejorar el uso del recurso hídrico se creo HIDROSIHG, donde vera un mejor control y manejo de la información del campo a la web.
-                        </div>
+        <Login>
+            <div className='background'>
+                <div className='form-card'>
+                    <div className='form-title'>
+                        Bienvenido 👋 a HIDROSIHG
                     </div>
-                </div>
-                <div className='login-form d-flex align-items-center col-10 col-lg-5 col-xl-4 p-lg-0 p-xl-1'>
-                    <div className='d-flex col-sm-7 col-md-5 col-lg-12 col-xl-12 px-0 px-xl-4 mx-auto'>
-                        <div className='w-100 d-flex flex-column align-items-center'>
-                            <div className='d-flex justify-content-center align-items-center'>
-                                <img src={logoApp} alt='logo' className='ui-w-140' />
-                            </div>
-                            <h4 className='text-center fw-lighter mt-3 mb-0'>Inicia sesión con tu cuenta</h4>
-                            <form onSubmit={handleLogin} className='ui-w-350' noValidate>
-                                <input
-                                    value={userpass}
-                                    onChange={handleLoginInputChange}
-                                    disabled={isAuthenticating}
-                                    name='userpass'
-                                    type='text'
-                                    id='inputEmail'
-                                    className='form-control form-control-input-login'
-                                    placeholder='Usuario o Correo'
-                                    autoFocus
-                                    autoComplete='off'
-                                />
-                                <input
-                                    value={password}
-                                    onChange={handleLoginInputChange}
-                                    disabled={isAuthenticating}
-                                    name='password'
-                                    type='password'
-                                    id='inputPassword'
-                                    className='form-control form-control-input-login'
-                                    placeholder='Contraseña'
-                                    autoComplete='off'
-                                />
-                                <div className='d-flex justify-content-between my-2'>
-                                    <FormCheck
-                                        inline
-                                        value={remenber}
-                                        onChange={handleLoginInputChange}
-                                        name='remenber'
-                                        id='inputRemenber'
-                                        type='checkbox'
-                                        label={`Recordarme`}
-                                    />
-                                    <Link to='/recoverpassw' className='d-block small text-decoration-none'>¿Se olvido de la contraseña?</Link>
-                                </div>
-                                <div className='d-flex justify-content-center'>
-                                    {
-                                        isAuthenticating
-                                            ?
-                                            <BeatLoader size={32} speedMultiplier={0.5} style={{ opacity: 0.5, display: 'flex', marginTop: '1rem' }} />
-                                            :
-                                            <button
-                                                disabled={isAuthenticating}
-                                                onClick={handleLogin}
-                                                className='btn btn-login btn-primary fw-bold w-100' type='submit'>
-                                                Iniciar sesión
-                                            </button>
-                                    }
-                                    {/* <button
-                                        disabled={isAuthenticating}
-                                        onClick={handleLogin}
-                                        className='btn btn-login btn-primary fw-bold' type='submit'>
-                                        Iniciar sesión
-                                    </button> */}
-                                </div>
-                            </form>
-                        </div>
+                    <div className='form-subtitle'>
+                        Escriba su usuario y contraseña para poder ingresar
                     </div>
+                    <form className='auth' onSubmit={handleSubmit(handleLogin)}>
+                        <FloatingLabel
+                            label='Usuario o Correo'
+                            className='mb-3'
+                        >
+                            <Form.Control
+                                {...register('userpass', { required: true })}
+                                disabled={isAuthenticating}
+                                type='text'
+                                placeholder='Usuario o Correo'
+                            />
+                        </FloatingLabel>
+                        <FloatingLabel
+                            label='Contraseña'
+                            className='mb-3'
+                        >
+                            <Form.Control
+                                {...register('password', { required: true })}
+                                disabled={isAuthenticating}
+                                type='password'
+                                placeholder='Contraseña'
+                            />
+                        </FloatingLabel>
+                        <div className='w-100 d-flex flex-column align-items-center my-2'>
+                            <Form.Check
+                                {...register('remenber')}
+                                id='remenberCheck'
+                                inline
+                                className='text-white fs-5'
+                                type='checkbox'
+                                label={`Recordarme`}
+                            />
+                            <Link to='/recoverpassw' className='d-block small text-decoration-none'>¿Se olvido de la contraseña?</Link>
+                        </div>
+                        <button
+                            disabled={isAuthenticating}
+                            className='btn btn-login btn-primary fw-bold w-100' type='submit'>
+                            Iniciar sesión
+                        </button>
+                    </form>
                 </div>
             </div>
-        </div>
+        </Login>
     )
 }
+
+const Login = styled.div`
+    background-image: url('/src/assets/slider2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    margin: 0px;
+
+    & div.background {
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(75deg, rgb(40,43,54) 0%, rgb(40,43,54) 30%, rgba(40,43,54,0.8) 100%);
+        /* Vertical center */
+        display: table-cell;
+        vertical-align: middle;
+
+        & div.form-card {
+            width: 68%;
+            display: flex;
+            flex-direction: column;
+            max-width: 350px;
+            margin-left: 60px !important;
+        }
+
+        & div.form-title { 
+            font-size: 42px; 
+            font-weight: 800; 
+            letter-spacing: 0.5px; 
+            color: #e8e8e8; 
+            padding-bottom: 12px; 
+        }
+
+        & div.form-subtitle {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            color: #afafaf;
+            padding-bottom: 24px;
+        }
+
+        & .btn-login {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 24px;
+        }
+    }
+`

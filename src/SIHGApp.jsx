@@ -1,7 +1,10 @@
 import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie'
 import { toast, ToastBar, Toaster } from 'react-hot-toast'
-import { Router } from './router/Router'
+import { AuthMiddleware } from './guards'
 import { store } from './store'
+import { Router } from './router/Router'
 
 // S - Sistema de
 // I - Informacion
@@ -36,7 +39,13 @@ const SIHGApp = () => {
                     </ToastBar>
                 )}
             </Toaster>
-            <Router />
+            <BrowserRouter>
+                <CookiesProvider>
+                    <AuthMiddleware>
+                        <Router />
+                    </AuthMiddleware>
+                </CookiesProvider>
+            </BrowserRouter>
         </Provider>
     )
 }

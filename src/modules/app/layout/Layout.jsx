@@ -32,7 +32,7 @@ const ContentApp = styled.main`
     position: relative;
     display:flex;
     flex-direction: column;
-    background-image: linear-gradient(to top, #f5f8fa, #fff);
+    background-image: linear-gradient(to bottom, #f5f8fa, #fff);
 
     & .scroll-content{
         /* overflow-y: scroll; */

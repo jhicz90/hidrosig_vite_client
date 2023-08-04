@@ -59,57 +59,47 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
 }
 
 export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, method = 'GET', alert = true }) => {
-
-    const token = localStorage.getItem('token') || ''
-
     try {
-        if (token !== '') {
-            if (method === 'GET') {
-                const resp = await axios({
-                    withCredentials: true,
-                    method,
-                    baseURL,
-                    headers: {
-                        'Authorization': token
-                    },
-                    url: endpoint,
-                    params
-                })
+        if (method === 'GET') {
+            const resp = await axios({
+                withCredentials: true,
+                method,
+                baseURL,
+                url: endpoint,
+                params
+            })
 
-                const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>
-                    typeof value === 'bigint'
-                        ? value.toString()
-                        : value
-                ))
+            const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>
+                typeof value === 'bigint'
+                    ? value.toString()
+                    : value
+            ))
 
-                if (bodyResponse.hasOwnProperty('msg') && alert) {
-                    msgFetchAlert(bodyResponse)
-                }
-
-                return bodyResponse
-            } else {
-                const resp = await axios({
-                    withCredentials: true,
-                    method,
-                    baseURL,
-                    url: endpoint,
-                    data
-                })
-
-                const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>
-                    typeof value === 'bigint'
-                        ? value.toString()
-                        : value
-                ))
-
-                if (bodyResponse.hasOwnProperty('msg') && alert) {
-                    msgFetchAlert(bodyResponse)
-                }
-
-                return bodyResponse
+            if (bodyResponse.hasOwnProperty('msg') && alert) {
+                msgFetchAlert(bodyResponse)
             }
+
+            return bodyResponse
         } else {
-            return { ok: false }
+            const resp = await axios({
+                withCredentials: true,
+                method,
+                baseURL,
+                url: endpoint,
+                data
+            })
+
+            const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>
+                typeof value === 'bigint'
+                    ? value.toString()
+                    : value
+            ))
+
+            if (bodyResponse.hasOwnProperty('msg') && alert) {
+                msgFetchAlert(bodyResponse)
+            }
+
+            return bodyResponse
         }
     } catch (err) {
         console.log(err)

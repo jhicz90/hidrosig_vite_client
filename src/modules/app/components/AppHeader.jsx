@@ -7,7 +7,7 @@ import { FaBell, FaEnvelope, FaSearch } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import { MenuItemControlTypePay } from '.'
 
-import { logoutAuth, setCmkbarShow, useLazyAuthLogoutQuery } from '../../../store/actions'
+import { setCmkbarShow, useLazyAuthLogoutQuery } from '../../../store/actions'
 
 import logoApp from '../../../assets/logo192.png'
 import { AvatarProfile } from '../../../components'
@@ -21,8 +21,6 @@ export const AppHeader = () => {
 
     const handleLogout = () => {
         logout()
-        // dispatch(logoutAuth())
-        // navigate('/login', { replace: true })
     }
 
     const handleSidebar = () => {

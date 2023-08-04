@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Button, Card, Form } from 'react-bootstrap'
+import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { pettycashApi, searchOrgz, useUpdatePettyCashByIdMutation } from '../../../store/actions'
@@ -36,6 +36,14 @@ export const PettyCashInformation = () => {
         <Card>
             <Card.Body>
                 <form id='form-accounting-pettycash-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                        <Form.Label column sm={2}>
+                            Email
+                        </Form.Label>
+                        <Col sm={10}>
+                            <Form.Control type="email" placeholder="Email" />
+                        </Col>
+                    </Form.Group>
                     <Liner>Información</Liner>
                     <div className='row'>
                         <div className='col-12 col-md-4 col-xl-3'>

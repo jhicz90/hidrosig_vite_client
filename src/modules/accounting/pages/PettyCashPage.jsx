@@ -114,21 +114,25 @@ export const PettyCashPage = () => {
             <div className='row'>
                 <div className='col-12'>
                     <Tab.Container>
-                        <Card className='p-2'>
-                            <SliderNavFlip>
-                                <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
-                                <NavLink to={`img`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Images</NavLink>
-                                <NavLink to={`vch`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Comprobantes</NavLink>
-                            </SliderNavFlip>
-                        </Card>
-                        <div className='mt-2'>
-                            <Routes>
-                                <Route index element={<PettyCashInformation />} />
-                                <Route path={`img`} element={<PettyCashImages />} />
-                                <Route path={`vch`} element={<PettyCashListVouchers />} />
-                            </Routes>
-                        </div>
+                        <SliderNavFlip className='px-3' cameraClass='nav nav-underline nav-flip'>
+                            <li className='nav-item'>
+                                <NavLink to={``} end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Información</NavLink>
+                            </li>
+                            <li className='nav-item'>
+                                <NavLink to={`img`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Imagenes</NavLink>
+                            </li>
+                            <li className='nav-item'>
+                                <NavLink to={`vch`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Comprobantes</NavLink>
+                            </li>
+                        </SliderNavFlip>
                     </Tab.Container>
+                    <div className='mt-2'>
+                        <Routes>
+                            <Route index element={<PettyCashInformation />} />
+                            <Route path={`img`} element={<PettyCashImages />} />
+                            <Route path={`vch`} element={<PettyCashListVouchers />} />
+                        </Routes>
+                    </div>
                 </div>
             </div>
         </div>

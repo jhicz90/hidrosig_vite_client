@@ -3,10 +3,10 @@ import Flicking from '@egjs/react-flicking'
 
 import '@egjs/react-flicking/dist/flicking.css'
 
-export const SliderNavFlip = ({ refSlider = null, className = '', spacingChilds = true, marginChilds = '0.25rem', children }) => {
+export const SliderNavFlip = ({ refSlider = null, className = '', cameraClass = 'nav', spacingChilds = true, marginChilds = '0.25rem', children }) => {
 
     return (
-        <FlipWrapper
+        <Flicking
             ref={refSlider}
             autoResize={true}
             renderOnlyVisible={false}
@@ -17,9 +17,10 @@ export const SliderNavFlip = ({ refSlider = null, className = '', spacingChilds 
             className={className}
             spacingchilds={String(spacingChilds)}
             marginchilds={marginChilds}
+            cameraClass={cameraClass}
         >
             {children}
-        </FlipWrapper>
+        </Flicking>
     )
 }
 

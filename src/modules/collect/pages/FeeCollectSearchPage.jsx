@@ -15,7 +15,7 @@ export const FeeCollectSearchPage = () => {
     return (
         <>
             <div className='container-fluid'>
-                <div className='row my-3'>
+                <div className='row my-2'>
                     <div className='col-12'>
                         <div className='row align-items-center justify-content-between g-3'>
                             <div className='col-12 col-md-auto'>
@@ -32,7 +32,7 @@ export const FeeCollectSearchPage = () => {
                 </div>
             </div>
             <div className='container-fluid'>
-                <div className='row mt-3'>
+                <div className='row mt-2'>
                     <div className='col-12'>
                         <Tab.Container>
                             <SliderNavFlip>
@@ -62,8 +62,8 @@ export const FeeCollectSearchPage = () => {
                 </div>
             </div>
             <div className='container-fluid'>
-                <div className='row justify-content-center'>
-                    <div className='col'>
+                <div className='row'>
+                    <div className='col-12'>
                         <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoadingUsr || isLoadingPrp} />
                         <DataTable
                             className='border border-2 border-light-subtle'

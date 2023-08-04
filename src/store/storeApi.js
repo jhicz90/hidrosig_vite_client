@@ -1,75 +1,79 @@
-import { Mutex } from 'async-mutex'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import axios from 'axios'
+import { Mutex } from 'async-mutex'
+import { createApi } from '@reduxjs/toolkit/query/react'
 import { msgFetchAlert } from '../helpers'
 import { login, logout } from './auth'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
 
 // Create a new mutex
-const mutex = new Mutex();
+const mutex = new Mutex()
 
-const baseQuery = fetchBaseQuery({
-    baseUrl: `${baseURL}/`,
-})
+// const baseQuery = fetchBaseQuery({
+//     baseUrl: `${baseURL}/`,
+// })
 
-const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) =>
-    async ({ url, method, data, params, alert = true }) => {
-        try {
-            const result = await axios({
-                withCredentials: true,
-                url: baseUrl + '/' + url,
-                method,
-                data,
-                params,
-                headers: {
-                    'Content-type': 'application/json',
-                    'Authorization': localStorage.getItem('token') || ''
-                }
-            })
-
-            if (result.data.hasOwnProperty('msg')) {
-                alert && msgFetchAlert(result.data)
+const axiosFetch = async ({ url, method, data, params, credentials = true, alert = true }) => {
+    try {
+        const result = await axios({
+            withCredentials: credentials,
+            url: baseURL + '/' + url,
+            method,
+            data,
+            params,
+            headers: {
+                'Content-type': 'application/json'
             }
+        })
 
-            return { data: result.data }
-        } catch (axiosError) {
-            let err = axiosError
-            console.log(err)
-            if (err.response?.data.hasOwnProperty('msg')) {
-                alert && msgFetchAlert(err.response?.data)
-            }
+        if (result.data.hasOwnProperty('msg')) {
+            alert && msgFetchAlert(result.data)
+        }
 
-            return {
-                error: {
-                    status: err.response?.status || 500,
-                    data: err.response?.data || err.message,
-                },
-            }
+        return { data: result.data }
+    } catch (axiosError) {
+        let err = axiosError
+        console.log(err)
+        if (err.response?.data.hasOwnProperty('msg')) {
+            alert && msgFetchAlert(err.response?.data)
+        }
+
+        return {
+            error: {
+                status: err.response?.status || 500,
+                data: err.response?.data || err.message,
+            },
         }
     }
+}
 
-const customBaseQuery = async (args, api, extraOptions) => {
+const customBaseQuery = async ({ url, method = 'GET', data, params, credentials = true, alert = true }, api, extraOptions) => {
 
     await mutex.waitForUnlock()
-    
-    let result = await baseQuery(args, api, extraOptions)
 
-    if (result.error && result.error.status === 401) {
+    // let result = await baseQuery(args, api, extraOptions)
+    let result = await axiosFetch({ url, method, data, params, credentials, alert })
+
+    if (!!result.error && result.error.status === 401) {
         if (!mutex.isLocked()) {
 
             const release = await mutex.acquire()
 
             try {
-                const refreshResult = await baseQuery(
-                    { credentials: 'include', url: 'auth/refresh' },
-                    api,
-                    extraOptions
-                )
+                // const refreshResult = await baseQuery(
+                //     { credentials: 'include', url: 'auth/refresh' },
+                //     api,
+                //     extraOptions
+                // )
 
-                if (refreshResult.data.ok) {
+                const refreshResult = await axiosFetch({
+                    url: 'auth/refresh'
+                })
+
+                if (refreshResult.data?.ok) {
                     // Retry the initial query
-                    result = await baseQuery(args, api, extraOptions)
+                    // result = await baseQuery(args, api, extraOptions)
+                    result = await axiosFetch({ url, method, data, params, credentials, alert })
                 } else {
                     api.dispatch(logout())
                     // window.location.href = '/login'
@@ -81,7 +85,8 @@ const customBaseQuery = async (args, api, extraOptions) => {
         } else {
             // wait until the mutex is available without locking it
             await mutex.waitForUnlock()
-            result = await baseQuery(args, api, extraOptions)
+            // result = await baseQuery(args, api, extraOptions)
+            result = await axiosFetch({ url, method, data, params, credentials, alert })
         }
     }
 
@@ -113,8 +118,6 @@ export const storeApi = createApi({
         getMe: builder.query({
             query: () => ({
                 url: `usersys/me`,
-                credentials: 'include',
-                method: 'GET'
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
@@ -122,7 +125,7 @@ export const storeApi = createApi({
                     const { uid, names, image, access, modules } = data
                     dispatch(login({ uid, names, image, access, modules }))
                 } catch (error) { }
-            },
+            }
         }),
         // USUARIOS DE SISTEMA
         getUsrsSysByOccup: builder.query({
