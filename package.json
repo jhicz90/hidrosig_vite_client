@@ -1,7 +1,7 @@
 {
     "name": "hidrosig_client",
     "private": true,
-    "version": "2.8.3",
+    "version": "2.8.4",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -47,7 +47,6 @@
         "react-checkbox-tree": "^1.8.0",
         "react-cmdk": "^1.3.9",
         "react-content-loader": "^6.2.1",
-        "react-cookie": "^4.1.1",
         "react-datepicker": "^4.14.0",
         "react-dom": "^18.2.0",
         "react-dropzone": "^14.2.3",

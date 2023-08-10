@@ -13,7 +13,9 @@ export const authApi = storeApi.injectEndpoints({
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
-                    await queryFulfilled
+                    const { data } = await queryFulfilled
+                    const { token } = data
+                    localStorage.setItem('token', token)
                     await dispatch(storeApi.endpoints.getMe.initiate(null))
                 } catch (error) { }
             },
@@ -26,6 +28,7 @@ export const authApi = storeApi.injectEndpoints({
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
+                    localStorage.removeItem('token')
                     await queryFulfilled
                     dispatch(logout())
                 } catch (error) { }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Mutex } from 'async-mutex'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { msgFetchAlert } from '../helpers'
-import { login, logout } from './auth'
+import { login, logout, onSetCheckLogin } from './auth'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
 
@@ -22,7 +22,8 @@ const axiosFetch = async ({ url, method, data, params, credentials = true, alert
             data,
             params,
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': localStorage.getItem('token') || ''
             }
         })
 
@@ -67,7 +68,8 @@ const customBaseQuery = async ({ url, method = 'GET', data, params, credentials 
                 // )
 
                 const refreshResult = await axiosFetch({
-                    url: 'auth/refresh'
+                    url: 'auth/refresh',
+                    alert: false
                 })
 
                 if (refreshResult.data?.ok) {
@@ -76,6 +78,7 @@ const customBaseQuery = async ({ url, method = 'GET', data, params, credentials 
                     result = await axiosFetch({ url, method, data, params, credentials, alert })
                 } else {
                     api.dispatch(logout())
+                    // api.dispatch(storeApi.util.invalidateTags(['Auth']))
                     // window.location.href = '/login'
                 }
             } finally {
@@ -97,7 +100,7 @@ export const storeApi = createApi({
     reducerPath: 'storeApi',
     keepUnusedDataFor: 60,
     refetchOnMountOrArgChange: true,
-    tagTypes: ['UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo', 'Cllc', 'YrRt', 'VlRt', 'Comp', 'IrrSys', 'Crp'],
+    tagTypes: ['Auth', 'UsrSys', 'Occup', 'Role', 'Perm', 'Modl', 'Orgz', 'Trrt', 'Irrig', 'Ptty', 'Vchr', 'Files', 'UsrFrm', 'Frm', 'Geo', 'Cllc', 'YrRt', 'VlRt', 'Comp', 'IrrSys', 'Crp'],
     baseQuery: customBaseQuery,
     // baseQuery: axiosBaseQuery({
     //     baseUrl: baseURL
@@ -118,13 +121,20 @@ export const storeApi = createApi({
         getMe: builder.query({
             query: () => ({
                 url: `usersys/me`,
+                alert: false
             }),
             onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled
+
+                    if (!data.ok) return dispatch(logout())
+
                     const { uid, names, image, access, modules } = data
+
                     dispatch(login({ uid, names, image, access, modules }))
-                } catch (error) { }
+                } catch (error) {
+                    dispatch(logout())
+                }
             }
         }),
         // USUARIOS DE SISTEMA
@@ -309,6 +319,7 @@ export const {
     useAddRugosityMutation,
     useDeleteOrderChannelMutation,
     useDeleteRugosityMutation,
+    useGetMeQuery,
     useGetModulesGroupQuery,
     useGetModulesQuery,
     useGetOccupByIdQuery,
@@ -320,6 +331,7 @@ export const {
     useGetRolesQuery,
     useGetRugositysQuery,
     useGetUsrsSysByOccupQuery,
+    useLazyGetMeQuery,
     useLazyGetVoucherByIdQuery,
     useUpdateOrderChannelMutation,
     useUpdateRugosityMutation,

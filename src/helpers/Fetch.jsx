@@ -59,6 +59,9 @@ export const fetchNoToken = async ({ endpoint = '', params = {}, data = {}, meth
 }
 
 export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, method = 'GET', alert = true }) => {
+
+    const token = localStorage.getItem('token') || ''
+    
     try {
         if (method === 'GET') {
             const resp = await axios({
@@ -66,7 +69,10 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                 method,
                 baseURL,
                 url: endpoint,
-                params
+                params,
+                headers: {
+                    'Authorization': token
+                },
             })
 
             const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>

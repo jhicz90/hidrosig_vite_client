@@ -6,7 +6,8 @@ const initialState = {
     photoURL: null,
     lvlAccess: 0,
     modules: [],
-    token: null
+    token: null,
+    checkLogin: true,
 }
 
 export const authSlice = createSlice({
@@ -19,12 +20,15 @@ export const authSlice = createSlice({
             state.photoURL = payload.image
             state.lvlAccess = payload.access
             state.modules = payload.modules
+            state.checkLogin = false
         },
-        logout: () => initialState,
+        logout: () => ({ ...initialState, checkLogin: false }),
         onSetToken: (state, { payload }) => {
-            state.checkToken = false
             state.token = payload
         },
+        onSetCheckLogin: (state, { payload }) => {
+            state.checkLogin = payload
+        }
     }
 });
 
@@ -32,4 +36,5 @@ export const {
     login,
     logout,
     onSetToken,
+    onSetCheckLogin,
 } = authSlice.actions

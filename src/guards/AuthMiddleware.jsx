@@ -1,20 +1,28 @@
-import React from 'react'
-import { useCookies } from 'react-cookie'
+import React, { useEffect } from 'react'
 import { LoadingLottie } from '../components'
 import { useAuthStore } from '../hooks'
-import { storeApi } from '../store/actions'
+import { useGetMeQuery } from '../store/actions'
 
 export const AuthMiddleware = ({ children }) => {
-    const { uid } = useAuthStore()
-    const [cookies] = useCookies(['logged_in'])
 
-    const { isLoading } = storeApi.endpoints.getMe.useQuery(null, {
-        skip: !cookies.logged_in,
-    })
+    const { checkLogin, setCheckLogin } = useAuthStore()
+    const { isLoading } = useGetMeQuery()
 
-    if (isLoading && !uid) {
+    useEffect(() => {
+        onstorage = () => {
+            if (!localStorage.getItem('token')) {
+                setCheckLogin(true)
+            }
+        }
+    }, [])
+
+    if (isLoading || checkLogin) {
         return <LoadingLottie />
     }
 
-    return children
+    return (
+        <React.Fragment>
+            {children}
+        </React.Fragment>
+    )
 }
