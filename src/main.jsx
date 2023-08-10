@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './SIHGApp'
 import { Provider } from 'react-redux'
-import { CookiesProvider } from 'react-cookie'
 import { toast, ToastBar, Toaster } from 'react-hot-toast'
 import { AuthMiddleware } from './guards'
 import { store } from './store'
@@ -43,11 +42,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     </ToastBar>
                 )}
             </Toaster>
-            <CookiesProvider>
-                <AuthMiddleware>
-                    <App />
-                </AuthMiddleware>
-            </CookiesProvider>
+            <AuthMiddleware>
+                <App />
+            </AuthMiddleware>
         </Provider>
     </React.StrictMode>
 )
