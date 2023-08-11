@@ -89,7 +89,7 @@ export const AppHeader = () => {
                         <div className='menu-img online'>
                             <AvatarProfile size='48px' avatarImg={photoURL} />
                         </div>
-                        <div className='menu-text'>{displayName}</div>
+                        <div className='menu-text d-none d-md-block'>{displayName}</div>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item>
