@@ -5,7 +5,7 @@ import moment from 'moment'
 import { HiArrowUturnLeft, HiCalendar, HiCurrencyDollar, HiPrinter } from 'react-icons/hi2'
 import { LiaMoneyCheckAltSolid } from 'react-icons/lia'
 import { MdOutlineNumbers } from 'react-icons/md'
-import { FaRegFileExcel, FaRegFilePdf } from 'react-icons/fa'
+import { FaLock, FaLockOpen, FaRegFileExcel, FaRegFilePdf } from 'react-icons/fa'
 import { useGetPettyCashByIdQuery } from '../../../store/actions'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { PettyCashImages, PettyCashInformation, PettyCashListVouchers } from '../components'
@@ -101,6 +101,16 @@ export const PettyCashPage = () => {
                         >
                             <HiPrinter />
                             Generar reporte
+                        </Button>
+                        <Button
+                            variant='secondary'
+                            size='sm'
+                            active={true}
+                            className='d-flex align-items-center gap-2'
+                        >
+                            {/* <FaLock /> */}
+                            <FaLockOpen />
+                            Abrir caja
                         </Button>
                         <Button
                             onClick={() => handleDelete(pettycashid, data?.name)}

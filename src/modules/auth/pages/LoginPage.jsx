@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import { useLazyAuthLoginQuery } from '../../../store/actions'
 
+import bg from '../../../assets/slider1.jpg'
+
 export const LoginPage = () => {
 
     const { register, handleSubmit } = useForm({
@@ -23,7 +25,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <Login>
+        <Login style={{ backgroundImage: `url(${bg})` }}>
             <div className='background'>
                 <div className='form-card'>
                     <div className='form-title'>
@@ -79,7 +81,6 @@ export const LoginPage = () => {
 }
 
 const Login = styled.div`
-    background-image: url('public/slider2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;

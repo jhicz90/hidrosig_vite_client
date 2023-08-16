@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { IoAddSharp, IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
+import { VoucherCreateInPettyCash } from '.'
 import { pettycashApi, startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery } from '../../../store/actions'
 import { DataTable, Image, InputSearch, LinkBack, TagDate, TagTimeAgo } from '../../../components'
 
@@ -52,7 +53,8 @@ export const PettyCashListVouchers = () => {
             <div className='row'>
                 <div className='col-12'>
                     <div className='d-flex flex-row-reverse justify-content-between align-items-center flex-wrap gap-2'>
-                        <LinkBack className='btn btn-primary' relative to={`/app/acct/voucher/create`} state={{ pettycashId: pettycashid }}>Nuevo comprobante</LinkBack>
+                        {/* <LinkBack className='btn btn-primary' relative to={`/app/acct/voucher/create`} state={{ pettycashId: pettycashid }}>Nuevo comprobante</LinkBack> */}
+                        <VoucherCreateInPettyCash pettycash={pettycashid} />
                         <div>
                             {`${vouchersIn.length} Comprobantes - ${amountTotal.toFixed(2)} / ${(Number(data.remainingAmount) + Number(data.oldBalance) + Number(outTotal)).toFixed(2)}`}
                         </div>
