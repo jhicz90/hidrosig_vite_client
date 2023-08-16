@@ -30,7 +30,6 @@ export const FarmCropEdit = () => {
             show={farmCropEditShow}
             onHide={() => setContext(v => ({ ...v, farmCropEditShow: false, farmCropEditData: null }))}
             placement='end'
-            style={{ maxWidth: '28rem' }}
         >
             <Offcanvas.Header closeButton closeVariant='white'>
                 <div className='d-flex flex-column'>

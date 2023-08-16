@@ -90,7 +90,6 @@ const SlideVolCreate = ({ date, showSlide, setShowSlide }) => {
             show={showSlide}
             onHide={() => setShowSlide(false)}
             placement='end'
-            style={{ maxWidth: '28rem' }}
         >
             <Offcanvas.Header closeButton closeVariant='white'>
                 <Offcanvas.Title>Consumo del {moment(date).format('DD MMMM, YYYY')}</Offcanvas.Title>
@@ -201,7 +200,6 @@ const SlideVolEdit = ({ date, data, showSlide, setShowSlide }) => {
             show={showSlide}
             onHide={() => setShowSlide(false)}
             placement='end'
-            style={{ maxWidth: '28rem' }}
         >
             <Offcanvas.Header closeButton closeVariant='white'>
                 <Offcanvas.Title>Consumo del {moment(date).format('DD MMMM, YYYY')}</Offcanvas.Title>

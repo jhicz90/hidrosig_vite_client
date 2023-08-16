@@ -79,7 +79,7 @@ export const LoginPage = () => {
 }
 
 const Login = styled.div`
-    background-image: url('/src/assets/slider2.jpg');
+    background-image: url('public/slider2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;

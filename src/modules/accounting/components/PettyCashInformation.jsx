@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import { pettycashApi, searchOrgz, useUpdatePettyCashByIdMutation } from '../../../store/actions'
 import { DatePicker, Liner, OptionOrgz, TooltipInfo } from '../../../components'
+import moment from 'moment'
 
 export const PettyCashInformation = () => {
 
@@ -28,203 +29,188 @@ export const PettyCashInformation = () => {
 
     useEffect(() => {
         reset({
-            ...data
+            ...data,
+            startDeclaration: moment(data.startDeclaration).format('YYYY-MM-DD')
         })
     }, [reset, data])
 
     return (
-        <Card>
-            <Card.Body>
-                <form id='form-accounting-pettycash-edit-info' onSubmit={handleSubmit(handleUpdate)}>
-                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                        <Form.Label column sm={2}>
-                            Email
+        <form id='form-accounting-pettycash-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+            <div className='d-flex justify-content-end gap-2'>
+                <Button
+                    disabled={isUpdating}
+                    variant='primary'
+                    type='submit'
+                >
+                    Guardar cambios
+                </Button>
+            </div>
+            <Liner>Información</Liner>
+            <Form.Group as={Row} className='mb-3' controlId='pCode'>
+                <Form.Label column sm='2'>
+                    Código
+                </Form.Label>
+                <Col sm='10'>
+                    <Form.Control
+                        {...register('code', { required: true })}
+                        type='text'
+                        // disabled
+                        autoComplete='off'
+                        readOnly
+                    />
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className='mb-3' controlId='pYearName'>
+                <Form.Label column sm='2'>
+                    Año / Nombre
+                </Form.Label>
+                <Col sm='10'>
+                    <InputGroup>
+                        <Form.Control
+                            {...register('year', {
+                                required: true,
+                                min: 1990,
+                                max: new Date().getFullYear()
+                            })}
+                            type='number'
+                            autoComplete='off'
+                        />
+                        <Form.Control
+                            {...register('name', { required: true })}
+                            type='text'
+                            autoComplete='off'
+                        />
+                    </InputGroup>
+                </Col>
+            </Form.Group>
+            <Form.Group as={Row} className='mb-3' controlId='pDesc'>
+                <Form.Label column sm='2'>
+                    Descripción
+                </Form.Label>
+                <Col sm='10'>
+                    <Form.Control
+                        {...register('desc')}
+                        as='textarea'
+                        type={'text'}
+                        autoComplete='off'
+                        rows={6}
+                    />
+                </Col>
+            </Form.Group>
+            {
+                lvlAccess === 1
+                &&
+                <>
+                    <Liner>Organización</Liner>
+                    <Form.Group as={Row} className='mb-3' controlId='pOrgz'>
+                        <Form.Label column sm='2'>
+                            Junta o Comisión
                         </Form.Label>
-                        <Col sm={10}>
-                            <Form.Control type="email" placeholder="Email" />
+                        <Col sm='10'>
+                            <Controller
+                                name='organization'
+                                control={control}
+                                rules={{ required: true }}
+                                render={
+                                    ({ field }) =>
+                                        <AsyncSelect
+                                            {...field}
+                                            inputId='pOrgz'
+                                            classNamePrefix='rc-select'
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    minHeight: '60px',
+                                                }),
+                                            }}
+                                            isClearable
+                                            defaultOptions
+                                            loadOptions={searchOrgz}
+                                            menuPlacement={'auto'}
+                                            placeholder={`Buscar...`}
+                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                            getOptionValue={e => e._id}
+                                            getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                        />
+                                }
+                            />
+                            <Form.Text muted>
+                                Seleccione la organización a la que pertenecera esta caja chica.
+                            </Form.Text>
                         </Col>
                     </Form.Group>
-                    <Liner>Información</Liner>
-                    <div className='row'>
-                        <div className='col-12 col-md-4 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pCode'>
-                                <Form.Label>Código</Form.Label>
-                                <Form.Control
-                                    {...register('code', { required: true })}
-                                    type='text'
-                                    disabled
-                                    autoComplete='off'
-                                    readOnly
+                </>
+            }
+            <Liner>Comprobante o ficha</Liner>
+            <Form.Group as={Row} className='mb-3' controlId='pStartDeclarationReceipt'>
+                <Form.Label column sm='2'>
+                    Fecha / Número
+                </Form.Label>
+                <Col sm='10'>
+                    <InputGroup>
+                        <Controller
+                            control={control}
+                            name='startDeclaration'
+                            rules={{ required: true }}
+                            render={({
+                                field: { onChange, value },
+                            }) => (
+                                <DatePicker
+                                    value={value}
+                                    onChange={onChange}
                                 />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-4 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pYear'>
-                                <Form.Label>Año</Form.Label>
-                                <Form.Control
-                                    {...register('year', {
-                                        required: true,
-                                        min: 1990,
-                                        max: new Date().getFullYear()
-                                    })}
-                                    type='number'
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-4 col-xl-6'>
-                            <Form.Group className='mb-3' controlId='pName'>
-                                <Form.Label>Nombre</Form.Label>
-                                <Form.Control
-                                    {...register('name', { required: true })}
-                                    type='text'
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12'>
-                            <Form.Group className='mb-3' controlId='pDesc'>
-                                <Form.Label>Descripción</Form.Label>
-                                <Form.Control
-                                    {...register('desc')}
-                                    as='textarea'
-                                    type={'text'}
-                                    autoComplete='off'
-                                    rows={6}
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <Liner>Comprobante o ficha</Liner>
-                    <div className='row'>
-                        <div className='col-12 col-md-5 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pStartDeclaration'>
-                                <Form.Label>Fecha <TooltipInfo message={'La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.'} /></Form.Label>
-                                <Controller
-                                    control={control}
-                                    name='startDeclaration'
-                                    rules={{ required: true }}
-                                    render={({
-                                        field: { onChange, value },
-                                    }) => (
-                                        <DatePicker
-                                            id='pStartDeclaration'
-                                            value={value}
-                                            onChange={onChange}
-                                        />
-                                    )}
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-5 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pReceipt'>
-                                <Form.Label>Número</Form.Label>
-                                <Form.Control
-                                    {...register('receipt', { required: true })}
-                                    type='text'
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <Liner>Cheque</Liner>
-                    <div className='row'>
-                        <div className='col-12 col-md-4 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pDocId'>
-                                <Form.Label>Número</Form.Label>
-                                <Form.Control
-                                    {...register('check', { required: true })}
-                                    type='text'
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-4 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pRemainingAmount'>
-                                <Form.Label>Monto (S/.)</Form.Label>
-                                <Form.Control
-                                    {...register('remainingAmount', {
-                                        required: true,
-                                        min: 0.01
-                                    })}
-                                    type='number'
-                                    min={0.01}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-4 col-xl-3'>
-                            <Form.Group className='mb-3' controlId='pOldBalance'>
-                                <Form.Label>Saldo (S/.) <TooltipInfo message={'Si al momento de iniciar esta declaración existe un saldo previo a esta caja.'} /></Form.Label>
-                                <Form.Control
-                                    {...register('oldBalance', {
-                                        required: true,
-                                        min: 0
-                                    })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    {
-                        lvlAccess === 1
-                        &&
-                        <>
-                            <Liner>Organización</Liner>
-                            <div className='row'>
-                                <div className='col-12 col-md-4 col-xl-3'>
-                                    <Form.Group className='mb-3' controlId='pOrgz'>
-                                        <Form.Label>Junta o Comisión <TooltipInfo message={'Seleccione la organización a la que pertenecera esta caja chica.'} /></Form.Label>
-                                        <Controller
-                                            name='organization'
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={
-                                                ({ field }) =>
-                                                    <AsyncSelect
-                                                        {...field}
-                                                        inputId='pOrgz'
-                                                        classNamePrefix='rc-select'
-                                                        styles={{
-                                                            control: (baseStyles, state) => ({
-                                                                ...baseStyles,
-                                                                minHeight: '60px',
-                                                            }),
-                                                        }}
-                                                        isClearable
-                                                        defaultOptions
-                                                        loadOptions={searchOrgz}
-                                                        menuPlacement={'auto'}
-                                                        placeholder={`Buscar...`}
-                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                        getOptionValue={e => e._id}
-                                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                                    />
-                                            }
-                                        />
-                                    </Form.Group>
-                                </div>
-                            </div>
-                        </>
-                    }
-                    <div className='d-flex justify-content-end gap-2'>
-                        <Button
-                            disabled={isUpdating}
-                            variant='primary'
-                            type='submit'
-                        >
-                            Guardar cambios
-                        </Button>
-                    </div>
-                </form>
-            </Card.Body>
-        </Card>
+                            )}
+                        />
+                        <Form.Control
+                            {...register('receipt', { required: true })}
+                            type='text'
+                            autoComplete='off'
+                        />
+                    </InputGroup>
+                    <Form.Text muted>
+                        La fecha de comprobante se usa para dar inicio a la declaración de la liquidación. Y el número para llevar una correlación con contabilidad.
+                    </Form.Text>
+                </Col>
+            </Form.Group>
+            <Liner>Cheque</Liner>
+            <Form.Group as={Row} className='mb-3' controlId='pCheckRemainingAmountOldBalance'>
+                <Form.Label column sm='2'>
+                    Número / Monto / Saldo
+                </Form.Label>
+                <Col sm='10'>
+                    <InputGroup>
+                        <Form.Control
+                            {...register('check', { required: true })}
+                            type='text'
+                            autoComplete='off'
+                        />
+                        <Form.Control
+                            {...register('remainingAmount', {
+                                required: true,
+                                min: 0.01
+                            })}
+                            type='number'
+                            min={0.01}
+                            step={0.01}
+                            autoComplete='off'
+                        />
+                        <Form.Control
+                            {...register('oldBalance', {
+                                required: true,
+                                min: 0
+                            })}
+                            type='number'
+                            min={0}
+                            step={0.01}
+                            autoComplete='off'
+                        />
+                    </InputGroup>
+                    <Form.Text muted>
+                        Si al momento de iniciar esta declaración existe un saldo previo a esta caja ingresar en saldo ese monto.
+                    </Form.Text>
+                </Col>
+            </Form.Group>
+        </form>
     )
 }

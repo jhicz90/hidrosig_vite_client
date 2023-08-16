@@ -62,7 +62,6 @@ export const FarmCropCreate = () => {
                 show={farmCropNew}
                 onHide={() => setContext(v => ({ ...v, farmCropNew: false }))}
                 placement='end'
-                style={{ maxWidth: '28rem' }}
             >
                 <Offcanvas.Header closeButton closeVariant='white'>
                     <div className='d-flex flex-column'>

@@ -13,7 +13,6 @@ export const TooltipInfo = ({ message = 'Ingrese un mensaje' }) => {
     return (
         <OverlayTrigger
             placement='auto'
-            delay={{ show: 250, hide: 400 }}
             overlay={renderTooltip}
         >
             <span>

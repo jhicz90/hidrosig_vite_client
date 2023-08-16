@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react'
 import { LoadingLottie } from '../components'
 import { useAuthStore } from '../hooks'
-import { useGetMeQuery } from '../store/actions'
+import { useGetMeQuery, useLazyAuthRefreshQuery } from '../store/actions'
 
 export const AuthMiddleware = ({ children }) => {
 
-    const { checkLogin, setCheckLogin } = useAuthStore()
+    const { checkLogin } = useAuthStore()
     const { isLoading } = useGetMeQuery()
+    const [refresh] = useLazyAuthRefreshQuery()
 
     useEffect(() => {
         onstorage = () => {
-            if (!localStorage.getItem('token')) {
-                setCheckLogin(true)
-            }
+            refresh()
         }
     }, [])
 

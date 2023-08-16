@@ -38,7 +38,18 @@ export const authApi = storeApi.injectEndpoints({
             query: () => ({
                 url: `auth/refresh`,
                 alert: false,
-            })
+            }),
+            onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+                try {
+                    const { data } = await queryFulfilled
+                    const { token } = data
+                    localStorage.setItem('token', token)
+                    await dispatch(storeApi.endpoints.getMe.initiate(null))
+                } catch (error) {
+                    localStorage.removeItem('token')
+                    dispatch(logout())
+                }
+            },
         }),
         // AUTH
     })
@@ -49,4 +60,5 @@ export const {
     useAuthRefreshQuery,
     useLazyAuthLoginQuery,
     useLazyAuthLogoutQuery,
+    useLazyAuthRefreshQuery,
 } = authApi

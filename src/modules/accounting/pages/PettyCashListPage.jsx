@@ -17,9 +17,9 @@ export const PettyCashListPage = () => {
 
     return (
         <>
-            <div className='container-fluid'>
-                <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-2'>
-                    <div className='min-w-0 flex-1'>
+            <div className='container'>
+                <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
+                    <div className='min-w-400 flex-1'>
                         <h4 className='mb-0 text-uppercase'>LISTA CAJA CHICA</h4>
                         <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
                             <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
@@ -39,6 +39,8 @@ export const PettyCashListPage = () => {
                         {/* <LinkBack className='btn btn-neutral text-primary' relative to={`create`}>Nueva caja chica</LinkBack> */}
                     </div>
                 </div>
+            </div>
+            <div className='container'>
                 <div className='row'>
                     <div className='col-12'>
                         <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />

@@ -3,7 +3,7 @@ import Flicking from '@egjs/react-flicking'
 
 import '@egjs/react-flicking/dist/flicking.css'
 
-export const SliderNavFlip = ({ refSlider = null, className = '', cameraClass = 'nav', spacingChilds = true, marginChilds = '0.25rem', children }) => {
+export const SliderNavFlip = ({ refSlider = null, className = '', cameraClass = '', spacingChilds = true, marginChilds = '0.25rem', children }) => {
 
     return (
         <Flicking

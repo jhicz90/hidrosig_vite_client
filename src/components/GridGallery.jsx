@@ -13,7 +13,7 @@ export const GridGallery = ({ actionElement = null, elements = [] }) => {
     }
 
     return (
-        <GridGalleryStyled className='rounded-2'>
+        <GridGalleryStyled className='rounded-3 border border-2 border-secondary-subtle'>
             {actionElement}
             {
                 elements.map((e, index) => {

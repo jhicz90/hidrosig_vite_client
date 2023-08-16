@@ -1,5 +1,7 @@
-import moment from 'moment'
+import { forwardRef } from 'react'
+import { Button } from 'react-bootstrap'
 import ReactDatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker'
+import moment from 'moment'
 import { es } from 'date-fns/locale'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 
@@ -95,19 +97,29 @@ const DateHeader = ({
     </div>
 )
 
-export const DatePicker = (props) => {
+export const DatePicker = ({ id, value = new Date(), className = '', disabled = false, minDate = null, onChange, ...props }) => {
+
+    const CustomInput = forwardRef(({ value, onClick }, ref) => (
+        <div onClick={onClick} ref={ref}>
+            {value}
+        </div>
+    ))
+
     return (
         <ReactDatePicker
-            id={props.id || ''}
+            id={id || ''}
+            customInput={<CustomInput />}
             renderCustomHeader={DateHeader}
             dateFormat={'dd/MM/yyyy'}
-            selected={moment(props.value).toDate() || new Date()}
-            minDate={props.minDate || null}
+            selected={moment(value).toDate() || new Date()}
+            minDate={minDate}
             onChange={(date) => {
-                props.onChange(moment(date).toISOString() || moment().toISOString())
+                onChange(moment(date).toISOString() || moment().toISOString())
             }}
-            className={`form-control ${props.className}`}
-            disabled={props.disabled || false}
+            // className={`form-control ${className}`}
+            wrapperClassName={`btn btn-neutral`}
+            disabled={disabled}
+            {...props}
         />
     )
 }
