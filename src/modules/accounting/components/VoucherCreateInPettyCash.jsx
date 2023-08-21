@@ -3,6 +3,7 @@ import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import moment from 'moment'
 import AsyncSelect from 'react-select/async'
+import { SocialReasonCreate } from '.'
 import { OffCanvasFooterStyled } from '../../../style'
 import { DatePicker, Liner, LoadingPage, OptionSocialReason } from '../../../components'
 import { searchSocialReason, useAddVoucherMutation, useLazyNewVoucherQuery } from '../../../store/actions'
@@ -89,7 +90,7 @@ export const VoucherCreateInPettyCash = ({ pettycash = null }) => {
                                                     />
                                                 )}
                                             />
-                                            <Form.Text muted>La fecha de comprobante se usa para dar inicio a la declaración de la liquidación.</Form.Text>
+                                            <Form.Text muted>Ingrese la fecha del comprobante fisico.</Form.Text>
                                         </Form.Group>
                                     </div>
                                 </div>
@@ -185,7 +186,7 @@ export const VoucherCreateInPettyCash = ({ pettycash = null }) => {
                                                         />
                                                 }
                                             />
-                                            <Form.Text muted>Si el documento o la razón social no se encuentra en la lista INGRESELO.</Form.Text>
+                                            <Form.Text muted>Si el documento o la razón social no se encuentra en la lista <SocialReasonCreate message='ingrese nueva razón social' />.</Form.Text>
                                         </Form.Group>
                                     </div>
                                 </div>
@@ -236,17 +237,17 @@ export const VoucherCreateInPettyCash = ({ pettycash = null }) => {
                 </Offcanvas.Body>
                 <OffCanvasFooterStyled>
                     <Button
-                        onClick={handleClose}
                         disabled={isSavingAdd}
+                        onClick={handleClose}
                         type='button'
                         variant='neutral'
                     >
                         Cancelar
                     </Button>
                     <Button
+                        disabled={isSavingAdd}
                         type='submit'
                         form='form-accounting-voucher-pettycash-create'
-                        disabled={isSavingAdd}
                         variant='primary'
                     >
                         Guardar

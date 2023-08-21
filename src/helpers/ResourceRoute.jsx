@@ -1,17 +1,13 @@
 const baseUrl = import.meta.env.VITE_APP_API_URL
 
-export const imageGet = (pathImage = '', options = { cloud: false, size: 0, thumb: false }) => {
+export const imageGet = (pathImage = '', options = { size: 0, thumb: false }) => {
 
     let url = pathImage
 
-    if (options.cloud) {
-        if (typeof options.size === 'number' && options.size > 0) {
-            url = `${url.replace('image/upload', `image/upload/q_90,${options.thumb ? 'c_thumb' : 'c_fit'},w_${options.size},h_${options.size}`)}`
-        } else {
-            url = `${url.replace('image/upload', `image/upload/q_90`)}`
-        }
+    if (typeof options.size === 'number' && options.size > 0) {
+        url = `${url.replace('image/upload', `image/upload/q_90,${options.thumb ? 'c_thumb' : 'c_fit'},w_${options.size},h_${options.size}`)}`
     } else {
-        url = `${url}${(typeof options.size === 'number' && options.size > 0) ? `?size=${String(options.size)}` : ''}`
+        url = `${url.replace('image/upload', `image/upload/q_90`)}`
     }
 
     return url
@@ -23,13 +19,13 @@ export const imageSysGet = (code) => {
     return url
 }
 
-export const previewImageResource = (type, url, cloud, size = 0) => {
+export const previewImageResource = (type, url, size = 0) => {
     try {
         return ({
-            'jpeg': imageGet(url, { cloud, size }),
-            'jpg': imageGet(url, { cloud, size }),
-            'png': imageGet(url, { cloud, size }),
-            'gif': imageGet(url, { cloud, size }),
+            'jpeg': imageGet(url, { size }),
+            'jpg': imageGet(url, { size }),
+            'png': imageGet(url, { size }),
+            'gif': imageGet(url, { size }),
             'xlsx': imageSysGet(2007),
             'docx': imageSysGet(2008),
             'avi': imageSysGet('file_avi'),

@@ -1,15 +1,18 @@
+import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Button, Card } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { Alert } from 'react-bootstrap'
+import { AddSunatImageInVoucher } from '.'
 import { GridGallery } from '../../../components'
-import { startAddSunatImageIdVoucher, startModalResource, startUpdateImageIdVoucher, voucherApi } from '../../../store/actions'
-import { MdAddPhotoAlternate } from 'react-icons/md'
+import { startModalResource, startUpdateImageIdVoucher, useGetVoucherByIdQuery } from '../../../store/actions'
+import { useVoucherStore } from '../../../hooks'
 
 export const VoucherImages = () => {
 
     const { voucherid } = useParams()
     const dispatch = useDispatch()
-    const { data = null } = useSelector(voucherApi.endpoints.getVoucherById.select(voucherid))
+    const { questionDeleteResourceVoucher } = useVoucherStore()
+    const { data = null } = useGetVoucherByIdQuery(voucherid)
 
     const handleAddImage = (voucher) => {
 
@@ -27,31 +30,18 @@ export const VoucherImages = () => {
         }
     }
 
-    const handleAddSunatImage = (voucher) => {
-        dispatch(startAddSunatImageIdVoucher(voucher._id))
-    }
-
     return (
-        <Card>
-            <Card.Body>
-                <div className='d-flex align-items-center'>
-                    <Button variant='primary' onClick={() => handleAddSunatImage(data)}>Agregar CPE SUNAT</Button>
-                </div>
-                <Alert variant='info' className='my-3'>
-                    Ingrese las imagenes del comprobante.
-                </Alert>
-                <GridGallery
-                    actionElement={
-                        <Button
-                            onClick={() => handleAddImage(data)}
-                            variant='neutral'
-                            className='align-items-center justify-content-center'
-                        >
-                            <MdAddPhotoAlternate size={40} />
-                        </Button>
-                    }
-                    elements={data.images.map(i => ({ ...i, link: '/' }))} />
-            </Card.Body>
-        </Card>
+        <React.Fragment>
+            <div className='d-flex justify-content-end gap-2'>
+                <AddSunatImageInVoucher voucher={voucherid} />
+            </div>
+            <Alert variant='info' className='my-3'>
+                Ingrese las imagenes del comprobante.
+            </Alert>
+            <GridGallery
+                actionAdd={() => handleAddImage(data)}
+                actionDelete={(resource) => questionDeleteResourceVoucher(data, resource)}
+                elements={data.images.map(i => ({ ...i, link: '/' }))} />
+        </React.Fragment>
     )
 }

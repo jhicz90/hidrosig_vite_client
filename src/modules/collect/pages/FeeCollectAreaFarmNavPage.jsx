@@ -1,8 +1,9 @@
-import { Card, Tab } from 'react-bootstrap'
+import { Tab } from 'react-bootstrap'
 import validator from 'validator'
 import { SliderNavFlip } from '../../../components'
 import { NavLink, Navigate, Route, Routes, useSearchParams } from 'react-router-dom'
 import { CollectCampaign, CollectManageVolume } from '..'
+import React from 'react'
 
 export const FeeCollectAreaFarmNavPage = () => {
 
@@ -13,13 +14,13 @@ export const FeeCollectAreaFarmNavPage = () => {
     return (
         valid
         &&
-        <Tab.Container>
-            <Card className='p-2'>
-                <SliderNavFlip>
+        <React.Fragment>
+            <Tab.Container>
+                <SliderNavFlip className='d-flex flex-stack rounded-3 bg-light-subtle nav-wrapper' cameraClass='nav nav-flip'>
                     <NavLink to={`pay?cmp=${cmp}&irr=${irr}`} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Pago Tarifa</NavLink>
                     <NavLink to={`vol?cmp=${cmp}&irr=${irr}`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Volumen</NavLink>
                 </SliderNavFlip>
-            </Card>
+            </Tab.Container>
             <div className='mt-2'>
                 <Routes>
                     <Route index element={<Navigate to={`pay?cmp=${cmp}&irr=${irr}`} replace />} />
@@ -27,6 +28,6 @@ export const FeeCollectAreaFarmNavPage = () => {
                     <Route path={`vol`} element={<CollectManageVolume />} />
                 </Routes>
             </div>
-        </Tab.Container>
+        </React.Fragment>
     )
 }

@@ -1,9 +1,11 @@
 import { Link, useParams } from 'react-router-dom'
 import { Button } from 'react-bootstrap'
+import { MdOutlineNumbers } from 'react-icons/md'
 import { HiArrowUturnLeft, HiCalendar, HiChatBubbleLeftRight, HiCurrencyDollar, HiPrinter, HiUser, HiUserCircle } from 'react-icons/hi2'
 import { LoadingPage } from '../../../components'
 import { FarmCollectList } from '..'
 import { useGetUserFarmByIdQuery } from '../../../store/actions'
+import { namesUserFarm, typeUserFarm } from '../../../helpers'
 
 export const FeeCollectBillUserFarmPage = () => {
 
@@ -20,11 +22,15 @@ export const FeeCollectBillUserFarmPage = () => {
         <div className='container-fluid'>
             <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
                 <div className='min-w-0 flex-1'>
-                    <h4 className='mb-0 text-uppercase'>{data.names} {data.lastName} {data.motherLastName}</h4>
+                    <h4 className='mb-0 text-uppercase'>USUARIO AGRARIO: <div className='d-inline-block text-primary'>{namesUserFarm(data)}</div></h4>
                     <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
                         <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <MdOutlineNumbers size={20} />
+                            {data.code}
+                        </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
                             <HiUserCircle size={20} />
-                            Natural
+                            {typeUserFarm(data.type)}
                         </div>
                         <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
                             <HiCurrencyDollar size={20} />

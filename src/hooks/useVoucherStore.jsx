@@ -2,32 +2,32 @@ import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { normalizeText } from '../helpers'
-import { startExportExcelPettyCashById, startExportPdfPettyCashById, useDeletePettyCashByIdMutation, useDeleteResourcePettyCashMutation } from '../store/pettycash'
+import { useDeleteResourceVoucherMutation, useDeleteVoucherByIdMutation } from '../store/voucher'
 
 const SwalReact = withReactContent(Swal)
 
-export const usePettyCashStore = () => {
+export const useVoucherStore = () => {
 
     const dispatch = useDispatch()
-    const [deletePettyCash] = useDeletePettyCashByIdMutation()
-    const [deleteResource] = useDeleteResourcePettyCashMutation()
+    const [deleteVoucher] = useDeleteVoucherByIdMutation()
+    const [deleteResource] = useDeleteResourceVoucherMutation()
     // const { search, typeSearch, activeTab, manageTypePay, managePaymentCenter } = useSelector(state => state.collect)
 
-    const questionDeletePettycash = (pettycash) => {
+    const questionDeleteVoucher = (voucher) => {
 
-        const { _id, name, code } = pettycash
+        const { _id, serie, numReceipt } = voucher
 
-        const wordConfirm = normalizeText(code, { lowerCase: true, removeSpaces: true })
+        const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true })
 
         SwalReact.fire({
             title:
                 <>
-                    <div className='text-uppercase'>Eliminar caja chica</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{name.toUpperCase()}</div>
+                    <div className='text-uppercase'>Eliminar comprobante</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{`${serie}-${numReceipt}`}</div>
                 </>,
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar esta caja chica?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar este comprobante?</div>
                     <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
                 </>,
             showCancelButton: true,
@@ -59,21 +59,21 @@ export const usePettyCashStore = () => {
             }
         }).then(({ value }) => {
             if (value) {
-                deletePettyCash(_id)
+                deleteVoucher(_id)
             }
         })
     }
 
-    const questionDeleteResourcePettyCash = (pettycash, resource) => {
+    const questionDeleteResourceVoucher = (voucher, resource) => {
 
-        const { _id: pettycashId, name } = pettycash
+        const { _id: voucherId, serie, numReceipt } = voucher
         const { _id: resourceId, fileName, format } = resource
 
         SwalReact.fire({
             title: 'Eliminar recurso',
             html:
                 <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar el recurso <div className='d-inline text-warning'>{`${fileName}.${format}`}</div> de la caja chica <div className='d-inline text-primary'>{name}</div>?</div>
+                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar el recurso <div className='d-inline text-warning'>{`${fileName}.${format}`}</div> del comprobante <div className='d-inline text-primary'>{`${serie}-${numReceipt}`}</div>?</div>
                 </>,
             showCancelButton: true,
             confirmButtonText: 'Eliminar',
@@ -91,26 +91,16 @@ export const usePettyCashStore = () => {
             reverseButtons: true,
         }).then((resp) => {
             if (resp.isConfirmed) {
-                deleteResource({ id: pettycashId, resourceId, deleteFile: !!resp.value })
+                deleteResource({ id: voucherId, resourceId, deleteFile: !!resp.value })
             }
         })
-    }
-
-    const exportExcel = (id) => {
-        dispatch(startExportExcelPettyCashById(id))
-    }
-
-    const exportPDF = (id) => {
-        dispatch(startExportPdfPettyCashById(id))
     }
 
     return {
         //* PROPIEDADES
 
         //* METODOS
-        exportExcel,
-        exportPDF,
-        questionDeletePettycash,
-        questionDeleteResourcePettyCash,
+        questionDeleteVoucher,
+        questionDeleteResourceVoucher
     }
 }

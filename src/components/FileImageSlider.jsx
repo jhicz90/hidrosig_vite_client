@@ -33,7 +33,7 @@ export const FileImageSlider = ({ images = [], actionDelete = null }) => {
                         {
                             images.map(image =>
                                 <div key={image._id} className='keen-slider__slide shadow rounded'>
-                                    <img className='img-fluid' src={previewImageResource(image.format, image.metadata?.url, image.cloud, 400)} alt={image.fileName} />
+                                    <img className='img-fluid' src={previewImageResource(image.format, image.metadata?.url, 400)} alt={image.fileName} />
                                     <div className='slider__slide_info'>
                                         <small
                                             className='d-inline-block text-truncate'

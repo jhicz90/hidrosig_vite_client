@@ -14,13 +14,26 @@ export const typeUserFarm = (type) => {
     }
 }
 
-export const statusUserFarm = (status)=> {
+export const statusUserFarm = (status) => {
     try {
         return ({
             0: 'Fallecido',
             1: 'Vivo',
             2: 'Heredero',
         }[status])
+    } catch (err) {
+        console.log(err)
+        return ''
+    }
+}
+
+export const namesUserFarm = (usr) => {
+    try {
+        if (usr.type === 1) {
+            return `${usr.names} ${usr.lastName} ${usr.motherLastName}`
+        }else {
+            return `${usr.socialReason}`
+        }
     } catch (err) {
         console.log(err)
         return ''

@@ -4,15 +4,14 @@ import { useSelector } from 'react-redux'
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
-import { pettycashApi, searchOrgz, useUpdatePettyCashByIdMutation } from '../../../store/actions'
+import { searchOrgz, useGetPettyCashByIdQuery, useUpdatePettyCashByIdMutation } from '../../../store/actions'
 import { DatePicker, Liner, OptionOrgz, TooltipInfo } from '../../../components'
-import moment from 'moment'
 
 export const PettyCashInformation = () => {
 
     const { pettycashid } = useParams()
     const { lvlAccess } = useSelector(state => state.auth)
-    const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
+    const { data = null } = useGetPettyCashByIdQuery(pettycashid)
     const [updateUserFarm, { isLoading: isUpdating }] = useUpdatePettyCashByIdMutation()
     const { register, control, handleSubmit, reset } = useForm()
 
@@ -29,8 +28,7 @@ export const PettyCashInformation = () => {
 
     useEffect(() => {
         reset({
-            ...data,
-            startDeclaration: moment(data.startDeclaration).format('YYYY-MM-DD')
+            ...data
         })
     }, [reset, data])
 
@@ -46,11 +44,11 @@ export const PettyCashInformation = () => {
                 </Button>
             </div>
             <Liner>Información</Liner>
-            <Form.Group as={Row} className='mb-3' controlId='pCode'>
-                <Form.Label column sm='2'>
+            <Form.Group as={Row} className='mb-3'>
+                <Form.Label column sm={4}>
                     Código
                 </Form.Label>
-                <Col sm='10'>
+                <Col sm={8}>
                     <Form.Control
                         {...register('code', { required: true })}
                         type='text'
@@ -60,11 +58,11 @@ export const PettyCashInformation = () => {
                     />
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className='mb-3' controlId='pYearName'>
-                <Form.Label column sm='2'>
+            <Form.Group as={Row} className='mb-3'>
+                <Form.Label column sm={4}>
                     Año / Nombre
                 </Form.Label>
-                <Col sm='10'>
+                <Col sm={8}>
                     <InputGroup>
                         <Form.Control
                             {...register('year', {
@@ -83,11 +81,11 @@ export const PettyCashInformation = () => {
                     </InputGroup>
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className='mb-3' controlId='pDesc'>
-                <Form.Label column sm='2'>
+            <Form.Group as={Row} className='mb-3'>
+                <Form.Label column sm={4}>
                     Descripción
                 </Form.Label>
-                <Col sm='10'>
+                <Col sm={8}>
                     <Form.Control
                         {...register('desc')}
                         as='textarea'
@@ -102,11 +100,11 @@ export const PettyCashInformation = () => {
                 &&
                 <>
                     <Liner>Organización</Liner>
-                    <Form.Group as={Row} className='mb-3' controlId='pOrgz'>
-                        <Form.Label column sm='2'>
+                    <Form.Group as={Row} className='mb-3'>
+                        <Form.Label column sm={4}>
                             Junta o Comisión
                         </Form.Label>
-                        <Col sm='10'>
+                        <Col sm={8}>
                             <Controller
                                 name='organization'
                                 control={control}
@@ -126,6 +124,7 @@ export const PettyCashInformation = () => {
                                             isClearable
                                             defaultOptions
                                             loadOptions={searchOrgz}
+                                            hideSelectedOptions
                                             menuPlacement={'auto'}
                                             placeholder={`Buscar...`}
                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
@@ -143,11 +142,11 @@ export const PettyCashInformation = () => {
                 </>
             }
             <Liner>Comprobante o ficha</Liner>
-            <Form.Group as={Row} className='mb-3' controlId='pStartDeclarationReceipt'>
-                <Form.Label column sm='2'>
+            <Form.Group as={Row} className='mb-3'>
+                <Form.Label column sm={4}>
                     Fecha / Número
                 </Form.Label>
-                <Col sm='10'>
+                <Col sm={8}>
                     <InputGroup>
                         <Controller
                             control={control}
@@ -174,11 +173,11 @@ export const PettyCashInformation = () => {
                 </Col>
             </Form.Group>
             <Liner>Cheque</Liner>
-            <Form.Group as={Row} className='mb-3' controlId='pCheckRemainingAmountOldBalance'>
-                <Form.Label column sm='2'>
+            <Form.Group as={Row} className='mb-3'>
+                <Form.Label column sm={4}>
                     Número / Monto / Saldo
                 </Form.Label>
-                <Col sm='10'>
+                <Col sm={8}>
                     <InputGroup>
                         <Form.Control
                             {...register('check', { required: true })}

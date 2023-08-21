@@ -1,24 +1,24 @@
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { startExportPdfActivePettyCash } from '../../../store/actions'
+import { FaRegFilePdf } from 'react-icons/fa'
+import { usePettyCashStore } from '../../../hooks'
 
-export const ExportPdfPettyCash = ({ typeButton = 1 }) => {
+export const ExportPdfPettyCash = ({ pettycash = null }) => {
 
-    const { pettycashid } = useParams()
-    const dispatch = useDispatch()
+    const { exportPDF } = usePettyCashStore()
 
-    const handleExport = () => {
-        dispatch(startExportPdfActivePettyCash(pettycashid))
+    const handleExportPDF = () => {
+        exportPDF(pettycash)
     }
 
     return (
         <Button
-            variant={typeButton === 1 ? 'secondary' : 'link'}
-            className='text-decoration-none'
-            onClick={handleExport}
+            onClick={handleExportPDF}
+            variant='neutral'
+            size='sm'
+            className='d-flex align-items-center gap-2'
         >
-            Exportar comprobantes
+            <FaRegFilePdf color='red' />
+            Exportar Comprobantes
         </Button>
     )
 }

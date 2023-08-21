@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Mutex } from 'async-mutex'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { msgFetchAlert } from '../helpers'
-import { login, logout, onSetCheckLogin } from './auth'
+import { login, logout } from './auth'
 
 const baseURL = import.meta.env.VITE_APP_API_URL
 
@@ -332,7 +332,6 @@ export const {
     useGetRugositysQuery,
     useGetUsrsSysByOccupQuery,
     useLazyGetMeQuery,
-    useLazyGetVoucherByIdQuery,
     useUpdateOrderChannelMutation,
     useUpdateRugosityMutation,
 } = storeApi

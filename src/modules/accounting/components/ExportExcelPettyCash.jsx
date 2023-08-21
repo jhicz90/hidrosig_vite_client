@@ -1,24 +1,24 @@
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { startExportExcelActivePettyCash } from '../../../store/actions'
+import { FaRegFileExcel } from 'react-icons/fa'
+import { usePettyCashStore } from '../../../hooks'
 
-export const ExportExcelPettyCash = ({ typeButton = 1 }) => {
+export const ExportExcelPettyCash = ({ pettycash = null }) => {
 
-    const { pettycashid } = useParams()
-    const dispatch = useDispatch()
+    const { exportExcel } = usePettyCashStore()
 
-    const handleExport = () => {
-        dispatch(startExportExcelActivePettyCash(pettycashid))
+    const handleExportExcel = () => {
+        exportExcel(pettycash)
     }
 
     return (
         <Button
-            variant={typeButton === 1 ? 'success' : 'link'}
-            className='text-decoration-none'
-            onClick={handleExport}
+            onClick={handleExportExcel}
+            variant='neutral'
+            size='sm'
+            className='d-flex align-items-center gap-2'
         >
-            Exportar 
+            <FaRegFileExcel color='green' />
+            Exportar EXCEL
         </Button>
     )
 }

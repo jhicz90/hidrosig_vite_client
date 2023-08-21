@@ -1,16 +1,17 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Button, Card } from 'react-bootstrap'
-import { MdAddPhotoAlternate } from 'react-icons/md'
+import { useDispatch } from 'react-redux'
+import { Alert } from 'react-bootstrap'
 import { GridGallery } from '../../../components'
-import { pettycashApi, startModalResource, startUpdateImageIdPettyCash } from '../../../store/actions'
+import { startModalResource, startUpdateImageIdPettyCash, useGetPettyCashByIdQuery } from '../../../store/actions'
+import { usePettyCashStore } from '../../../hooks'
 
 export const PettyCashImages = () => {
 
     const { pettycashid } = useParams()
     const dispatch = useDispatch()
-    const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
+    const { questionDeleteResourcePettyCash } = usePettyCashStore()
+    const { data = null } = useGetPettyCashByIdQuery(pettycashid)
 
     const handleAddImage = (pettycash) => {
 
@@ -34,15 +35,8 @@ export const PettyCashImages = () => {
                 Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
             </Alert>
             <GridGallery
-                actionElement={
-                    <Button
-                        onClick={() => handleAddImage(data)}
-                        variant='neutral'
-                        className='align-items-center justify-content-center'
-                    >
-                        <MdAddPhotoAlternate size={40} />
-                    </Button>
-                }
+                actionAdd={() => handleAddImage(data)}
+                actionDelete={(resource) => questionDeleteResourcePettyCash(data, resource)}
                 elements={data.images.map(i => ({ ...i, link: '/' }))} />
         </React.Fragment>
     )

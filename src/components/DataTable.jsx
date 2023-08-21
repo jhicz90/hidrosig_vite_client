@@ -4,6 +4,8 @@ import { getTheme } from '@table-library/react-table-library/baseline'
 import { Virtualized } from '@table-library/react-table-library/virtualized'
 import { HeaderCellSelect, CellSelect, SelectClickTypes, SelectTypes, useRowSelect } from '@table-library/react-table-library/select'
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import { DotLoader } from 'react-spinners'
+import styled from 'styled-components'
 
 export const DataTable = ({
     columns = [],
@@ -11,6 +13,7 @@ export const DataTable = ({
     renderEmpty: NoResultsComponent = NoResults,
     className = '',
     style = {},
+    loading = false,
     virtual = false,
     height = '400px',
     selected = false,
@@ -163,7 +166,15 @@ export const DataTable = ({
     })
 
     return (
-        <div style={{ height, overflow: 'hidden', borderRadius: '9px', ...style }} className={`${virtual ? 'table-data table-virtual' : `table-data ${className}`}`}>
+        <div
+            style={{ height, overflow: 'hidden', borderRadius: '9px', position: 'relative', ...style }}
+            className={`${virtual ? 'table-data table-virtual' : `table-data ${className}`}`}
+        >
+            {
+                !!loading
+                &&
+                <LoadingOverlay />
+            }
             <Table theme={theme} data={data} layout={{ fixedHeader: true, horizontalScroll: true }} select={selected ? select : null}>
                 {
                     virtual
@@ -286,6 +297,37 @@ const NoResults = () => {
         <strong className='mx-3 fs-5'>No ahi datos para mostrar</strong>
     )
 }
+
+const LoadingOverlay = ({ bgTransparent = false }) => {
+    return (
+        <SpinnerWrapper bgTransparent={bgTransparent}>
+            <div className='loading top-50 start-50 translate-middle'>
+                <h4 className='fw-bold user-select-none'>Cargando...</h4>
+                <DotLoader color='#1f6bff' />
+            </div>
+        </SpinnerWrapper>
+    )
+}
+
+const SpinnerWrapper = styled.div`
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 5;
+
+    & > .loading {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: ${props => Boolean(props.bgTransparent) ? 'black' : 'white'};
+        background-color: ${props => Boolean(props.bgTransparent) ? 'transparent' : 'var(--bs-border-color-translucent)'};
+    }
+`
 
 const CellSubTotal = ({ column, list }) => {
 

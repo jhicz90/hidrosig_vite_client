@@ -33,7 +33,7 @@ export const FileUploadSlider = ({ files = [], actionDelete = null }) => {
                         {
                             files.map(file =>
                                 <div key={file._id} className='keen-slider__slide shadow rounded'>
-                                    <img className='img-fluid' src={previewImageResource(file.format, file.metadata?.url, file.cloud, 400)} alt={file.fileName} />
+                                    <img className='img-fluid' src={previewImageResource(file.format, file.metadata?.url, 400)} alt={file.fileName} />
                                     <div
                                         style={{
                                             position: 'absolute',

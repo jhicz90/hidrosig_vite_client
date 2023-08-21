@@ -92,7 +92,10 @@ export const fetchByToken = async ({ endpoint = '', params = {}, data = {}, meth
                 method,
                 baseURL,
                 url: endpoint,
-                data
+                data,
+                headers: {
+                    'Authorization': token
+                },
             })
 
             const bodyResponse = JSON.parse(JSON.stringify(resp.data, (key, value) =>

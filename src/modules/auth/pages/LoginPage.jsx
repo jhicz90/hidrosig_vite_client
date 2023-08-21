@@ -90,7 +90,7 @@ const Login = styled.div`
     & div.background {
         width: 100vw;
         height: 100vh;
-        background: linear-gradient(75deg, rgb(40,43,54) 0%, rgb(40,43,54) 30%, rgba(40,43,54,0.8) 100%);
+        background: linear-gradient(75deg, rgb(40,43,54) 0%, rgb(40,43,54) 10%, rgba(40,43,54,0.8) 100%);
         /* Vertical center */
         display: table-cell;
         vertical-align: middle;

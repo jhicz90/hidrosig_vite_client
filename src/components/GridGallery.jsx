@@ -1,9 +1,11 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 import styled from 'styled-components'
+import { MdAddPhotoAlternate } from 'react-icons/md'
 import { IoMdTrash } from 'react-icons/io'
 import { imageGet, imageSysGet } from '../helpers'
 
-export const GridGallery = ({ actionElement = null, elements = [] }) => {
+export const GridGallery = ({ actionAdd = null, actionDelete = null, elements = [] }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -13,15 +15,24 @@ export const GridGallery = ({ actionElement = null, elements = [] }) => {
     }
 
     return (
-        <GridGalleryStyled className='rounded-3 border border-2 border-secondary-subtle'>
-            {actionElement}
+        <GridGalleryStyled className='rounded-3 border border-2 border-light-subtle'>
+            <Button
+                onClick={actionAdd}
+                variant='neutral'
+                className='align-items-center justify-content-center'
+            >
+                <MdAddPhotoAlternate size={40} />
+            </Button>
             {
                 elements.map((e, index) => {
                     return (
                         <div
                             key={e.metadata.id}
                         >
-                            <button className='btn btn-light text-danger'>
+                            <button
+                                onClick={() => actionDelete(e)}
+                                className='btn btn-light text-danger'
+                            >
                                 <IoMdTrash size={20} />
                             </button>
                             <img
@@ -29,7 +40,7 @@ export const GridGallery = ({ actionElement = null, elements = [] }) => {
                                 className='img-fluid'
                                 src={
                                     (e.metadata.url !== '' && e.metadata.url !== null && e.metadata.url !== undefined)
-                                        ? imageGet(e.metadata.url, { cloud: e.cloud, size: 400, thumb: true })
+                                        ? imageGet(e.metadata.url, { size: 400, thumb: true })
                                         : imageSysGet(2010)
                                 }
                             />

@@ -3,7 +3,6 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
-import { setActiveVoucher, setSavingVoucher } from './voucherSlice'
 
 const SwalReact = withReactContent(Swal)
 
@@ -19,6 +18,12 @@ export const voucherApi = storeApi.injectEndpoints({
             }),
             transformResponse: (response, meta, arg) => response.voucher
         }),
+        newSocialReason: builder.query({
+            query: () => ({
+                url: `socialreason/create/new`,
+            }),
+            transformResponse: (response, meta, arg) => response.socialreason
+        }),
         addVoucher: builder.mutation({
             query: (newVoucher) => ({
                 url: `voucher/create/new`,
@@ -26,6 +31,32 @@ export const voucherApi = storeApi.injectEndpoints({
                 data: newVoucher
             }),
             invalidatesTags: ['Vchr']
+        }),
+        addSunatImageByIdVoucher: builder.mutation({
+            query: (id) => ({
+                url: `voucher/sunat/${id}`,
+                method: 'put'
+            }),
+            onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+
+                const toastLoading = toast.loading('Consultando en SUNAT... por favor espere')
+
+                try {
+                    await queryFulfilled
+                }
+                catch (error) { }
+                finally {
+                    toast.dismiss(toastLoading)
+                }
+            },
+            invalidatesTags: ['Vchr', 'Ptty']
+        }),
+        addSocialReason: builder.mutation({
+            query: (newSocialReason) => ({
+                url: `socialreason/create/new`,
+                method: 'post',
+                data: newSocialReason
+            })
         }),
         getVoucherById: builder.query({
             query: (id) => ({
@@ -75,18 +106,31 @@ export const voucherApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Vchr']
         }),
+        deleteResourceVoucher: builder.mutation({
+            query: ({ id, resourceId, deleteFile }) => ({
+                url: `voucher/image/${id}`,
+                method: 'delete',
+                data: { images: [resourceId], deleteFile },
+            }),
+            invalidatesTags: ['Vchr', 'Ptty']
+        }),
         // VOUCHER
     })
 })
 
 export const {
-    useAddSunatImageByIdMutation,
+    useAddSocialReasonMutation,
+    useAddSunatImageByIdVoucherMutation,
     useAddVoucherMutation,
+    useDeleteResourceVoucherMutation,
     useDeleteVoucherByIdMutation,
     useGetListVoucherByPettyCashQuery,
     useGetListVoucherQuery,
     useGetVoucherByIdQuery,
+    useLazyGetVoucherByIdQuery,
+    useLazyNewSocialReasonQuery,
     useLazyNewVoucherQuery,
+    useNewSocialReasonQuery,
     useNewVoucherQuery,
     useUpdateVoucherByIdMutation,
 } = voucherApi
@@ -139,110 +183,6 @@ export const startAddSunatImageIdVoucher = (id) => {
     }
 }
 
-export const questionDeleteVoucher = async (voucher) => {
-
-    const { serie, numReceipt } = voucher
-    const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true })
-
-    return SwalReact.fire({
-        title:
-            <>
-                <div className='text-uppercase'>Eliminar comprobante</div>
-                <div className="fs-5 fw-bold text-info mt-1">{`${serie}-${numReceipt}`}</div>
-            </>,
-        html:
-            <>
-                <div className='fs-5 mb-2'>¿Estás seguro de eliminar este comprobante?</div>
-                <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-            </>,
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
-        allowOutsideClick: false,
-        icon: 'question',
-        customClass: {
-            confirmButton: `btn btn-warning`,
-            cancelButton: `btn btn-neutral`
-        },
-        input: 'text',
-        inputAttributes: {
-            autocapitalize: 'off'
-        },
-        buttonsStyling: false,
-        reverseButtons: true,
-        preConfirm: (typed) => {
-            if (typed === wordConfirm) {
-                return true
-            } else {
-                return false
-            }
-        }
-    }).then(({ value }) => {
-        return value
-    })
-}
-
-export const startDeleteVoucher = () => {
-    return async (dispatch, getState) => {
-        const { active } = getState().voucher
-        const { _id, serie, numReceipt } = active
-
-        const wordConfirm = normalizeText(`${serie}-${numReceipt}`, { lowerCase: true, removeSpaces: true })
-
-        SwalReact.fire({
-            title:
-                <>
-                    <div className='text-uppercase'>Eliminar comprobante</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{`${serie}-${numReceipt}`}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2'>¿Estás seguro de eliminar este comprobante?</div>
-                    <div className='fs-5'>Si es asi, escriba <strong>{wordConfirm}</strong> para confirmar</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            icon: 'question',
-            customClass: {
-                confirmButton: `btn btn-danger`,
-                cancelButton: `btn btn-neutral`
-            },
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-            preConfirm: (typed) => {
-                if (typed === wordConfirm) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-        }).then(async (result) => {
-            if (result.value) {
-
-                dispatch(setSavingVoucher(true))
-
-                const resp = await fetchByToken({
-                    endpoint: `voucher/delete/${_id}`,
-                    method: 'DELETE'
-                })
-
-                dispatch(setSavingVoucher(false))
-
-                if (resp.ok) {
-                    dispatch(storeApi.util.invalidateTags(['Vchr']))
-                    dispatch(setActiveVoucher(null))
-                }
-            }
-        })
-    }
-}
-
 export const startDeleteIdVoucher = (voucher) => {
     return async (dispatch) => {
         const { _id, serie, numReceipt } = voucher
@@ -273,6 +213,11 @@ export const startDeleteIdVoucher = (voucher) => {
             inputAttributes: {
                 autocapitalize: 'off'
             },
+            inputValidator: (value) => {
+                if (!value || value !== wordConfirm) {
+                    return 'Necesitas escribir la palabra correcta'
+                }
+            },
             buttonsStyling: false,
             reverseButtons: true,
             preConfirm: (typed) => {
@@ -287,7 +232,7 @@ export const startDeleteIdVoucher = (voucher) => {
 
                 const resp = await fetchByToken({
                     endpoint: `voucher/delete/${_id}`,
-                    method: 'DELETE'
+                    method: 'delete'
                 })
 
                 if (resp.ok) {

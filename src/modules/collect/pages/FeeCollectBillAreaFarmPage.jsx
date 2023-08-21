@@ -23,7 +23,7 @@ export const FeeCollectBillAreaFarmPage = () => {
         <div className='container-fluid'>
             <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
                 <div className='min-w-0 flex-1'>
-                    <h4 className='mb-0 text-uppercase'>{data.name}</h4>
+                    <h4 className='mb-0 text-uppercase'>PREDIO: <div className='d-inline-block text-primary'>{data.name}</div></h4>
                     <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
                         <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
                             <HiSwitchHorizontal size={20} />

@@ -65,7 +65,15 @@ export const pettycashApi = storeApi.injectEndpoints({
                 method: 'delete'
             }),
             invalidatesTags: ['Ptty']
-        })
+        }),
+        deleteResourcePettyCash: builder.mutation({
+            query: ({ id, resourceId, deleteFile }) => ({
+                url: `pettycash/image/${id}`,
+                method: 'delete',
+                data: { images: [resourceId], deleteFile },
+            }),
+            invalidatesTags: ['Ptty']
+        }),
         // PETTYCASH
     })
 })
@@ -73,6 +81,7 @@ export const pettycashApi = storeApi.injectEndpoints({
 export const {
     useAddPettyCashMutation,
     useDeletePettyCashByIdMutation,
+    useDeleteResourcePettyCashMutation,
     useGetListPettyCashByUsrSysQuery,
     useGetListPettyCashQuery,
     useGetPettyCashByIdQuery,

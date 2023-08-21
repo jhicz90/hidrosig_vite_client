@@ -25,7 +25,7 @@ export const blockApi = storeApi.injectEndpoints({
         }),
         getListBlock: builder.query({
             query: (search) => ({
-                url: `block/list`,
+                url: `block/search`,
                 params: {
                     search
                 }
@@ -70,7 +70,7 @@ export const blockApi = storeApi.injectEndpoints({
         }),
         deleteBlockById: builder.mutation({
             query: (id) => ({
-                url: `zone/delete/${id}`,
+                url: `block/delete/${id}`,
                 method: 'delete'
             }),
             invalidatesTags: ['Orgz', 'Trrt']
@@ -86,6 +86,8 @@ export const {
     useGetListBlockByAmbitQuery,
     useGetListBlockByJuntaQuery,
     useGetListBlockQuery,
+    useLazyGetListBlockByJuntaQuery,
+    useLazyGetListBlockQuery,
     useLazyNewBlockQuery,
     useNewBlockQuery,
     useUpdateBlockByIdMutation,

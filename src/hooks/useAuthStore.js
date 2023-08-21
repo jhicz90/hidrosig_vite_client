@@ -4,7 +4,7 @@ import { onSetCheckLogin, onSetToken } from '../store/auth'
 export const useAuthStore = () => {
 
     const dispatch = useDispatch()
-    const { uid, checkLogin, token } = useSelector(state => state.auth)
+    const { uid, checkLogin, token, lvlAccess } = useSelector(state => state.auth)
 
     const setToken = (token) => {
         dispatch(onSetToken(token))
@@ -19,6 +19,7 @@ export const useAuthStore = () => {
         uid,
         checkLogin,
         token,
+        lvlAccess,
         //* METODOS
         setToken,
         setCheckLogin,

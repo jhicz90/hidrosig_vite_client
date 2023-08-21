@@ -1,17 +1,18 @@
-import { useEffect } from 'react'
+import React from 'react'
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
+import { Button, Tab } from 'react-bootstrap'
 import { AiFillNotification, AiOutlineWhatsApp } from 'react-icons/ai'
-import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
-import { Button, Card, Dropdown, Tab } from 'react-bootstrap'
-import { LoadingPage, SliderNavFlip } from '../../../components'
-import { UserFarmAdditionalData, UserFarmBanner, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
-import { useNavigateState } from '../../../hooks'
+import { HiArrowUturnLeft, HiCalendar, HiPrinter, HiUserCircle } from 'react-icons/hi2'
+import { MdOutlineNumbers } from 'react-icons/md'
+import moment from 'moment'
+import { ContainerController, LoadingPage, SliderNavFlip } from '../../../components'
+import { UserFarmAdditionalData, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
 import { questionActiveUserFarm, questionDeleteUserFarm, useDeleteUserFarmByIdMutation, useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
+import { namesUserFarm, typeUserFarm } from '../../../helpers'
 
 export const UserFarmPage = () => {
 
     const { userid } = useParams()
-    const [redirect, redirectEscape] = useNavigateState('/app/user_reg/user_farm/users')
 
     const { data = null, isLoading, isError } = useGetUserFarmByIdQuery(userid)
     const [updateUserFarm, { isLoading: isSaving }] = useUpdateUserFarmByIdMutation()
@@ -32,12 +33,6 @@ export const UserFarmPage = () => {
         }
     }
 
-    useEffect(() => {
-        if (isError) {
-            redirectEscape()
-        }
-    }, [isError])
-
     if (isLoading) {
         return <LoadingPage />
     }
@@ -45,8 +40,60 @@ export const UserFarmPage = () => {
     return (
         !!data
         &&
-        <div className='container-fluid'>
-            <div className='row my-3'>
+        <ContainerController>
+            <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
+                <div className='min-w-400 flex-1'>
+                    <h4 className='mb-0 text-uppercase'>USUARIO AGRARIO: <div className='d-inline-block text-primary'>{namesUserFarm(data)}</div></h4>
+                    <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <MdOutlineNumbers size={20} />
+                            {data.code}
+                        </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiUserCircle size={20} />
+                            {typeUserFarm(data.type)}
+                        </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiCalendar size={20} />
+                            Actualizado el <span className='text-capitalize'>{moment(data.updatedAt).format('DD MMMM, YYYY')}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
+                    <Link
+                        to={`/app/user_reg/user_farm/users`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Lista de usuarios
+                    </Link>
+                    <Button
+                        variant='success'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <AiOutlineWhatsApp />
+                        Enviar mensaje
+                    </Button>
+                    <Button
+                        variant='primary'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <AiFillNotification />
+                        Generar notificación
+                    </Button>
+                    <Button
+                        variant='primary'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <HiPrinter />
+                        Generar reporte
+                    </Button>
+                </div>
+            </div>
+            {/* <div className='row my-3'>
                 <div className='col-12'>
                     <div className='row align-items-center justify-content-between g-3'>
                         <div className='col-12 col-md-auto'>
@@ -54,21 +101,6 @@ export const UserFarmPage = () => {
                         </div>
                         <div className='col-12 col-md-auto'>
                             <div className='d-flex gap-2'>
-                                <Link
-                                    to={`/app/user_reg/user_farm/users`}
-                                    className='btn btn-neutral-secondary'
-                                >
-                                    <IoReturnUpBack size={24} />
-                                    LISTA USUARIOS
-                                </Link>
-                                <Button variant='success' className='d-flex align-items-center gap-2'>
-                                    <AiOutlineWhatsApp size={24} />
-                                    Enviar mensaje
-                                </Button>
-                                <Button variant='primary' className='d-flex align-items-center gap-2'>
-                                    <AiFillNotification size={24} />
-                                    Generar notificación
-                                </Button>
                                 <Button
                                     onClick={() => handleActive(userid, !data?.active, data?.names)}
                                     disabled={isSaving || isLoading}
@@ -95,34 +127,29 @@ export const UserFarmPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className='row'>
-                <div className='col-12 col-lg-5 col-xl-3'>
-                    <UserFarmBanner />
-                </div>
-                <div className='col-12 col-lg-7 col-xl-9'>
+                <div className='col-12'>
                     <Tab.Container>
-                        <Card className='p-2'>
-                            <SliderNavFlip>
-                                <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
-                                <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
-                                <NavLink to={`doc`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Documentos</NavLink>
-                                <NavLink to={`msg`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Mensajes</NavLink>
-                                <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
-                            </SliderNavFlip>
-                        </Card>
-                        <div className='mt-2'>
-                            <Routes>
-                                <Route index element={<UserFarmInformation />} />
-                                <Route path={`prp`} element={<UserFarmListAreaFarm />} />
-                                <Route path={`doc`} element={<UserFarmListDocument />} />
-                                {/* <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
-                                <Route path={`add`} element={<UserFarmAdditionalData />} />
-                            </Routes>
-                        </div>
+                        <SliderNavFlip className='d-flex flex-stack rounded-3 bg-light-subtle nav-wrapper' cameraClass='nav nav-flip'>
+                            <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
+                            <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
+                            <NavLink to={`doc`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Documentos</NavLink>
+                            <NavLink to={`msg`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Mensajes</NavLink>
+                            <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
+                        </SliderNavFlip>
                     </Tab.Container>
                 </div>
             </div>
-        </div>
+            <div className='mt-2'>
+                <Routes>
+                    <Route index element={<UserFarmInformation />} />
+                    <Route path={`prp`} element={<UserFarmListAreaFarm />} />
+                    <Route path={`doc`} element={<UserFarmListDocument />} />
+                    {/* <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
+                    <Route path={`add`} element={<UserFarmAdditionalData />} />
+                </Routes>
+            </div>
+        </ContainerController>
     )
 }

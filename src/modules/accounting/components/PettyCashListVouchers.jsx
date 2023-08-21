@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { IoAddSharp, IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { VoucherCreateInPettyCash } from '.'
-import { pettycashApi, startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery } from '../../../store/actions'
+import { startDeleteIdVoucher, startModalResource, startUpdateImageIdVoucher, useGetListVoucherByPettyCashQuery, useGetPettyCashByIdQuery } from '../../../store/actions'
 import { DataTable, Image, InputSearch, LinkBack, TagDate, TagTimeAgo } from '../../../components'
 
 export const PettyCashListVouchers = () => {
@@ -13,8 +13,8 @@ export const PettyCashListVouchers = () => {
     const navigate = useNavigate()
     const [search, setSearch] = useState('')
     const dispatch = useDispatch()
-    const { data = null } = useSelector(pettycashApi.endpoints.getPettyCashById.select(pettycashid))
-    const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: data?._id, search: '' }, { skip: !data })
+    const { data = null } = useGetPettyCashByIdQuery(pettycashid)
+    const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: pettycashid, search: '' })
 
     let amountTotal = 0
     let outTotal = 0
@@ -70,6 +70,7 @@ export const PettyCashListVouchers = () => {
                 <div className='col-12'>
                     <DataTable
                         className='border border-2 border-light-subtle'
+                        loading={isLoading}
                         renderEmpty={() => <strong className='mx-3 fs-5'>No ahi comprobantes asociadas a esta caja chica</strong>}
                         rows={
                             vouchersIn.filter(v =>
