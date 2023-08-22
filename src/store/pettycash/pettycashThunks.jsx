@@ -59,6 +59,14 @@ export const pettycashApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Ptty']
         }),
+        updateClosedPettyCashById: builder.mutation({
+            query: ({ id, closed, passwordConfirm }) => ({
+                url: `pettycash/closed/${id}`,
+                method: 'put',
+                data: { closed, passwordConfirm }
+            }),
+            invalidatesTags: ['Ptty']
+        }),
         deletePettyCashById: builder.mutation({
             query: (id) => ({
                 url: `pettycash/delete/${id}`,
@@ -87,6 +95,7 @@ export const {
     useGetPettyCashByIdQuery,
     useLazyNewPettyCashQuery,
     useNewPettyCashQuery,
+    useUpdateClosedPettyCashByIdMutation,
     useUpdatePettyCashByIdMutation,
 } = pettycashApi
 

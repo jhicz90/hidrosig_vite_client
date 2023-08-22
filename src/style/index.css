@@ -965,9 +965,9 @@ kbd.type-writer,
 /* NAV FLICKING */
 .nav-wrapper {
 	padding-top: 0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    border: 1px solid rgba(209, 213, 219, 1);
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	border: 1px solid rgba(209, 213, 219, 1);
 }
 
 .nav.nav-flip {
@@ -977,9 +977,9 @@ kbd.type-writer,
 .nav.nav-flip .btn {
 	margin-right: 0.5rem;
 	border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom: 0;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+	border-bottom-right-radius: 0;
+	border-bottom: 0;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
 .nav.nav-flip .btn:last-child {
@@ -1056,7 +1056,7 @@ kbd.type-writer,
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 } */
-.react-datepicker__container { 
+.react-datepicker__container {
 	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -1066,8 +1066,12 @@ kbd.type-writer,
 	border-top: none;
 }
 
-.react-datepicker__container .react-datepicker__pre-dates .list-group-item:first-child,
-.react-datepicker__container .react-datepicker__pre-dates .list-group-item:last-child {
+.react-datepicker__container
+	.react-datepicker__pre-dates
+	.list-group-item:first-child,
+.react-datepicker__container
+	.react-datepicker__pre-dates
+	.list-group-item:last-child {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
@@ -1082,7 +1086,7 @@ kbd.type-writer,
 	overflow: hidden;
 }
 
-.react-datepicker__header { 
+.react-datepicker__header {
 	padding: 8px;
 }
 
@@ -1141,3 +1145,13 @@ kbd.type-writer,
 	background-color: #0b5ed7;
 }
 /* REACT-DATEPICKER */
+/* NOTIFY */
+[data-bs-theme="light"] .notify-body {
+	background-color: #232e3c;
+	color: #fff;
+}
+
+.notify-wrapper {
+	white-space: normal !important;
+}
+/* NOTIFY */

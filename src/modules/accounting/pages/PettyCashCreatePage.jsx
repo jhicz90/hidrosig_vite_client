@@ -189,6 +189,7 @@ export const PettyCashCreatePage = () => {
                                                                 isClearable
                                                                 defaultOptions
                                                                 loadOptions={searchOrgz}
+                                                                hideSelectedOptions
                                                                 menuPlacement={'auto'}
                                                                 placeholder={`Buscar...`}
                                                                 loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}

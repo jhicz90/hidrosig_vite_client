@@ -5,10 +5,12 @@ import moment from 'moment'
 import { HiArrowUturnLeft, HiCalendar, HiCurrencyDollar, HiPrinter } from 'react-icons/hi2'
 import { LiaMoneyCheckAltSolid } from 'react-icons/lia'
 import { MdOutlineNumbers } from 'react-icons/md'
-import { FaLockOpen } from 'react-icons/fa'
-import { useGetPettyCashByIdQuery } from '../../../store/actions'
+import { FaUserEdit } from 'react-icons/fa'
+import { BsBuilding } from 'react-icons/bs'
 import { ContainerController, LoadingPage, SliderNavFlip } from '../../../components'
-import { DeletePettyCash, ExportExcelPettyCash, ExportPdfPettyCash, PettyCashImages, PettyCashInformation, PettyCashListVouchers } from '../components'
+import { ClosedPettyCash, DeletePettyCash, ExportExcelPettyCash, ExportPdfPettyCash, PettyCashImages, PettyCashInformation, PettyCashListVouchers } from '../components'
+import { useGetPettyCashByIdQuery } from '../../../store/actions'
+import { namesUserSys } from '../../../helpers'
 
 export const PettyCashPage = () => {
 
@@ -44,6 +46,14 @@ export const PettyCashPage = () => {
                             <HiCalendar size={20} />
                             <span className='text-capitalize'>{moment(data.startDeclaration).format('DD MMMM, YYYY')}</span>
                         </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <BsBuilding size={20} />
+                            {data.organization.name}
+                        </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <FaUserEdit size={20} />
+                            {namesUserSys(data.createdBy)}
+                        </div>
                     </div>
                 </div>
                 <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
@@ -64,16 +74,7 @@ export const PettyCashPage = () => {
                         <HiPrinter />
                         Generar reporte
                     </Button>
-                    <Button
-                        variant='secondary'
-                        size='sm'
-                        active={true}
-                        className='d-flex align-items-center gap-2'
-                    >
-                        {/* <FaLock /> */}
-                        <FaLockOpen />
-                        Abrir caja
-                    </Button>
+                    <ClosedPettyCash pettycash={data} />
                     <DeletePettyCash pettycash={data} />
                 </div>
             </div>

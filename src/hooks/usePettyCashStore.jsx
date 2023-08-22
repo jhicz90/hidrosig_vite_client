@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { normalizeText } from '../helpers'
-import { startExportExcelPettyCashById, startExportPdfPettyCashById, useDeletePettyCashByIdMutation, useDeleteResourcePettyCashMutation } from '../store/pettycash'
+import { startExportExcelPettyCashById, startExportPdfPettyCashById, useDeletePettyCashByIdMutation, useDeleteResourcePettyCashMutation, useUpdateClosedPettyCashByIdMutation } from '../store/pettycash'
 
 const SwalReact = withReactContent(Swal)
 
@@ -11,7 +11,45 @@ export const usePettyCashStore = () => {
     const dispatch = useDispatch()
     const [deletePettyCash] = useDeletePettyCashByIdMutation()
     const [deleteResource] = useDeleteResourcePettyCashMutation()
+    const [closedPettyCash] = useUpdateClosedPettyCashByIdMutation()
     // const { search, typeSearch, activeTab, manageTypePay, managePaymentCenter } = useSelector(state => state.collect)
+
+    const questionClosedPettycash = (pettycash) => {
+
+        const { _id, name, closed } = pettycash
+
+        SwalReact.fire({
+            title:
+                <>
+                    <div className='text-uppercase'>{!!closed ? 'Abrir' : 'Cerrar'} caja chica</div>
+                    <div className="fs-5 fw-bold text-info mt-1">{name.toUpperCase()}</div>
+                </>,
+            html:
+                <>
+                    <div className='fs-5 mb-2'>¿Estás seguro de {!!closed ? 'abrir' : 'cerrar'} esta caja chica?</div>
+                    <div className='fs-5'>Si es asi, escriba la contraseña del creador para confirmar</div>
+                </>,
+            showCancelButton: true,
+            confirmButtonText: !!closed ? 'Abrir' : 'Cerrar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            icon: !!closed ? 'success' : 'error',
+            customClass: {
+                confirmButton: !!closed ? `btn btn-success` : `btn btn-secondary`,
+                cancelButton: `btn btn-neutral`
+            },
+            input: 'password',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            buttonsStyling: false,
+            reverseButtons: true,
+        }).then(({ isConfirmed, value }) => {
+            if (isConfirmed) {
+                closedPettyCash({ id: _id, closed: !closed, passwordConfirm: value })
+            }
+        })
+    }
 
     const questionDeletePettycash = (pettycash) => {
 
@@ -34,7 +72,7 @@ export const usePettyCashStore = () => {
             confirmButtonText: 'Eliminar',
             cancelButtonText: 'Cancelar',
             allowOutsideClick: false,
-            icon: 'question',
+            icon: 'error',
             customClass: {
                 confirmButton: `btn btn-danger`,
                 cancelButton: `btn btn-neutral`
@@ -112,5 +150,6 @@ export const usePettyCashStore = () => {
         exportPDF,
         questionDeletePettycash,
         questionDeleteResourcePettyCash,
+        questionClosedPettycash
     }
 }

@@ -1,22 +1,24 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown } from 'react-bootstrap'
-import styled from 'styled-components'
 import { FaBell, FaEnvelope, FaSearch } from 'react-icons/fa'
+import { CgDarkMode } from 'react-icons/cg'
 import { GiHamburgerMenu } from 'react-icons/gi'
+import styled from 'styled-components'
 import { MenuItemControlTypePay } from '.'
-
+import { AvatarProfile } from '../../../components'
+import { useUIStore } from '../../../hooks'
 import { setCmkbarShow, useLazyAuthLogoutQuery } from '../../../store/actions'
 
 import logoApp from '../../../assets/logo192.png'
-import { AvatarProfile } from '../../../components'
 
 export const AppHeader = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { displayName, photoURL } = useSelector(state => state.auth)
+    const { toggleTheme } = useUIStore()
     const [logout] = useLazyAuthLogoutQuery()
 
     const handleLogout = () => {
@@ -92,6 +94,9 @@ export const AppHeader = () => {
                         <div className='menu-text d-none d-md-block'>{displayName}</div>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
+                        <Dropdown.Item onClick={toggleTheme}>
+                            <CgDarkMode /> Tema
+                        </Dropdown.Item>
                         <Dropdown.Item>
                             <i className='fas fa-user-cog'></i><span className='ms-1'>Prefrencias</span>
                         </Dropdown.Item>

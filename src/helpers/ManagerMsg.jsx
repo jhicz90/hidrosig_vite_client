@@ -5,15 +5,36 @@ export const msgFetchAlert = ({ msg }) => {
     msg.forEach(e => {
         switch (e.type) {
             case 1:
-                toast(e.content, { duration: e.delay })
+                toast(t => (
+                    <>
+                        {parseContent(e, t)}
+                    </>
+                ), {
+                    duration: e.delay,
+                    className: 'notify-body'
+                })
                 break
 
             case 2:
-                toast.success(e.content, { duration: e.delay })
+                toast.success(t => (
+                    <>
+                        {parseContent(e, t)}
+                    </>
+                ), {
+                    duration: e.delay,
+                    className: 'notify-body'
+                })
                 break
 
             case 3:
-                toast.error(e.content, { duration: e.delay })
+                toast.error(t => (
+                    <>
+                        {parseContent(e, t)}
+                    </>
+                ), {
+                    duration: e.delay,
+                    className: 'notify-body'
+                })
                 break
 
             case 4:
@@ -110,8 +131,8 @@ const parseContent = (alert, tst) => {
     return parse(alert.content, {
         replace: (domNode) => {
             if (domNode.type === 'tag') {
-                if (domNode.attribs.class === 'notify-title') {
-                    return <div className="fs-5 fw-bold text-uppercase">{alert.title}</div>
+                if (domNode.attribs.class === 'notify-title' && alert.title.length > 0) {
+                    return <div className='fs-5 fw-bold text-uppercase'>{alert.title}</div>
                 } else if (domNode.attribs.class === 'notify-link') {
                     if (alert.linkTitle === '') {
                         return (
