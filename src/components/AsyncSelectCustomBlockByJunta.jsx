@@ -54,11 +54,11 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                 setOptionsBlock([])
             }
         }
-    }, [])
+    }, [watch])
 
-    console.log(watch())
-    console.log(optionsCommittee)
-    console.log(optionsBlock)
+    console.log('DATOS', watch())
+    console.log('COMMITTEES', optionsCommittee)
+    console.log('BLOCKS', optionsBlock)
 
     return (
         <React.Fragment>
