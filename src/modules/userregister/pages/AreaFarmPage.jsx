@@ -13,7 +13,6 @@ import { questionActiveFarm, questionDeleteFarm, useDeleteFarmByIdMutation, useG
 export const AreaFarmPage = () => {
 
     const { prpid } = useParams()
-
     const { data = null, isLoading, isSuccess } = useGetFarmByIdQuery(prpid)
     const [updateFarm, { isLoading: isSaving }] = useUpdateFarmByIdMutation()
     const [deleteFarm] = useDeleteFarmByIdMutation()

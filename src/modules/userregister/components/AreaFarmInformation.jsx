@@ -13,7 +13,6 @@ export const AreaFarmInformation = () => {
     const [updateFarm, { isLoading: isUpdating }] = useUpdateFarmByIdMutation()
     const { control, register, handleSubmit, watch, setValue, getValues, reset } = useForm()
 
-    console.log(data)
     const handleUpdate = (updateData) => {
         updateFarm({
             id: prpid,

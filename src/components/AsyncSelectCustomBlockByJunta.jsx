@@ -18,7 +18,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
     useEffect(() => {
         setOptionsCommittee(watch('junta')?.committees || [])
         setOptionsBlock(watch('committee')?.blocks || [])
-    }, [watch])
+    }, [watch, setOptionsCommittee, setOptionsBlock])
 
     const customFilterCommittee = useCallback((candidate, input) => {
         if (input.length > 0) {
@@ -68,7 +68,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                 } else {
                                                     setOptionsCommittee([])
                                                 }
-                                                setOptionsBlock([])
+                                                // setOptionsBlock([])
                                                 setValue('committee', null)
                                                 setValue('block', null)
                                             }
