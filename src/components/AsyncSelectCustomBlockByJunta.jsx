@@ -133,7 +133,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                         }),
                                                     }}
                                                     isClearable
-                                                    isDisabled={watch('junta') === null}
+                                                    isDisabled={watch('junta') === null || optionsCommittee.length === 0}
                                                     options={optionsCommittee}
                                                     filterOption={customFilterCommittee}
                                                     hideSelectedOptions
@@ -172,7 +172,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                         }),
                                                     }}
                                                     isClearable
-                                                    isDisabled={watch('junta') === null}
+                                                    isDisabled={watch('junta') === null || optionsBlock.length === 0}
                                                     options={optionsBlock}
                                                     filterOption={customFilterBlock}
                                                     hideSelectedOptions

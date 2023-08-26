@@ -14,7 +14,7 @@ export const AreaFarmPage = () => {
 
     const { prpid } = useParams()
 
-    const { data = null, isLoading, isError } = useGetFarmByIdQuery(prpid)
+    const { data = null, isLoading, isSuccess } = useGetFarmByIdQuery(prpid)
     const [updateFarm, { isLoading: isSaving }] = useUpdateFarmByIdMutation()
     const [deleteFarm] = useDeleteFarmByIdMutation()
 
@@ -40,7 +40,7 @@ export const AreaFarmPage = () => {
     }
 
     return (
-        !!data
+        isSuccess
         &&
         <ContainerController>
             <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
