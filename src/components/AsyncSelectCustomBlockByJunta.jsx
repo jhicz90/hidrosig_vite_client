@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
-import { Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { OptionBlock, OptionOrgz } from '.'
 import { useAuthStore } from '../hooks'
 import { searchJunta, useLazyGetListBlockQuery } from '../store/actions'
 
-export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
+export const AsyncSelectCustomBlockByJunta = () => {
 
     const { lvlAccess } = useAuthStore()
     const [searchBlock] = useLazyGetListBlockQuery()
+    const { control, setValue, watch } = useFormContext()
     const [optionsCommittee, setOptionsCommittee] = useState([])
     const [optionsBlock, setOptionsBlock] = useState([])
 
