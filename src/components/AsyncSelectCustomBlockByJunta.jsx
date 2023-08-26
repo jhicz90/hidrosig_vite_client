@@ -31,7 +31,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                 candidate.data.email.toLowerCase().includes(input.toLowerCase())
             )
         }
-        return true; // if not search, then all match
+        return true
     }, [])
 
     const customFilterBlock = useCallback((candidate, input) => {
@@ -42,7 +42,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                 candidate.data.desc.toLowerCase().includes(input.toLowerCase())
             )
         }
-        return true; // if not search, then all match
+        return true
     }, [])
 
     return (
@@ -133,7 +133,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                         }),
                                                     }}
                                                     isClearable
-                                                    isDisabled={watch('junta') === null || optionsCommittee.length === 0}
+                                                    isDisabled={watch('junta') === null}
                                                     options={optionsCommittee}
                                                     filterOption={customFilterCommittee}
                                                     hideSelectedOptions
@@ -172,7 +172,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                         }),
                                                     }}
                                                     isClearable
-                                                    isDisabled={watch('junta') === null || optionsBlock.length === 0}
+                                                    isDisabled={watch('junta') === null}
                                                     options={optionsBlock}
                                                     filterOption={customFilterBlock}
                                                     hideSelectedOptions
