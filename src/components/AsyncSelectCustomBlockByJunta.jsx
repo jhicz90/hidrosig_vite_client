@@ -15,6 +15,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
     const [optionsCommittee, setOptionsCommittee] = useState(watch('junta')?.committees || [])
     const [optionsBlock, setOptionsBlock] = useState(watch('committee')?.blocks || [])
 
+    console.log(watch)
     useEffect(() => {
         setOptionsCommittee(watch('junta')?.committees || [])
         setOptionsBlock(watch('committee')?.blocks || [])
