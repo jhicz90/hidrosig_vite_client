@@ -54,7 +54,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                 setOptionsBlock([])
             }
         }
-    }, [watch, setOptionsCommittee, setOptionsBlock])
+    }, [])
 
     console.log(watch())
     console.log(optionsCommittee)
