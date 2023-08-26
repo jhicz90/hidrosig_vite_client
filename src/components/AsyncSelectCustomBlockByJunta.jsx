@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { Controller } from 'react-hook-form'
 import Select from 'react-select'
@@ -6,7 +6,6 @@ import AsyncSelect from 'react-select/async'
 import { OptionBlock, OptionOrgz } from '.'
 import { useAuthStore } from '../hooks'
 import { searchJunta, useLazyGetListBlockQuery } from '../store/actions'
-import { useCallback } from 'react'
 
 export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
 
@@ -42,6 +41,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
 
     useEffect(() => {
         if (Object.values(watch()).length > 0) {
+            console.log('entramos')
             if (watch('junta').hasOwnProperty('committees')) {
                 setOptionsCommittee(watch('junta')?.committees || [])
             } else {
