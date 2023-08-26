@@ -1,16 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { Controller } from 'react-hook-form'
+import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { OptionBlock, OptionOrgz } from '.'
 import { useAuthStore } from '../hooks'
-import { searchJunta, useLazyGetListBlockByJuntaQuery, useLazyGetListBlockQuery } from '../store/actions'
+import { searchJunta, useLazyGetListBlockQuery } from '../store/actions'
+import { useCallback } from 'react'
 
 export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
 
     const { lvlAccess } = useAuthStore()
-    const [searchBlockByJunta] = useLazyGetListBlockByJuntaQuery()
     const [searchBlock] = useLazyGetListBlockQuery()
+    const [optionsCommittee, setOptionsCommittee] = useState(watch('junta')?.committees || [])
+    const [optionsBlock, setOptionsBlock] = useState(watch('committee')?.blocks || [])
+
+    useEffect(() => {
+        setOptionsCommittee(watch('junta')?.committees || [])
+        setOptionsBlock(watch('committee')?.blocks || [])
+    }, [watch])
+
+    const customFilterCommittee = useCallback((candidate, input) => {
+        if (input.length > 0) {
+            return (
+                candidate.data.name.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.nameAbrev.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.nameLarge.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.nameLargeAbrev.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.docid.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.email.toLowerCase().includes(input.toLowerCase())
+            )
+        }
+        return true; // if not search, then all match
+    }, [])
+
+    const customFilterBlock = useCallback((candidate, input) => {
+        if (input.length > 0) {
+            return (
+                candidate.data.name.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.code.toLowerCase().includes(input.toLowerCase()) ||
+                candidate.data.desc.toLowerCase().includes(input.toLowerCase())
+            )
+        }
+        return true; // if not search, then all match
+    }, [])
 
     return (
         <React.Fragment>
@@ -29,7 +62,14 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                         control={control}
                                         rules={{
                                             required: true,
-                                            onChange: () => {
+                                            onChange: ({ target }) => {
+                                                if (target.value?.committees?.length > 0) {
+                                                    setOptionsCommittee(target.value.committees)
+                                                } else {
+                                                    setOptionsCommittee([])
+                                                }
+                                                setOptionsBlock([])
+                                                setValue('committee', null)
                                                 setValue('block', null)
                                             }
                                         }}
@@ -47,7 +87,58 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                     isClearable
                                                     defaultOptions
                                                     loadOptions={searchJunta}
-                                                    menuPlacement={'auto'}
+                                                    hideSelectedOptions
+                                                    menuPlacement='auto'
+                                                    menuPosition='absolute'
+                                                    placeholder={`Buscar...`}
+                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                    getOptionValue={e => e._id}
+                                                    getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                                />
+                                        }
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Comisión de usuarios
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Controller
+                                        name='committee'
+                                        control={control}
+                                        rules={{
+                                            required: true,
+                                            onChange: ({ target }) => {
+                                                if (target.value?.blocks?.length > 0) {
+                                                    setOptionsBlock(target.value.blocks)
+                                                } else {
+                                                    setOptionsBlock([])
+                                                }
+                                                setValue('block', null)
+                                            }
+                                        }}
+                                        render={
+                                            ({ field }) =>
+                                                <Select
+                                                    {...field}
+                                                    classNamePrefix='rc-select'
+                                                    styles={{
+                                                        control: (baseStyles, state) => ({
+                                                            ...baseStyles,
+                                                            minHeight: '90px',
+                                                        }),
+                                                    }}
+                                                    isClearable
+                                                    isDisabled={watch('junta') === null || optionsCommittee.length === 0}
+                                                    options={optionsCommittee}
+                                                    filterOption={customFilterCommittee}
+                                                    hideSelectedOptions
+                                                    menuPlacement='auto'
+                                                    menuPosition='absolute'
                                                     placeholder={`Buscar...`}
                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
@@ -71,7 +162,7 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                         rules={{ required: true }}
                                         render={
                                             ({ field }) =>
-                                                <AsyncSelect
+                                                <Select
                                                     {...field}
                                                     classNamePrefix='rc-select'
                                                     styles={{
@@ -81,11 +172,12 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                         }),
                                                     }}
                                                     isClearable
-                                                    isDisabled={watch('junta') === null}
-                                                    loadOptions={async (e) => {
-                                                        return (await searchBlockByJunta({ junta: watch('junta')?._id || null, search: e })).data
-                                                    }}
-                                                    menuPlacement={'auto'}
+                                                    isDisabled={watch('junta') === null || optionsBlock.length === 0}
+                                                    options={optionsBlock}
+                                                    filterOption={customFilterBlock}
+                                                    hideSelectedOptions
+                                                    menuPlacement='auto'
+                                                    menuPosition='absolute'
                                                     placeholder={`Buscar...`}
                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
@@ -125,7 +217,8 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
                                                     loadOptions={async (e) => {
                                                         return (await searchBlock(e)).data
                                                     }}
-                                                    menuPlacement={'auto'}
+                                                    menuPlacement='auto'
+                                                    menuPosition='fixed'
                                                     placeholder={`Buscar...`}
                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                     noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}

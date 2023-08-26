@@ -102,20 +102,20 @@ const ItemFeature = ({ feature }) => {
                 if (feature.properties.shape === 'Circle' || feature.properties.shape === 'Marker' || feature.properties.shape === 'CircleMarker') {
                     addPoint({
                         desc: result.value,
-                        properties: data.properties,
-                        geometry: data.geometry
+                        properties: feature.properties,
+                        geometry: feature.geometry
                     })
                 } else if (feature.properties.shape === 'Polygon') {
                     addPolygon({
                         desc: result.value,
-                        properties: data.properties,
-                        geometry: data.geometry
+                        properties: feature.properties,
+                        geometry: feature.geometry
                     })
                 } else if (feature.properties.shape === 'Line') {
                     addLine({
                         desc: result.value,
-                        properties: data.properties,
-                        geometry: data.geometry
+                        properties: feature.properties,
+                        geometry: feature.geometry
                     })
                 }
             }

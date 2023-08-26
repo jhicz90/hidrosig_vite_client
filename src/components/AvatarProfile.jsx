@@ -1,22 +1,27 @@
-import { useState, useEffect, useId } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { FaPen } from 'react-icons/fa'
 import styled from 'styled-components'
 import { prominent } from 'color.js'
-import { FaPen } from 'react-icons/fa'
 import { imageGet, imageSysGet, upperCaseCatch } from '../helpers'
 import { startModalResource } from '../store/actions'
-import { Image } from './Image'
+import { useResourceStore } from '../hooks'
 
-export const AvatarProfile = ({ className = '', avatarImg = null, noImgTxt = 'USR', noImg = 1086, actionChange = null, size = '120px', sizeImage = 300, bgColor = false, cloud = false }) => {
+export const AvatarProfile = ({ className = '', avatarImg = null, noImgTxt = 'USR', noImg = 1086, actionChange = null, size = 120, sizeImage = 300, bgColor = false }) => {
 
-    const inputUploadImage = useId()
     const dispatch = useDispatch()
+    const { initResource } = useResourceStore()
 
     const nameTxt = upperCaseCatch(noImgTxt).slice(0, 2)
 
     const [backColor, setBackColor] = useState('rgb(200, 200, 200)')
 
+    const sizeCssInPx = (size) => `${size}px`
+
     const handleChangeImage = () => {
+        initResource({
+            tags: ['perfil']
+        })
         dispatch(startModalResource({
             tags: ['perfil'],
             groupTypes: 'images',
@@ -41,22 +46,30 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImgTxt = 'US
 
     return (
         <div className='text-center'>
-            <ProfileAvatar className={`${className}`} style={{ width: size, height: size }}>
+            <ProfileAvatar className={`${className}`} style={{ width: sizeCssInPx(size), height: sizeCssInPx(size) }}>
                 {
                     (avatarImg !== '' && avatarImg !== null && avatarImg !== undefined)
                         ?
-                        <Image
+                        // <Image
+                        //     className='avatar-img'
+                        //     img={avatarImg}
+                        //     style={{ background: bgColor ? backColor : 'transparent', width: sizeCssInPx(size), height: sizeCssInPx(size) }}
+                        //     thumb={true}
+                        //     resSize={sizeImage}
+                        //     noImg={noImg}
+                        // />
+                        <img
                             className='avatar-img'
-                            img={avatarImg}
-                            cloud={cloud}
-                            style={{ background: bgColor ? backColor : 'transparent', width: size, height: size }}
-                            thumb={true}
-                            resSize={sizeImage}
-                            noImg={noImg}
+                            style={{ background: bgColor ? backColor : 'transparent', width: sizeCssInPx(size), height: sizeCssInPx(size) }}
+                            src={(avatarImg !== '' && avatarImg !== null && avatarImg !== undefined) ? imageGet(avatarImg, { size, face: true }) : imageSysGet(noImg)}
+                            width={size}
+                            height={size}
+                            alt={avatarImg}
+                            loading='lazy'
                         />
                         :
-                        <div className='avatar rounded-circle' style={{ width: size, height: size }}>
-                            <span className='avatar-initials' style={{ fontSize: 40, width: size, height: size }}>{nameTxt}</span>
+                        <div className='avatar rounded-circle' style={{ width: sizeCssInPx(size), height: sizeCssInPx(size) }}>
+                            <span className='avatar-initials' style={{ fontSize: sizeCssInPx(size / 2), width: sizeCssInPx(size), height: sizeCssInPx(size) }}>{nameTxt}</span>
                         </div>
                 }
                 {
@@ -67,8 +80,8 @@ export const AvatarProfile = ({ className = '', avatarImg = null, noImgTxt = 'US
                             onClick={handleChangeImage}
                             className='position-absolute bottom-0 end-0 m-0 bg-primary rounded-circle border border-primary text-white d-flex align-items-center justify-content-center'
                             style={{
-                                width: '40px',
-                                height: '40px'
+                                width: sizeCssInPx(size / 2),
+                                height: sizeCssInPx(size / 2)
                             }}
                         >
                             <FaPen />

@@ -65,6 +65,14 @@ export const userfarmApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['UsrFrm']
         }),
+        updateImageUserFarmById: builder.mutation({
+            query: ({ id, image }) => ({
+                url: `userfarm/image/${id}`,
+                method: 'put',
+                data: { image }
+            }),
+            invalidatesTags: ['UsrFrm']
+        }),
         deleteUserFarmById: builder.mutation({
             query: (id) => ({
                 url: `userfarm/delete/${id}`,
@@ -85,6 +93,7 @@ export const {
     useGetUserFarmByIdQuery,
     useLazyNewUserFarmQuery,
     useNewUserFarmQuery,
+    useUpdateImageUserFarmByIdMutation,
     useUpdateUserFarmByIdMutation,
 } = userfarmApi
 

@@ -244,7 +244,7 @@ export const AreaFarmCreatePage = () => {
                             </Form.Group>
                         </Col>
                     </Row>
-                    <Liner>Bloque y ubicación</Liner>
+                    <Liner>Bloque de riego y ubicación</Liner>
                     <Row>
                         <AsyncSelectCustomBlockByJunta
                             control={control}

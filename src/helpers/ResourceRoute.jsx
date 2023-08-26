@@ -1,11 +1,11 @@
 const baseUrl = import.meta.env.VITE_APP_API_URL
 
-export const imageGet = (pathImage = '', options = { size: 0, thumb: false }) => {
+export const imageGet = (pathImage = '', options = { size: 0, thumb: false, face: false }) => {
 
     let url = pathImage
 
     if (typeof options.size === 'number' && options.size > 0) {
-        url = `${url.replace('image/upload', `image/upload/q_90,${options.thumb ? 'c_thumb' : 'c_fit'},w_${options.size},h_${options.size}`)}`
+        url = `${url.replace('image/upload', `image/upload/q_90${options.thumb ? ',c_thumb' : ',c_fit'}${options.face ? ',c_fill,g_face' : ''},w_${options.size},h_${options.size}`)}`
     } else {
         url = `${url.replace('image/upload', `image/upload/q_90`)}`
     }

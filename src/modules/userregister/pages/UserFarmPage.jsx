@@ -6,9 +6,9 @@ import { HiArrowUturnLeft, HiCalendar, HiPrinter, HiUserCircle } from 'react-ico
 import { MdOutlineNumbers } from 'react-icons/md'
 import moment from 'moment'
 import { ContainerController, LoadingPage, SliderNavFlip } from '../../../components'
-import { UserFarmAdditionalData, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument } from '../components'
+import { UserFarmAdditionalData, UserFarmAvatar, UserFarmInformation, UserFarmListAreaFarm, UserFarmListDocument, UserFarmMessages } from '../components'
 import { questionActiveUserFarm, questionDeleteUserFarm, useDeleteUserFarmByIdMutation, useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
-import { namesUserFarm, typeUserFarm } from '../../../helpers'
+import { typeUserFarm } from '../../../helpers'
 
 export const UserFarmPage = () => {
 
@@ -43,8 +43,10 @@ export const UserFarmPage = () => {
         <ContainerController>
             <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
                 <div className='min-w-400 flex-1'>
-                    <h4 className='mb-0 text-uppercase'>USUARIO AGRARIO: <div className='d-inline-block text-primary'>{namesUserFarm(data)}</div></h4>
-                    <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
+                    <div className='d-flex align-items-center gap-2'>
+                        <UserFarmAvatar usrfarm={data} />
+                    </div>
+                    <div className='mt-1 mt-sm-0 d-flex flex-column flex-lg-row gap-0 gap-lg-4'>
                         <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
                             <MdOutlineNumbers size={20} />
                             {data.code}
@@ -146,6 +148,7 @@ export const UserFarmPage = () => {
                     <Route index element={<UserFarmInformation />} />
                     <Route path={`prp`} element={<UserFarmListAreaFarm />} />
                     <Route path={`doc`} element={<UserFarmListDocument />} />
+                    <Route path={`msg`} element={<UserFarmMessages />} />
                     {/* <Route path={`comm`} element={<JuntaAmbitCommittee />} /> */}
                     <Route path={`add`} element={<UserFarmAdditionalData />} />
                 </Routes>

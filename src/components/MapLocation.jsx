@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap, Circle } from 'react-leaflet'
-import { randomColor } from '../helpers'
+import * as turf from '@turf/turf'
+import { randomColor, scaleZoom } from '../helpers'
 
-export const MapLocation = ({ className = 'my-2', geometry = [], style = {} }) => {
+export const MapLocation = ({ className = '', geometry = [], style = {} }) => {
     return (
         <MapContainer
             className={className}
@@ -15,7 +16,7 @@ export const MapLocation = ({ className = 'my-2', geometry = [], style = {} }) =
             {
                 geometry.length > 0
                 &&
-                <CenterMap data={geometry} />
+                <CenterMap geometry={geometry} />
             }
             <TileLayer
                 attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
@@ -30,15 +31,17 @@ export const MapLocation = ({ className = 'my-2', geometry = [], style = {} }) =
     )
 }
 
-const CenterMap = ({ data = [] }) => {
-    const [viewMap, setViewMap] = useState(data[0].properties)
+const CenterMap = ({ geometry = [] }) => {
+    const geometrys = turf.featureCollection(geometry.map(g => ({ ...g.geometry, properties: g.properties })))
+    const zoom = scaleZoom(geometry.map(g => turf.area(turf.bboxPolygon(turf.bbox(g.geometry)))).reduce((p, a) => p + a, 0) / geometry.length)
+    const [viewMap, setViewMap] = useState(turf.center(turf.explode(geometrys)).geometry.coordinates)
     const map = useMap()
 
     useEffect(() => {
-        setViewMap(data[0].properties)
-    }, [data])
+        setViewMap(turf.center(turf.explode(geometrys)).geometry.coordinates)
+    }, [geometry])
 
-    map.setView([viewMap.center[1], viewMap.center[0]], viewMap.zoom)
+    map.setView([viewMap[1], viewMap[0]], zoom)
 
     return null
 }

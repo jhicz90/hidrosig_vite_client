@@ -1,16 +1,22 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { Button, Col, Form, Row } from 'react-bootstrap'
-import { useForm } from 'react-hook-form'
+import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
+import { useFieldArray, useForm } from 'react-hook-form'
+import validator from 'validator'
 import { Liner } from '../../../components'
 import { useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
+import { IoMdAddCircleOutline, IoMdClose } from 'react-icons/io'
 
 export const UserFarmInformation = () => {
 
     const { userid } = useParams()
     const { data = null } = useGetUserFarmByIdQuery(userid)
     const [updateUserFarm, { isLoading: isUpdating }] = useUpdateUserFarmByIdMutation()
-    const { register, watch, handleSubmit, reset } = useForm()
+    const { control, register, watch, handleSubmit, reset } = useForm()
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'contacts',
+    })
 
     const handleUpdate = (updateData) => {
         updateUserFarm({
@@ -213,11 +219,11 @@ export const UserFarmInformation = () => {
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
                         <Form.Label column sm={4}>
-                            Celular
+                            Dirección
                         </Form.Label>
                         <Col sm={8}>
                             <Form.Control
-                                {...register('cellphone')}
+                                {...register('address')}
                                 type='text'
                                 autoComplete='off'
                             />
@@ -229,14 +235,63 @@ export const UserFarmInformation = () => {
                 <Col>
                     <Form.Group as={Row} className='mb-3'>
                         <Form.Label column sm={2}>
-                            Dirección
+                            Contactos
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control
-                                {...register('address')}
-                                type='text'
-                                autoComplete='off'
-                            />
+                            <ListGroup>
+                                <ListGroup.Item onClick={() => append({ name: '', number: '', type: 1 })} className='d-flex align-items-center' action>
+                                    Agregar contacto <IoMdAddCircleOutline className='ms-2' size={20} color='green' />
+                                </ListGroup.Item>
+                                {
+                                    fields.map((field, index) =>
+                                        <ListGroup.Item key={`contact_str_${index}`} variant={!field._id ? 'primary' : ''}>
+                                            <div className='row align-items-center g-2'>
+                                                <div className='col'>
+                                                    <Form.Group>
+                                                        <Form.Control
+                                                            {...register(`contacts.${index}.name`, { required: true })}
+                                                            type='text'
+                                                            autoComplete='off'
+                                                            placeholder='Nombre o descripcion del contacto'
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                                <div className='col'>
+                                                    <Form.Group>
+                                                        <Form.Control
+                                                            {...register(`contacts.${index}.number`, { required: true, validate: v => validator.isMobilePhone(v, 'es-PE') })}
+                                                            type='text'
+                                                            autoComplete='off'
+                                                            placeholder='Número de télefono'
+                                                        />
+                                                    </Form.Group>
+                                                </div>
+                                                <div className='col'>
+                                                    <Form.Group>
+                                                        <Form.Select
+                                                            {...register(`contacts.${index}.type`, { required: true })}
+                                                            autoComplete='off'
+                                                            placeholder='Tipo'
+                                                        >
+                                                            <option value={1}>Personal</option>
+                                                            <option value={2}>Hogar</option>
+                                                            <option value={3}>Otros</option>
+                                                        </Form.Select>
+                                                    </Form.Group>
+                                                </div>
+                                                <div className='col-auto'>
+                                                    <Button onClick={() => remove(index)} variant='danger'>
+                                                        <IoMdClose size={20} />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </ListGroup.Item>
+                                    )
+                                }
+                            </ListGroup>
+                            <Form.Text muted>
+                                Solo se aceptaran números de celular para comunicación directa con WhatsApp u otra aplicación.
+                            </Form.Text>
                         </Col>
                     </Form.Group>
                 </Col>
