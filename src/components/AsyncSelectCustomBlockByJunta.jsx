@@ -12,24 +12,8 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
 
     const { lvlAccess } = useAuthStore()
     const [searchBlock] = useLazyGetListBlockQuery()
-    const [optionsCommittee, setOptionsCommittee] = useState(watch('junta')?.committees || [])
-    const [optionsBlock, setOptionsBlock] = useState(watch('committee')?.blocks || [])
-
-    useEffect(() => {
-        if (Object.values(watch()).length > 0) {
-            if (watch('junta').hasOwnProperty('committees')) {
-                setOptionsCommittee(watch('junta')?.committees || [])
-            } else {
-                setOptionsCommittee([])
-            }
-
-            if (watch('committee').hasOwnProperty('blocks')) {
-                setOptionsBlock(watch('committee')?.blocks || [])
-            } else {
-                setOptionsBlock([])
-            }
-        }
-    }, [watch, setOptionsCommittee, setOptionsBlock])
+    const [optionsCommittee, setOptionsCommittee] = useState([])
+    const [optionsBlock, setOptionsBlock] = useState([])
 
     const customFilterCommittee = useCallback((candidate, input) => {
         if (input.length > 0) {
@@ -55,6 +39,26 @@ export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
         }
         return true
     }, [])
+
+    useEffect(() => {
+        if (Object.values(watch()).length > 0) {
+            if (watch('junta').hasOwnProperty('committees')) {
+                setOptionsCommittee(watch('junta')?.committees || [])
+            } else {
+                setOptionsCommittee([])
+            }
+
+            if (watch('committee').hasOwnProperty('blocks')) {
+                setOptionsBlock(watch('committee')?.blocks || [])
+            } else {
+                setOptionsBlock([])
+            }
+        }
+    }, [watch, setOptionsCommittee, setOptionsBlock])
+
+    console.log(watch())
+    console.log(optionsCommittee)
+    console.log(optionsBlock)
 
     return (
         <React.Fragment>
