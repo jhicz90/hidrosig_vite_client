@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { OptionBlock, OptionOrgz } from '.'
 import { useAuthStore } from '../hooks'
 import { searchJunta, useLazyGetListBlockQuery } from '../store/actions'
+import { useCallback } from 'react'
 
-export const AsyncSelectCustomBlockByJunta = () => {
+export const AsyncSelectCustomBlockByJunta = ({ control, setValue, watch }) => {
 
     const { lvlAccess } = useAuthStore()
     const [searchBlock] = useLazyGetListBlockQuery()
-    const { control, setValue, watch } = useFormContext()
-    const [optionsCommittee, setOptionsCommittee] = useState([])
-    const [optionsBlock, setOptionsBlock] = useState([])
+    const [optionsCommittee, setOptionsCommittee] = useState(watch('junta')?.committees || [])
+    const [optionsBlock, setOptionsBlock] = useState(watch('committee')?.blocks || [])
 
     const customFilterCommittee = useCallback((candidate, input) => {
         if (input.length > 0) {
@@ -42,7 +42,6 @@ export const AsyncSelectCustomBlockByJunta = () => {
 
     useEffect(() => {
         if (Object.values(watch()).length > 0) {
-            console.log('entramos')
             if (watch('junta').hasOwnProperty('committees')) {
                 setOptionsCommittee(watch('junta')?.committees || [])
             } else {
@@ -56,10 +55,6 @@ export const AsyncSelectCustomBlockByJunta = () => {
             }
         }
     }, [watch])
-
-    console.log('DATOS', watch())
-    console.log('COMMITTEES', optionsCommittee)
-    console.log('BLOCKS', optionsBlock)
 
     return (
         <React.Fragment>
