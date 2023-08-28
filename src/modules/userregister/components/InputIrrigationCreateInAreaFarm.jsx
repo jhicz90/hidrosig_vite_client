@@ -12,6 +12,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
     const [show, setShow] = useState(false)
     const [optionLocation, setOptionLocation] = useState(0)
     const [range, setRange] = useState(20)
+    const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
 
     const { data: AreaFarmData = null } = useGetFarmByIdQuery(farm)
     const [searchWaterIn, { data: WaterIn = [], isFetching: isLoadingWaterIn }] = useLazyGetListWaterInByPointQuery()
@@ -51,6 +52,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                 show={show}
                 onHide={handleClose}
                 placement='end'
+                backdrop='static'
             >
                 <Offcanvas.Header closeButton closeVariant='white'>
                     <div className='d-flex flex-column'>
@@ -422,6 +424,38 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                 }
                                             />
                                         }
+                                    </React.Fragment>
+                                }
+                                {
+                                    optionLocation === 2
+                                    &&
+                                    <React.Fragment>
+                                        <div className='row'>
+                                            <div className='col-6'>
+                                                <Form.Group className='mb-3'>
+                                                    <Form.Label>Latitud</Form.Label>
+                                                    <Form.Control
+                                                        onChange={({ target }) => {
+                                                            setCoordinates(v => ({ ...v, lat: target.value }))
+                                                        }}
+                                                        value={coordinates.lat}
+                                                        type='number'
+                                                    />
+                                                </Form.Group>
+                                            </div>
+                                            <div className='col-6'>
+                                                <Form.Group className='mb-3'>
+                                                    <Form.Label>Longitud</Form.Label>
+                                                    <Form.Control
+                                                        onChange={({ target }) => {
+                                                            setCoordinates(v => ({ ...v, lng: target.value }))
+                                                        }}
+                                                        value={coordinates.lng}
+                                                        type='number'
+                                                    />
+                                                </Form.Group>
+                                            </div>
+                                        </div>
                                     </React.Fragment>
                                 }
                             </form>

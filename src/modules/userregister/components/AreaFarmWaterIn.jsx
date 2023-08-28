@@ -1,14 +1,10 @@
-import React, { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { IoEyeSharp } from 'react-icons/io5'
-import { DataTable, InputSearch } from '../../../components'
-import { useGetListInputIrrigByFarmQuery } from '../../../store/actions'
+import React from 'react'
+import { useParams } from 'react-router-dom'
 import { InputIrrigationCards, InputIrrigationCreateInAreaFarm } from '.'
 
 export const AreaFarmWaterIn = () => {
 
     const { prpid } = useParams()
-    const { data: inputIrrigationIn = [] } = useGetListInputIrrigByFarmQuery(prpid)
 
     return (
         <React.Fragment>
@@ -19,7 +15,7 @@ export const AreaFarmWaterIn = () => {
                     </div>
                 </div>
             </div>
-            <InputIrrigationCards inputIrrigationIn={inputIrrigationIn}/>
+            <InputIrrigationCards farm={prpid}/>
         </React.Fragment>
     )
 }
