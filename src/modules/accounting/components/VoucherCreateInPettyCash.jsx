@@ -177,7 +177,9 @@ export const VoucherCreateInPettyCash = ({ pettycash = null }) => {
                                                             isClearable
                                                             defaultOptions
                                                             loadOptions={searchSocialReason}
-                                                            menuPlacement={'auto'}
+                                                            hideSelectedOptions
+                                                            menuPlacement='auto'
+                                                            menuPosition='absolute'
                                                             placeholder={`Buscar...`}
                                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
                                                             noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}

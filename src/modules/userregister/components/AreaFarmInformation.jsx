@@ -232,11 +232,6 @@ export const AreaFarmInformation = () => {
             </Row>
             <Liner>Bloque de riego y ubicación</Liner>
             <Row>
-                {/* <AsyncSelectCustomBlockByJunta
-                    control={control}
-                    setValue={setValue}
-                    watch={watch}
-                /> */}
                 {
                     lvlAccess === 1
                         ?

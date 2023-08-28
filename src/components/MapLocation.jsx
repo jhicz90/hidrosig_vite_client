@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap, Circle } from 'react-leaflet'
 import * as turf from '@turf/turf'
 import { randomColor, scaleZoom } from '../helpers'
+import { isObject } from 'lodash'
 
 export const MapLocation = ({ className = '', geometry = [], style = {} }) => {
     return (
@@ -16,7 +17,7 @@ export const MapLocation = ({ className = '', geometry = [], style = {} }) => {
             {
                 geometry.length > 0
                 &&
-                <CenterMap geometry={geometry} />
+                <CenterMap geometry={geometry.filter(g => typeof g === 'object')} />
             }
             <TileLayer
                 attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
@@ -61,7 +62,7 @@ const DrawGeo = ({ data = [] }) => {
         <>
             {
                 data.map(object => {
-                    if (object.properties.shape === 'Circle') {
+                    if (object.properties?.shape === 'Circle') {
                         return <Circle
                             key={`circle${object._id}`}
                             center={object.geometry.coordinates.slice().reverse()}

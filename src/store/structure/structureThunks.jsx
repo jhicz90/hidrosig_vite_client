@@ -38,6 +38,16 @@ export const structureApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Irrig']
         }),
+        getListWaterInByPoint: builder.query({
+            query: ({ point, range }) => ({
+                url: `structure/search_waterin_by_point/${point}`,
+                params: {
+                    range
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
         getStructureById: builder.query({
             query: (id) => ({
                 url: `structure/edit/${id}`
@@ -68,7 +78,9 @@ export const {
     useAddStructureMutation,
     useDeleteStructureByIdMutation,
     useGetListStructureQuery,
+    useGetListWaterInByPointQuery,
     useGetStructureByIdQuery,
+    useLazyGetListWaterInByPointQuery,
     useLazyNewStructureQuery,
     useNewStructureQuery,
     useUpdateStructureByIdMutation,
@@ -292,6 +304,19 @@ export const startImportNet = (fileName) => {
 export const searchStructureByJunta = async (junta, search) => {
     const resp = await fetchByToken({
         endpoint: `structure/search_by_junta/${junta}`,
+        params: { search }
+    })
+
+    if (resp.ok) {
+        return resp.docs
+    } else {
+        return []
+    }
+}
+
+export const searchSectionByJunta = async (junta, search) => {
+    const resp = await fetchByToken({
+        endpoint: `section/search_by_junta/${junta}`,
         params: { search }
     })
 

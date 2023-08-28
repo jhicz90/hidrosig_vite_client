@@ -31,7 +31,7 @@ export const InputIrrigationCards = ({ inputIrrigationIn = [] }) => {
                                 <Col className='d-flex flex-column justify-content-between' xl={8}>
                                     <Card.Body>
                                         <Card.Title>{inputIrr.code}</Card.Title>
-                                        <div className='row mt-0 gy-2 gx-0'>
+                                        <div className='row mt-0 gy-2 gx-0' style={{ fontSize: '12px' }}>
                                             <div className='col-4 col-xl-4 fw-bold'>
                                                 AREA EN USO
                                             </div>
@@ -54,13 +54,25 @@ export const InputIrrigationCards = ({ inputIrrigationIn = [] }) => {
                                                 CANAL DE RIEGO
                                             </div>
                                             <div className='col-8 col-xl-8'>
-                                                {inputIrr.structure.structureRoute}
+                                                {inputIrr.section.structure?.structureRoute}
+                                            </div>
+                                            <div className='col-4 col-xl-4 fw-bold'>
+                                                TRAMO
+                                            </div>
+                                            <div className='col-8 col-xl-8'>
+                                                {inputIrr.section.name}
                                             </div>
                                             <div className='col-4 col-xl-4 fw-bold'>
                                                 ORDEN DE RIEGO
                                             </div>
                                             <div className='col-8 col-xl-8'>
                                                 {inputIrr.order}
+                                            </div>
+                                            <div className='col-4 col-xl-4 fw-bold'>
+                                                DESCRIPCIÓN
+                                            </div>
+                                            <div className='col-8 col-xl-8'>
+                                                {inputIrr.desc}
                                             </div>
                                         </div>
                                         <Card.Text>
