@@ -5,7 +5,7 @@ export const OffCanvasFooterStyled = styled.div`
     border-bottom: 1px solid rgb(229 231 235 / 1);
     padding: 1rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     flex-shrink: 0;
     gap: 1rem;
 `

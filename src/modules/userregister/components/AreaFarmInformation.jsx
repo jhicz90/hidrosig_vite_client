@@ -250,8 +250,10 @@ export const AreaFarmInformation = () => {
                                                 onChange: ({ target }) => {
                                                     if (target.value?.committees?.length > 0) {
                                                         setOptionsCommittee(target.value.committees)
+                                                        setOptionsBlock([])
                                                     } else {
                                                         setOptionsCommittee([])
+                                                        setOptionsBlock([])
                                                     }
                                                     // setOptionsBlock([])
                                                     setValue('committee', null)

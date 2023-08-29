@@ -52,6 +52,7 @@ export const VoucherCreateInPettyCash = ({ pettycash = null }) => {
                 show={show}
                 onHide={handleClose}
                 placement='end'
+                backdrop='static'
             >
                 <Offcanvas.Header closeButton closeVariant='white'>
                     <div className='d-flex flex-column'>
