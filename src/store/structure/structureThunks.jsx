@@ -48,6 +48,16 @@ export const structureApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Irrig']
         }),
+        getListWaterInAndPointByCoordinates: builder.query({
+            query: ({ lat, lng, range }) => ({
+                url: `structure/search_waterin_by_coordinates/${lat}/${lng}`,
+                params: {
+                    range
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Irrig']
+        }),
         getStructureById: builder.query({
             query: (id) => ({
                 url: `structure/edit/${id}`
@@ -80,6 +90,7 @@ export const {
     useGetListStructureQuery,
     useGetListWaterInByPointQuery,
     useGetStructureByIdQuery,
+    useLazyGetListWaterInAndPointByCoordinatesQuery,
     useLazyGetListWaterInByPointQuery,
     useLazyNewStructureQuery,
     useNewStructureQuery,

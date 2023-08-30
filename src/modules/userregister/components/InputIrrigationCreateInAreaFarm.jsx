@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Form, InputGroup, ListGroup, Offcanvas } from 'react-bootstrap'
+import { TbMapSearch } from 'react-icons/tb'
 import { Controller, useForm } from 'react-hook-form'
+import Select from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { OffCanvasFooterStyled } from '../../../style'
 import { Liner, LoadingAction, LoadingPage, MapLocation, OptionGeometry } from '../../../components'
-import { searchIrrigationSystemByJunta, searchPointObject, searchSectionByJunta, useAddInputIrrigationMutation, useGetFarmByIdQuery, useLazyGetListWaterInByPointQuery, useLazyNewInputIrrigationQuery } from '../../../store/actions'
+import { searchIrrigationSystemByJunta, searchPointObject, searchSectionByJunta, useAddInputIrrigationMutation, useGetFarmByIdQuery, useLazyGetListWaterInAndPointByCoordinatesQuery, useLazyGetListWaterInByPointQuery, useLazyNewInputIrrigationQuery } from '../../../store/actions'
 
 export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
 
     const [show, setShow] = useState(false)
-    const [optionLocation, setOptionLocation] = useState(0)
+    const [typeLocation, setTypeLocation] = useState(0)
+    const [optionsSection, setOptionsSection] = useState([])
+    const [optionsWaterIn, setOptionsWaterIn] = useState([])
     const [range, setRange] = useState(20)
     const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
 
     const { data: AreaFarmData = null } = useGetFarmByIdQuery(farm)
-    const [searchWaterIn, { data: WaterIn = [], isFetching: isLoadingWaterIn }] = useLazyGetListWaterInByPointQuery()
+    const [searchWaterIn, { isFetching: isLoadingWaterIn }] = useLazyGetListWaterInByPointQuery()
+    const [searchWaterInAndPoint, { isFetching: isLoadingWaterInAndPoint }] = useLazyGetListWaterInAndPointByCoordinatesQuery()
     const [newInputIrrigation, { data = null, isLoading }] = useLazyNewInputIrrigationQuery()
     const [addInputIrrigation, { isLoading: isSavingAdd }] = useAddInputIrrigationMutation()
 
@@ -30,7 +35,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
     }
 
     useEffect(() => {
-        setOptionLocation(0)
+        setTypeLocation(0)
         newInputIrrigation(farm)
     }, [show])
 
@@ -180,45 +185,52 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                         <Form.Check
                                             inline
                                             type='radio'
-                                            name='optionLocation'
+                                            name='typeLocation'
                                             label='Por busqueda de nombre'
                                             id='locationForName'
-                                            defaultChecked
+                                            checked={typeLocation === 0}
                                             onChange={() => {
-                                                setOptionLocation(0)
-                                                setValue('structure', null)
+                                                setTypeLocation(0)
+                                                setValue('section', null)
                                                 setValue('waterPointFeature', null)
+                                                setOptionsSection([])
+                                                setOptionsWaterIn([])
                                             }}
                                         />
                                         <Form.Check
                                             inline
                                             type='radio'
-                                            name='optionLocation'
+                                            name='typeLocation'
                                             label='Por ubicación de toma'
                                             id='locationForInput'
+                                            checked={typeLocation === 1}
                                             onChange={() => {
-                                                setOptionLocation(1)
-                                                setValue('structure', null)
+                                                setTypeLocation(1)
+                                                setValue('section', null)
                                                 setValue('waterPointFeature', null)
+                                                setOptionsSection([])
+                                                setOptionsWaterIn([])
                                             }}
                                         />
                                         <Form.Check
                                             inline
                                             type='radio'
-                                            name='optionLocation'
+                                            name='typeLocation'
                                             label='Por ubicación de coordenadas'
                                             id='locationForCoord'
+                                            checked={typeLocation === 2}
                                             onChange={() => {
-                                                setOptionLocation(2)
-                                                setValue('structure', null)
+                                                setTypeLocation(2)
+                                                setValue('section', null)
                                                 setValue('waterPointFeature', null)
-                                                searchWaterIn
+                                                setOptionsSection([])
+                                                setOptionsWaterIn([])
                                             }}
                                         />
                                     </div>
                                 </div>
                                 {
-                                    optionLocation === 0
+                                    typeLocation === 0
                                     &&
                                     <React.Fragment>
                                         <div className='row'>
@@ -268,7 +280,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                         </div>
                                         <div className='row'>
                                             <div className='col-12'>
-                                                <Form.Group className='mb-3' controlId='newGeometry'>
+                                                <Form.Group className='mb-3'>
                                                     <Form.Label>Punto de toma de agua</Form.Label>
                                                     <Controller
                                                         name='waterPointFeature'
@@ -319,12 +331,12 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                     </React.Fragment>
                                 }
                                 {
-                                    optionLocation === 1
+                                    typeLocation === 1
                                     &&
                                     <React.Fragment>
                                         <div className='row'>
                                             <div className='col-12'>
-                                                <Form.Group className='mb-3' controlId='newGeometry'>
+                                                <Form.Group className='mb-3'>
                                                     <Form.Label>Punto de toma de agua</Form.Label>
                                                     <Controller
                                                         name='waterPointFeature'
@@ -334,6 +346,11 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                             onChange: () => {
                                                                 if (!!watch('waterPointFeature')) {
                                                                     searchWaterIn({ point: watch('waterPointFeature')._id, range })
+                                                                        .unwrap()
+                                                                        .then((data) => {
+                                                                            setValue('section', null)
+                                                                            setOptionsSection(data)
+                                                                        })
                                                                     setValue('section', null)
                                                                 }
                                                             }
@@ -366,11 +383,16 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                         Si el punto de ubicación aún no esta ingresado acceda a este <Link to={`/app/ambit/geoobj`}>enlace</Link> para registrarlo.
                                                     </Form.Text>
                                                 </Form.Group>
-                                                <InputGroup>
+                                                <InputGroup className='mb-3'>
                                                     <InputGroup.Text>Rango de busqueda en metros</InputGroup.Text>
                                                     <Form.Control
                                                         onChange={({ target }) => {
                                                             searchWaterIn({ point: watch('waterPointFeature')._id, range: target.value })
+                                                                .unwrap()
+                                                                .then((data) => {
+                                                                    setValue('section', null)
+                                                                    setOptionsSection(data)
+                                                                })
                                                             setRange(target.value)
                                                         }}
                                                         value={range}
@@ -380,38 +402,49 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                 </InputGroup>
                                             </div>
                                         </div>
-                                        {
-                                            WaterIn.length === 0 || isLoadingWaterIn || watch('waterPointFeature') === null
-                                                ?
-                                                <LoadingAction />
-                                                :
-                                                <ListGroup className='my-2'>
-                                                    {
-                                                        WaterIn.map(wi =>
-                                                            <ListGroup.Item
-                                                                active={watch('section')?._id === wi.section?._id}
-                                                                onClick={() => {
-                                                                    if (watch('section')?._id === wi.section?._id) {
-                                                                        setValue('section', null)
-                                                                    } else {
-                                                                        setValue('section', wi.section)
-                                                                    }
+                                        <div className='row'>
+                                            <div className='col-12'>
+                                                <Form.Group className='mb-3'>
+                                                    <Form.Label>Estructura de captación</Form.Label>
+                                                    <Controller
+                                                        name='section'
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field }) =>
+                                                            <Select
+                                                                {...field}
+                                                                classNamePrefix='rc-select'
+                                                                styles={{
+                                                                    control: (baseStyles, state) => ({
+                                                                        ...baseStyles,
+                                                                        minHeight: '60px',
+                                                                    }),
                                                                 }}
-                                                                variant='secondary'
-                                                                action
-                                                                type='button'
-                                                                key={wi.section._id}
-                                                            >
-                                                                <div className='d-flex gap-2 w-100 justify-content-between'>
-                                                                    <div>
-                                                                        <h6 className='mb-0'>{`Canal ${wi.section.structure.name}`}</h6>
-                                                                        <div className='mb-0 opacity-75'>{wi.section.name} se encuentra a {`${wi.dist.calculated.toFixed(2)} metros`}</div>
+                                                                isClearable
+                                                                isDisabled={watch('waterPointFeature') === null}
+                                                                isLoading={isLoadingWaterIn}
+                                                                options={optionsSection}
+                                                                hideSelectedOptions
+                                                                menuPlacement='auto'
+                                                                menuPosition='absolute'
+                                                                placeholder={`Buscar...`}
+                                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                                getOptionValue={e => e._id}
+                                                                getOptionLabel={e =>
+                                                                    <div className='d-flex gap-2 w-100 justify-content-between'>
+                                                                        <div>
+                                                                            <h6 className='mb-0'>{`Canal ${e.structure.name}`}</h6>
+                                                                            <div className='mb-0 opacity-75'>{e.name} se encuentra a {`${e.dist.calculated.toFixed(2)} metros`}</div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </ListGroup.Item>)
-                                                    }
-                                                </ListGroup>
-                                        }
+                                                                }
+                                                            />
+                                                        }
+                                                    />
+                                                </Form.Group>
+                                            </div>
+                                        </div>
                                         {
                                             !!watch('waterPointFeature')
                                             &&
@@ -427,12 +460,12 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                     </React.Fragment>
                                 }
                                 {
-                                    optionLocation === 2
+                                    typeLocation === 2
                                     &&
                                     <React.Fragment>
-                                        <div className='row'>
-                                            <div className='col-6'>
-                                                <Form.Group className='mb-3'>
+                                        <div className='row align-items-end'>
+                                            <div className='col-5'>
+                                                <Form.Group>
                                                     <Form.Label>Latitud</Form.Label>
                                                     <Form.Control
                                                         onChange={({ target }) => {
@@ -443,8 +476,8 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                     />
                                                 </Form.Group>
                                             </div>
-                                            <div className='col-6'>
-                                                <Form.Group className='mb-3'>
+                                            <div className='col-5'>
+                                                <Form.Group>
                                                     <Form.Label>Longitud</Form.Label>
                                                     <Form.Control
                                                         onChange={({ target }) => {
@@ -455,7 +488,140 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                     />
                                                 </Form.Group>
                                             </div>
+                                            <div className='col-2'>
+                                                <Button
+                                                    onClick={() => {
+                                                        const { lat, lng } = coordinates
+                                                        searchWaterInAndPoint({ lat, lng, range })
+                                                            .unwrap()
+                                                            .then(data => {
+                                                                setValue('waterPointFeature', null)
+                                                                setValue('section', null)
+                                                                setOptionsWaterIn(data.pointsIn)
+                                                                setOptionsSection(data.watersIn)
+                                                            })
+                                                    }}
+                                                    className='w-100'
+                                                >
+                                                    <TbMapSearch size={20} />
+                                                </Button>
+                                            </div>
                                         </div>
+                                        <div className='row'>
+                                            <div className='col-12'>
+                                                <InputGroup>
+                                                    <InputGroup.Text>Rango de busqueda en metros</InputGroup.Text>
+                                                    <Form.Control
+                                                        onChange={({ target }) => {
+                                                            const { lat, lng } = coordinates
+                                                            searchWaterInAndPoint({ lat, lng, range: target.value })
+                                                                .unwrap()
+                                                                .then(data => {
+                                                                    setValue('waterPointFeature', null)
+                                                                    setValue('section', null)
+                                                                    setOptionsWaterIn(data.pointsIn)
+                                                                    setOptionsSection(data.watersIn)
+                                                                })
+                                                            setRange(target.value)
+                                                        }}
+                                                        value={range}
+                                                        min={20}
+                                                        type='number'
+                                                    />
+                                                </InputGroup>
+                                            </div>
+                                        </div>
+                                        <div className='row'>
+                                            <div className='col-12'>
+                                                <Form.Group className='mb-3'>
+                                                    <Form.Label>Estructura de captación</Form.Label>
+                                                    <Controller
+                                                        name='section'
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field }) =>
+                                                            <Select
+                                                                {...field}
+                                                                classNamePrefix='rc-select'
+                                                                styles={{
+                                                                    control: (baseStyles, state) => ({
+                                                                        ...baseStyles,
+                                                                        minHeight: '60px',
+                                                                    }),
+                                                                }}
+                                                                isClearable
+                                                                isDisabled={optionsSection.length === 0}
+                                                                isLoading={isLoadingWaterInAndPoint}
+                                                                options={optionsSection}
+                                                                hideSelectedOptions
+                                                                menuPlacement='auto'
+                                                                menuPosition='absolute'
+                                                                placeholder={`Buscar...`}
+                                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                                getOptionValue={e => e._id}
+                                                                getOptionLabel={e =>
+                                                                    <div className='d-flex gap-2 w-100 justify-content-between'>
+                                                                        <div>
+                                                                            <h6 className='mb-0'>{`Canal ${e.structure.name}`}</h6>
+                                                                            <div className='mb-0 opacity-75'>{e.name} se encuentra a {`${e.dist.calculated.toFixed(2)} metros`}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            />
+                                                        }
+                                                    />
+                                                </Form.Group>
+                                            </div>
+                                        </div>
+                                        <div className='row'>
+                                            <div className='col-12'>
+                                                <Form.Group className='mb-3'>
+                                                    <Form.Label>Punto de toma de agua</Form.Label>
+                                                    <Controller
+                                                        name='waterPointFeature'
+                                                        control={control}
+                                                        rules={{ required: true }}
+                                                        render={({ field }) =>
+                                                            <Select
+                                                                {...field}
+                                                                classNamePrefix='rc-select'
+                                                                styles={{
+                                                                    control: (baseStyles, state) => ({
+                                                                        ...baseStyles,
+                                                                        minHeight: '60px',
+                                                                    }),
+                                                                }}
+                                                                isClearable
+                                                                isDisabled={optionsWaterIn.length === 0}
+                                                                isLoading={isLoadingWaterInAndPoint}
+                                                                options={optionsWaterIn}
+                                                                hideSelectedOptions
+                                                                menuPlacement='auto'
+                                                                menuPosition='absolute'
+                                                                placeholder={`Buscar...`}
+                                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                                getOptionValue={e => e._id}
+                                                                getOptionLabel={e => <OptionGeometry simple={true} geo={e} />}
+                                                            />
+                                                        }
+                                                    />
+                                                </Form.Group>
+                                            </div>
+                                        </div>
+                                        {
+                                            !!watch('waterPointFeature')
+                                            &&
+                                            <MapLocation
+                                                geometry={
+                                                    [
+                                                        watch('waterPointFeature'),
+                                                        watch('section') !== null && { ...watch('section')?.feature }
+                                                    ]
+                                                }
+                                            />
+                                        }
                                     </React.Fragment>
                                 }
                             </form>
