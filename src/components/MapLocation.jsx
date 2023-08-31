@@ -1,34 +1,50 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap, Circle } from 'react-leaflet'
 import * as turf from '@turf/turf'
 import { randomColor, scaleZoom } from '../helpers'
-import { isObject } from 'lodash'
 
-export const MapLocation = ({ className = '', geometry = [], style = {} }) => {
+export const MapLocation = ({ id = useId(), className = '', geometry = [], style = {} }) => {
+
+    useEffect(() => {
+        const windowResizeEvent = () => {
+            const wrapperElement = document.getElementById(`wrapper-leaflet-${id}`)
+            const elemWidth = wrapperElement.offsetWidth
+            const elemHeight = wrapperElement.offsetHeight
+
+            document.getElementById(`${id}`).style.width = elemWidth
+            document.getElementById(`${id}`).style.height = elemHeight
+            // document.getElementById(`${id}`).invalidateSize()
+        }
+
+        window.onresize = windowResizeEvent
+    }, [])
+
     return (
-        <MapContainer
-            className={className}
-            zoomControl={true}
-            center={[-4.79, -80.56]}
-            zoom={13}
-            scrollWheelZoom={false}
-            style={{ height: '300px', ...style }}
-        >
-            {
-                geometry.length > 0
-                &&
-                <CenterMap geometry={geometry.filter(g => typeof g === 'object')} />
-            }
-            <TileLayer
-                attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
-                url={`http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}`}
-            />
-            {
-                geometry.length > 0
-                &&
-                <DrawGeo data={geometry} />
-            }
-        </MapContainer>
+        <div id={`wrapper-leaflet-${id}`} className={`position-relative overflow-hidden ${className}`}>
+            <MapContainer
+                id={id}
+                zoomControl={true}
+                center={[-4.79, -80.56]}
+                zoom={13}
+                scrollWheelZoom={false}
+                style={{ height: '300px', ...style }}
+            >
+                {
+                    geometry.length > 0
+                    &&
+                    <CenterMap geometry={geometry.filter(g => typeof g === 'object')} />
+                }
+                <TileLayer
+                    attribution={`&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors`}
+                    url={`http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}`}
+                />
+                {
+                    geometry.length > 0
+                    &&
+                    <DrawGeo data={geometry} />
+                }
+            </MapContainer>
+        </div>
     )
 }
 
@@ -42,6 +58,7 @@ const CenterMap = ({ geometry = [] }) => {
         setViewMap(turf.center(turf.explode(geometrys)).geometry.coordinates)
     }, [geometry])
 
+    // map.fitWorld()
     map.setView([viewMap[1], viewMap[0]], zoom)
 
     return null

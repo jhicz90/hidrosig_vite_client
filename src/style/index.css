@@ -1155,3 +1155,8 @@ kbd.type-writer,
 	white-space: normal !important;
 }
 /* NOTIFY */
+/* LEAFLET MAP */
+.leaflet-control-attribution {
+	display: none !important;
+}
+/* LEAFLET MAP */

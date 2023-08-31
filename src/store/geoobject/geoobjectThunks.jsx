@@ -27,6 +27,16 @@ export const geoobjectApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Geo']
         }),
+        getListPolygon: builder.query({
+            query: (search = '') => ({
+                url: `geoobject/search/polygon`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Geo']
+        }),
         // POLYGON
         // LINE
         addLine: builder.mutation({
@@ -54,6 +64,8 @@ export const {
     useAddMultiLineMutation,
     useAddPointMutation,
     useAddPolygonMutation,
+    useGetListPolygonQuery,
+    useLazyGetListPolygonQuery,
 } = geoobjectApi
 
 export const startSaveNewGeometry = () => {
@@ -144,7 +156,7 @@ export const startImportShapes = (fileName) => {
 
         if (resp.ok) {
             const { featureCollection } = getState().geoobject
-            
+
             if (featureCollection.features.length > 0) {
                 SwalReact.fire({
                     title: <div>Importación</div>,

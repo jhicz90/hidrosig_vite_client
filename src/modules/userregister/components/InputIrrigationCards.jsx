@@ -16,13 +16,13 @@ export const InputIrrigationCards = ({ farm = null }) => {
                     ?
                     <LoadingPage />
                     :
-                    <div className='row row-cols-1 row-cols-md-2 g-1 my-2'>
+                    <div className='row row-cols-1 g-1 my-2'>
                         {
                             inputIrrigationIn.map(inputIrr =>
-                                <Col key={inputIrr._id} md={6}>
+                                <Col key={inputIrr._id}>
                                     <Card>
                                         <Row className='g-0'>
-                                            <Col xl={4}>
+                                            <Col md={4}>
                                                 {
                                                     !!inputIrr
                                                     &&
@@ -33,12 +33,12 @@ export const InputIrrigationCards = ({ farm = null }) => {
                                                             { ...inputIrr?.farm.feature }
                                                         ]}
                                                         style={{
-                                                            height: '400px'
+                                                            height: '300px'
                                                         }}
                                                     />
                                                 }
                                             </Col>
-                                            <Col className='d-flex flex-column justify-content-between' xl={8}>
+                                            <Col md={8} className='d-flex flex-column justify-content-between'>
                                                 <Card.Body>
                                                     <Card.Title>{inputIrr.code}</Card.Title>
                                                     <div className='row mt-0 gy-2 gx-0' style={{ fontSize: '12px' }}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { IoEyeSharp } from 'react-icons/io5'
-import { DataTable, InputSearch, LinkBack, TagStatus, TagTimeAgo } from '../../../components'
+import { DataTable, InputSearch, TagStatus, TagTimeAgo } from '../../../components'
 import { useGetListFarmByUserFarmQuery, useGetUserFarmByIdQuery } from '../../../store/actions'
 
 export const UserFarmListAreaFarm = () => {
@@ -59,13 +59,13 @@ export const UserFarmListAreaFarm = () => {
                                     pinRight: true,
                                     renderCell: (item) =>
                                         <div className='d-flex gap-2 p-2'>
-                                            <LinkBack
+                                            <Link
                                                 to={`/app/user_reg/user_farm/prps/${item._id}`}
                                                 className='btn btn-neutral-icon'
                                                 style={{ padding: '0.5rem' }}
                                             >
                                                 <IoEyeSharp size={16} />
-                                            </LinkBack>
+                                            </Link>
                                         </div>
                                 }
                             ]

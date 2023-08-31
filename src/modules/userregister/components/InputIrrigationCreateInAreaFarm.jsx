@@ -344,7 +344,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                         rules={{
                                                             required: true,
                                                             onChange: () => {
-                                                                if (!!watch('waterPointFeature')) {
+                                                                if (!!watch('waterPointFeature') && typeLocation === 1) {
                                                                     searchWaterIn({ point: watch('waterPointFeature')._id, range })
                                                                         .unwrap()
                                                                         .then((data) => {
@@ -507,7 +507,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                 </Button>
                                             </div>
                                         </div>
-                                        <div className='row'>
+                                        <div className='row my-2'>
                                             <div className='col-12'>
                                                 <InputGroup>
                                                     <InputGroup.Text>Rango de busqueda en metros</InputGroup.Text>

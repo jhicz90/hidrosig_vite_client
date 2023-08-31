@@ -86,7 +86,15 @@ export const farmApi = storeApi.injectEndpoints({
                 method: 'delete'
             }),
             invalidatesTags: ['Frm']
-        })
+        }),
+        deleteResourceFarm: builder.mutation({
+            query: ({ id, resourceId, deleteFile }) => ({
+                url: `farm/image/${id}`,
+                method: 'delete',
+                data: { images: [resourceId], deleteFile },
+            }),
+            invalidatesTags: ['Frm']
+        }),
         // FARM
     })
 })
@@ -94,6 +102,7 @@ export const farmApi = storeApi.injectEndpoints({
 export const {
     useAddFarmMutation,
     useDeleteFarmByIdMutation,
+    useDeleteResourceFarmMutation,
     useDraftFarmMutation,
     useGetFarmByIdQuery,
     useGetInputIrrigByIdQuery,
