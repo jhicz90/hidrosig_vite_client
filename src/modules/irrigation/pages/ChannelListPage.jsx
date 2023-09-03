@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { IoEyeSharp } from 'react-icons/io5'
 import { InputSearch, LinkBack, DataTable, TagTimeAgo } from '../../../components'
-import { useGetListStructureQuery } from '../../../store/actions'
+import { useGetListChannelQuery } from '../../../store/actions'
 
-export const StructureListPage = () => {
+export const ChannelListPage = () => {
 
     const [search, setSearch] = useState('')
-    const { data: list = [], isFetching } = useGetListStructureQuery(search)
+    const { data: list = [], isFetching } = useGetListChannelQuery(search)
 
     return (
         <>

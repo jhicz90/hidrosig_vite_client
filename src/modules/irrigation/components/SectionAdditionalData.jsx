@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Button, Card, Form, ListGroup } from 'react-bootstrap'
 import { IoMdAddCircleOutline, IoMdClose } from 'react-icons/io'
-import { sectionApi, useUpdateSectionByIdMutation } from '../../../store/actions'
+import { useGetSectionByIdQuery, useUpdateSectionByIdMutation } from '../../../store/actions'
 
 export const SectionAdditionalData = () => {
-    
+
     const { sectid } = useParams()
-    const { data = null } = useSelector(sectionApi.endpoints.getSectionById.select(sectid))
+    const { data = null } = useGetSectionByIdQuery(sectid)
     const [updateSection, { isLoading: isUpdating }] = useUpdateSectionByIdMutation()
     const { register, control, handleSubmit, reset } = useForm()
     const { fields, append, remove } = useFieldArray({
@@ -33,7 +32,7 @@ export const SectionAdditionalData = () => {
     return (
         <Card>
             <Card.Body>
-                <form id='form-irrig-structure-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
+                <form id='form-irrigation-channel-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
                     <div className='row'>
                         <div className='col-12'>
                             <Form.Group className='mb-3' controlId='pAppIdentifiers'>

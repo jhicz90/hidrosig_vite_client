@@ -1,16 +1,15 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Card, Form } from 'react-bootstrap'
 import { DatePicker, InputMask, Liner } from '../../../components'
-import { structureApi, useUpdateStructureByIdMutation } from '../../../store/actions'
+import { useGetChannelByIdQuery, useUpdateChannelByIdMutation } from '../../../store/actions'
 
-export const StructureInformation = () => {
+export const ChannelInformation = () => {
 
     const { strid } = useParams()
-    const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
-    const [updateStructure, { isLoading: isUpdating }] = useUpdateStructureByIdMutation()
+    const { data = null } = useGetChannelByIdQuery(strid)
+    const [updateChannel, { isLoading: isUpdating }] = useUpdateChannelByIdMutation()
     const { register, control, handleSubmit, reset } = useForm({
         defaultValues: {
             progressive: '000+000.00',
@@ -18,9 +17,9 @@ export const StructureInformation = () => {
     })
 
     const handleUpdate = (updateData) => {
-        updateStructure({
+        updateChannel({
             id: strid,
-            structure: updateData
+            channel: updateData
         })
     }
 
@@ -33,7 +32,7 @@ export const StructureInformation = () => {
     return (
         <Card>
             <Card.Body>
-                <form id='form-irrig-structure-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+                <form id='form-irrig-channel-edit-info' onSubmit={handleSubmit(handleUpdate)}>
                     <Liner>Detalle</Liner>
                     <div className='row'>
                         <div className='col-12'>

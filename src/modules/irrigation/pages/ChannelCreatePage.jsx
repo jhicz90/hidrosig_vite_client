@@ -4,15 +4,15 @@ import { Controller, useForm } from 'react-hook-form'
 import { Button, Form } from 'react-bootstrap'
 import { useNavigateState } from '../../../hooks'
 import { DatePicker, InputMask, Liner, LoadingPage } from '../../../components'
-import { useAddStructureMutation, useLazyNewStructureQuery } from '../../../store/actions'
+import { useAddChannelMutation, useLazyNewChannelQuery } from '../../../store/actions'
 
-export const StructureCreatePage = () => {
+export const ChannelCreatePage = () => {
 
     const { state: params } = useLocation()
     const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig/str')
 
-    const [newStructure, { data = null, isLoading, isError, error }] = useLazyNewStructureQuery()
-    const [addStructure, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddStructureMutation()
+    const [newStructure, { data = null, isLoading, isError, error }] = useLazyNewChannelQuery()
+    const [addStructure, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddChannelMutation()
     const { register, control, handleSubmit, reset } = useForm({
         defaultValues: {
             progressive: '000+000.00'
@@ -83,7 +83,7 @@ export const StructureCreatePage = () => {
                                     disabled={isSavingAdd}
                                     variant='primary'
                                     type='submit'
-                                    form='form-irrig-structure-create'
+                                    form='form-irrigation-channel-create'
                                 >
                                     Registro nuevo
                                 </Button>
@@ -94,7 +94,7 @@ export const StructureCreatePage = () => {
             </div>
             <div className='row g-0 justify-content-center'>
                 <div className='col'>
-                    <form id='form-irrig-structure-create' onSubmit={handleSubmit(handleSave)}>
+                    <form id='form-irrigation-channel-create' onSubmit={handleSubmit(handleSave)}>
                         <Liner>Información</Liner>
                         <div className='row'>
                             <div className='col-12 col-md-6'>

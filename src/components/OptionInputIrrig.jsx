@@ -7,7 +7,7 @@ export const OptionInputIrrig = ({ inputIrrig = null, e = true, a = true, s = tr
             {
                 e
                 &&
-                <div className='text-muted' style={{ fontSize: '0.75rem' }}>ESTRUCTURA DE RIEGO: {inputIrrig.structure.name}</div>
+                <div className='text-muted' style={{ fontSize: '0.75rem' }}>ESTRUCTURA DE RIEGO: {inputIrrig.channel.name}</div>
             }
             {
                 a
@@ -17,7 +17,7 @@ export const OptionInputIrrig = ({ inputIrrig = null, e = true, a = true, s = tr
             {
                 s
                 &&
-                <div className='text-muted' style={{ fontSize: '0.75rem' }}>SISTEMA DE RIEGO: {inputIrrig.irrigSystem.name}</div>
+                <div className='text-muted' style={{ fontSize: '0.75rem' }}>SISTEMA DE RIEGO: {inputIrrig.irrigationSystem.name}</div>
             }
         </div>
     )

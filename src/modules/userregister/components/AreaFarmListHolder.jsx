@@ -14,10 +14,16 @@ export const AreaFarmListHolder = () => {
 
     return (
         <React.Fragment>
-            <div className='row mb-2'>
-                <div className='col-6'>
-                    <InputSearch className='my-0' value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
-                    <Button variant='primary'>Agregar Posesionarios</Button>
+            <div className='row'>
+                <div className='col-12'>
+                    <div className='d-flex flex-row-reverse justify-content-between align-items-center flex-wrap gap-2'>
+                        <Button variant='primary'>Agregar Posesionarios</Button>
+                    </div>
+                </div>
+            </div>
+            <div className='row'>
+                <div className='col-12'>
+                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
                 </div>
             </div>
             <div className='row'>

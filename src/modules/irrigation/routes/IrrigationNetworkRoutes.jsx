@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { GuardRoute } from '../../../guards'
-import { ChannelSchemePage, ImportNetworkPage, IrrigationNetworkNavPage, SectionCreatePage, SectionPage, StructureCreatePage, StructureListPage, StructurePage, VariableListPage, WaterSourceCreatePage, WaterSourceListPage, WaterSourcePage } from '../pages'
+import { ChannelNetworkPage, ImportNetworkPage, IrrigationNetworkNavPage, SectionCreatePage, SectionPage, ChannelCreatePage, ChannelListPage, ChannelPage, VariableListPage, WaterSourceCreatePage, WaterSourceListPage, WaterSourcePage } from '../pages'
 
 export const IrrigationNetworkRoutes = () => {
     return (
@@ -11,7 +11,7 @@ export const IrrigationNetworkRoutes = () => {
                     path={`net`}
                     element={
                         <GuardRoute meta={['irrigation_network']}>
-                            <ChannelSchemePage />
+                            <ChannelNetworkPage />
                         </GuardRoute>
                     }
                 />
@@ -19,7 +19,7 @@ export const IrrigationNetworkRoutes = () => {
                     path={`str`}
                     element={
                         <GuardRoute meta={['watersource']}>
-                            <StructureListPage />
+                            <ChannelListPage />
                         </GuardRoute>
                     }
                 />
@@ -52,7 +52,7 @@ export const IrrigationNetworkRoutes = () => {
                 path={`str/create`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
-                        <StructureCreatePage />
+                        <ChannelCreatePage />
                     </GuardRoute>
                 }
             />
@@ -60,7 +60,7 @@ export const IrrigationNetworkRoutes = () => {
                 path={`str/:strid/*`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
-                        <StructurePage />
+                        <ChannelPage />
                     </GuardRoute>
                 }
             />

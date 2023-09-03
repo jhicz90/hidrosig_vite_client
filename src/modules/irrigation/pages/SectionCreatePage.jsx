@@ -64,7 +64,7 @@ export const SectionCreatePage = () => {
     }
 
     useEffect(() => {
-        newSection(params?.structure)
+        newSection(params?.channel)
     }, [])
 
     useEffect(() => {
@@ -85,7 +85,7 @@ export const SectionCreatePage = () => {
 
     useEffect(() => {
         if (isSaved) {
-            newSection(params?.structure)
+            newSection(params?.channel)
         }
     }, [isSaved])
 

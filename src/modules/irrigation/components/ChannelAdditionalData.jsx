@@ -1,16 +1,15 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Button, Card, Form, ListGroup } from 'react-bootstrap'
 import { IoMdAddCircleOutline, IoMdClose } from 'react-icons/io'
-import { structureApi, useUpdateStructureByIdMutation } from '../../../store/actions'
+import { useGetChannelByIdQuery, useUpdateChannelByIdMutation } from '../../../store/actions'
 
-export const StructureAdditionalData = () => {
-    
+export const ChannelAdditionalData = () => {
+
     const { strid } = useParams()
-    const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
-    const [updateStructure, { isLoading: isUpdating }] = useUpdateStructureByIdMutation()
+    const { data = null } = useGetChannelByIdQuery(strid)
+    const [updateChannel, { isLoading: isUpdating }] = useUpdateChannelByIdMutation()
     const { register, control, handleSubmit, reset } = useForm()
     const { fields, append, remove } = useFieldArray({
         control,
@@ -18,9 +17,9 @@ export const StructureAdditionalData = () => {
     })
 
     const handleUpdate = ({ appIdentifiers }) => {
-        updateStructure({
+        updateChannel({
             id: strid,
-            structure: { appIdentifiers }
+            channel: { appIdentifiers }
         })
     }
 
@@ -33,7 +32,7 @@ export const StructureAdditionalData = () => {
     return (
         <Card>
             <Card.Body>
-                <form id='form-irrig-structure-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
+                <form id='form-irrigation-channel-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
                     <div className='row'>
                         <div className='col-12'>
                             <Form.Group className='mb-3' controlId='pAppIdentifiers'>

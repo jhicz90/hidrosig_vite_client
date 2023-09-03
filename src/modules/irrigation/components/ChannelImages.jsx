@@ -1,23 +1,23 @@
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Alert, Button, Card } from 'react-bootstrap'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 import { GridGallery } from '../../../components'
-import { startModalResource, startUpdateImageIdFarm, structureApi } from '../../../store/actions'
+import { startModalResource, startUpdateImageIdFarm, useGetChannelByIdQuery } from '../../../store/actions'
 
-export const StructureImages = () => {
+export const ChannelImages = () => {
 
     const { strid } = useParams()
     const dispatch = useDispatch()
-    const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
+    const { data = null } = useGetChannelByIdQuery(strid)
 
-    const handleAddImage = (structure) => {
+    const handleAddImage = (channel) => {
         dispatch(startModalResource({
-            tags: ['estructura', structure.name],
+            tags: ['estructura', channel.name],
             groupTypes: 'images',
             limit: 6,
             maxSize: 10,
-            setFiles: (data) => dispatch(startUpdateImageIdFarm(structure._id, data))
+            setFiles: (data) => dispatch(startUpdateImageIdFarm(channel._id, data))
         }))
     }
 

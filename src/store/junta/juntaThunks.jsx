@@ -24,7 +24,7 @@ export const juntaApi = storeApi.injectEndpoints({
             invalidatesTags: ['Orgz']
         }),
         getListJunta: builder.query({
-            query: (search) => ({
+            query: (search = '') => ({
                 url: `junta/list`,
                 params: {
                     search

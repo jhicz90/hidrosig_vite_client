@@ -2,21 +2,21 @@ import { useEffect } from 'react'
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
 import { Card, Dropdown, Tab } from 'react-bootstrap'
 import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
-import { StructureAdditionalData, StructureBanner, StructureImages, StructureInformation, StructureListFarm, StructureListSection } from '../components'
+import { ChannelAdditionalData, ChannelBanner, ChannelImages, ChannelInformation, ChannelListFarm, ChannelListSection } from '../components'
 import { LoadingPage, SliderNavFlip } from '../../../components'
 import { useNavigateState } from '../../../hooks'
-import { questionDeleteStructure, useDeleteStructureByIdMutation, useGetStructureByIdQuery } from '../../../store/actions'
+import { questionDeleteChannel, useDeleteChannelByIdMutation, useGetChannelByIdQuery } from '../../../store/actions'
 
-export const StructurePage = () => {
+export const ChannelPage = () => {
 
     const { strid } = useParams()
     const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
 
-    const { data = null, isLoading, isError } = useGetStructureByIdQuery(strid)
-    const [deleteStructure] = useDeleteStructureByIdMutation()
+    const { data = null, isLoading, isError } = useGetChannelByIdQuery(strid)
+    const [deleteStructure] = useDeleteChannelByIdMutation()
 
     const handleDelete = async (id, name) => {
-        if (await questionDeleteStructure(name)) {
+        if (await questionDeleteChannel(name)) {
             deleteStructure(id)
         }
     }
@@ -75,7 +75,7 @@ export const StructurePage = () => {
                     </div>
                     <div className='row'>
                         <div className='col-md-5 col-lg-5 col-xl-4'>
-                            <StructureBanner />
+                            <ChannelBanner />
                         </div>
                         <div className='col-md-7 col-lg-7 col-xl-8'>
                             <Tab.Container>
@@ -95,11 +95,11 @@ export const StructurePage = () => {
                                 </Card>
                                 <div className='mt-2'>
                                     <Routes>
-                                        <Route index element={<StructureInformation />} />
-                                        <Route path={`sct/*`} element={<StructureListSection />} />
-                                        <Route path={`prp`} element={<StructureListFarm />} />
-                                        <Route path={`img`} element={<StructureImages />} />
-                                        <Route path={`add`} element={<StructureAdditionalData />} />
+                                        <Route index element={<ChannelInformation />} />
+                                        <Route path={`sct/*`} element={<ChannelListSection />} />
+                                        <Route path={`prp`} element={<ChannelListFarm />} />
+                                        <Route path={`img`} element={<ChannelImages />} />
+                                        <Route path={`add`} element={<ChannelAdditionalData />} />
                                         {/* <Route path={`area`} element={<AreaFarmAreaGeometry />} />
                                         <Route path={`hld`} element={<AreaFarmListHolder />} />
                                         <Route path={`img`} element={<AreaFarmImages />} />

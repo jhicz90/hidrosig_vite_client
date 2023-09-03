@@ -14,7 +14,7 @@ export const PettyCashListVouchers = () => {
     const [search, setSearch] = useState('')
     const dispatch = useDispatch()
     const { data = null } = useGetPettyCashByIdQuery(pettycashid)
-    const { data: vouchersIn = [], isLoading } = useGetListVoucherByPettyCashQuery({ pettycash: pettycashid, search: '' })
+    const { data: vouchersIn = [], isLoading, isFetching } = useGetListVoucherByPettyCashQuery({ pettycash: pettycashid, search: '' })
 
     let amountTotal = 0
     let outTotal = 0
@@ -63,7 +63,7 @@ export const PettyCashListVouchers = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
                 </div>
             </div>
             <div className='row'>

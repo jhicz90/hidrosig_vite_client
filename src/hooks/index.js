@@ -1,5 +1,6 @@
 // export * from './UseDate'
 export * from './useAuthStore'
+export * from './useChannelStore'
 export * from './useCollectStore'
 export * from './useFarmStore'
 export * from './useGeoObjectStore'

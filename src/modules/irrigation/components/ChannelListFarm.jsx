@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, Card } from 'react-bootstrap'
 import { IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack, TagStatus, TagTimeAgo } from '../../../components'
-import { startDeleteIdFarm, structureApi, useGetListFarmByStructureQuery } from '../../../store/actions'
+import { startDeleteIdFarm, useGetChannelByIdQuery, useGetListFarmByChannelQuery } from '../../../store/actions'
 
-export const StructureListFarm = () => {
+export const ChannelListFarm = () => {
 
     const dispatch = useDispatch()
     const { strid } = useParams()
     const [search, setSearch] = useState('')
-    const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
-    const { data: farmsIn = [], isLoading } = useGetListFarmByStructureQuery({ structure: data?._id, search: '' }, { skip: !data })
+    const { data = null } = useGetChannelByIdQuery(strid)
+    const { data: farmsIn = [], isLoading } = useGetListFarmByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
 
     return (
         <Card className='overflow-hidden'>
@@ -20,15 +20,6 @@ export const StructureListFarm = () => {
                 <div className='col'>
                     <InputSearch className='m-0' value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
                 </div>
-                {/* <div className='col-auto'>
-                    <LinkBack
-                        className='btn btn-primary'
-                        to={`/app/schm/irrig/sct/create`}
-                        state={{ structure: data._id || '' }}
-                    >
-                        Agregar predio
-                    </LinkBack>
-                </div> */}
             </div>
             <DataTable
                 rows={farmsIn}

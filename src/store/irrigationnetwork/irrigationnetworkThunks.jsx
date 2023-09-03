@@ -7,7 +7,7 @@ export const irrigationApi = storeApi.injectEndpoints({
         // IRRIGATION
         getIrrigationNetByJunta: builder.query({
             query: ({ junta = '' }) => ({
-                url: `structure/irrignet`,
+                url: `channel/irrignet`,
                 params: { junta }
             }),
             transformResponse: (response, meta, arg) => response.net,
@@ -21,7 +21,7 @@ export const irrigationApi = storeApi.injectEndpoints({
         }),
         getListWaterInForArea: builder.query({
             query: ({ id, range = 200 }) => ({
-                url: `structure/search_waterin/${id}`,
+                url: `channel/search_waterin/${id}`,
                 params: { range }
             }),
             transformResponse: (response, meta, arg) => response.docs,
@@ -36,28 +36,10 @@ export const {
     useLazyGetListWaterInForAreaQuery,
 } = irrigationApi
 
-export const startGetActiveIrrigationNetwork = (id, depth) => {
-    return async (dispatch) => {
-
-        dispatch(setActiveNodeLoadingIrrigationNetwork(true))
-
-        const resp = await fetchByToken({
-            endpoint: `structure/active_irrignet`,
-            params: { id, depth }
-        })
-
-        dispatch(setActiveNodeLoadingIrrigationNetwork(false))
-
-        if (resp.ok) {
-            dispatch(setActiveNodeDataIrrigationNetwork(resp.active))
-        }
-    }
-}
-
 export const searchIrrigationNetworkByJunta = (junta) => {
     return async (dispatch) => {
         const resp = await fetchByToken({
-            endpoint: `structure/irrignet`,
+            endpoint: `channel/irrignet`,
             params: { junta }
         })
 

@@ -668,6 +668,12 @@ kbd.type-writer,
 	gap: 0.5rem;
 }
 
+[data-bs-theme="dark"] .btn-neutral {
+	--bs-btn-color: #f8f9fa;
+	--bs-btn-bg: rgba(255, 255, 255, 0.15);
+	--bs-btn-border-color: rgba(255, 255, 255, 0.15);
+}
+
 .btn-neutral-primary {
 	--bs-btn-color: #3874ff;
 	--bs-btn-bg: #f5f7fa;

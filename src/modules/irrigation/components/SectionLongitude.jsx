@@ -14,10 +14,10 @@ export const SectionLongitude = () => {
     const [updateSection, { isLoading: isUpdating }] = useUpdateSectionByIdMutation()
     const { watch, control, handleSubmit, reset } = useForm()
 
-    const handleUpdate = ({ feature, structure }) => {
+    const handleUpdate = ({ feature, channel }) => {
         updateSection({
             id: sectid,
-            section: { feature, structure }
+            section: { feature, channel }
         })
     }
 

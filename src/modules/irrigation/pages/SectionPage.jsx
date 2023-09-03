@@ -43,9 +43,9 @@ export const SectionPage = () => {
                         </div>
                         <div className='col-12 col-md-auto'>
                             <div className='d-flex gap-2'>
-                                <Link to={`/app/schm/irrig/str/${data.structure._id}`} className='btn btn-neutral-secondary'>
+                                <Link to={`/app/schm/irrig/str/${data.channel._id}`} className='btn btn-neutral-secondary'>
                                     <IoReturnUpBack size={24} />
-                                    {data.structure.name}
+                                    {data.channel.name}
                                 </Link>
                                 <Dropdown className='dropdown-noarrow'>
                                     <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>

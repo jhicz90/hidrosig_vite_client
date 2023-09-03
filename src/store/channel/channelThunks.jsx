@@ -4,33 +4,33 @@ import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
 import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork } from '../irrigationnetwork'
-import { addNewStructure, setActiveNewStructure, setActiveStructure, setSavingStructure, setSavingNewStructure } from './structureSlice'
+import { addNewChannel, setActiveNewChannel, setActiveChannel, setSavingChannel, setSavingNewChannel } from './channelSlice'
 
 const SwalReact = withReactContent(Swal)
 
-export const structureApi = storeApi.injectEndpoints({
+export const channelApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // STRUCTURE
-        newStructure: builder.query({
+        newChannel: builder.query({
             query: (parent) => ({
-                url: `structure/create/new`,
+                url: `channel/create/new`,
                 params: {
                     parent
                 }
             }),
-            transformResponse: (response, meta, arg) => response.structure
+            transformResponse: (response, meta, arg) => response.channel
         }),
-        addStructure: builder.mutation({
-            query: (newStructure) => ({
-                url: `structure/create/new`,
+        addChannel: builder.mutation({
+            query: (newChannel) => ({
+                url: `channel/create/new`,
                 method: 'post',
-                data: newStructure
+                data: newChannel
             }),
             invalidatesTags: ['Irrig']
         }),
-        getListStructure: builder.query({
+        getListChannel: builder.query({
             query: (search) => ({
-                url: `structure/list`,
+                url: `channel/list`,
                 params: {
                     search
                 }
@@ -40,7 +40,7 @@ export const structureApi = storeApi.injectEndpoints({
         }),
         getListWaterInByPoint: builder.query({
             query: ({ point, range }) => ({
-                url: `structure/search_waterin_by_point/${point}`,
+                url: `channel/search_waterin_by_point/${point}`,
                 params: {
                     range
                 }
@@ -50,7 +50,7 @@ export const structureApi = storeApi.injectEndpoints({
         }),
         getListWaterInAndPointByCoordinates: builder.query({
             query: ({ lat, lng, range }) => ({
-                url: `structure/search_waterin_by_coordinates/${lat}/${lng}`,
+                url: `channel/search_waterin_by_coordinates/${lat}/${lng}`,
                 params: {
                     range
                 }
@@ -58,24 +58,24 @@ export const structureApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Irrig']
         }),
-        getStructureById: builder.query({
+        getChannelById: builder.query({
             query: (id) => ({
-                url: `structure/edit/${id}`
+                url: `channel/edit/${id}`
             }),
-            transformResponse: (response, meta, arg) => response.structure,
+            transformResponse: (response, meta, arg) => response.channel,
             providesTags: ['Irrig']
         }),
-        updateStructureById: builder.mutation({
-            query: ({ id, structure }) => ({
-                url: `structure/edit/${id}`,
+        updateChannelById: builder.mutation({
+            query: ({ id, channel }) => ({
+                url: `channel/edit/${id}`,
                 method: 'put',
-                data: structure
+                data: channel
             }),
             invalidatesTags: ['Irrig']
         }),
-        deleteStructureById: builder.mutation({
+        deleteChannelById: builder.mutation({
             query: (id) => ({
-                url: `structure/delete/${id}`,
+                url: `channel/delete/${id}`,
                 method: 'delete'
             }),
             invalidatesTags: ['Irrig']
@@ -85,138 +85,138 @@ export const structureApi = storeApi.injectEndpoints({
 })
 
 export const {
-    useAddStructureMutation,
-    useDeleteStructureByIdMutation,
-    useGetListStructureQuery,
+    useAddChannelMutation,
+    useDeleteChannelByIdMutation,
+    useGetListChannelQuery,
     useGetListWaterInByPointQuery,
-    useGetStructureByIdQuery,
+    useGetChannelByIdQuery,
     useLazyGetListWaterInAndPointByCoordinatesQuery,
     useLazyGetListWaterInByPointQuery,
-    useLazyNewStructureQuery,
-    useNewStructureQuery,
-    useUpdateStructureByIdMutation,
-} = structureApi
+    useLazyNewChannelQuery,
+    useNewChannelQuery,
+    useUpdateChannelByIdMutation,
+} = channelApi
 
-export const startAddNewStructure = () => {
+export const startAddNewChannel = () => {
     return async (dispatch, getState) => {
         const { activeNode: { id } } = getState().irrigationnetwork
 
-        dispatch(addNewStructure())
+        dispatch(addNewChannel())
 
         const resp = await fetchByToken({
-            endpoint: `structure/create/new`,
+            endpoint: `channel/create/new`,
             params: { parent: id }
         })
 
-        dispatch(setSavingNewStructure(false))
+        dispatch(setSavingNewChannel(false))
 
         if (resp.ok) {
-            dispatch(setActiveNewStructure(resp.structure))
+            dispatch(setActiveNewChannel(resp.channel))
         }
     }
 }
 
-export const startSaveNewStructure = () => {
+export const startSaveNewChannel = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingNewStructure(true))
+        dispatch(setSavingNewChannel(true))
 
-        const { activeNew } = getState().structure
+        const { activeNew } = getState().channel
 
-        const newStructure = {
+        const newChannel = {
             ...activeNew,
         }
 
         const resp = await fetchByToken({
-            endpoint: `structure/create/new`,
-            data: newStructure,
+            endpoint: `channel/create/new`,
+            data: newChannel,
             method: 'POST'
         })
 
-        dispatch(setSavingNewStructure(false))
+        dispatch(setSavingNewChannel(false))
 
         if (resp.ok) {
             dispatch(storeApi.util.invalidateTags(['Irrig']))
-            dispatch(setActiveNewStructure(null))
+            dispatch(setActiveNewChannel(null))
         }
     }
 }
 
-export const startGetStructure = (id) => {
+export const startGetChannel = (id) => {
     return async (dispatch) => {
 
-        dispatch(setSavingStructure(true))
+        dispatch(setSavingChannel(true))
 
         const resp = await fetchByToken({
-            endpoint: `structure/edit/${id}`
+            endpoint: `channel/edit/${id}`
         })
 
-        dispatch(setSavingStructure(false))
+        dispatch(setSavingChannel(false))
 
         if (resp.ok) {
-            dispatch(setActiveStructure(resp.structure))
+            dispatch(setActiveChannel(resp.channel))
         }
     }
 }
 
-export const startUpdateStructure = () => {
+export const startUpdateChannel = () => {
     return async (dispatch, getState) => {
 
-        dispatch(setSavingStructure(true))
+        dispatch(setSavingChannel(true))
 
-        const { active } = getState().structure
+        const { active } = getState().channel
         const { _id } = active
 
-        const updateStructure = {
+        const updateChannel = {
             ...active
         }
 
         const resp = await fetchByToken({
-            endpoint: `structure/edit/${_id}`,
-            data: updateStructure,
+            endpoint: `channel/edit/${_id}`,
+            data: updateChannel,
             method: 'PUT'
         })
 
-        dispatch(setSavingStructure(false))
+        dispatch(setSavingChannel(false))
 
         if (resp.ok) {
-            dispatch(setActiveStructure(resp.structure))
+            dispatch(setActiveChannel(resp.channel))
         }
     }
 }
 
-export const startUpdateDataStructureInIrrigNet = (structure) => {
+export const startUpdateDataChannelInIrrigNet = (channel) => {
     return async (dispatch, getState) => {
 
         dispatch(setActiveNodeLoadingIrrigationNetwork(true))
 
-        const { _id } = structure
+        const { _id } = channel
 
-        const updateStructure = {
-            ...structure
+        const updateChannel = {
+            ...channel
         }
 
         const resp = await fetchByToken({
-            endpoint: `structure/edit/${_id}`,
-            data: updateStructure,
+            endpoint: `channel/edit/${_id}`,
+            data: updateChannel,
             method: 'PUT'
         })
 
         dispatch(setActiveNodeLoadingIrrigationNetwork(false))
 
         if (resp.ok) {
-            if (getState().activeNode.id === resp.structure._id) {
-                dispatch(setActiveNodeDataIrrigationNetwork(resp.structure))
+            if (getState().activeNode.id === resp.channel._id) {
+                dispatch(setActiveNodeDataIrrigationNetwork(resp.channel))
             }
         }
     }
 }
 
-export const startUpdateImageIdStructure = (id, images) => {
+export const startUpdateImageIdChannel = (id, images) => {
     return async (dispatch) => {
 
         const resp = await fetchByToken({
-            endpoint: `structure/image/${id}`,
+            endpoint: `channel/image/${id}`,
             data: { images },
             method: 'PUT'
         })
@@ -227,11 +227,11 @@ export const startUpdateImageIdStructure = (id, images) => {
     }
 }
 
-export const startDeleteImageStructure = (id, imageId) => {
+export const startDeleteImageChannel = (id, imageId) => {
     return async (dispatch) => {
 
         const resp = await fetchByToken({
-            endpoint: `structure/image/${id}`,
+            endpoint: `channel/image/${id}`,
             data: { images: [imageId] },
             method: 'DELETE'
         })
@@ -242,14 +242,14 @@ export const startDeleteImageStructure = (id, imageId) => {
     }
 }
 
-export const questionDeleteStructure = async (name) => {
+export const questionDeleteChannel = async (name) => {
 
     const wordConfirm = normalizeText(name, { lowerCase: true, removeSpaces: true })
 
     return SwalReact.fire({
         title:
             <>
-                <div className='text-uppercase'>Eliminar estructura</div>
+                <div className='text-uppercase'>Eliminar canal</div>
                 <div className="fs-5 fw-bold text-info mt-1">{name}</div>
             </>,
         html:
@@ -290,7 +290,7 @@ export const startExportNet = () => {
         const toastLoading = toast.loading('Exportando canales y tramos...')
 
         const resp = await fetchByToken({
-            endpoint: `structure/export/net`,
+            endpoint: `channel/export/net`,
         })
 
         toast.dismiss(toastLoading)
@@ -303,7 +303,7 @@ export const startImportNet = (fileName) => {
         const toastLoading = toast.loading('Importando canales y tramos...')
 
         const resp = await fetchByToken({
-            endpoint: `structure/import/net`,
+            endpoint: `channel/import/net`,
             data: { filename: fileName },
             method: 'POST'
         })
@@ -312,9 +312,9 @@ export const startImportNet = (fileName) => {
     }
 }
 
-export const searchStructureByJunta = async (junta, search) => {
+export const searchChannelByJunta = async (junta, search) => {
     const resp = await fetchByToken({
-        endpoint: `structure/search_by_junta/${junta}`,
+        endpoint: `channel/search_by_junta/${junta}`,
         params: { search }
     })
 

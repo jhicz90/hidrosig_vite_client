@@ -267,7 +267,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                                     getOptionLabel={e =>
                                                                         <div className='d-flex gap-2 w-100 justify-content-between'>
                                                                             <div>
-                                                                                <h6 className='mb-0'>{`Canal ${e.structure.name}`}</h6>
+                                                                                <h6 className='mb-0'>{`Canal ${e.channel.name}`}</h6>
                                                                                 <div className='mb-0 opacity-75'>{e.name}</div>
                                                                             </div>
                                                                         </div>
@@ -434,7 +434,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                                 getOptionLabel={e =>
                                                                     <div className='d-flex gap-2 w-100 justify-content-between'>
                                                                         <div>
-                                                                            <h6 className='mb-0'>{`Canal ${e.structure.name}`}</h6>
+                                                                            <h6 className='mb-0'>{`Canal ${e.channel.name}`}</h6>
                                                                             <div className='mb-0 opacity-75'>{e.name} se encuentra a {`${e.dist.calculated.toFixed(2)} metros`}</div>
                                                                         </div>
                                                                     </div>
@@ -563,7 +563,7 @@ export const InputIrrigationCreateInAreaFarm = ({ farm = null }) => {
                                                                 getOptionLabel={e =>
                                                                     <div className='d-flex gap-2 w-100 justify-content-between'>
                                                                         <div>
-                                                                            <h6 className='mb-0'>{`Canal ${e.structure.name}`}</h6>
+                                                                            <h6 className='mb-0'>{`Canal ${e.channel.name}`}</h6>
                                                                             <div className='mb-0 opacity-75'>{e.name} se encuentra a {`${e.dist.calculated.toFixed(2)} metros`}</div>
                                                                         </div>
                                                                     </div>

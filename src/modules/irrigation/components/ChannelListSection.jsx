@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, Card } from 'react-bootstrap'
 import { IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
-import { startDeleteIdSection, structureApi, useGetListSectionByStructureQuery } from '../../../store/actions'
+import { startDeleteIdSection, useGetChannelByIdQuery, useGetListSectionByChannelQuery } from '../../../store/actions'
 
-export const StructureListSection = () => {
+export const ChannelListSection = () => {
 
     const dispatch = useDispatch()
     const { strid } = useParams()
     const [search, setSearch] = useState('')
-    const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
-    const { data: sectionsIn = [], isLoading } = useGetListSectionByStructureQuery({ structure: data?._id, search: '' }, { skip: !data })
+    const { data = null } = useGetChannelByIdQuery(strid)
+    const { data: sectionsIn = [], isLoading } = useGetListSectionByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
 
     return (
         <Card className='overflow-hidden'>

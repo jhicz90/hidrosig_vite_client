@@ -10,10 +10,10 @@ export const sectionApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // SECTION
         newSectionByStructure: builder.query({
-            query: (structureId) => ({
+            query: (channelId) => ({
                 url: `section/create/new`,
                 params: {
-                    structureId
+                    channelId
                 }
             }),
             transformResponse: (response, meta, arg) => response.section,
@@ -43,9 +43,9 @@ export const sectionApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.section,
             providesTags: ['Irrig']
         }),
-        getListSectionByStructure: builder.query({
-            query: ({ structure, search }) => ({
-                url: `section/search_by_structure/${structure}`,
+        getListSectionByChannel: builder.query({
+            query: ({ channel, search }) => ({
+                url: `section/search_by_channel/${channel}`,
                 params: {
                     search
                 }
@@ -53,9 +53,9 @@ export const sectionApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Irrig']
         }),
-        getListFarmByStructure: builder.query({
-            query: ({ structure, search }) => ({
-                url: `farm/search_by_structure/${structure}`,
+        getListFarmByChannel: builder.query({
+            query: ({ channel, search }) => ({
+                url: `farm/search_by_channel/${channel}`,
                 params: {
                     search
                 }
@@ -80,7 +80,7 @@ export const sectionApi = storeApi.injectEndpoints({
         }),
         getCalcProperties: builder.query({
             query: ({ type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }) => ({
-                url: `structure/cpprop`,
+                url: `channel/cpprop`,
                 params: { type, mayorBasis, minorBasis, height, tight, slope, diameter, coated, leftSlopeThickness, rightSlopeThickness, grade, rugosity }
             }),
             transformResponse: (response, meta, arg) => response.cpprop,
@@ -94,8 +94,8 @@ export const {
     useAddSectionMutation,
     useDeleteSectionByIdMutation,
     useGetCalcPropertiesQuery,
-    useGetListFarmByStructureQuery,
-    useGetListSectionByStructureQuery,
+    useGetListFarmByChannelQuery,
+    useGetListSectionByChannelQuery,
     useGetListSectionQuery,
     useGetSectionByIdQuery,
     useLazyGetListSectionByStructureQuery,

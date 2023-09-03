@@ -1,15 +1,14 @@
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import moment from 'moment'
 import { MapLocation, TagNewReg } from '../../../components'
-import { structureApi, useGetListSectionByStructureQuery } from '../../../store/actions'
+import { useGetChannelByIdQuery, useGetListSectionByChannelQuery } from '../../../store/actions'
 
-export const StructureBanner = () => {
+export const ChannelBanner = () => {
 
     const { strid } = useParams()
-    const { data = null } = useSelector(structureApi.endpoints.getStructureById.select(strid))
-    const { data: sectionsIn = [], isLoading } = useGetListSectionByStructureQuery({ structure: data?._id, search: '' }, { skip: !data })
+    const { data = null } = useGetChannelByIdQuery(strid)
+    const { data: sectionsIn = [], isLoading } = useGetListSectionByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
 
     return (
         <Card className='overflow-hidden'>

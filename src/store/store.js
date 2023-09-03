@@ -18,7 +18,7 @@ import { resourceSlice } from './resource'
 import { roleSlice } from './role'
 import { sectionSlice } from './section'
 import { sigaSlice } from './siga'
-import { structureSlice } from './structure'
+import { channelSlice } from './channel'
 import { systemSlice } from './system'
 import { usersysSlice } from './usersys'
 import { voucherSlice } from './voucher'
@@ -40,7 +40,7 @@ export const store = configureStore({
         block: blockSlice.reducer,
         geoobject: geoobjectSlice.reducer,
         watersource: watersourceSlice.reducer,
-        structure: structureSlice.reducer,
+        channel: channelSlice.reducer,
         section: sectionSlice.reducer,
         irrigationnetwork: irrigationnetworkSlice.reducer,
         resource: resourceSlice.reducer,

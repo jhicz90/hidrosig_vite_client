@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, ButtonGroup, Form } from 'react-bootstrap'
@@ -10,6 +10,7 @@ import { clearActiveNodeIrrigationNetwork, setActiveAmbitIrrigationNetwork, setA
 import { childrenNode } from '../helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
+import { useAuthStore, useChannelStore } from '../hooks'
 
 export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) => {
 
@@ -17,18 +18,11 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
     const location = useLocation()
 
     const dispatch = useDispatch()
-    const { lvlAccess } = useSelector(state => state.auth)
-    const {
-        activeNode: { id, name, depth, data, loading },
-        activeAmbit,
-        netIrrig,
-        netIrrigExp,
-        netIrrigChk,
-        netIrrigBase
-    } = useSelector(state => state.irrigationnetwork)
+    const { lvlAccess } = useAuthStore()
+    const { id, name, depth, data, loading, activeAmbit, netIrrig, netIrrigExp, netIrrigChk, netIrrigBase } = useChannelStore()
 
-    const { data: optionsJunta = [], isLoading: isLoadingListJunta } = useGetListJuntaQuery('')
-    const [loadIrrigNet, { isLoading: isLoagindTree }] = useLazyGetIrrigationNetByJuntaQuery()
+    const { data: optionsJunta = [], isLoading: isLoadingListJunta } = useGetListJuntaQuery()
+    const [loadIrrigNet, { isLoading: isLoagindTreeChannel }] = useLazyGetIrrigationNetByJuntaQuery()
 
     const [search, setSearch] = useState('')
 
@@ -211,7 +205,7 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
                 }
             </div>
             {
-                isLoagindTree
+                isLoagindTreeChannel
                     ?
                     <LoadingPage />
                     :
