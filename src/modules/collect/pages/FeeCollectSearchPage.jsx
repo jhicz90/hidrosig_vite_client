@@ -61,7 +61,12 @@ export const FeeCollectSearchPage = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetchingUsr || isFetchingPrp} />
+                    <InputSearch
+                        value={search}
+                        onChange={(e) => setSearch(e)}
+                        loading={isFetchingUsr || isFetchingPrp}
+                        className='my-2'
+                    />
                 </div>
             </div>
             <div className='row'>

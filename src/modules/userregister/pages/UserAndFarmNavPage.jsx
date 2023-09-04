@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
-import { Nav, Tab } from 'react-bootstrap'
+import { Tab } from 'react-bootstrap'
 import { FiMap, FiUserPlus } from 'react-icons/fi'
-import { ContainerController, LinkBack } from '../../../components'
+import { ContainerController, SliderNavFlip } from '@/components'
 
 export const UserAndFarmNavPage = () => {
     return (
@@ -49,17 +49,11 @@ export const UserAndFarmNavPage = () => {
             <div className='row'>
                 <div className='col-12'>
                     <Tab.Container>
-                        <Nav variant='tabs' className='px-3'>
-                            <Nav.Item>
-                                <NavLink to={`users`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Usuarios</NavLink>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <NavLink to={`prps`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Predios</NavLink>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <NavLink to={`import`} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>Importación</NavLink>
-                            </Nav.Item>
-                        </Nav>
+                        <SliderNavFlip className='d-flex flex-stack rounded-3 bg-light-subtle nav-wrapper' cameraClass='nav nav-flip'>
+                            <NavLink to={`users`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Usuarios</NavLink>
+                            <NavLink to={`prps`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
+                            <NavLink to={`import`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Importación</NavLink>
+                        </SliderNavFlip>
                     </Tab.Container>
                 </div>
             </div>

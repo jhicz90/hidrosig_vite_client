@@ -2,7 +2,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
-import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork } from '../irrigationnetwork'
+import { setActiveNodeDataIrrigationNetwork } from '../irrigationnetwork'
 import { addNewWaterSource, setActiveNewWaterSource, setActiveWaterSource, setSavingWaterSource, setSavingNewWaterSource } from './watersourceSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -171,7 +171,7 @@ export const startUpdateWaterSource = () => {
 export const startUpdateDataWaterSourceInIrrigNet = (watersource) => {
     return async (dispatch, getState) => {
 
-        dispatch(setActiveNodeLoadingIrrigationNetwork(true))
+        // dispatch(setActiveNodeLoadingIrrigationNetwork(true))
 
         const { _id } = watersource
 
@@ -185,7 +185,7 @@ export const startUpdateDataWaterSourceInIrrigNet = (watersource) => {
             method: 'PUT'
         })
 
-        dispatch(setActiveNodeLoadingIrrigationNetwork(false))
+        // dispatch(setActiveNodeLoadingIrrigationNetwork(false))
 
         if (resp.ok) {
             if (getState().activeNode.id === resp.watersource._id) {

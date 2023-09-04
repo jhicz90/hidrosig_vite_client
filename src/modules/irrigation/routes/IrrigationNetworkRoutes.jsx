@@ -16,7 +16,7 @@ export const IrrigationNetworkRoutes = () => {
                     }
                 />
                 <Route
-                    path={`str`}
+                    path={`chn`}
                     element={
                         <GuardRoute meta={['watersource']}>
                             <ChannelListPage />
@@ -49,7 +49,7 @@ export const IrrigationNetworkRoutes = () => {
                 />
             </Route>
             <Route
-                path={`str/create`}
+                path={`chn/create`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <ChannelCreatePage />
@@ -57,7 +57,7 @@ export const IrrigationNetworkRoutes = () => {
                 }
             />
             <Route
-                path={`str/:strid/*`}
+                path={`chn/:strid/*`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <ChannelPage />

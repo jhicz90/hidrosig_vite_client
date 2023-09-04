@@ -1,8 +1,8 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Nav, Tab } from 'react-bootstrap'
+import { Tab } from 'react-bootstrap'
 import { FiMap, FiPlus, FiUserPlus } from 'react-icons/fi'
-import { ContainerController, LinkBack, SliderNavFlip } from '../../../components'
+import { ContainerController, SliderNavFlip } from '@/components'
 
 export const IrrigationNetworkNavPage = () => {
 
@@ -71,7 +71,7 @@ export const IrrigationNetworkNavPage = () => {
                     <Tab.Container>
                         <SliderNavFlip className='d-flex flex-stack rounded-3 bg-light-subtle nav-wrapper' cameraClass='nav nav-flip'>
                             <NavLink to={`net`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Red de riego</NavLink>
-                            <NavLink to={`str`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Estructuras</NavLink>
+                            <NavLink to={`chn`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Canales</NavLink>
                             <NavLink to={`ws`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Fuentes de agua</NavLink>
                             <NavLink to={`var`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Variables</NavLink>
                             <NavLink to={`import`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Importación</NavLink>

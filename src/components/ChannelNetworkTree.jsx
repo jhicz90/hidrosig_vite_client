@@ -1,179 +1,109 @@
-import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, ButtonGroup, Form } from 'react-bootstrap'
+import React, { useState } from 'react'
 import CheckboxTree from 'react-checkbox-tree'
+import { useKeyPressEvent } from 'react-use'
 import { FaChevronDown, FaChevronRight, FaRedoAlt, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare, FaTimes } from 'react-icons/fa'
-import { InputSearch } from './InputSearch'
 import { LoadingPage } from './LoadingPage'
-import { clearActiveNodeIrrigationNetwork, setActiveAmbitIrrigationNetwork, setActiveNodeIrrigationNetwork, setNetIrrigChkIrrigationNetwork, setNetIrrigExpIrrigationNetwork, useGetListJuntaQuery, useLazyGetIrrigationNetByJuntaQuery, setNetIrrigData } from '../store/actions'
-import { childrenNode } from '../helpers'
+import { childrenNode } from '@/helpers'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
-import { useAuthStore, useChannelStore } from '../hooks'
 
-export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) => {
+export const ChannelNetworkTree = ({ netIrrig = [], netIrrigExp = [], netIrrigChk = [], showCheckbox = false, selectNode = true }) => {
 
-    const navigate = useNavigate()
-    const location = useLocation()
-
-    const dispatch = useDispatch()
-    const { lvlAccess } = useAuthStore()
-    const { id, name, depth, data, loading, activeAmbit, netIrrig, netIrrigExp, netIrrigChk, netIrrigBase } = useChannelStore()
-
-    const { data: optionsJunta = [], isLoading: isLoadingListJunta } = useGetListJuntaQuery()
-    const [loadIrrigNet, { isLoading: isLoagindTreeChannel }] = useLazyGetIrrigationNetByJuntaQuery()
-
+    //! MEJORAR LOS ATRIBUTOS ENVIADOS DEVUELTA CON FUNCIONES QUE AUN FALTAN MEJORAR
     const [search, setSearch] = useState('')
 
     const [ctrlKey, setCtrlKey] = useState(false)
+    const [netTree, setNetTree] = useState(netIrrig)
     const [netExpanded, setNetExpanded] = useState(netIrrigExp)
+    const [netChecked, setNetChecked] = useState(netIrrigChk)
 
-    useEffect(() => {
-        if (lvlAccess === 1 && activeAmbit !== '') {
-            loadIrrigNet({ junta: activeAmbit, showCheckbox })
-        } else if (lvlAccess > 1) {
-            loadIrrigNet({ showCheckbox })
-        }
-    }, [lvlAccess, activeAmbit])
+    console.log(netIrrig)
+    // useEffect(() => {
+    //     dispatch(setNetIrrigExpIrrigationNetwork(netExpanded))
+    // }, [netIrrigExp])
 
-    useEffect(() => {
-        dispatch(setNetIrrigExpIrrigationNetwork(netExpanded))
-    }, [netExpanded])
+    // useEffect(() => {
+    //     const filterNodes = (filtered, node) => {
+    //         const children = (node.children || []).reduce(filterNodes, [])
 
-    useEffect(() => {
-        const filterNodes = (filtered, node) => {
-            const children = (node.children || []).reduce(filterNodes, [])
+    //         if (
+    //             // Node's label matches the search string
+    //             node.label.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1 ||
+    //             // Or a children has a matching node
+    //             children.length
+    //         ) {
+    //             if (children.length > 0) {
+    //                 setNetExpanded(e => [...e, node.value])
+    //                 // dispatch(setNetIrrigExpIrrigationNetwork([...netIrrigExp, node.value]))
+    //                 filtered.push({ ...node, children })
+    //             } else {
+    //                 setNetExpanded(e => [...e, node.value])
+    //                 // dispatch(setNetIrrigExpIrrigationNetwork([...netIrrigExp, node.value]))
+    //                 const { children, ...rest } = node
+    //                 filtered.push(rest)
+    //             }
+    //         }
 
-            if (
-                // Node's label matches the search string
-                node.label.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) > -1 ||
-                // Or a children has a matching node
-                children.length
-            ) {
-                if (children.length > 0) {
-                    setNetExpanded(e => [...e, node.value])
-                    // dispatch(setNetIrrigExpIrrigationNetwork([...netIrrigExp, node.value]))
-                    filtered.push({ ...node, children })
-                } else {
-                    setNetExpanded(e => [...e, node.value])
-                    // dispatch(setNetIrrigExpIrrigationNetwork([...netIrrigExp, node.value]))
-                    const { children, ...rest } = node
-                    filtered.push(rest)
-                }
-            }
+    //         return filtered
+    //     }
 
-            return filtered
-        }
-
-        if (search.trim().length > 0) {
-            setNetExpanded([])
-            dispatch(setNetIrrigExpIrrigationNetwork([]))
-            // dispatch(setNetIrrigChkIrrigationNetwork([]))
-            dispatch(setNetIrrigData(netIrrigBase.reduce(filterNodes, [])))
-        } else {
-            dispatch(setNetIrrigExpIrrigationNetwork([]))
-            // dispatch(setNetIrrigChkIrrigationNetwork([]))
-            dispatch(setNetIrrigData(netIrrigBase))
-        }
-    }, [search])
+    //     if (search.trim().length > 0) {
+    //         setNetExpanded([])
+    //         dispatch(setNetIrrigExpIrrigationNetwork([]))
+    //         // dispatch(setNetIrrigChkIrrigationNetwork([]))
+    //         dispatch(setNetIrrigData(netIrrigBase.reduce(filterNodes, [])))
+    //     } else {
+    //         dispatch(setNetIrrigExpIrrigationNetwork([]))
+    //         // dispatch(setNetIrrigChkIrrigationNetwork([]))
+    //         dispatch(setNetIrrigData(netIrrigBase))
+    //     }
+    // }, [search])
 
     const handleSelectNode = (e) => {
 
-        if (showCheckbox) {
-            if (e.treeDepth > 0) {
-                if (e.checked === true) {
-                    if (ctrlKey) {
-                        // setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
-                        dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigBase.filter(c => !childrenNode(e).includes(c))]))
-                    } else {
-                        // setChecked(checked.filter(c => c !== e.value))
-                        dispatch(setNetIrrigChkIrrigationNetwork(netIrrigBase.filter(c => c !== e.value)))
-                    }
-                } else if (e.checked === false) {
-                    if (ctrlKey) {
-                        // setChecked([...checked, ...childrenNode(e)])
-                        dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, ...childrenNode(e)]))
-                    } else {
-                        // setChecked([...checked, e.value])
-                        dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, e.value]))
-                    }
-                }
-            }
-        }
+        // if (showCheckbox) {
+        //     if (e.treeDepth > 0) {
+        //         if (e.checked === true) {
+        //             if (ctrlKey) {
+        //                 // setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
+        //                 dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigBase.filter(c => !childrenNode(e).includes(c))]))
+        //             } else {
+        //                 // setChecked(checked.filter(c => c !== e.value))
+        //                 dispatch(setNetIrrigChkIrrigationNetwork(netIrrigBase.filter(c => c !== e.value)))
+        //             }
+        //         } else if (e.checked === false) {
+        //             if (ctrlKey) {
+        //                 // setChecked([...checked, ...childrenNode(e)])
+        //                 dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, ...childrenNode(e)]))
+        //             } else {
+        //                 // setChecked([...checked, e.value])
+        //                 dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, e.value]))
+        //             }
+        //         }
+        //     }
+        // }
 
-        if (selectNode) {
-            dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth, data: null, loading: false }))
-        }
+        // if (selectNode) {
+        //     dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth, data: null, loading: false }))
+        // }
     }
 
     const onCheck = (checked) => {
-        dispatch(setNetIrrigChkIrrigationNetwork(checked))
+        setNetChecked(checked)
     }
 
     const onExpand = (expand) => {
-        dispatch(setNetIrrigExpIrrigationNetwork(expand))
+        setNetExpanded(expand)
     }
 
-    const keyEvent = (e) => {
-        if (e.ctrlKey) {
-            setCtrlKey(true)
-        } else {
-            setCtrlKey(false)
-        }
-    }
-
-    const handleReload = () => {
-        if (lvlAccess === 1 && activeAmbit !== '') {
-            loadIrrigNet({ junta: activeAmbit, showCheckbox })
-        } else if (lvlAccess > 1) {
-            loadIrrigNet({ showCheckbox })
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener('keydown', keyEvent)
-        document.addEventListener('keyup', keyEvent)
-        return () => {
-            document.removeEventListener('keydown', keyEvent)
-            document.removeEventListener('keyup', keyEvent)
-        }
-    }, [])
+    useKeyPressEvent('ctrl', () => setCtrlKey(true), () => setCtrlKey(false))
 
     return (
-        <>
-            <div className='row'>
-                {
-                    lvlAccess === 1
-                    &&
-                    <div className='col'>
-                        <Form.Select
-                            disabled={optionsJunta.length === 0 || isLoadingListJunta}
-                            value={activeAmbit}
-                            onChange={({ target }) => dispatch(setActiveAmbitIrrigationNetwork(target.value))}
-                            autoComplete='off'
-                        >
-                            <option value={''}>Seleccione la junta de usuarios</option>
-                            {
-                                optionsJunta.map(j => <option key={j._id} value={j._id}>{j.name}</option>)
-                            }
-                        </Form.Select>
-                    </div>
-                }
-                <div className='col'>
-                    <InputSearch className='m-0' value={search} onChange={(e) => setSearch(e)} />
-                </div>
-                <div className='col-auto'>
-                    <Button
-                        onClick={handleReload}
-                        variant='neutral'
-                    >
-                        <FaRedoAlt size={20} />
-                    </Button>
-                </div>
-                {
-                    !!id
-                    &&
+        <React.Fragment>
+            {/* {
+                !!id
+                &&
+                <div className='row my-2'>
                     <div className='col-auto'>
                         <ButtonGroup>
                             <Button
@@ -185,7 +115,7 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
                                         navigate(`?w=watersource_edit&id=${id}`, { state: { from: location } })
                                     } else {
                                         // navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
-                                        navigate(`/app/schm/irrig/str/${id}`, { state: { from: location } })
+                                        navigate(`/app/schm/irrig/chn/${id}`, { state: { from: location } })
                                     }
                                 }}
                             >
@@ -202,36 +132,30 @@ export const ChannelNetworkTree = ({ showCheckbox = false, selectNode = true }) 
                             </Button>
                         </ButtonGroup>
                     </div>
-                }
+                </div>
+            } */}
+            <div className='row my-3 px-3'>
+                <div className='col-12 p-3'>
+                    <CheckboxTree
+                        onClick={handleSelectNode}
+                        nodes={netTree}
+                        checked={netChecked}
+                        expanded={netExpanded}
+                        onCheck={onCheck}
+                        onExpand={onExpand}
+                        // iconsClass='fa5'
+                        noCascade
+                        lang={{ toggle: 'Abrir / cerrar' }}
+                        icons={{
+                            check: <FaRegCheckSquare />,
+                            uncheck: <FaRegSquare />,
+                            halfCheck: <FaRegMinusSquare />,
+                            expandClose: <FaChevronRight />,
+                            expandOpen: <FaChevronDown />,
+                        }}
+                    />
+                </div>
             </div>
-            {
-                isLoagindTreeChannel
-                    ?
-                    <LoadingPage />
-                    :
-                    <div className='row my-3 px-3'>
-                        <div className='col-12 p-3'>
-                            <CheckboxTree
-                                onClick={handleSelectNode}
-                                nodes={netIrrig}
-                                checked={netIrrigChk}
-                                expanded={netIrrigExp}
-                                onCheck={onCheck}
-                                onExpand={onExpand}
-                                // iconsClass='fa5'
-                                noCascade
-                                lang={{ toggle: 'Abrir / cerrar' }}
-                                icons={{
-                                    check: <FaRegCheckSquare />,
-                                    uncheck: <FaRegSquare />,
-                                    halfCheck: <FaRegMinusSquare />,
-                                    expandClose: <FaChevronRight />,
-                                    expandOpen: <FaChevronDown />,
-                                }}
-                            />
-                        </div>
-                    </div>
-            }
-        </>
+        </React.Fragment>
     )
 }

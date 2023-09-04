@@ -2,15 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 export const irrigationnetworkSlice = createSlice({
     name: 'irrigationnetwork',
     initialState: {
-        isSaving: false,
-        isSavingNew: false,
         activeAmbit: '',
         activeNode: {
             id: '',
             name: '',
             depth: '',
             data: null,
-            loading: false,
         },
         netIrrig: [],
         netIrrigExp: [],
@@ -33,11 +30,7 @@ export const irrigationnetworkSlice = createSlice({
                 name: '',
                 depth: '',
                 data: null,
-                loading: false,
             }
-        },
-        setActiveNodeLoadingIrrigationNetwork: (state, { payload }) => {
-            state.activeNode.loading = payload
         },
         setNetIrrigDataFull: (state, { payload }) => {
             state.netIrrig = payload
@@ -55,12 +48,6 @@ export const irrigationnetworkSlice = createSlice({
         setNetIrrigChkIrrigationNetwork: (state, { payload }) => {
             state.netIrrigChk = payload
         },
-        setSavingIrrigationNetwork: (state, { payload }) => {
-            state.isSaving = payload
-        },
-        setSavingNewIrrigationNetwork: (state, { payload }) => {
-            state.isSavingNew = payload
-        },
     }
 });
 
@@ -69,12 +56,9 @@ export const {
     setActiveAmbitIrrigationNetwork,
     setActiveNodeDataIrrigationNetwork,
     setActiveNodeIrrigationNetwork,
-    setActiveNodeLoadingIrrigationNetwork,
     setNetIrrigChkIrrigationNetwork,
     setNetIrrigData,
     setNetIrrigDataBase,
     setNetIrrigDataFull,
     setNetIrrigExpIrrigationNetwork,
-    setSavingIrrigationNetwork,
-    setSavingNewIrrigationNetwork,
 } = irrigationnetworkSlice.actions

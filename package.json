@@ -64,6 +64,7 @@
         "react-spinners": "^0.13.8",
         "react-spring-lightbox": "^1.7.1",
         "react-switch": "^7.0.0",
+        "react-use": "^17.4.0",
         "react-use-wizard": "^2.2.1",
         "react-zoom-pan-pinch": "^3.1.0",
         "styled-components": "^6.0.7",

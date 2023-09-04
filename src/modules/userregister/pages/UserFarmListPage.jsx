@@ -14,7 +14,12 @@ export const UserFarmListPage = () => {
         <React.Fragment>
             <div className='row'>
                 <div className='col-12'>
-                    <InputSearch value={search} onChange={(e) => setSearch(e)} loading={isFetching} />
+                    <InputSearch
+                        value={search}
+                        onChange={(e) => setSearch(e)}
+                        loading={isFetching}
+                        className='my-2'
+                    />
                 </div>
             </div>
             <div className='row'>

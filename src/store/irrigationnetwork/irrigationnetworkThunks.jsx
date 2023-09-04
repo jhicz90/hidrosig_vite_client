@@ -1,6 +1,6 @@
-import { fetchByToken, treeNetIrrig } from '../../helpers'
+import { fetchByToken, treeNetIrrig } from '@/helpers'
 import { storeApi } from '../storeApi'
-import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork, setNetIrrigDataFull } from './irrigationnetworkSlice'
+import { setActiveNodeDataIrrigationNetwork, setNetIrrigDataFull } from './irrigationnetworkSlice'
 
 export const irrigationApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({

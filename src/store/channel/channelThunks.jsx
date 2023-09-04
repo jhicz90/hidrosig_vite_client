@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast'
 import withReactContent from 'sweetalert2-react-content'
 import { fetchByToken, normalizeText } from '../../helpers'
 import { storeApi } from '../storeApi'
-import { setActiveNodeDataIrrigationNetwork, setActiveNodeLoadingIrrigationNetwork } from '../irrigationnetwork'
+import { setActiveNodeDataIrrigationNetwork } from '../irrigationnetwork'
 import { addNewChannel, setActiveNewChannel, setActiveChannel, setSavingChannel, setSavingNewChannel } from './channelSlice'
 
 const SwalReact = withReactContent(Swal)
@@ -188,7 +188,7 @@ export const startUpdateChannel = () => {
 export const startUpdateDataChannelInIrrigNet = (channel) => {
     return async (dispatch, getState) => {
 
-        dispatch(setActiveNodeLoadingIrrigationNetwork(true))
+        // dispatch(setActiveNodeLoadingIrrigationNetwork(true))
 
         const { _id } = channel
 
@@ -202,7 +202,7 @@ export const startUpdateDataChannelInIrrigNet = (channel) => {
             method: 'PUT'
         })
 
-        dispatch(setActiveNodeLoadingIrrigationNetwork(false))
+        // dispatch(setActiveNodeLoadingIrrigationNetwork(false))
 
         if (resp.ok) {
             if (getState().activeNode.id === resp.channel._id) {

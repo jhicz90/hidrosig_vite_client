@@ -63,7 +63,6 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                     <div className='row'>
                         <div className='col-12'>
                             <InputSearch
-                                className='mb-2'
                                 value={search}
                                 onChange={(e) => {
                                     if (e.trim() !== '') searchArea(e)
@@ -71,6 +70,7 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                                 }}
                                 placeholder='Buscar areas...'
                                 loading={isLoadingSearchArea}
+                                className='mb-2'
                             />
                         </div>
                     </div>
