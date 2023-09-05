@@ -34,14 +34,14 @@ export const IrrigationNetworkNavPage = () => {
                 </div>
                 <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
                     <Link
-                        to={`users/create`}
+                        to={`chn/create`}
                         className='btn btn-sm btn-primary d-flex align-items-center gap-2'
                     >
                         <FiPlus />
                         Nuevo estructura
                     </Link>
                     <Link
-                        to={`prps/create`}
+                        to={`ws/create`}
                         className='btn btn-sm btn-primary d-flex align-items-center gap-2'
                     >
                         <FiMap />

@@ -1,26 +1,34 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CheckboxTree from 'react-checkbox-tree'
+import { Alert } from 'react-bootstrap'
 import { useKeyPressEvent } from 'react-use'
 import { FaChevronDown, FaChevronRight, FaRedoAlt, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare, FaTimes } from 'react-icons/fa'
-import { LoadingPage } from './LoadingPage'
 import { childrenNode } from '@/helpers'
+import { useChannelStore } from '@/hooks'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
-export const ChannelNetworkTree = ({ netIrrig = [], netIrrigExp = [], netIrrigChk = [], showCheckbox = false, selectNode = true }) => {
-
-    //! MEJORAR LOS ATRIBUTOS ENVIADOS DEVUELTA CON FUNCIONES QUE AUN FALTAN MEJORAR
-    const [search, setSearch] = useState('')
+export const ChannelNetworkTree = ({
+    searchNode = '',
+    showCheckbox = false,
+    selectNode = true
+}) => {
+    const [search, setSearch] = useState(searchNode)
 
     const [ctrlKey, setCtrlKey] = useState(false)
-    const [netTree, setNetTree] = useState(netIrrig)
-    const [netExpanded, setNetExpanded] = useState(netIrrigExp)
-    const [netChecked, setNetChecked] = useState(netIrrigChk)
+    const { activeAmbit, activeNode, setAmbit, setNode, clearNode, netIrrig, netIrrigBase, netIrrigExp, netIrrigChk, setNetIrrigExp, setNetIrrigChk } = useChannelStore()
 
-    console.log(netIrrig)
     // useEffect(() => {
-    //     dispatch(setNetIrrigExpIrrigationNetwork(netExpanded))
-    // }, [netIrrigExp])
+    //     if (!!netExpanded) {
+    //         setNetIrrigExp(netExpanded)
+    //     }
+    // }, [netExpanded])
+
+    // useEffect(() => {
+    //     if (!!setNetIrrigChk) {
+    //         setNetIrrigChk(netChecked)
+    //     }
+    // }, [netChecked])
 
     // useEffect(() => {
     //     const filterNodes = (filtered, node) => {
@@ -60,100 +68,81 @@ export const ChannelNetworkTree = ({ netIrrig = [], netIrrigExp = [], netIrrigCh
     // }, [search])
 
     const handleSelectNode = (e) => {
+        if (showCheckbox) {
+            if (e.treeDepth > 0) {
+                if (e.checked === true) {
+                    if (ctrlKey) {
+                        // setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
+                        // dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigBase.filter(c => !childrenNode(e).includes(c))]))
+                        setNetIrrigChk([...netIrrigBase.filter(c => !childrenNode(e).includes(c))])
+                    } else {
+                        // setChecked(checked.filter(c => c !== e.value))
+                        // dispatch(setNetIrrigChkIrrigationNetwork(netIrrigBase.filter(c => c !== e.value)))
+                        setNetIrrigChk([...netIrrigBase.filter(c => c !== e.value)])
+                    }
+                } else if (e.checked === false) {
+                    if (ctrlKey) {
+                        // setChecked([...checked, ...childrenNode(e)])
+                        // dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, ...childrenNode(e)]))
+                        setNetIrrigChk([...netIrrigChk, ...childrenNode(e)])
+                    } else {
+                        // setChecked([...checked, e.value])
+                        // dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, e.value]))
+                        setNetIrrigChk([...netIrrigChk, e.value])
+                    }
+                }
+            }
+        }
 
-        // if (showCheckbox) {
-        //     if (e.treeDepth > 0) {
-        //         if (e.checked === true) {
-        //             if (ctrlKey) {
-        //                 // setChecked([...checked.filter(c => !childrenNode(e).includes(c))])
-        //                 dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigBase.filter(c => !childrenNode(e).includes(c))]))
-        //             } else {
-        //                 // setChecked(checked.filter(c => c !== e.value))
-        //                 dispatch(setNetIrrigChkIrrigationNetwork(netIrrigBase.filter(c => c !== e.value)))
-        //             }
-        //         } else if (e.checked === false) {
-        //             if (ctrlKey) {
-        //                 // setChecked([...checked, ...childrenNode(e)])
-        //                 dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, ...childrenNode(e)]))
-        //             } else {
-        //                 // setChecked([...checked, e.value])
-        //                 dispatch(setNetIrrigChkIrrigationNetwork([...netIrrigChk, e.value]))
-        //             }
-        //         }
-        //     }
-        // }
-
-        // if (selectNode) {
-        //     dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth, data: null, loading: false }))
-        // }
-    }
-
-    const onCheck = (checked) => {
-        setNetChecked(checked)
+        if (selectNode) {
+            // dispatch(setActiveNodeIrrigationNetwork({ id: e.value, name: e.label, depth: e.treeDepth, data: null, loading: false }))
+            setNode({ id: e.value, name: e.label, depth: e.treeDepth, data: null })
+        }
     }
 
     const onExpand = (expand) => {
-        setNetExpanded(expand)
+        setNetIrrigExp(expand)
+    }
+
+    const onCheck = (checked) => {
+        setNetIrrigChk(checked)
     }
 
     useKeyPressEvent('ctrl', () => setCtrlKey(true), () => setCtrlKey(false))
 
     return (
         <React.Fragment>
-            {/* {
-                !!id
-                &&
-                <div className='row my-2'>
-                    <div className='col-auto'>
-                        <ButtonGroup>
-                            <Button
-                                disabled={loading}
-                                variant='neutral'
-                                className='text-primary text-decoration-none'
-                                onClick={() => {
-                                    if (depth === 0) {
-                                        navigate(`?w=watersource_edit&id=${id}`, { state: { from: location } })
-                                    } else {
-                                        // navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
-                                        navigate(`/app/schm/irrig/chn/${id}`, { state: { from: location } })
-                                    }
-                                }}
-                            >
-                                {name}
-                            </Button>
-                            <Button
-                                variant='neutral'
-                                className='d-flex align-items-center'
-                                onClick={() => {
-                                    dispatch(clearActiveNodeIrrigationNetwork())
-                                }}
-                            >
-                                <FaTimes size={20} />
-                            </Button>
-                        </ButtonGroup>
-                    </div>
-                </div>
-            } */}
-            <div className='row my-3 px-3'>
+            <div className='row'>
                 <div className='col-12 p-3'>
-                    <CheckboxTree
-                        onClick={handleSelectNode}
-                        nodes={netTree}
-                        checked={netChecked}
-                        expanded={netExpanded}
-                        onCheck={onCheck}
-                        onExpand={onExpand}
-                        // iconsClass='fa5'
-                        noCascade
-                        lang={{ toggle: 'Abrir / cerrar' }}
-                        icons={{
-                            check: <FaRegCheckSquare />,
-                            uncheck: <FaRegSquare />,
-                            halfCheck: <FaRegMinusSquare />,
-                            expandClose: <FaChevronRight />,
-                            expandOpen: <FaChevronDown />,
-                        }}
-                    />
+                    {
+                        netIrrig.length > 0
+                            ?
+                            <CheckboxTree
+                                onClick={handleSelectNode}
+                                nodes={netIrrig}
+                                checked={netIrrigChk}
+                                expanded={netIrrigExp}
+                                onCheck={onCheck}
+                                onExpand={onExpand}
+                                // iconsClass='fa5'
+                                noCascade
+                                lang={{ toggle: 'Abrir / cerrar' }}
+                                icons={{
+                                    check: <FaRegCheckSquare />,
+                                    uncheck: <FaRegSquare />,
+                                    halfCheck: <FaRegMinusSquare />,
+                                    expandClose: <FaChevronRight />,
+                                    expandOpen: <FaChevronDown />,
+                                }}
+                            />
+                            :
+                            <Alert>
+                                <Alert.Heading>Aún no ahi datos cargados en la red de riego</Alert.Heading>
+                                <p>Al parecer los parametros ingresados ya sea sector o ambito no listan ningun canal.</p>
+                                <hr />
+                                <p className='mb-0'>Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                            </Alert>
+                    }
                 </div>
             </div>
         </React.Fragment>
