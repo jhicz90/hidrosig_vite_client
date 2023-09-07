@@ -44,12 +44,12 @@ export const UserFarmInformation = () => {
             </div>
             <Liner>Información personal</Liner>
             <Row>
-                <Col sm={6}>
+                <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Código
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('code', { required: true })}
                                 type='text'
@@ -60,12 +60,12 @@ export const UserFarmInformation = () => {
                         </Col>
                     </Form.Group>
                 </Col>
-                <Col sm={6}>
+                <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Tipo de usuario
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Select
                                 {...register('type', { required: true })}
                                 autoComplete='off'
@@ -82,12 +82,12 @@ export const UserFarmInformation = () => {
                 </Col>
             </Row>
             <Row>
-                <Col sm={6}>
+                <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Documento de identidad o RUC
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('docid', { required: true })}
                                 type='text'
@@ -96,12 +96,12 @@ export const UserFarmInformation = () => {
                         </Col>
                     </Form.Group>
                 </Col>
-                <Col sm={6}>
+                <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Estado
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Select
                                 {...register('status', { required: true })}
                                 autoComplete='off'
@@ -117,10 +117,10 @@ export const UserFarmInformation = () => {
             <Row>
                 <Col>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={2}>
+                        <Form.Label column md={2}>
                             Razón social
                         </Form.Label>
-                        <Col sm={10}>
+                        <Col md={10}>
                             <Form.Control
                                 {...register('socialReason', { required: Number(watch('type')) > 1 })}
                                 disabled={Number(watch('type')) === 1}
@@ -134,10 +134,10 @@ export const UserFarmInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Género
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Select
                                 {...register('gender', { required: Number(watch('type')) === 1 })}
                                 disabled={Number(watch('type')) > 1}
@@ -154,10 +154,10 @@ export const UserFarmInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Nombres
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('names', { required: Number(watch('type')) === 1 })}
                                 disabled={Number(watch('type')) > 1}
@@ -171,10 +171,10 @@ export const UserFarmInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Apellidos Paternos
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('lastName', { required: Number(watch('type')) === 1 })}
                                 disabled={Number(watch('type')) > 1}
@@ -186,10 +186,10 @@ export const UserFarmInformation = () => {
                 </Col>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Apellidos Maternos
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('motherLastName', { required: Number(watch('type')) === 1 })}
                                 disabled={Number(watch('type')) > 1}
@@ -204,10 +204,10 @@ export const UserFarmInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Correo electronico
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('email')}
                                 type='email'
@@ -218,10 +218,10 @@ export const UserFarmInformation = () => {
                 </Col>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Dirección
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('address')}
                                 type='text'
@@ -234,10 +234,10 @@ export const UserFarmInformation = () => {
             <Row>
                 <Col>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={2}>
+                        <Form.Label column md={2}>
                             Contactos
                         </Form.Label>
-                        <Col sm={10}>
+                        <Col md={10}>
                             <ListGroup>
                                 <ListGroup.Item onClick={() => append({ name: '', number: '', type: 1 })} className='d-flex align-items-center' action>
                                     Agregar contacto <IoMdAddCircleOutline className='ms-2' size={20} color='green' />

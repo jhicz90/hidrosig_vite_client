@@ -1166,3 +1166,36 @@ kbd.type-writer,
 	display: none !important;
 }
 /* LEAFLET MAP */
+/* SUNEDITOR */
+.sun-editor {
+	font-family: "Nunito Sans", sans-serif;
+	border-radius: 0.375rem;
+}
+
+.sun-editor .se-container {
+	border-radius: 0.375rem;
+}
+
+.sun-editor .se-toolbar {
+	border-top-left-radius: 0.375rem;
+	border-top-right-radius: 0.375rem;
+}
+
+.sun-editor .se-resizing-bar {
+	border-bottom-left-radius: 0.375rem;
+	border-bottom-right-radius: 0.375rem;
+}
+
+.sun-editor .se-btn-tray {
+	padding: 10px;
+}
+
+.sun-editor .se-tooltip .se-tooltip-inner .se-tooltip-text {
+	background-color: #000;
+	border-radius: 0.375rem;
+	max-width: 200px;
+	padding: 0.25rem 0.5rem;
+	text-align: center;
+	font-family: "Nunito Sans", sans-serif;
+}
+/* SUNEDITOR */

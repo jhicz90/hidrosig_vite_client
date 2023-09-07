@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import CheckboxTree from 'react-checkbox-tree'
 import { Alert } from 'react-bootstrap'
 import { useKeyPressEvent } from 'react-use'
-import { FaChevronDown, FaChevronRight, FaRedoAlt, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare, FaTimes } from 'react-icons/fa'
+import { FaChevronDown, FaChevronRight, FaRegCheckSquare, FaRegMinusSquare, FaRegSquare } from 'react-icons/fa'
 import { childrenNode } from '@/helpers'
 import { useChannelStore } from '@/hooks'
+import { LoadingPage } from '@/components'
 
 import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
 export const ChannelNetworkTree = ({
     searchNode = '',
     showCheckbox = false,
-    selectNode = true
+    selectNode = true,
+    loading = false,
 }) => {
     const [search, setSearch] = useState(searchNode)
 
@@ -112,39 +114,45 @@ export const ChannelNetworkTree = ({
 
     return (
         <React.Fragment>
-            <div className='row'>
-                <div className='col-12 p-3'>
-                    {
-                        netIrrig.length > 0
-                            ?
-                            <CheckboxTree
-                                onClick={handleSelectNode}
-                                nodes={netIrrig}
-                                checked={netIrrigChk}
-                                expanded={netIrrigExp}
-                                onCheck={onCheck}
-                                onExpand={onExpand}
-                                // iconsClass='fa5'
-                                noCascade
-                                lang={{ toggle: 'Abrir / cerrar' }}
-                                icons={{
-                                    check: <FaRegCheckSquare />,
-                                    uncheck: <FaRegSquare />,
-                                    halfCheck: <FaRegMinusSquare />,
-                                    expandClose: <FaChevronRight />,
-                                    expandOpen: <FaChevronDown />,
-                                }}
-                            />
-                            :
-                            <Alert>
-                                <Alert.Heading>Aún no ahi datos cargados en la red de riego</Alert.Heading>
-                                <p>Al parecer los parametros ingresados ya sea sector o ambito no listan ningun canal.</p>
-                                <hr />
-                                <p className='mb-0'>Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                            </Alert>
-                    }
-                </div>
-            </div>
+            {
+                loading
+                    ?
+                    <LoadingPage />
+                    :
+                    <div className='row'>
+                        <div className='col-12 p-3'>
+                            {
+                                netIrrig.length > 0
+                                    ?
+                                    <CheckboxTree
+                                        onClick={handleSelectNode}
+                                        nodes={netIrrig}
+                                        checked={netIrrigChk}
+                                        expanded={netIrrigExp}
+                                        onCheck={onCheck}
+                                        onExpand={onExpand}
+                                        // iconsClass='fa5'
+                                        noCascade
+                                        lang={{ toggle: 'Abrir / cerrar' }}
+                                        icons={{
+                                            check: <FaRegCheckSquare />,
+                                            uncheck: <FaRegSquare />,
+                                            halfCheck: <FaRegMinusSquare />,
+                                            expandClose: <FaChevronRight />,
+                                            expandOpen: <FaChevronDown />,
+                                        }}
+                                    />
+                                    :
+                                    <Alert>
+                                        <Alert.Heading>Aún no ahi datos cargados en la red de riego</Alert.Heading>
+                                        <p>Al parecer los parametros ingresados ya sea sector o ambito no listan ningun canal.</p>
+                                        <hr />
+                                        <p className='mb-0'>Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                                    </Alert>
+                            }
+                        </div>
+                    </div>
+            }
         </React.Fragment>
     )
 }

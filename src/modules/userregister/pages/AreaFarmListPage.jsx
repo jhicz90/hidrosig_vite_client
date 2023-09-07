@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { IoEyeSharp } from 'react-icons/io5'
 import { InputSearch, DataTable, TagStatus, TagTimeAgo } from '../../../components'
@@ -10,7 +10,7 @@ export const AreaFarmListPage = () => {
     const { data: list = [], isFetching } = useGetListFarmQuery(search)
 
     return (
-        <>
+        <React.Fragment>
             <div className='row'>
                 <div className='col-12'>
                     <InputSearch
@@ -76,6 +76,6 @@ export const AreaFarmListPage = () => {
                     />
                 </div>
             </div>
-        </>
+        </React.Fragment>
     )
 }

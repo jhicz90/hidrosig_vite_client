@@ -1,31 +1,22 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
+import { HiArrowUturnLeft } from 'react-icons/hi2'
 import AsyncSelect from 'react-select/async'
-import { useNavigateState } from '../../../hooks'
-import { searchJunta, useAddWaterSourceMutation, useLazyNewWaterSourceQuery } from '../../../store/actions'
-import { Liner, LoadingPage, OptionOrgz } from '../../../components'
+import { useAuthStore } from '@/hooks'
+import { searchJunta, useAddWaterSourceMutation, useLazyNewWaterSourceQuery } from '@/store/actions'
+import { EditorTextArea, Liner, LoadingPage, OptionOrgz } from '@/components'
 
 export const WaterSourceCreatePage = () => {
 
-    const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig/ws')
-
-    const { lvlAccess } = useSelector(state => state.auth)
+    const { lvlAccess } = useAuthStore()
     const [newWaterSource, { data = null, isLoading, isError }] = useLazyNewWaterSourceQuery()
     const [addWaterSource, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddWaterSourceMutation()
     const { register, control, handleSubmit, reset } = useForm()
 
     const handleSave = async (newData) => {
-        try {
-            await addWaterSource(newData)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    const handleDiscard = () => {
-        redirect()
+        await addWaterSource(newData)
     }
 
     useEffect(() => {
@@ -39,12 +30,6 @@ export const WaterSourceCreatePage = () => {
     }, [reset, data])
 
     useEffect(() => {
-        if (isError) {
-            redirectEscape()
-        }
-    }, [isError])
-
-    useEffect(() => {
         if (isSaved) {
             newWaterSource()
         }
@@ -55,54 +40,79 @@ export const WaterSourceCreatePage = () => {
     }
 
     return (
-        <div className='container-fluid'>
-            <div className='row my-3'>
-                <div className='col-12'>
-                    <div className='row align-items-center justify-content-between g-3'>
-                        <div className='col-12 col-md-auto'>
-                            <h4 className='mb-0'>NUEVA FUENTE DE AGUA</h4>
-                        </div>
-                        <div className='col-12 col-md-auto'>
-                            <div className='d-flex gap-2'>
-                                <Button
-                                    onClick={handleDiscard}
-                                    disabled={isSavingAdd}
-                                    variant='secondary'
-                                    type='button'
-                                >
-                                    Descartar
-                                </Button>
-                                <Button
-                                    disabled={isSavingAdd}
-                                    variant='primary'
-                                    type='submit'
-                                    form='form-irrig-watersource-create'
-                                >
-                                    Registro nuevo
-                                </Button>
+        <div className='container'>
+            <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
+                <div className='min-w-400 flex-1'>
+                    <h4 className='mb-0 text-uppercase'>NUEVO FUENTE DE AGUA</h4>
+                    {/* <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <MdOutlineNumbers size={20} />
+                                {data.receipt}
                             </div>
-                        </div>
-                    </div>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <HiCurrencyDollar size={20} />
+                                {data.remainingAmount.toFixed(2)}
+                            </div>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <LiaMoneyCheckAltSolid size={20} />
+                                {data.check}
+                            </div>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <HiCalendar size={20} />
+                                <span className='text-capitalize'>{moment(data.startDeclaration).format('DD MMMM, YYYY')}</span>
+                            </div>
+                        </div> */}
+                </div>
+                <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
+                    <Link
+                        to={`/app/schm/irrig/net`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Red de riego
+                    </Link>
+                    <Link
+                        to={`/app/schm/irrig/ws`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Fuentes de agua
+                    </Link>
                 </div>
             </div>
-            <div className='row g-0 justify-content-center'>
-                <div className='col'>
-                    <form id='form-irrig-watersource-create' onSubmit={handleSubmit(handleSave)}>
-                        <Liner>Información</Liner>
-                        <div className='row'>
-                            <div className='col-12 col-md-6'>
-                                <Form.Group className='mb-3' controlId='newName'>
-                                    <Form.Label>Nombre</Form.Label>
+            <div className='mt-2'>
+                <form id='form-irrigation-watersource-create' onSubmit={handleSubmit(handleSave)}>
+                    <div className='d-flex justify-content-end gap-2'>
+                        <Button
+                            disabled={isSavingAdd}
+                            variant='primary'
+                            type='submit'
+                        >
+                            Registrar nuevo
+                        </Button>
+                    </div>
+                    <Liner>Información</Liner>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Nombre
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Control
                                         {...register('name', { required: true })}
                                         type='text'
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-6'>
-                                <Form.Group className='mb-3' controlId='newType'>
-                                    <Form.Label>Tipo de fuente</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Tipo de fuente
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Select
                                         {...register('type', { required: true })}
                                         autoComplete='off'
@@ -116,31 +126,62 @@ export const WaterSourceCreatePage = () => {
                                         <option value={6}>Aguas residuales urbanas depuradas</option>
                                         <option value={7}>Agua de drenaje</option>
                                     </Form.Select>
-                                </Form.Group>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-12'>
-                                <Form.Group className='mb-3' controlId='newDesc'>
-                                    <Form.Label>Descripción</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={2}>
+                                    Descripción
+                                </Form.Label>
+                                <Col md={10}>
+                                    <Controller
+                                        name='desc'
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field: { onChange, value } }) =>
+                                                <EditorTextArea
+                                                    value={value}
+                                                    onChnage={onChange}
+                                                />
+                                        }
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={2}>
+                                    Observación
+                                </Form.Label>
+                                <Col md={10}>
                                     <Form.Control
-                                        {...register('desc')}
+                                        {...register('obs', { required: true })}
                                         as='textarea'
-                                        type={'text'}
+                                        type='text'
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                        </div>
-                        {
-                            lvlAccess === 1
-                            &&
-                            <>
-                                <Liner>Organización</Liner>
-                                <div className='row'>
-                                    <div className='col-12 col-md-4 col-xl-3'>
-                                        <Form.Group className='mb-3' controlId='newJunta'>
-                                            <Form.Label>Junta de usuarios</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    {
+                        lvlAccess === 1
+                        &&
+                        <>
+                            <Liner>Organización</Liner>
+                            <Row>
+                                <Col md={6}>
+                                    <Form.Group as={Row} className='mb-3'>
+                                        <Form.Label column md={4}>
+                                            Junta de usuarios
+                                        </Form.Label>
+                                        <Col md={8}>
                                             <Controller
                                                 name='junta'
                                                 control={control}
@@ -149,7 +190,6 @@ export const WaterSourceCreatePage = () => {
                                                     ({ field }) =>
                                                         <AsyncSelect
                                                             {...field}
-                                                            inputId='newJunta'
                                                             classNamePrefix='rc-select'
                                                             styles={{
                                                                 control: (baseStyles, state) => ({
@@ -160,6 +200,7 @@ export const WaterSourceCreatePage = () => {
                                                             isClearable
                                                             defaultOptions
                                                             loadOptions={searchJunta}
+                                                            hideSelectedOptions
                                                             menuPlacement={'auto'}
                                                             placeholder={`Buscar...`}
                                                             loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
@@ -169,13 +210,13 @@ export const WaterSourceCreatePage = () => {
                                                         />
                                                 }
                                             />
-                                        </Form.Group>
-                                    </div>
-                                </div>
-                            </>
-                        }
-                    </form>
-                </div>
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                        </>
+                    }
+                </form>
             </div>
         </div>
     )

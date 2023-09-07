@@ -68,6 +68,8 @@
         "react-use-wizard": "^2.2.1",
         "react-zoom-pan-pinch": "^3.1.0",
         "styled-components": "^6.0.7",
+        "suneditor": "^2.45.1",
+        "suneditor-react": "^3.6.1",
         "sweetalert2": "^11.7.12",
         "sweetalert2-react-content": "^5.0.7",
         "use-debounce": "^9.0.4",

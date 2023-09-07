@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, ButtonGroup, Form, InputGroup } from 'react-bootstrap'
 import { FaRedoAlt, FaTimes } from 'react-icons/fa'
 import { useAuthStore, useChannelStore } from '@/hooks'
-import { ChannelNetworkTree, InputSearch, LoadingPage } from '@/components'
+import { ChannelNetworkTree, InputSearch } from '@/components'
 import { useGetListJuntaQuery, useLazyGetIrrigationNetByJuntaQuery } from '@/store/actions'
-import CheckboxTree from 'react-checkbox-tree'
-
-import 'react-checkbox-tree/lib/react-checkbox-tree.css'
 
 export const ChannelNetworkPage = () => {
 
+    const navigate = useNavigate()
     const { lvlAccess } = useAuthStore()
-    const { activeAmbit, activeNode, setAmbit, netIrrig, netIrrigExp, setNode, clearNode, setNetIrrigExp, setNetIrrigChk } = useChannelStore()
+    const { activeAmbit, activeNode, setAmbit, netIrrigExp, clearNode, setNetIrrigExp } = useChannelStore()
     const [search, setSearch] = useState('')
     const { data: optionsJunta = [], isLoading: isLoadingOptionsJunta } = useGetListJuntaQuery()
     const [loadIrrigNet, { isLoading: isLoadingChannelNetwork, isFetching }] = useLazyGetIrrigationNetByJuntaQuery()
@@ -81,10 +80,9 @@ export const ChannelNetworkPage = () => {
                                 className='text-primary text-decoration-none'
                                 onClick={() => {
                                     if (activeNode.depth === 0) {
-                                        // navigate(`?w=watersource_edit&id=${id}`, { state: { from: location } })
+                                        navigate(`/app/schm/irrig/ws/${activeNode.id}`)
                                     } else {
-                                        // navigate(`?w=structure_edit&id=${id}`, { state: { from: location } })
-                                        // navigate(`/app/schm/irrig/chn/${id}`, { state: { from: location } })
+                                        navigate(`/app/schm/irrig/chn/${activeNode.id}`)
                                     }
                                 }}
                             >
@@ -120,6 +118,7 @@ export const ChannelNetworkPage = () => {
                 </div> */}
             </div>
             <ChannelNetworkTree
+                loading={isLoadingChannelNetwork}
                 selectNode={true}
                 searchNode={search}
             />

@@ -53,6 +53,7 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                 size='lg'
                 fullscreen='lg-down'
                 backdrop='static'
+                scrollable
             >
                 <Modal.Header closeButton closeVariant='white'>
                     <div className='d-flex flex-column'>

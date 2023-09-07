@@ -47,10 +47,10 @@ export const PettyCashInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Código
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('code', { required: true })}
                                 type='text'
@@ -65,10 +65,10 @@ export const PettyCashInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Año
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('year', {
                                     required: true,
@@ -83,10 +83,10 @@ export const PettyCashInformation = () => {
                 </Col>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Nombre
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('name', { required: true })}
                                 type='text'
@@ -99,10 +99,10 @@ export const PettyCashInformation = () => {
             <Row>
                 <Col>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={2}>
+                        <Form.Label column md={2}>
                             Descripción
                         </Form.Label>
-                        <Col sm={10}>
+                        <Col md={10}>
                             <Form.Control
                                 {...register('desc')}
                                 as='textarea'
@@ -122,10 +122,10 @@ export const PettyCashInformation = () => {
                     <Row>
                         <Col md={6}>
                             <Form.Group as={Row} className='mb-3'>
-                                <Form.Label column sm={4}>
+                                <Form.Label column md={4}>
                                     Junta o Comisión
                                 </Form.Label>
-                                <Col sm={8}>
+                                <Col md={8}>
                                     <Controller
                                         name='organization'
                                         control={control}
@@ -167,10 +167,10 @@ export const PettyCashInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Fecha / Número
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Controller
                                 control={control}
                                 name='startDeclaration'
@@ -192,10 +192,10 @@ export const PettyCashInformation = () => {
                 </Col>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Número
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('receipt', { required: true })}
                                 type='text'
@@ -212,10 +212,10 @@ export const PettyCashInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Número
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('check', { required: true })}
                                 type='text'
@@ -226,10 +226,10 @@ export const PettyCashInformation = () => {
                 </Col>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Monto
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('remainingAmount', {
                                     required: true,
@@ -247,10 +247,10 @@ export const PettyCashInformation = () => {
             <Row>
                 <Col md={6}>
                     <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column sm={4}>
+                        <Form.Label column md={4}>
                             Saldo
                         </Form.Label>
-                        <Col sm={8}>
+                        <Col md={8}>
                             <Form.Control
                                 {...register('oldBalance', {
                                     required: true,

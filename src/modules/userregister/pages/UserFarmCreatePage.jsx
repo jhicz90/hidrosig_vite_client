@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { HiArrowUturnLeft } from 'react-icons/hi2'
-import { Liner, LoadingPage } from '../../../components'
-import { useAddUserFarmMutation, useDraftUserFarmMutation, useLazyNewUserFarmQuery } from '../../../store/actions'
+import { Liner, LoadingPage } from '@/components'
+import { useAddUserFarmMutation, useDraftUserFarmMutation, useLazyNewUserFarmQuery } from '@/store/actions'
 
 export const UserFarmCreatePage = () => {
 

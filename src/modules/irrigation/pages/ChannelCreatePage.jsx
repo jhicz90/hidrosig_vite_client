@@ -1,17 +1,17 @@
 import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Form } from 'react-bootstrap'
-import { useNavigateState } from '../../../hooks'
-import { DatePicker, InputMask, Liner, LoadingPage } from '../../../components'
-import { useAddChannelMutation, useLazyNewChannelQuery } from '../../../store/actions'
+import { Button, Col, Form, Row } from 'react-bootstrap'
+import { HiArrowUturnLeft } from 'react-icons/hi2'
+import { useChannelStore } from '@/hooks'
+import { DatePicker, EditorTextArea, InputMask, Liner, LoadingPage } from '@/components'
+import { useAddChannelMutation, useLazyNewChannelQuery } from '@/store/actions'
 
 export const ChannelCreatePage = () => {
 
-    const { state: params } = useLocation()
-    const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig/str')
-
-    const [newStructure, { data = null, isLoading, isError, error }] = useLazyNewChannelQuery()
+    const { id } = useChannelStore()
+    const navigate = useNavigate()
+    const [newStructure, { data = null, isLoading, isError }] = useLazyNewChannelQuery()
     const [addStructure, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddChannelMutation()
     const { register, control, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -20,19 +20,11 @@ export const ChannelCreatePage = () => {
     })
 
     const handleSave = async (newData) => {
-        try {
-            await addStructure(newData)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    const handleDiscard = () => {
-        redirect()
+        await addStructure(newData)
     }
 
     useEffect(() => {
-        newStructure(params?.parent)
+        newStructure(id)
     }, [])
 
     useEffect(() => {
@@ -42,18 +34,8 @@ export const ChannelCreatePage = () => {
     }, [reset, data])
 
     useEffect(() => {
-        if (isError) {
-            if (error.status === 401) {
-                redirect()
-            } else {
-                redirectEscape()
-            }
-        }
-    }, [isError])
-
-    useEffect(() => {
         if (isSaved) {
-            newStructure(params?.parent)
+            newStructure(id)
         }
     }, [isSaved])
 
@@ -62,54 +44,79 @@ export const ChannelCreatePage = () => {
     }
 
     return (
-        <div className='container-fluid'>
-            <div className='row my-3'>
-                <div className='col-12'>
-                    <div className='row align-items-center justify-content-between g-3'>
-                        <div className='col-12 col-md-auto'>
-                            <h4 className='mb-0'>NUEVA ESTRUCTURA</h4>
-                        </div>
-                        <div className='col-12 col-md-auto'>
-                            <div className='d-flex gap-2'>
-                                <Button
-                                    onClick={handleDiscard}
-                                    disabled={isSavingAdd}
-                                    variant='secondary'
-                                    type='button'
-                                >
-                                    Descartar
-                                </Button>
-                                <Button
-                                    disabled={isSavingAdd}
-                                    variant='primary'
-                                    type='submit'
-                                    form='form-irrigation-channel-create'
-                                >
-                                    Registro nuevo
-                                </Button>
+        <div className='container'>
+            <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
+                <div className='min-w-400 flex-1'>
+                    <h4 className='mb-0 text-uppercase'>NUEVO CANAL</h4>
+                    {/* <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <MdOutlineNumbers size={20} />
+                                {data.receipt}
                             </div>
-                        </div>
-                    </div>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <HiCurrencyDollar size={20} />
+                                {data.remainingAmount.toFixed(2)}
+                            </div>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <LiaMoneyCheckAltSolid size={20} />
+                                {data.check}
+                            </div>
+                            <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                                <HiCalendar size={20} />
+                                <span className='text-capitalize'>{moment(data.startDeclaration).format('DD MMMM, YYYY')}</span>
+                            </div>
+                        </div> */}
+                </div>
+                <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
+                    <Link
+                        to={`/app/schm/irrig/net`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Red de riego
+                    </Link>
+                    <Link
+                        to={`/app/schm/irrig/chn`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Estructuras
+                    </Link>
                 </div>
             </div>
-            <div className='row g-0 justify-content-center'>
-                <div className='col'>
-                    <form id='form-irrigation-channel-create' onSubmit={handleSubmit(handleSave)}>
-                        <Liner>Información</Liner>
-                        <div className='row'>
-                            <div className='col-12 col-md-6'>
-                                <Form.Group className='mb-3' controlId='newName'>
-                                    <Form.Label>Nombre</Form.Label>
+            <div className='mt-2'>
+                <form id='form-irrigation-channel-create' onSubmit={handleSubmit(handleSave)}>
+                    <div className='d-flex justify-content-end gap-2'>
+                        <Button
+                            disabled={isSavingAdd}
+                            variant='primary'
+                            type='submit'
+                        >
+                            Registrar nuevo
+                        </Button>
+                    </div>
+                    <Liner>Información</Liner>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Nombre
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Control
                                         {...register('name', { required: true })}
                                         type='text'
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-6'>
-                                <Form.Group className='mb-3' controlId='newOrder'>
-                                    <Form.Label>Tipo de estructura</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Tipo de estructura
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Select
                                         {...register('order', { required: true })}
                                         autoComplete='off'
@@ -119,27 +126,103 @@ export const ChannelCreatePage = () => {
                                             data?.optionsOrder.map((o) => <option key={o._id} value={o._id}>{o.name}</option>)
                                         }
                                     </Form.Select>
-                                </Form.Group>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-12'>
-                                <Form.Group className='mb-3' controlId='newObs'>
-                                    <Form.Label>Observación</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={2}>
+                                    Descripción
+                                </Form.Label>
+                                <Col md={10}>
+                                    <Controller
+                                        name='desc'
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field: { onChange, value } }) =>
+                                                <EditorTextArea
+                                                    value={value}
+                                                    onChnage={onChange}
+                                                />
+                                        }
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={2}>
+                                    Observación
+                                </Form.Label>
+                                <Col md={10}>
                                     <Form.Control
                                         {...register('obs')}
                                         as='textarea'
                                         type='text'
-                                        rows={4}
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newStatus'>
-                                    <Form.Label>Estado de la estructura</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Fecha de construccion
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Controller
+                                        control={control}
+                                        name='dateCons'
+                                        rules={{ required: true }}
+                                        render={({
+                                            field: { onChange, value },
+                                        }) => (
+                                            <DatePicker
+                                                value={value}
+                                                onChange={onChange}
+                                            />
+                                        )}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Fecha de inventario
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Controller
+                                        control={control}
+                                        name='dateInvt'
+                                        rules={{ required: true }}
+                                        render={({
+                                            field: { onChange, value },
+                                        }) => (
+                                            <DatePicker
+                                                value={value}
+                                                onChange={onChange}
+                                            />
+                                        )}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Estado de la estructura
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Select
                                         {...register('status', { required: true })}
                                         autoComplete='off'
@@ -150,51 +233,15 @@ export const ChannelCreatePage = () => {
                                         <option value={4}>Requiere reparación</option>
                                         <option value={5}>Requiere construcción</option>
                                     </Form.Select>
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newDateCons'>
-                                    <Form.Label>Fecha de construccion</Form.Label>
-                                    <Controller
-                                        control={control}
-                                        name='dateCons'
-                                        rules={{ required: true }}
-                                        render={({
-                                            field: { onChange, value },
-                                        }) => (
-                                            <DatePicker
-                                                id='newDateCons'
-                                                value={value}
-                                                onChange={onChange}
-                                            />
-                                        )}
-                                    />
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newDateInvt'>
-                                    <Form.Label>Fecha de inventario</Form.Label>
-                                    <Controller
-                                        control={control}
-                                        name='dateInvt'
-                                        rules={{ required: true }}
-                                        render={({
-                                            field: { onChange, value },
-                                        }) => (
-                                            <DatePicker
-                                                id='newDateInvt'
-                                                value={value}
-                                                onChange={onChange}
-                                            />
-                                        )}
-                                    />
-                                </Form.Group>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newMargin'>
-                                    <Form.Label>Margen</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Margen
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Select
                                         {...register('margin', { required: true })}
                                         autoComplete='off'
@@ -202,11 +249,17 @@ export const ChannelCreatePage = () => {
                                         <option value={'D'}>Derecha</option>
                                         <option value={'I'}>Izquierda</option>
                                     </Form.Select>
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newProgressive'>
-                                    <Form.Label>Progresiva</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Progresiva
+                                </Form.Label>
+                                <Col md={8}>
                                     <Controller
                                         control={control}
                                         name='progressive'
@@ -215,7 +268,6 @@ export const ChannelCreatePage = () => {
                                             field: { onChange, value }
                                         }) => (
                                             <InputMask
-                                                id='newProgressive'
                                                 mask='999+999.99'
                                                 maskPlaceholder='000+000.00'
                                                 value={value}
@@ -223,11 +275,15 @@ export const ChannelCreatePage = () => {
                                             />
                                         )}
                                     />
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newLongitude'>
-                                    <Form.Label>Longitud (metros)</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Longitud (metros)
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Control
                                         {...register('longitude', {
                                             required: true,
@@ -238,14 +294,18 @@ export const ChannelCreatePage = () => {
                                         step={0.01}
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                        </div>
-                        <Liner>Operación</Liner>
-                        <div className='row'>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newEfficiency'>
-                                    <Form.Label>Eficiencia (%)</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Liner>Operación</Liner>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Eficiencia (%)
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Control
                                         {...register('efficiency', { required: true })}
                                         type='number'
@@ -253,11 +313,15 @@ export const ChannelCreatePage = () => {
                                         step={0.01}
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                            <div className='col-12 col-md-4'>
-                                <Form.Group className='mb-3' controlId='newFlow'>
-                                    <Form.Label>Caudal (m3/seg)</Form.Label>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row} className='mb-3'>
+                                <Form.Label column md={4}>
+                                    Caudal (m3/seg)
+                                </Form.Label>
+                                <Col md={8}>
                                     <Form.Control
                                         {...register('flow', { required: true })}
                                         type='number'
@@ -265,11 +329,11 @@ export const ChannelCreatePage = () => {
                                         step={0.01}
                                         autoComplete='off'
                                     />
-                                </Form.Group>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                </form>
             </div>
         </div>
     )
