@@ -1,5 +1,5 @@
 export * from './ChannelAdditionalData'
-export * from './ChannelBanner'
+export * from './ChannelView'
 export * from './ChannelImages'
 export * from './ChannelInformation'
 export * from './ChannelListFarm'

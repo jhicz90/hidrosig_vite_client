@@ -12,20 +12,22 @@ export const UserFarmListPage = () => {
 
     return (
         <React.Fragment>
-            <div className='row'>
-                <div className='col-12'>
-                    <InputSearch
-                        value={search}
-                        onChange={(e) => setSearch(e)}
-                        loading={isFetching}
-                        className='my-2'
-                    />
+            <div className='container-fluid'>
+                <div className='row'>
+                    <div className='col-12'>
+                        <InputSearch
+                            value={search}
+                            onChange={(e) => setSearch(e)}
+                            loading={isFetching}
+                            className='my-2'
+                        />
+                    </div>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-12'>
                     <DataTable
-                        className='border border-2 border-light-subtle'
+                        // className='border border-2 border-light-subtle'
                         rows={list}
                         columns={
                             [

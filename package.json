@@ -13,6 +13,7 @@
         "@egjs/react-flicking": "^4.10.9",
         "@emotion/react": "^11.11.1",
         "@geoman-io/leaflet-geoman-free": "^2.14.2",
+        "@popperjs/core": "^2.11.8",
         "@reduxjs/toolkit": "^1.9.5",
         "@sweetalert2/theme-bootstrap-4": "^5.0.15",
         "@table-library/react-table-library": "^4.1.4",

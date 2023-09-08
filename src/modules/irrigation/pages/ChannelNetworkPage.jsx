@@ -36,78 +36,79 @@ export const ChannelNetworkPage = () => {
 
     return (
         <React.Fragment>
-            <div className='row'>
-                <div className='col-12 col-md-6'>
-                    <InputGroup>
-                        <Form.Select
-                            disabled={optionsJunta.length === 0 || isLoadingOptionsJunta}
-                            value={activeAmbit}
-                            onChange={handleAmbit}
-                            autoComplete='off'
-                        >
-                            <option value={''}>Seleccione la junta de usuarios</option>
-                            {
-                                optionsJunta.map(j => <option key={j._id} value={j._id}>{j.name}</option>)
-                            }
-                        </Form.Select>
-                        <Button
-                            onClick={handleReload}
-                            disabled={activeAmbit === ''}
-                            variant='neutral-icon'
-                        >
-                            <FaRedoAlt />
-                        </Button>
-                    </InputGroup>
-                </div>
-                <div className='col-12 col-md-6'>
-                    <InputSearch
-                        value={search}
-                        onChange={(e) => setSearch(e)}
-                        loading={isFetching}
-                        placeholder='Buscar canales'
-                    />
-                </div>
-            </div>
-            <div className='row my-2'>
-                <div className='col-auto'>
-                    {
-                        !!activeNode
-                        &&
-                        <ButtonGroup>
-                            <Button
-                                disabled={!activeNode.id}
-                                variant='neutral'
-                                className='text-primary text-decoration-none'
-                                onClick={() => {
-                                    if (activeNode.depth === 0) {
-                                        navigate(`/app/schm/irrig/ws/${activeNode.id}`)
-                                    } else {
-                                        navigate(`/app/schm/irrig/chn/${activeNode.id}`)
-                                    }
-                                }}
+            <div className='container-fluid'>
+                <div className='row my-2'>
+                    <div className='col-12 col-md-6'>
+                        <InputGroup>
+                            <Form.Select
+                                disabled={optionsJunta.length === 0 || isLoadingOptionsJunta}
+                                value={activeAmbit}
+                                onChange={handleAmbit}
+                                autoComplete='off'
                             >
-                                {activeNode.name || 'No seleccionado'}
-                            </Button>
+                                <option value={''}>Seleccione la junta de usuarios</option>
+                                {
+                                    optionsJunta.map(j => <option key={j._id} value={j._id}>{j.name}</option>)
+                                }
+                            </Form.Select>
                             <Button
-                                onClick={() => clearNode()}
-                                disabled={!activeNode.id}
+                                onClick={handleReload}
+                                disabled={activeAmbit === ''}
                                 variant='neutral-icon'
                             >
-                                <FaTimes />
+                                <FaRedoAlt />
                             </Button>
-                        </ButtonGroup>
-                    }
+                        </InputGroup>
+                    </div>
+                    <div className='col-12 col-md-6'>
+                        <InputSearch
+                            value={search}
+                            onChange={(e) => setSearch(e)}
+                            loading={isFetching}
+                            placeholder='Buscar canales'
+                        />
+                    </div>
                 </div>
-                <div className='col-auto'>
-                    <Button
-                        onClick={() => setNetIrrigExp([])}
-                        disabled={netIrrigExp.length === 0}
-                        variant='neutral'
-                    >
-                        Cerrar red de riego
-                    </Button>
-                </div>
-                {/* <div className='col-auto'>
+                <div className='row my-2'>
+                    <div className='col-auto'>
+                        {
+                            !!activeNode
+                            &&
+                            <ButtonGroup>
+                                <Button
+                                    disabled={!activeNode.id}
+                                    variant='neutral'
+                                    className='text-primary text-decoration-none'
+                                    onClick={() => {
+                                        if (activeNode.depth === 0) {
+                                            navigate(`/app/schm/irrig/ws/${activeNode.id}`)
+                                        } else {
+                                            navigate(`/app/schm/irrig/chn/${activeNode.id}`)
+                                        }
+                                    }}
+                                >
+                                    {activeNode.name || 'No seleccionado'}
+                                </Button>
+                                <Button
+                                    onClick={() => clearNode()}
+                                    disabled={!activeNode.id}
+                                    variant='neutral-icon'
+                                >
+                                    <FaTimes />
+                                </Button>
+                            </ButtonGroup>
+                        }
+                    </div>
+                    <div className='col-auto'>
+                        <Button
+                            onClick={() => setNetIrrigExp([])}
+                            disabled={netIrrigExp.length === 0}
+                            variant='neutral'
+                        >
+                            Cerrar red de riego
+                        </Button>
+                    </div>
+                    {/* <div className='col-auto'>
                     <Button
                         onClick={() => setNetIrrigChk([])}
                         disabled={netIrrig.length === 0}
@@ -116,12 +117,13 @@ export const ChannelNetworkPage = () => {
                         Deseleccionar todos
                     </Button>
                 </div> */}
+                </div>
+                <ChannelNetworkTree
+                    loading={isLoadingChannelNetwork}
+                    selectNode={true}
+                    searchNode={search}
+                />
             </div>
-            <ChannelNetworkTree
-                loading={isLoadingChannelNetwork}
-                selectNode={true}
-                searchNode={search}
-            />
         </React.Fragment>
     )
 }
