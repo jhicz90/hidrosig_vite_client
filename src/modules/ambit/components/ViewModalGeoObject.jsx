@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import { Button, Collapse, ListGroup, Offcanvas, Table } from 'react-bootstrap'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import { TbMapSearch, TbZoomInArea } from 'react-icons/tb'
+import { PiPolygonBold } from 'react-icons/pi'
 import { IoInformationCircleOutline, IoSaveOutline } from 'react-icons/io5'
-import { centroid } from '@turf/turf'
-import { Image } from '../../../components'
-import { useGeoObjectStore } from '../../../hooks'
-import { useAddLineMutation, useAddPointMutation, useAddPolygonMutation } from '../../../store/actions'
-
-const SwalReact = withReactContent(Swal)
+import { centroid, cleanCoords, lineString, lineToPolygon } from '@turf/turf'
+import { useGeoObjectStore } from '@/hooks'
+import { } from '@/store/actions'
+import _ from 'lodash'
 
 export const ViewModalGeoObject = () => {
 
-    const [showView, setShowView] = useState(false)
+    const [show, setShow] = useState(false)
     const { featureCollection } = useGeoObjectStore()
+
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
 
     return (
         <>
@@ -22,15 +22,17 @@ export const ViewModalGeoObject = () => {
                 variant='neutral'
                 size='sm'
                 className='d-flex align-items-center gap-2'
-                onClick={() => setShowView(v => !v)}
+                onClick={handleShow}
             >
                 <TbMapSearch />
                 Objetos geográficos
             </Button>
             <Offcanvas
-                show={showView}
-                onHide={() => setShowView(false)}
+                show={show}
+                onHide={handleClose}
                 placement='end'
+                backdrop='static'
+                enforceFocus={false}
             >
                 <Offcanvas.Header closeButton closeVariant='white'>
                     <Offcanvas.Title>
@@ -44,6 +46,7 @@ export const ViewModalGeoObject = () => {
                                 <ItemFeature
                                     key={`feature_${index}`}
                                     feature={f}
+                                    index={index}
                                 />
                             )
                         }
@@ -54,13 +57,10 @@ export const ViewModalGeoObject = () => {
     )
 }
 
-const ItemFeature = ({ feature }) => {
+const ItemFeature = ({ index, feature }) => {
 
-    const { mapRef } = useGeoObjectStore()
+    const { mapRef, questionAddShape, setFeatureByIndex } = useGeoObjectStore()
     const [showInfo, setShowInfo] = useState(false)
-    const [addPoint] = useAddPointMutation()
-    const [addPolygon] = useAddPolygonMutation()
-    const [addLine] = useAddLineMutation()
 
     const flyToCoords = (geometry) => {
 
@@ -69,57 +69,10 @@ const ItemFeature = ({ feature }) => {
         mapRef.flyTo(center, 15)
     }
 
-    const handleSave = () => {
-        SwalReact.fire({
-            iconHtml: <Image noImg={3011} />,
-            title:
-                <>
-                    <div className='text-uppercase'>¿Guardar este objeto?</div>
-                    <div className="fs-5 fw-bold text-info mt-1">{feature?.properties?.name || feature?.properties?.shape || 'Forma'}</div>
-                </>,
-            html:
-                <>
-                    <div className='fs-5 mb-2' style={{ textAlign: 'left' }}>El modelo de esta area sera guardado, con los datos ingresados o exportados, pero tambien puede agregar alguna descripción adicional para una mejor busqueda o especificación</div>
-                </>,
-            showCancelButton: true,
-            confirmButtonText: 'Guardar',
-            cancelButtonText: 'Cancelar',
-            allowOutsideClick: false,
-            customClass: {
-                confirmButton: `btn btn-success`,
-                cancelButton: `btn btn-neutral`,
-                input: `form-control`,
-                icon: `border-0 animate__animated animate__rubberBand`
-            },
-            input: 'textarea',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            buttonsStyling: false,
-            reverseButtons: true,
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                if (feature.properties.shape === 'Circle' || feature.properties.shape === 'Marker' || feature.properties.shape === 'CircleMarker') {
-                    addPoint({
-                        desc: result.value,
-                        properties: feature.properties,
-                        geometry: feature.geometry
-                    })
-                } else if (feature.properties.shape === 'Polygon') {
-                    addPolygon({
-                        desc: result.value,
-                        properties: feature.properties,
-                        geometry: feature.geometry
-                    })
-                } else if (feature.properties.shape === 'Line') {
-                    addLine({
-                        desc: result.value,
-                        properties: feature.properties,
-                        geometry: feature.geometry
-                    })
-                }
-            }
-        })
+    const convertToPolygon = () => {
+        const line = lineString(cleanCoords(feature).geometry.coordinates, { ...feature.properties })
+        const newPolygon = lineToPolygon(line, { orderCoords: false, mutate: true })
+        setFeatureByIndex(index, { shape: 'Polygon' }, cleanCoords(newPolygon).geometry)
     }
 
     return (
@@ -138,8 +91,19 @@ const ItemFeature = ({ feature }) => {
                     >
                         <IoInformationCircleOutline />
                     </Button>
+                    {
+                        feature.geometry.type === 'LineString'
+                        &&
+                        <Button
+                            onClick={convertToPolygon}
+                            variant='neutral'
+                            className='d-flex align-items-center gap-2'
+                        >
+                            <PiPolygonBold />
+                        </Button>
+                    }
                     <Button
-                        onClick={handleSave}
+                        onClick={() => questionAddShape(feature)}
                         variant='neutral'
                         className='d-flex align-items-center gap-2'
                     >
@@ -156,7 +120,7 @@ const ItemFeature = ({ feature }) => {
             </div>
             <Collapse className='mt-2' in={showInfo}>
                 <div>
-                    <Table
+                    {/* <Table
                         striped
                         bordered
                         hover
@@ -182,9 +146,29 @@ const ItemFeature = ({ feature }) => {
                                 )
                             }
                         </tbody>
-                    </Table>
+                    </Table> */}
                 </div>
             </Collapse>
         </ListGroup.Item>
     )
+}
+
+function findDuplicates(coords) {
+    var orginal = _.flatten(coords, true)
+    var flattened = _.flatten(coords, true);
+    var repeats = [];
+
+    do {
+        var point = flattened.shift();
+
+        _.each(flattened, function (testPoint) {
+            if (testPoint[0] == point[0] && testPoint[1] == point[1]) {
+                repeats.push(point);
+            }
+        });
+    } while (flattened.length > 0);
+
+    repeats = orginal.filter(f => !repeats.includes(f))
+
+    return repeats;
 }
