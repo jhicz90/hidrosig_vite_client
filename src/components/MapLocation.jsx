@@ -1,24 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { MapContainer, TileLayer, GeoJSON, useMap, Circle } from 'react-leaflet'
 import * as turf from '@turf/turf'
-import { randomColor, scaleZoom } from '../helpers'
+import { scaleZoom } from '@/helpers'
 
 export const MapLocation = ({ id = useId(), className = '', geometry = [], style = {} }) => {
-
-    useEffect(() => {
-        const windowResizeEvent = () => {
-            const wrapperElement = document.getElementById(`wrapper-leaflet-${id}`)
-            const elemWidth = wrapperElement.offsetWidth
-            const elemHeight = wrapperElement.offsetHeight
-
-            document.getElementById(`${id}`).style.width = elemWidth
-            document.getElementById(`${id}`).style.height = elemHeight
-            // document.getElementById(`${id}`).invalidateSize()
-        }
-
-        window.onresize = windowResizeEvent
-    }, [])
-
     return (
         <div id={`wrapper-leaflet-${id}`} className={`position-relative overflow-hidden ${className}`}>
             <MapContainer
@@ -80,23 +65,44 @@ const DrawGeo = ({ data = [] }) => {
             {
                 data.map(object => {
                     if (object.properties?.shape === 'Circle') {
+
+                        const color = randomColorsMap()
+
                         return <Circle
                             key={`circle${object._id}`}
                             center={object.geometry.coordinates.slice().reverse()}
                             radius={object.properties.radius}
                             pmIgnore={false}
-                            pathOptions={{ fillColor: randomColor }}
+                            pathOptions={{
+                                color: color,
+                                weight: 2,
+                                opacity: 0.9,
+                                fillOpacity: 0.5
+                            }}
                         />
                     } else {
+
+                        const color = randomColorsMap()
+
                         return <GeoJSON
                             key={`feature${object._id}`}
                             data={object.geometry}
                             pmIgnore={false}
-                            pathOptions={{ fillColor: randomColor }}
+                            pathOptions={{
+                                color: color,
+                                weight: 2,
+                                opacity: 0.9,
+                                fillOpacity: 0.5
+                            }}
                         />
                     }
                 })
             }
         </>
     )
+}
+
+const randomColorsMap = () => {
+    const colors = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf','#999999']
+    return colors[Math.floor(Math.random() * colors.length)]
 }

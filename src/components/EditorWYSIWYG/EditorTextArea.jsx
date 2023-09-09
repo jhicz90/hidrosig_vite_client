@@ -1,4 +1,5 @@
-import React from 'react'
+import { createPopper } from '@popperjs/core'
+import React, { useEffect } from 'react'
 import SunEditor from 'suneditor-react'
 
 import 'suneditor/dist/css/suneditor.min.css'
@@ -8,6 +9,22 @@ export const EditorTextArea = ({ value = '', onChnage = null }) => {
         <SunEditor
             setContents={value}
             onChange={onChnage}
+            // onLoad={() => {
+            //     const resizeObserver = new ResizeObserver(onResize)
+            //     resizeObserver.observe(document.querySelector('.se-menu-list'))
+
+            //     function onResize(entries) {
+            //         const entry = entries[0]
+            //         // const container = entry.target;
+            //         const children = entry.target.children
+
+            //         Array.from(children).forEach(ele => {
+            //             const tooltip = ele.querySelector('.se-tooltip-text')
+            //             // console.log(tooltip)
+            //             createPopper(ele, tooltip)
+            //         })
+            //     }
+            // }}
             height='200px'
             width='100%'
             placeholder='Escriba alguna descripción'
@@ -102,7 +119,7 @@ const langSunEditor = {
         fullScreen: 'Pantalla completa',
         showBlocks: 'Ver bloques',
         codeView: 'Ver código fuente',
-        undo: 'UndoDeshacer última acción',
+        undo: 'Deshacer última acción',
         redo: 'Rehacer última acción',
         preview: 'Vista previa',
         print: 'Imprimir',

@@ -57,7 +57,7 @@ export const UserAndFarmNavPage = () => {
                     </Tab.Container>
                 </div>
             </div>
-            <div className='mt-2'>
+            <div className='card card-next-nav'>
                 <Outlet />
             </div>
         </ContainerController>
