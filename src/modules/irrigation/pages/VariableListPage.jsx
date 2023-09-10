@@ -10,7 +10,7 @@ export const VariableListPage = () => {
 
     return (
         <>
-            <Accordion className='m-3'>
+            <Accordion flush className='m-2'>
                 <Accordion.Item eventKey={0}>
                     <Accordion.Header>Rugosidades</Accordion.Header>
                     <Accordion.Body>

@@ -1,15 +1,17 @@
+import React from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { Alert, Button, Card } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Alert, Button } from 'react-bootstrap'
 import { MdAddPhotoAlternate } from 'react-icons/md'
-import { GridGallery } from '../../../components'
-import { startModalResource, startUpdateImageIdFarm, useGetChannelByIdQuery } from '../../../store/actions'
+import { GridGallery } from '@/components'
+import { channelApi, startModalResource, startUpdateImageIdFarm, useGetChannelByIdQuery } from '@/store/actions'
 
 export const ChannelImages = () => {
 
-    const { strid } = useParams()
+    const { chnid } = useParams()
     const dispatch = useDispatch()
-    const { data = null } = useGetChannelByIdQuery(strid)
+    // const { questionDeleteResourcePettyCash } = usePettyCashStore()
+    const { data = null } = useSelector(channelApi.endpoints.getChannelById.select(chnid))
 
     const handleAddImage = (channel) => {
         dispatch(startModalResource({
@@ -17,28 +19,22 @@ export const ChannelImages = () => {
             groupTypes: 'images',
             limit: 6,
             maxSize: 10,
-            setFiles: (data) => dispatch(startUpdateImageIdFarm(channel._id, data))
+            setFiles: (data) => dispatch(startUpdateImageIdFarm(chnid, data))
         }))
     }
 
     return (
-        <Card>
-            <Card.Body>
+        <React.Fragment>
+            <div className='container-flex-stack'>
                 <Alert variant='info'>
                     Ingrese imagenes de caracter informativo de como es la estructura.
                 </Alert>
                 <GridGallery
-                    actionElement={
-                        <Button
-                            onClick={() => handleAddImage(data)}
-                            variant='neutral'
-                            className='align-items-center justify-content-center'
-                        >
-                            <MdAddPhotoAlternate size={40} />
-                        </Button>
-                    }
-                    elements={data.images} />
-            </Card.Body>
-        </Card>
+                    actionAdd={() => handleAddImage(data)}
+                    // actionDelete={(resource) => questionDeleteResourcePettyCash(data, resource)}
+                    elements={data.images.map(i => ({ ...i, link: '/' }))}
+                />
+            </div>
+        </React.Fragment>
     )
 }

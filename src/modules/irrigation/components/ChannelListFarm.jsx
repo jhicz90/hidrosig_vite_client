@@ -1,25 +1,32 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { Button, Card } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack, TagStatus, TagTimeAgo } from '../../../components'
-import { startDeleteIdFarm, useGetChannelByIdQuery, useGetListFarmByChannelQuery } from '../../../store/actions'
+import { channelApi, startDeleteIdFarm, useGetChannelByIdQuery, useGetListFarmByChannelQuery } from '../../../store/actions'
 
 export const ChannelListFarm = () => {
 
     const dispatch = useDispatch()
-    const { strid } = useParams()
+    const { chnid } = useParams()
     const [search, setSearch] = useState('')
-    const { data = null } = useGetChannelByIdQuery(strid)
-    const { data: farmsIn = [], isLoading } = useGetListFarmByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
+    const { data = null } = useSelector(channelApi.endpoints.getChannelById.select(chnid))
+    const { data: farmsIn = [], isFetching } = useGetListFarmByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
 
     return (
-        <Card className='overflow-hidden'>
-            <div className='row p-3'>
-                <div className='col'>
-                    <InputSearch className='m-0' value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+        <React.Fragment>
+            <div className='container-flex-stack'>
+                <div className='d-flex flex-row-reverse justify-content-between align-items-center flex-wrap gap-2'>
+                    <Button>
+                        Agregar predios
+                    </Button>
                 </div>
+                <InputSearch
+                    value={search}
+                    onChange={(e) => setSearch(e)}
+                    loading={isFetching}
+                />
             </div>
             <DataTable
                 rows={farmsIn}
@@ -78,6 +85,6 @@ export const ChannelListFarm = () => {
                     ]
                 }
             />
-        </Card>
+        </React.Fragment>
     )
 }

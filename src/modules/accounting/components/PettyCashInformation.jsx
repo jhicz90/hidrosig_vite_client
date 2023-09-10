@@ -33,7 +33,7 @@ export const PettyCashInformation = () => {
     }, [reset, data])
 
     return (
-        <form id='form-accounting-pettycash-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-accounting-pettycash-edit-info' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -46,7 +46,7 @@ export const PettyCashInformation = () => {
             <Liner>Información</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Código
                         </Form.Label>
@@ -64,7 +64,7 @@ export const PettyCashInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Año
                         </Form.Label>
@@ -82,7 +82,7 @@ export const PettyCashInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Nombre
                         </Form.Label>
@@ -98,7 +98,7 @@ export const PettyCashInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Descripción
                         </Form.Label>
@@ -121,7 +121,7 @@ export const PettyCashInformation = () => {
                     <Liner>Organización</Liner>
                     <Row>
                         <Col md={6}>
-                            <Form.Group as={Row} className='mb-3'>
+                            <Form.Group as={Row}>
                                 <Form.Label column md={4}>
                                     Junta o Comisión
                                 </Form.Label>
@@ -166,7 +166,7 @@ export const PettyCashInformation = () => {
             <Liner>Comprobante o ficha</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Fecha / Número
                         </Form.Label>
@@ -191,7 +191,7 @@ export const PettyCashInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Número
                         </Form.Label>
@@ -211,7 +211,7 @@ export const PettyCashInformation = () => {
             <Liner>Cheque</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Número
                         </Form.Label>
@@ -225,7 +225,7 @@ export const PettyCashInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Monto
                         </Form.Label>
@@ -246,7 +246,7 @@ export const PettyCashInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Saldo
                         </Form.Label>

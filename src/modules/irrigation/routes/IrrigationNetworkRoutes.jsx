@@ -57,7 +57,7 @@ export const IrrigationNetworkRoutes = () => {
                 }
             />
             <Route
-                path={`chn/:strid/*`}
+                path={`chn/:chnid/*`}
                 element={
                     <GuardRoute meta={['organization_junta']}>
                         <ChannelPage />

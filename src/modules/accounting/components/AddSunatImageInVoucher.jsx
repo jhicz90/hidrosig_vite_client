@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import { useAddSunatImageByIdVoucherMutation } from '../../../store/actions'
+import { useAddSunatImageByIdVoucherMutation } from '@/store/actions'
 
 export const AddSunatImageInVoucher = ({ voucher }) => {
 

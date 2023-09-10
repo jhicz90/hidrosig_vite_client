@@ -29,7 +29,7 @@ export const WaterSourceInformation = () => {
     }, [reset, data])
 
     return (
-        <form id='form-irrigation-watersource-edit' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-irrigation-watersource-edit' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}

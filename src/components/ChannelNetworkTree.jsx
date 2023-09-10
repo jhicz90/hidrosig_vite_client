@@ -119,8 +119,8 @@ export const ChannelNetworkTree = ({
                     ?
                     <LoadingPage />
                     :
-                    <div className='row'>
-                        <div className='col-12 p-3'>
+                    <div style={{ backgroundColor: '#f5f8fa', borderBottomLeftRadius: '9px', borderBottomRightRadius: '9px' }}>
+                        <div className='container-flex-stack'>
                             {
                                 netIrrig.length > 0
                                     ?

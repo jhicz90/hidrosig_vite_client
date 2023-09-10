@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import { DatePicker, EditorTextArea, InputMask, Liner } from '@/components'
-import { useGetChannelByIdQuery, useUpdateChannelByIdMutation } from '@/store/actions'
+import { channelApi, useUpdateChannelByIdMutation } from '@/store/actions'
 
 export const ChannelInformation = () => {
 
-    const { strid } = useParams()
-    const { data = null } = useGetChannelByIdQuery(strid)
+    const { chnid } = useParams()
+    const { data = null } = useSelector(channelApi.endpoints.getChannelById.select(chnid))
     const [updateChannel, { isLoading: isUpdating }] = useUpdateChannelByIdMutation()
     const { register, control, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -18,7 +19,7 @@ export const ChannelInformation = () => {
 
     const handleUpdate = (updateData) => {
         updateChannel({
-            id: strid,
+            id: chnid,
             channel: updateData
         })
     }
@@ -30,7 +31,7 @@ export const ChannelInformation = () => {
     }, [reset, data])
 
     return (
-        <form id='form-irrigation-channel-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-irrigation-channel-edit-info' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -42,12 +43,12 @@ export const ChannelInformation = () => {
             </div>
             <Liner>Detalle</Liner>
             <Row>
-                <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
-                        <Form.Label column md={4}>
+                <Col>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={2}>
                             Nombre
                         </Form.Label>
-                        <Col md={8}>
+                        <Col md={10}>
                             <Form.Control
                                 {...register('name', { required: true })}
                                 type='text'
@@ -59,7 +60,7 @@ export const ChannelInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Descripción
                         </Form.Label>
@@ -82,7 +83,7 @@ export const ChannelInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Observación
                         </Form.Label>
@@ -99,7 +100,7 @@ export const ChannelInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Fecha de construccion
                         </Form.Label>
@@ -121,7 +122,7 @@ export const ChannelInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Fecha de inventario
                         </Form.Label>
@@ -145,7 +146,7 @@ export const ChannelInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Estado de la estructura
                         </Form.Label>
@@ -164,7 +165,7 @@ export const ChannelInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Margen
                         </Form.Label>
@@ -182,7 +183,7 @@ export const ChannelInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Progresiva
                         </Form.Label>
@@ -206,7 +207,7 @@ export const ChannelInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Longitud (metros)
                         </Form.Label>
@@ -228,7 +229,7 @@ export const ChannelInformation = () => {
             <Liner>Operación</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Eficiencia (%)
                         </Form.Label>
@@ -244,7 +245,7 @@ export const ChannelInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Caudal (m3/seg)
                         </Form.Label>

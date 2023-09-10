@@ -47,6 +47,13 @@ export const WaterSourcePage = () => {
                 </div>
                 <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
                     <Link
+                        to={`/app/schm/irrig/net`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Red de riego
+                    </Link>
+                    <Link
                         to={`/app/schm/irrig/ws`}
                         className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
                     >
@@ -71,7 +78,7 @@ export const WaterSourcePage = () => {
                     </Button>
                 </div>
             </div>
-            <div className='mt-2'>
+            <div className='card'>
                 <WaterSourceInformation />
             </div>
         </ContainerController>

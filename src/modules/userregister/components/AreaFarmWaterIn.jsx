@@ -8,14 +8,12 @@ export const AreaFarmWaterIn = () => {
 
     return (
         <React.Fragment>
-            <div className='row'>
-                <div className='col-12'>
-                    <div className='d-flex flex-row-reverse justify-content-between align-items-center flex-wrap gap-2'>
-                        <InputIrrigationCreateInAreaFarm farm={prpid} />
-                    </div>
+            <div className='container-flex-stack'>
+                <div className='d-flex flex-row-reverse justify-content-between align-items-center flex-wrap gap-2'>
+                    <InputIrrigationCreateInAreaFarm farm={prpid} />
                 </div>
+                <InputIrrigationCards farm={prpid} />
             </div>
-            <InputIrrigationCards farm={prpid} />
         </React.Fragment>
     )
 }

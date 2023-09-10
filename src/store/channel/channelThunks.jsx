@@ -58,6 +58,12 @@ export const channelApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Irrig']
         }),
+        verifySectionsById: builder.query({
+            query: (id) => ({
+                url: `channel/verify_sections_by_channel/${id}`
+            }),
+            providesTags: ['Irrig']
+        }),
         getChannelById: builder.query({
             query: (id) => ({
                 url: `channel/edit/${id}`
@@ -87,12 +93,13 @@ export const channelApi = storeApi.injectEndpoints({
 export const {
     useAddChannelMutation,
     useDeleteChannelByIdMutation,
+    useGetChannelByIdQuery,
     useGetListChannelQuery,
     useGetListWaterInByPointQuery,
-    useGetChannelByIdQuery,
     useLazyGetListWaterInAndPointByCoordinatesQuery,
     useLazyGetListWaterInByPointQuery,
     useLazyNewChannelQuery,
+    useLazyVerifySectionsByIdQuery,
     useNewChannelQuery,
     useUpdateChannelByIdMutation,
 } = channelApi

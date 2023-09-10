@@ -1,7 +1,8 @@
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Tab } from 'react-bootstrap'
-import { FiMap, FiPlus, FiUserPlus } from 'react-icons/fi'
+import { MdOutlineSchema } from 'react-icons/md'
+import { IoIosWater } from 'react-icons/io'
 import { ContainerController, SliderNavFlip } from '@/components'
 
 export const IrrigationNetworkNavPage = () => {
@@ -37,14 +38,14 @@ export const IrrigationNetworkNavPage = () => {
                         to={`chn/create`}
                         className='btn btn-sm btn-primary d-flex align-items-center gap-2'
                     >
-                        <FiPlus />
+                        <MdOutlineSchema />
                         Nuevo estructura
                     </Link>
                     <Link
                         to={`ws/create`}
                         className='btn btn-sm btn-primary d-flex align-items-center gap-2'
                     >
-                        <FiMap />
+                        <IoIosWater />
                         Nuevo fuente de agua
                     </Link>
                 </div>

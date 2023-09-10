@@ -148,7 +148,7 @@ export const AreaFarmPage = () => {
                     </Tab.Container>
                 </div>
             </div>
-            <div className='mt-2'>
+            <div className='card card-next-nav'>
                 <Routes>
                     <Route index element={<AreaFarmInformation />} />
                     <Route path={`area`} element={<AreaFarmAreaGeometry />} />

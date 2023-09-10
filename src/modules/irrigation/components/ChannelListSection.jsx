@@ -1,34 +1,31 @@
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { Button, Card } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { IoEyeSharp, IoTrashSharp } from 'react-icons/io5'
 import { DataTable, InputSearch, LinkBack, TagTimeAgo } from '../../../components'
-import { startDeleteIdSection, useGetChannelByIdQuery, useGetListSectionByChannelQuery } from '../../../store/actions'
+import { channelApi, startDeleteIdSection, useGetListSectionByChannelQuery } from '../../../store/actions'
+import { AddSectionInChannel } from '.'
 
 export const ChannelListSection = () => {
 
     const dispatch = useDispatch()
-    const { strid } = useParams()
+    const { chnid } = useParams()
     const [search, setSearch] = useState('')
-    const { data = null } = useGetChannelByIdQuery(strid)
-    const { data: sectionsIn = [], isLoading } = useGetListSectionByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
+    const { data = null } = useSelector(channelApi.endpoints.getChannelById.select(chnid))
+    const { data: sectionsIn = [], isFetching } = useGetListSectionByChannelQuery({ channel: data?._id, search: '' }, { skip: !data })
 
     return (
-        <Card className='overflow-hidden'>
-            <div className='row p-3'>
-                <div className='col'>
-                    <InputSearch className='m-0' value={search} onChange={(e) => setSearch(e)} loading={isLoading} />
+        <React.Fragment>
+            <div className='container-flex-stack'>
+                <div className='d-flex flex-row-reverse justify-content-between align-items-center flex-wrap gap-2'>
+                    <AddSectionInChannel channel={chnid} />
                 </div>
-                <div className='col-auto'>
-                    <LinkBack
-                        className='btn btn-primary'
-                        to={`/app/schm/irrig/sct/create`}
-                        state={{ structure: data._id || '' }}
-                    >
-                        Agregar tramo
-                    </LinkBack>
-                </div>
+                <InputSearch
+                    value={search}
+                    onChange={(e) => setSearch(e)}
+                    loading={isFetching}
+                />
             </div>
             <DataTable
                 rows={sectionsIn}
@@ -62,13 +59,13 @@ export const ChannelListSection = () => {
                             pinRight: true,
                             renderCell: (item) =>
                                 <div className='d-flex gap-2 p-2'>
-                                    <LinkBack
+                                    <Link
                                         to={`/app/schm/irrig/sct/${item._id}`}
                                         className='btn btn-neutral-icon'
                                         style={{ padding: '0.5rem' }}
                                     >
                                         <IoEyeSharp size={16} />
-                                    </LinkBack>
+                                    </Link>
                                     <Button
                                         onClick={() => dispatch(startDeleteIdSection(item))}
                                         variant='neutral-danger-icon'
@@ -81,6 +78,6 @@ export const ChannelListSection = () => {
                     ]
                 }
             />
-        </Card>
+        </React.Fragment>
     )
 }

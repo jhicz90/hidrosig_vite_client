@@ -9,8 +9,8 @@ import { questionDeleteChannel, useDeleteChannelByIdMutation, useGetChannelByIdQ
 
 export const ChannelPage = () => {
 
-    const { strid } = useParams()
-    const { data = null, isLoading, isSuccess } = useGetChannelByIdQuery(strid)
+    const { chnid } = useParams()
+    const { data = null, isLoading, isSuccess } = useGetChannelByIdQuery(chnid)
     const [deleteStructure] = useDeleteChannelByIdMutation()
 
     const handleDelete = async (id, name) => {
@@ -75,10 +75,10 @@ export const ChannelPage = () => {
                 </div>
             </div>
             <div className='row'>
-                <div className='col-md-12 col-lg-5 col-xl-4 mb-md-2'>
+                <div className='col-12 col-xl-4 mb-2'>
                     <ChannelView />
                 </div>
-                <div className='col-md-12 col-lg-7 col-xl-8'>
+                <div className='col-12 col-xl-8'>
                     <Tab.Container>
                         <SliderNavFlip className='d-flex flex-stack rounded-3 bg-light-subtle nav-wrapper' cameraClass='nav nav-flip'>
                             <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
@@ -88,7 +88,7 @@ export const ChannelPage = () => {
                             <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
                         </SliderNavFlip>
                     </Tab.Container>
-                    <div className='mt-2'>
+                    <div className='card card-next-nav'>
                         <Routes>
                             <Route index element={<ChannelInformation />} />
                             <Route path={`sct/*`} element={<ChannelListSection />} />

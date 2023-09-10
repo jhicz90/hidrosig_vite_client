@@ -36,8 +36,8 @@ export const ChannelNetworkPage = () => {
 
     return (
         <React.Fragment>
-            <div className='container-fluid'>
-                <div className='row my-2'>
+            <div className='container-flex-stack'>
+                <div className='row'>
                     <div className='col-12 col-md-6'>
                         <InputGroup>
                             <Form.Select
@@ -69,7 +69,7 @@ export const ChannelNetworkPage = () => {
                         />
                     </div>
                 </div>
-                <div className='row my-2'>
+                <div className='row'>
                     <div className='col-auto'>
                         {
                             !!activeNode
@@ -118,12 +118,12 @@ export const ChannelNetworkPage = () => {
                     </Button>
                 </div> */}
                 </div>
-                <ChannelNetworkTree
-                    loading={isLoadingChannelNetwork}
-                    selectNode={true}
-                    searchNode={search}
-                />
             </div>
+            <ChannelNetworkTree
+                loading={isLoadingChannelNetwork}
+                selectNode={true}
+                searchNode={search}
+            />
         </React.Fragment>
     )
 }

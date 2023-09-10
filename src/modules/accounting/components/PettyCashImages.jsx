@@ -24,20 +24,23 @@ export const PettyCashImages = () => {
                 groupTypes: 'images',
                 limit,
                 maxSize: 10,
-                setFiles: (data) => dispatch(startUpdateImageIdPettyCash(pettycash._id, data))
+                setFiles: (data) => dispatch(startUpdateImageIdPettyCash(pettycashid, data))
             }))
         }
     }
 
     return (
         <React.Fragment>
-            <Alert variant='info'>
-                Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
-            </Alert>
-            <GridGallery
-                actionAdd={() => handleAddImage(data)}
-                actionDelete={(resource) => questionDeleteResourcePettyCash(data, resource)}
-                elements={data.images.map(i => ({ ...i, link: '/' }))} />
+            <div className='container-flex-stack'>
+                <Alert variant='info'>
+                    Ingrese las imagenes de los documentos escaneados, que se usaron para la creacion de esta caja chica como el cheque o depositos de excedente.
+                </Alert>
+                <GridGallery
+                    actionAdd={() => handleAddImage(data)}
+                    actionDelete={(resource) => questionDeleteResourcePettyCash(data, resource)}
+                    elements={data.images.map(i => ({ ...i, link: '/' }))}
+                />
+            </div>
         </React.Fragment>
     )
 }

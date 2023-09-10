@@ -20,7 +20,7 @@ export const InputIrrigationCards = ({ farm = null }) => {
                         {
                             inputIrrigationIn.length > 0
                                 ?
-                                <div className='row row-cols-1 g-1 my-1'>
+                                <div className='row row-cols-1 g-1'>
                                     {
                                         inputIrrigationIn.map(inputIrr =>
                                             <Col key={inputIrr._id}>

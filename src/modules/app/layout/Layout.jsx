@@ -37,7 +37,7 @@ const ContentApp = styled.main`
     & .scroll-content{
         /* overflow-y: scroll; */
         padding-top: 0;
-        padding-bottom: 0;
+        padding-bottom: 20px;
         min-height: 600px;
         /* height: calc(100vh - 60px); */
     }

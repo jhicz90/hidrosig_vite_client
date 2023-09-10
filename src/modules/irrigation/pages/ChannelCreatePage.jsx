@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Controller, useForm } from 'react-hook-form'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { HiArrowUturnLeft } from 'react-icons/hi2'
@@ -10,7 +10,6 @@ import { useAddChannelMutation, useLazyNewChannelQuery } from '@/store/actions'
 export const ChannelCreatePage = () => {
 
     const { id } = useChannelStore()
-    const navigate = useNavigate()
     const [newStructure, { data = null, isLoading, isError }] = useLazyNewChannelQuery()
     const [addStructure, { isLoading: isSavingAdd, isSuccess: isSaved }] = useAddChannelMutation()
     const { register, control, handleSubmit, reset } = useForm({

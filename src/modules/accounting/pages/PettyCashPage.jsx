@@ -89,7 +89,7 @@ export const PettyCashPage = () => {
                     </Tab.Container>
                 </div>
             </div>
-            <div className='mt-2'>
+            <div className='card card-next-nav'>
                 <Routes>
                     <Route index element={<PettyCashInformation />} />
                     <Route path={`img`} element={<PettyCashImages />} />
