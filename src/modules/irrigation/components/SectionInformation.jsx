@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
-import { Button, Card, Form, FormCheck, InputGroup } from 'react-bootstrap'
+import { Button, Card, Col, Form, FormCheck, InputGroup, Row } from 'react-bootstrap'
 import AsyncSelect from 'react-select/async'
 import { InputMask, Liner, OptionRugosity } from '../../../components'
 import { pDistance } from '../../../helpers'
@@ -67,315 +67,393 @@ export const SectionInformation = () => {
     }, [reset, data])
 
     return (
-        <Card>
-            <Card.Body>
-                <form id='form-irrigation-section-info' onSubmit={handleSubmit(handleUpdate)}>
-                    <Liner>Detalle</Liner>
-                    <div className='row'>
-                        <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='newName'>
-                                <Form.Label>Nombre</Form.Label>
-                                <Form.Control
-                                    {...register('name', { required: true })}
-                                    type='text'
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-6'>
-                            <Form.Group className='mb-3' controlId='newStatus'>
-                                <Form.Label>Estado</Form.Label>
-                                <Form.Select
-                                    {...register('status', { required: true })}
-                                    autoComplete='off'
-                                >
-                                    <option value={1}>Bueno</option>
-                                    <option value={2}>Malo</option>
-                                    <option value={3}>Regular</option>
-                                    <option value={4}>Requiere reparación</option>
-                                    <option value={5}>Requiere construcción</option>
-                                </Form.Select>
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='newType'>
-                                <Form.Label>Tipo de estructura</Form.Label>
-                                <Form.Select
-                                    {...register('type', { required: true })}
-                                    autoComplete='off'
-                                >
-                                    <option value={1}>Trapezoidal</option>
-                                    <option value={2}>Rectangular</option>
-                                    <option value={3}>Triangular</option>
-                                    <option value={4}>Circular</option>
-                                </Form.Select>
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='newWorkCapacity'>
-                                <Form.Label>Capacidad de trabajo</Form.Label>
-                                <Form.Select
-                                    {...register('workCapacity', { required: true })}
-                                    autoComplete='off'
-                                >
-                                    <option value={0}>No idonea sin estructura</option>
-                                    <option value={1}>Idonea sin estructura</option>
-                                    <option value={2}>No idonea con estructura no adecuada al sistema</option>
-                                    <option value={3}>No idonea con estructura adecuada al sistema</option>
-                                    <option value={4}>Idonea con estructura no adecuada al sistema</option>
-                                    <option value={5}>Idonea con estructura adecuada al sistema</option>
-                                </Form.Select>
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-4'>
-                            <Form.Group className='mb-3' controlId='newCoatedType'>
-                                <Form.Label>Tipo de revestimiento</Form.Label>
-                                <Form.Select
-                                    {...register('coatedType', { required: true })}
-                                    autoComplete='off'
-                                    disabled={!watch('coatedCheck')}
-                                >
-                                    <option value={0}>Ninguno</option>
-                                    <option value={1}>Solera</option>
-                                    <option value={2}>Talud derecho</option>
-                                    <option value={3}>Talud izquierdo</option>
-                                    <option value={4}>Talud derecho y solera</option>
-                                    <option value={5}>Talud izquierdo y solera</option>
-                                    <option value={6}>Total</option>
-                                </Form.Select>
-                                <FormCheck
-                                    id='newCoated'
-                                    {...register('coatedCheck', {
-                                        onChange: () => {
-                                            setValue('coatedType', 0)
-                                            setValue('leftSlopeThickness', 0)
-                                            setValue('rightSlopeThickness', 0)
-                                        }
-                                    })}
-                                    label='¿La estructura esta revestida?'
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12'>
-                            <Form.Group className='mb-3'>
-                                <Form.Label>Progresiva inicial - final</Form.Label>
-                                <InputGroup>
-                                    <Controller
-                                        control={control}
-                                        name='progressiveStart'
-                                        rules={{ required: true }}
-                                        render={({
-                                            field: { value, onChange }
-                                        }) => (
-                                            <InputMask
-                                                id='pProgressiveStart'
-                                                mask='999+999.99'
-                                                maskPlaceholder='000+000.00'
-                                                value={value}
-                                                onChange={onChange}
-                                            />
-                                        )}
-                                    />
-                                    <Controller
-                                        control={control}
-                                        name='progressiveEnd'
-                                        rules={{ required: true }}
-                                        render={({
-                                            field: { value, onChange }
-                                        }) => (
-                                            <InputMask
-                                                id='pProgressiveEnd'
-                                                mask='999+999.99'
-                                                maskPlaceholder='000+000.00'
-                                                value={value}
-                                                onChange={onChange}
-                                            />
-                                        )}
-                                    />
-                                    <InputGroup.Text>
-                                        {
-                                            pDistance(watch('progressiveEnd')) - pDistance(watch('progressiveStart')) >= 0
-                                                ?
-                                                `${pDistance(watch('progressiveEnd')) - pDistance(watch('progressiveStart'))} metros`
-                                                :
-                                                `La progresiva inicial no puede ser mayor que la final`
-                                        }
-                                    </InputGroup.Text>
-                                </InputGroup>
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <Liner>Datos hidraulicos</Liner>
-                    <div className='row'>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newMayorBasis'>
-                                <Form.Label>Base mayor</Form.Label>
-                                <Form.Control
-                                    {...register('mayorBasis', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newMinorBasis'>
-                                <Form.Label>Base menor</Form.Label>
-                                <Form.Control
-                                    {...register('minorBasis', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newHeight'>
-                                <Form.Label>Altura (H)</Form.Label>
-                                <Form.Control
-                                    {...register('height', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newTight'>
-                                <Form.Label>Tirante (Y)</Form.Label>
-                                <Form.Control
-                                    {...register('tight', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newHeight'>
-                                <Form.Label>Talud (Z)</Form.Label>
-                                <Form.Control
-                                    {...register('slope', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newDiameter'>
-                                <Form.Label>Diametro (D)</Form.Label>
-                                <Form.Control
-                                    {...register('diameter', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newLeftSlopeThickness'>
-                                <Form.Label>Revest. Talud Izq.</Form.Label>
-                                <Form.Control
-                                    disabled={!watch('coated')}
-                                    {...register('leftSlopeThickness', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group className='mb-3' controlId='newRightSlopeThickness'>
-                                <Form.Label>Revest. Talud Der.</Form.Label>
-                                <Form.Control
-                                    disabled={!watch('coated')}
-                                    {...register('rightSlopeThickness', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.01}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='col-12 col-md-2'>
-                            <Form.Group className='mb-3' controlId='newGrade'>
-                                <Form.Label>Pendiente (S)</Form.Label>
-                                <Form.Control
-                                    {...register('grade', { required: true, setValueAs: v => Number(v) })}
-                                    type='number'
-                                    min={0}
-                                    step={0.0001}
-                                    autoComplete='off'
-                                />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-7'>
-                            <Form.Group className='mb-3' controlId='newRugosity'>
-                                <Form.Label>Rugosidad</Form.Label>
-                                <Controller
-                                    name='rugosity'
-                                    control={control}
-                                    rules={{ required: true }}
-                                    render={
-                                        ({ field }) =>
-                                            <AsyncSelect
-                                                {...field}
-                                                inputId='newRugosity'
-                                                classNamePrefix='rc-select'
-                                                isClearable
-                                                defaultOptions
-                                                cacheOptions
-                                                loadOptions={searchRugosity}
-                                                menuPlacement={'auto'}
-                                                placeholder={`Buscar...`}
-                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                getOptionValue={e => e._id}
-                                                getOptionLabel={e => <OptionRugosity rug={e} />}
-                                            />
+        <form className='container-flex-stack' id='form-irrigation-section-info' onSubmit={handleSubmit(handleUpdate)}>
+            <div className='d-flex justify-content-end gap-2'>
+                <Button
+                    disabled={isUpdating}
+                    variant='primary'
+                    type='submit'
+                >
+                    Guardar cambios
+                </Button>
+            </div>
+            <Liner>Información</Liner>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Nombre
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('name', { required: true })}
+                                type='text'
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Estado
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Select
+                                {...register('status', { required: true })}
+                                autoComplete='off'
+                            >
+                                <option value={1}>Bueno</option>
+                                <option value={2}>Malo</option>
+                                <option value={3}>Regular</option>
+                                <option value={4}>Requiere reparación</option>
+                                <option value={5}>Requiere construcción</option>
+                            </Form.Select>
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Tipo de estructura
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Select
+                                {...register('type', { required: true })}
+                                autoComplete='off'
+                            >
+                                <option value={1}>Trapezoidal</option>
+                                <option value={2}>Rectangular</option>
+                                <option value={3}>Triangular</option>
+                                <option value={4}>Circular</option>
+                            </Form.Select>
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Capacidad de trabajo
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Select
+                                {...register('workCapacity', { required: true })}
+                                autoComplete='off'
+                            >
+                                <option value={0}>No idonea sin estructura</option>
+                                <option value={1}>Idonea sin estructura</option>
+                                <option value={2}>No idonea con estructura no adecuada al sistema</option>
+                                <option value={3}>No idonea con estructura adecuada al sistema</option>
+                                <option value={4}>Idonea con estructura no adecuada al sistema</option>
+                                <option value={5}>Idonea con estructura adecuada al sistema</option>
+                            </Form.Select>
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Tipo de revestimiento
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Select
+                                {...register('coatedType', { required: true })}
+                                autoComplete='off'
+                                disabled={!watch('coated')}
+                            >
+                                <option value={0}>Ninguno</option>
+                                <option value={1}>Solera</option>
+                                <option value={2}>Talud derecho</option>
+                                <option value={3}>Talud izquierdo</option>
+                                <option value={4}>Talud derecho y solera</option>
+                                <option value={5}>Talud izquierdo y solera</option>
+                                <option value={6}>Total</option>
+                            </Form.Select>
+                            <FormCheck
+                                id='newCoated'
+                                {...register('coated', {
+                                    onChange: () => {
+                                        setValue('coatedType', 0)
+                                        setValue('leftSlopeThickness', 0)
+                                        setValue('rightSlopeThickness', 0)
                                     }
+                                })}
+                                label='¿La estructura esta revestida?'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={2}>
+                            Progresiva inicial - final
+                        </Form.Label>
+                        <Col md={10}>
+                            <InputGroup>
+                                <Controller
+                                    control={control}
+                                    name='progressiveStart'
+                                    rules={{ required: true }}
+                                    render={({
+                                        field: { value, onChange }
+                                    }) => (
+                                        <InputMask
+                                            id='pProgressiveStart'
+                                            mask='999+999.99'
+                                            maskPlaceholder='000+000.00'
+                                            value={value}
+                                            onChange={onChange}
+                                        />
+                                    )}
                                 />
-                            </Form.Group>
-                        </div>
-                        <div className='col-12 col-md-3'>
-                            <Form.Group controlId='typeFlow'>
-                                <Form.Label>Tipo de flujo</Form.Label>
-                                <Form.Control
-                                    readOnly
-                                    type='text'
-                                    className={calcs?.froudeNumber === 1 ? 'text-warning' : calcs?.froudeNumber < 1 ? 'text-success' : 'text-danger'}
-                                    value={calcs?.typeFlow || 'Faltan datos'}
+                                <Controller
+                                    control={control}
+                                    name='progressiveEnd'
+                                    rules={{ required: true }}
+                                    render={({
+                                        field: { value, onChange }
+                                    }) => (
+                                        <InputMask
+                                            id='pProgressiveEnd'
+                                            mask='999+999.99'
+                                            maskPlaceholder='000+000.00'
+                                            value={value}
+                                            onChange={onChange}
+                                        />
+                                    )}
                                 />
-                            </Form.Group>
-                        </div>
-                    </div>
-                    <div className='d-flex justify-content-end gap-2'>
-                        <Button
-                            disabled={isUpdating}
-                            variant='primary'
-                            type='submit'
-                        >
-                            Guardar cambios
-                        </Button>
-                    </div>
-                </form>
-            </Card.Body>
-        </Card>
+                                <InputGroup.Text>
+                                    {
+                                        pDistance(watch('progressiveEnd')) - pDistance(watch('progressiveStart')) >= 0
+                                            ?
+                                            `${pDistance(watch('progressiveEnd')) - pDistance(watch('progressiveStart'))} metros`
+                                            :
+                                            `La progresiva inicial no puede ser mayor que la final`
+                                    }
+                                </InputGroup.Text>
+                            </InputGroup>
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Liner>Datos hidraulicos</Liner>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Base mayor
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('mayorBasis', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Base menor
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('minorBasis', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Altura (H)
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('height', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Tirante (Y)
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('tight', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Talud (Z)
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('slope', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Diametro (D)
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('diameter', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Revest. Talud Izq.
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                disabled={!watch('coated')}
+                                {...register('leftSlopeThickness', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Revest. Talud Der.
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                disabled={!watch('coated')}
+                                {...register('rightSlopeThickness', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.01}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Pendiente (S)
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                {...register('grade', { required: true, setValueAs: v => Number(v) })}
+                                type='number'
+                                min={0}
+                                step={0.0001}
+                                autoComplete='off'
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Rugosidad
+                        </Form.Label>
+                        <Col md={8}>
+                            <Controller
+                                name='rugosity'
+                                control={control}
+                                rules={{ required: true }}
+                                render={
+                                    ({ field }) =>
+                                        <AsyncSelect
+                                            {...field}
+                                            classNamePrefix='rc-select'
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    minHeight: '60px',
+                                                }),
+                                            }}
+                                            isClearable
+                                            defaultOptions
+                                            cacheOptions
+                                            loadOptions={searchRugosity}
+                                            hideSelectedOptions
+                                            menuPlacement={'auto'}
+                                            placeholder={`Buscar...`}
+                                            loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                            noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                            getOptionValue={e => e._id}
+                                            getOptionLabel={e => <OptionRugosity rug={e} />}
+                                        />
+                                }
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+                <Col md={6}>
+                    <Form.Group as={Row}>
+                        <Form.Label column md={4}>
+                            Tipo de flujo
+                        </Form.Label>
+                        <Col md={8}>
+                            <Form.Control
+                                readOnly
+                                type='text'
+                                className={calcs?.froudeNumber === 1 ? 'text-warning' : calcs?.froudeNumber < 1 ? 'text-success' : 'text-danger'}
+                                value={calcs?.typeFlow || 'Faltan datos'}
+                            />
+                        </Col>
+                    </Form.Group>
+                </Col>
+            </Row>
+        </form>
     )
 }

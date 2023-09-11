@@ -1,18 +1,16 @@
-import { useEffect } from 'react'
+import React from 'react'
 import { Link, NavLink, Route, Routes, useParams } from 'react-router-dom'
-import { Card, Dropdown, Tab } from 'react-bootstrap'
-import { IoEllipsisVertical, IoReturnUpBack } from 'react-icons/io5'
-import { SectionAdditionalData, SectionBanner, SectionInformation, SectionLongitude } from '../components'
-import { LoadingPage, SliderNavFlip } from '../../../components'
-import { useNavigateState } from '../../../hooks'
-import { questionDeleteSection, useDeleteSectionByIdMutation, useGetSectionByIdQuery } from '../../../store/actions'
+import { Button, Tab } from 'react-bootstrap'
+import { HiArrowUturnLeft, HiCalendar, HiPrinter } from 'react-icons/hi2'
+import moment from 'moment'
+import { SectionAdditionalData, SectionView, SectionInformation, SectionLongitude } from '../components'
+import { ContainerController, LoadingPage, SliderNavFlip } from '@/components'
+import { questionDeleteSection, useDeleteSectionByIdMutation, useGetSectionByIdQuery } from '@/store/actions'
 
 export const SectionPage = () => {
 
     const { sectid } = useParams()
-    const [redirect, redirectEscape] = useNavigateState('/app/schm/irrig')
-
-    const { data = null, isLoading, isError } = useGetSectionByIdQuery(sectid)
+    const { data = null, isLoading, isSuccess } = useGetSectionByIdQuery(sectid)
     const [deleteSection] = useDeleteSectionByIdMutation()
 
     const handleDelete = async (id, data) => {
@@ -20,73 +18,73 @@ export const SectionPage = () => {
             deleteSection(id)
         }
     }
-    
-    useEffect(() => {
-        if (isError) {
-            redirectEscape()
-        }
-    }, [isError])
 
     if (isLoading) {
         return <LoadingPage />
     }
 
     return (
-        !!data
+        isSuccess
         &&
-        <div className='container-fluid my-3'>
-            <div className='row'>
-                <div className='col-12'>
-                    <div className='row align-items-center justify-content-between g-3 mb-3'>
-                        <div className='col-12 col-md-auto'>
-                            <h4 className='mb-0'>TRAMO</h4>
+        <ContainerController>
+            <div className='d-lg-flex align-items-lg-center justify-content-lg-between my-3'>
+                <div className='min-w-400 flex-1'>
+                    <h4 className='mb-0 text-uppercase'>TRAMO: <div className='d-inline-block text-primary'>{data.name}</div></h4>
+                    <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
+                        {/* <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <MdOutlineNumbers size={20} />
+                            {data.receipt}
                         </div>
-                        <div className='col-12 col-md-auto'>
-                            <div className='d-flex gap-2'>
-                                <Link to={`/app/schm/irrig/str/${data.channel._id}`} className='btn btn-neutral-secondary'>
-                                    <IoReturnUpBack size={24} />
-                                    {data.channel.name}
-                                </Link>
-                                <Dropdown className='dropdown-noarrow'>
-                                    <Dropdown.Toggle variant='neutral' className='d-flex align-items-center'>
-                                        <IoEllipsisVertical size={24} />
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item>Reportes</Dropdown.Item>
-                                        <Dropdown.Item>Imprimir</Dropdown.Item>
-                                        <Dropdown.Item
-                                            onClick={() => handleDelete(sectid, data)}
-                                            className='text-danger'
-                                        >
-                                            Eliminar
-                                        </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiCurrencyDollar size={20} />
+                            {data.remainingAmount.toFixed(2)}
+                        </div>
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <LiaMoneyCheckAltSolid size={20} />
+                            {data.check}
+                        </div> */}
+                        <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
+                            <HiCalendar size={20} />
+                            <span className='text-capitalize'>{moment(data.updatedAt).format('DD MMMM, YYYY')}</span>
                         </div>
                     </div>
                 </div>
+                <div className='mt-3 ms-lg-5 mt-lg-0 d-flex gap-2 flex-wrap'>
+                    <Link
+                        to={`/app/schm/irrig/chn/${data.channel._id}`}
+                        className='btn btn-sm btn-neutral d-flex align-items-center gap-2'
+                    >
+                        <HiArrowUturnLeft />
+                        Estructura {data.channel.name}
+                    </Link>
+                    <Button
+                        variant='primary'
+                        size='sm'
+                        className='d-flex align-items-center gap-2'
+                    >
+                        <HiPrinter />
+                        Generar reporte
+                    </Button>
+                </div>
             </div>
             <div className='row'>
-                <div className='col-md-5 col-lg-5 col-xl-4'>
-                    <SectionBanner />
+                <div className='col-12 col-xl-4 mb-2'>
+                    <SectionView />
                 </div>
-                <div className='col-md-7 col-lg-7 col-xl-8'>
+                <div className='col-12 col-xl-8'>
                     <Tab.Container>
-                        <Card className='p-2'>
-                            <SliderNavFlip>
-                                <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
-                                <NavLink to={`lon`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Longitud</NavLink>
-                                <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
-                                <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
-                                {/* Usuarios en la estructura */}
-                                {/* <NavLink to={`area`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Superficie</NavLink>
+                        <SliderNavFlip className='d-flex flex-stack rounded-3 bg-light-subtle nav-wrapper' cameraClass='nav nav-flip'>
+                            <NavLink to={``} end className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Información</NavLink>
+                            <NavLink to={`lon`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Longitud</NavLink>
+                            <NavLink to={`prp`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Predios</NavLink>
+                            <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink>
+                            {/* Usuarios en la estructura */}
+                            {/* <NavLink to={`area`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Superficie</NavLink>
                                         <NavLink to={`hld`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Titulares</NavLink>
                                         <NavLink to={`img`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Imagenes</NavLink>
                                         <NavLink to={`add`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Datos adicionales</NavLink> */}
-                            </SliderNavFlip>
-                        </Card>
-                        <div className='mt-2'>
+                        </SliderNavFlip>
+                        <div className='card card-next-nav'>
                             <Routes>
                                 <Route index element={<SectionInformation />} />
                                 <Route path={`lon`} element={<SectionLongitude />} />
@@ -99,6 +97,6 @@ export const SectionPage = () => {
                     </Tab.Container>
                 </div>
             </div>
-        </div>
+        </ContainerController>
     )
 }

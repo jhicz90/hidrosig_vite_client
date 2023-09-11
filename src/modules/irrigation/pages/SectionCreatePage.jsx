@@ -392,6 +392,76 @@ export const SectionCreatePage = () => {
                         <Col md={6}>
                             <Form.Group as={Row}>
                                 <Form.Label column md={4}>
+                                    Talud (Z)
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Form.Control
+                                        {...register('slope', { required: true, setValueAs: v => Number(v) })}
+                                        type='number'
+                                        min={0}
+                                        step={0.01}
+                                        autoComplete='off'
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row}>
+                                <Form.Label column md={4}>
+                                    Diametro (D)
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Form.Control
+                                        {...register('diameter', { required: true, setValueAs: v => Number(v) })}
+                                        type='number'
+                                        min={0}
+                                        step={0.01}
+                                        autoComplete='off'
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row}>
+                                <Form.Label column md={4}>
+                                    Revest. Talud Izq.
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Form.Control
+                                        disabled={!watch('coated')}
+                                        {...register('leftSlopeThickness', { required: true, setValueAs: v => Number(v) })}
+                                        type='number'
+                                        min={0}
+                                        step={0.01}
+                                        autoComplete='off'
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                            <Form.Group as={Row}>
+                                <Form.Label column md={4}>
+                                    Revest. Talud Der.
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Form.Control
+                                        disabled={!watch('coated')}
+                                        {...register('rightSlopeThickness', { required: true, setValueAs: v => Number(v) })}
+                                        type='number'
+                                        min={0}
+                                        step={0.01}
+                                        autoComplete='off'
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={6}>
+                            <Form.Group as={Row}>
+                                <Form.Label column md={4}>
                                     Pendiente (S)
                                 </Form.Label>
                                 <Col md={8}>

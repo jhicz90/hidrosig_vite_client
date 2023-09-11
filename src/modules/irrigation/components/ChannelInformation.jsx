@@ -41,7 +41,7 @@ export const ChannelInformation = () => {
                     Guardar cambios
                 </Button>
             </div>
-            <Liner>Detalle</Liner>
+            <Liner>Información</Liner>
             <Row>
                 <Col>
                     <Form.Group as={Row}>
