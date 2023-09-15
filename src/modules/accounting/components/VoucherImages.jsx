@@ -32,16 +32,17 @@ export const VoucherImages = () => {
 
     return (
         <React.Fragment>
-            <div className='d-flex justify-content-end gap-2'>
+            <div className='container-flex-stack'>
                 <AddSunatImageInVoucher voucher={voucherid} />
+                <Alert variant='info'>
+                    Ingrese las imagenes del comprobante.
+                </Alert>
+                <GridGallery
+                    actionAdd={() => handleAddImage(data)}
+                    actionDelete={(resource) => questionDeleteResourceVoucher(data, resource)}
+                    elements={data.images.map(i => ({ ...i, link: '/' }))}
+                />
             </div>
-            <Alert variant='info' className='my-3'>
-                Ingrese las imagenes del comprobante.
-            </Alert>
-            <GridGallery
-                actionAdd={() => handleAddImage(data)}
-                actionDelete={(resource) => questionDeleteResourceVoucher(data, resource)}
-                elements={data.images.map(i => ({ ...i, link: '/' }))} />
         </React.Fragment>
     )
 }

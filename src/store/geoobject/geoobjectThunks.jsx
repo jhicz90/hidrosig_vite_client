@@ -175,8 +175,8 @@ export const startImportShapes = (fileName) => {
                     },
                     buttonsStyling: false,
                     reverseButtons: true,
-                }).then(async (result) => {
-                    if (result.value) {
+                }).then(async ({ isConfirmed }) => {
+                    if (isConfirmed) {
                         if (resp.hasOwnProperty('featureCollection')) {
                             dispatch(setFeatureCollection(resp.featureCollection))
                         }

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Image } from '@/components'
-import { addNewGeometry, clearFeatureCollection, setGeometryByIndex, setMap, startImportShapes, useAddLineMutation, useAddPointMutation, useAddPolygonMutation } from '@/store/geoobject'
+import { addNewGeometry, clearFeatureCollection, setFeatureCollection, setGeometryByIndex, setMap, startImportShapes, useAddLineMutation, useAddPointMutation, useAddPolygonMutation } from '@/store/geoobject'
 
 const SwalReact = withReactContent(Swal)
 
@@ -16,6 +16,10 @@ export const useGeoObjectStore = () => {
 
     const setMapRef = (map) => {
         dispatch(setMap(map))
+    }
+
+    const setFeatureCllc = (fc) => {
+        dispatch(setFeatureCollection(fc))
     }
 
     const addFeature = (feature) => {
@@ -111,6 +115,7 @@ export const useGeoObjectStore = () => {
         featureCollection,
         //* METODOS
         setMapRef,
+        setFeatureCllc,
         addFeature,
         setFeatureByIndex,
         clearFeatures,

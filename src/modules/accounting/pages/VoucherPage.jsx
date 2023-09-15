@@ -66,7 +66,7 @@ export const VoucherPage = () => {
                     </Tab.Container>
                 </div>
             </div>
-            <div className='mt-2'>
+            <div className='card card-next-nav'>
                 <Routes>
                     <Route index element={<VoucherInformation />} />
                     <Route path={`img`} element={<VoucherImages />} />

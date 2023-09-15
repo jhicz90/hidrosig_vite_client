@@ -34,7 +34,7 @@ export const VoucherInformation = () => {
     }, [reset, data])
 
     return (
-        <form id='form-accounting-voucher-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-accounting-voucher-edit-info' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -45,7 +45,7 @@ export const VoucherInformation = () => {
                 </Button>
             </div>
             <Liner>Información</Liner>
-            <Form.Group as={Row} className='mb-3'>
+            <Form.Group as={Row}>
                 <Form.Label column sm='2'>
                     Fecha del comprobante / Cancelación
                 </Form.Label>
@@ -93,7 +93,7 @@ export const VoucherInformation = () => {
                     </Form.Text>
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className='mb-3'>
+            <Form.Group as={Row}>
                 <Form.Label column sm='2'>
                     Tipo de comprobante / Serie / Número
                 </Form.Label>
@@ -127,7 +127,7 @@ export const VoucherInformation = () => {
                     </InputGroup>
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className='mb-3'>
+            <Form.Group as={Row}>
                 <Form.Label column sm='2'>
                     Documento o Razón social
                 </Form.Label>
@@ -160,7 +160,7 @@ export const VoucherInformation = () => {
                 </Col>
             </Form.Group>
             <Liner>Detalle</Liner>
-            <Form.Group as={Row} className='mb-3'>
+            <Form.Group as={Row}>
                 <Form.Label column sm='2'>
                     Concepto
                 </Form.Label>
@@ -174,7 +174,7 @@ export const VoucherInformation = () => {
                     />
                 </Col>
             </Form.Group>
-            <Form.Group as={Row} className='mb-3'>
+            <Form.Group as={Row}>
                 <Form.Label column sm='2'>
                     Ingreso - egreso / Importe
                 </Form.Label>
