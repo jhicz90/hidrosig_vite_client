@@ -31,7 +31,7 @@ export const AreaFarmAdditionalData = () => {
     }, [reset, data])
 
     return (
-        <form id='form-userregister-areafarm-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-userregister-areafarm-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -43,8 +43,7 @@ export const AreaFarmAdditionalData = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pAppIdentifiers'>
-                        <Form.Label>Identificadores de aplicaciones</Form.Label>
+                    <Form.Group controlId='pAppIdentifiers'>
                         <ListGroup>
                             <ListGroup.Item onClick={() => append({ nameApp: '', idApp: '' })} className='d-flex align-items-center' action>
                                 Agregar identificador <IoMdAddCircleOutline className='ms-2' size={20} color='green' />

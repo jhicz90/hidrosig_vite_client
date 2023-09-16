@@ -4,16 +4,16 @@ import { FaHistory, FaMoneyBillWave } from 'react-icons/fa'
 import { FaMoneyBillTrendUp } from 'react-icons/fa6'
 import { TbMoneybag } from 'react-icons/tb'
 import { ManageCollectCampaignContext } from '../context'
-import { LoadingPage } from '../../../../../components'
-import { useGetPayResumeByCampaignAndInputIrrigQuery } from '../../../../../store/actions'
-import { CardHeaderStyled } from '../../../../../style'
 import { PayCollectModal } from '.'
+import { CardHeaderStyled } from '@/style'
+import { LoadingPage } from '@/components'
+import { useGetPayResumeByCampaignAndInputIrrigQuery } from '@/store/actions'
 
 export const ResumeCollectContent = () => {
 
-    const [{ campaignId, inputIrrigId }, setContext] = useContext(ManageCollectCampaignContext)
+    const [{ campaignId, inputIrrigationId }, setContext] = useContext(ManageCollectCampaignContext)
 
-    const { data = null, isFetching, isSuccess } = useGetPayResumeByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrig: inputIrrigId })
+    const { data = null, isFetching, isSuccess } = useGetPayResumeByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrigation: inputIrrigationId })
 
     if (isFetching) {
         return <LoadingPage />

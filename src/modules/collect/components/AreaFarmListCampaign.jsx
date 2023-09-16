@@ -52,13 +52,13 @@ export const AreaFarmListCampaign = () => {
                                                         {
                                                             debt.campaigns.map(c =>
                                                                 <ListGroupCampaign
-                                                                    key={`campaign_${c._id}_${c.inputIrrigId}`}
-                                                                    onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigId}`)}
+                                                                    key={`campaign_${c._id}_${c.inputIrrigation._id}`}
+                                                                    onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigation._id}`)}
                                                                     action
-                                                                    selected={(cmp === c._id && irr === c.inputIrrigId) ? true : false}
+                                                                    selected={(cmp === c._id && irr === c.inputIrrigation._id) ? true : false}
                                                                 >
                                                                     Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                    <div className='text-muted' style={{ fontSize: '0.75rem' }}>TRAMO #{c.inputIrrig.code.slice(-5)}</div>
+                                                                    <div className='text-muted' style={{ fontSize: '0.75rem' }}>TOMA #{c.inputIrrigation.code.slice(-5)}</div>
                                                                 </ListGroupCampaign>
                                                             )
                                                         }
@@ -79,13 +79,13 @@ export const AreaFarmListCampaign = () => {
                                                             {
                                                                 debt.campaigns.map(c =>
                                                                     <ListGroupCampaign
-                                                                        key={`campaign_${c._id}_${c.inputIrrigId}`}
-                                                                        onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigId}`)}
+                                                                        key={`campaign_${c._id}_${c.inputIrrigation._id}`}
+                                                                        onClick={() => navigate(`?cmp=${c._id}&irr=${c.inputIrrigation._id}`)}
                                                                         action
-                                                                        selected={(cmp === c._id && irr === c.inputIrrigId) ? true : false}
+                                                                        selected={(cmp === c._id && irr === c.inputIrrigation._id) ? true : false}
                                                                     >
                                                                         Campaña {c.campaign === 1 ? `CHICA I ${c.opened ? ' (A)' : ' (C)'}` : `GRANDE II ${c.opened ? ' (A)' : ' (C)'}`}
-                                                                        <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrig.code}</div>
+                                                                        <div className='text-muted' style={{ fontSize: '0.75rem' }}>#{c.inputIrrigation.code}</div>
                                                                     </ListGroupCampaign>
                                                                 )
                                                             }

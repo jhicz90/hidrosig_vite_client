@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoEyeSharp } from 'react-icons/io5'
-import { InputSearch, LinkBack, DataTable, TagTimeAgo } from '../../../components'
-import { useGetListChannelQuery } from '../../../store/actions'
+import { InputSearch, LinkBack, DataTable, TagTimeAgo } from '@/components'
+import { useGetListChannelQuery } from '@/store/actions'
 
 export const ChannelListPage = () => {
 

@@ -7,11 +7,11 @@ import { useGetPayResumeMonthByCampaignAndInputIrrigQuery } from '../../../../..
 
 export const ControlListMonthPay = () => {
 
-    const [{ inputIrrigId, campaignId }, setContext] = useContext(ManageCollectCampaignContext)
+    const [{ inputIrrigationId, campaignId }, setContext] = useContext(ManageCollectCampaignContext)
     const [selected, setSelected] = useState([])
 
-    const { data: monthsPayIn = [] } = useGetPayResumeMonthByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrig: inputIrrigId })
-
+    const { data: monthsPayIn = [] } = useGetPayResumeMonthByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrigation: inputIrrigationId })
+    
     useEffect(() => {
         if (selected.length > 0) {
             const amount = monthsPayIn.filter(item => selected.some(s => item._id === s)).reduce(

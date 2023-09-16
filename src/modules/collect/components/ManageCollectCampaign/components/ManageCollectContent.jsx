@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { ManageCollectCampaignContext } from '../context'
 import { Button } from 'react-bootstrap'
-import { FaHistory, FaLeaf, FaMoneyBillWave } from 'react-icons/fa'
+import { FaHistory, FaLeaf } from 'react-icons/fa'
 import { FarmCropCreate, TableFarmCropCollect, FarmCropEdit } from '.'
-import { CardHeaderStyled } from '../../../../../style'
+import { CardHeaderStyled } from '@/style'
 
 export const ManageCollectContent = () => {
 

@@ -75,7 +75,7 @@ export const AreaFarmInformation = () => {
     }, [watch])
 
     return (
-        <form id='form-userregister-areafarm-edit-info' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-userregister-areafarm-edit-info' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -88,7 +88,7 @@ export const AreaFarmInformation = () => {
             <Liner>Detalle</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Código
                         </Form.Label>
@@ -105,7 +105,7 @@ export const AreaFarmInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Nombre del predio
                         </Form.Label>
@@ -119,7 +119,7 @@ export const AreaFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Unidad Catastral
                         </Form.Label>
@@ -135,7 +135,7 @@ export const AreaFarmInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Descripción
                         </Form.Label>
@@ -153,7 +153,7 @@ export const AreaFarmInformation = () => {
             <Liner>Área</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Area total
                         </Form.Label>
@@ -172,7 +172,7 @@ export const AreaFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Area de uso
                         </Form.Label>
@@ -192,7 +192,7 @@ export const AreaFarmInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Area de permiso
                         </Form.Label>
@@ -211,7 +211,7 @@ export const AreaFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Area de licencia
                         </Form.Label>
@@ -231,196 +231,198 @@ export const AreaFarmInformation = () => {
                 </Col>
             </Row>
             <Liner>Bloque de riego y ubicación</Liner>
+            {
+                lvlAccess === 1
+                &&
+                <Row>
+                    <Col md={6}>
+                        <Form.Group as={Row}>
+                            <Form.Label column md={4}>
+                                Junta de usuarios
+                            </Form.Label>
+                            <Col md={8}>
+                                <Controller
+                                    name='junta'
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                        onChange: ({ target }) => {
+                                            if (target.value?.committees?.length > 0) {
+                                                setOptionsCommittee(target.value.committees)
+                                                setOptionsBlock([])
+                                            } else {
+                                                setOptionsCommittee([])
+                                                setOptionsBlock([])
+                                            }
+                                            // setOptionsBlock([])
+                                            setValue('committee', null)
+                                            setValue('block', null)
+                                        }
+                                    }}
+                                    render={
+                                        ({ field }) =>
+                                            <AsyncSelect
+                                                {...field}
+                                                classNamePrefix='rc-select'
+                                                styles={{
+                                                    control: (baseStyles, state) => ({
+                                                        ...baseStyles,
+                                                        minHeight: '90px',
+                                                    }),
+                                                }}
+                                                isClearable
+                                                defaultOptions
+                                                loadOptions={searchJunta}
+                                                hideSelectedOptions
+                                                menuPlacement='auto'
+                                                menuPosition='absolute'
+                                                placeholder={`Buscar...`}
+                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                getOptionValue={e => e._id}
+                                                getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                            />
+                                    }
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Group as={Row}>
+                            <Form.Label column md={4}>
+                                Comisión de usuarios
+                            </Form.Label>
+                            <Col md={8}>
+                                <Controller
+                                    name='committee'
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                        onChange: ({ target }) => {
+                                            if (target.value?.blocks?.length > 0) {
+                                                setOptionsBlock(target.value.blocks)
+                                            } else {
+                                                setOptionsBlock([])
+                                            }
+                                            setValue('block', null)
+                                        }
+                                    }}
+                                    render={
+                                        ({ field }) =>
+                                            <Select
+                                                {...field}
+                                                classNamePrefix='rc-select'
+                                                styles={{
+                                                    control: (baseStyles, state) => ({
+                                                        ...baseStyles,
+                                                        minHeight: '90px',
+                                                    }),
+                                                }}
+                                                isClearable
+                                                isDisabled={watch('junta') === null || optionsCommittee.length === 0}
+                                                options={optionsCommittee}
+                                                filterOption={customFilterCommittee}
+                                                hideSelectedOptions
+                                                menuPlacement='auto'
+                                                menuPosition='absolute'
+                                                placeholder={`Buscar...`}
+                                                loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                getOptionValue={e => e._id}
+                                                getOptionLabel={e => <OptionOrgz orgz={e} />}
+                                            />
+                                    }
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Col>
+                </Row>
+            }
             <Row>
                 {
                     lvlAccess === 1
                         ?
-                        <React.Fragment>
-                            <Col md={6}>
-                                <Form.Group as={Row} className='mb-3'>
-                                    <Form.Label column md={4}>
-                                        Junta de usuarios
-                                    </Form.Label>
-                                    <Col md={8}>
-                                        <Controller
-                                            name='junta'
-                                            control={control}
-                                            rules={{
-                                                required: true,
-                                                onChange: ({ target }) => {
-                                                    if (target.value?.committees?.length > 0) {
-                                                        setOptionsCommittee(target.value.committees)
-                                                        setOptionsBlock([])
-                                                    } else {
-                                                        setOptionsCommittee([])
-                                                        setOptionsBlock([])
-                                                    }
-                                                    // setOptionsBlock([])
-                                                    setValue('committee', null)
-                                                    setValue('block', null)
-                                                }
-                                            }}
-                                            render={
-                                                ({ field }) =>
-                                                    <AsyncSelect
-                                                        {...field}
-                                                        classNamePrefix='rc-select'
-                                                        styles={{
-                                                            control: (baseStyles, state) => ({
-                                                                ...baseStyles,
-                                                                minHeight: '90px',
-                                                            }),
-                                                        }}
-                                                        isClearable
-                                                        defaultOptions
-                                                        loadOptions={searchJunta}
-                                                        hideSelectedOptions
-                                                        menuPlacement='auto'
-                                                        menuPosition='absolute'
-                                                        placeholder={`Buscar...`}
-                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                        getOptionValue={e => e._id}
-                                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                                    />
-                                            }
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group as={Row} className='mb-3'>
-                                    <Form.Label column md={4}>
-                                        Comisión de usuarios
-                                    </Form.Label>
-                                    <Col md={8}>
-                                        <Controller
-                                            name='committee'
-                                            control={control}
-                                            rules={{
-                                                required: true,
-                                                onChange: ({ target }) => {
-                                                    if (target.value?.blocks?.length > 0) {
-                                                        setOptionsBlock(target.value.blocks)
-                                                    } else {
-                                                        setOptionsBlock([])
-                                                    }
-                                                    setValue('block', null)
-                                                }
-                                            }}
-                                            render={
-                                                ({ field }) =>
-                                                    <Select
-                                                        {...field}
-                                                        classNamePrefix='rc-select'
-                                                        styles={{
-                                                            control: (baseStyles, state) => ({
-                                                                ...baseStyles,
-                                                                minHeight: '90px',
-                                                            }),
-                                                        }}
-                                                        isClearable
-                                                        isDisabled={watch('junta') === null || optionsCommittee.length === 0}
-                                                        options={optionsCommittee}
-                                                        filterOption={customFilterCommittee}
-                                                        hideSelectedOptions
-                                                        menuPlacement='auto'
-                                                        menuPosition='absolute'
-                                                        placeholder={`Buscar...`}
-                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                        getOptionValue={e => e._id}
-                                                        getOptionLabel={e => <OptionOrgz orgz={e} />}
-                                                    />
-                                            }
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6}>
-                                <Form.Group as={Row} className='mb-3'>
-                                    <Form.Label column md={4}>
-                                        Bloque de riego
-                                    </Form.Label>
-                                    <Col md={8}>
-                                        <Controller
-                                            name='block'
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={
-                                                ({ field }) =>
-                                                    <Select
-                                                        {...field}
-                                                        classNamePrefix='rc-select'
-                                                        styles={{
-                                                            control: (baseStyles, state) => ({
-                                                                ...baseStyles,
-                                                                minHeight: '90px',
-                                                            }),
-                                                        }}
-                                                        isClearable
-                                                        isDisabled={watch('junta') === null || optionsBlock.length === 0}
-                                                        options={optionsBlock}
-                                                        filterOption={customFilterBlock}
-                                                        hideSelectedOptions
-                                                        menuPlacement='auto'
-                                                        menuPosition='absolute'
-                                                        placeholder={`Buscar...`}
-                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                        getOptionValue={e => e._id}
-                                                        getOptionLabel={e => <OptionBlock block={e} />}
-                                                    />
-                                            }
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </React.Fragment>
+                        <Col md={6}>
+                            <Form.Group as={Row}>
+                                <Form.Label column md={4}>
+                                    Bloque de riego
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Controller
+                                        name='block'
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field }) =>
+                                                <Select
+                                                    {...field}
+                                                    classNamePrefix='rc-select'
+                                                    styles={{
+                                                        control: (baseStyles, state) => ({
+                                                            ...baseStyles,
+                                                            minHeight: '90px',
+                                                        }),
+                                                    }}
+                                                    isClearable
+                                                    isDisabled={watch('junta') === null || optionsBlock.length === 0}
+                                                    options={optionsBlock}
+                                                    filterOption={customFilterBlock}
+                                                    hideSelectedOptions
+                                                    menuPlacement='auto'
+                                                    menuPosition='absolute'
+                                                    placeholder={`Buscar...`}
+                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                    getOptionValue={e => e._id}
+                                                    getOptionLabel={e => <OptionBlock block={e} />}
+                                                />
+                                        }
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
                         :
-                        <React.Fragment>
-                            <Col md={6}>
-                                <Form.Group as={Row} className='mb-3'>
-                                    <Form.Label column md={4}>
-                                        Bloque de riego
-                                    </Form.Label>
-                                    <Col md={8}>
-                                        <Controller
-                                            name='block'
-                                            control={control}
-                                            rules={{ required: true }}
-                                            render={
-                                                ({ field }) =>
-                                                    <AsyncSelect
-                                                        {...field}
-                                                        classNamePrefix='rc-select'
-                                                        styles={{
-                                                            control: (baseStyles, state) => ({
-                                                                ...baseStyles,
-                                                                minHeight: '90px',
-                                                            }),
-                                                        }}
-                                                        isClearable
-                                                        loadOptions={async (e) => {
-                                                            return (await searchBlock(e)).data
-                                                        }}
-                                                        menuPlacement='auto'
-                                                        menuPosition='fixed'
-                                                        placeholder={`Buscar...`}
-                                                        loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
-                                                        noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
-                                                        getOptionValue={e => e._id}
-                                                        getOptionLabel={e => <OptionBlock block={e} />}
-                                                    />
-                                            }
-                                        />
-                                    </Col>
-                                </Form.Group>
-                            </Col>
-                        </React.Fragment>
+                        <Col md={6}>
+                            <Form.Group as={Row}>
+                                <Form.Label column md={4}>
+                                    Bloque de riego
+                                </Form.Label>
+                                <Col md={8}>
+                                    <Controller
+                                        name='block'
+                                        control={control}
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field }) =>
+                                                <AsyncSelect
+                                                    {...field}
+                                                    classNamePrefix='rc-select'
+                                                    styles={{
+                                                        control: (baseStyles, state) => ({
+                                                            ...baseStyles,
+                                                            minHeight: '90px',
+                                                        }),
+                                                    }}
+                                                    isClearable
+                                                    loadOptions={async (e) => {
+                                                        return (await searchBlock(e)).data
+                                                    }}
+                                                    menuPlacement='auto'
+                                                    menuPosition='fixed'
+                                                    placeholder={`Buscar...`}
+                                                    loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
+                                                    noOptionsMessage={({ inputValue }) => `Sin resultados con ...${inputValue}`}
+                                                    getOptionValue={e => e._id}
+                                                    getOptionLabel={e => <OptionBlock block={e} />}
+                                                />
+                                        }
+                                    />
+                                </Col>
+                            </Form.Group>
+                        </Col>
                 }
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Localidad
                         </Form.Label>
@@ -458,7 +460,7 @@ export const AreaFarmInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Lugar de referencia
                         </Form.Label>
@@ -472,6 +474,6 @@ export const AreaFarmInformation = () => {
                     </Form.Group>
                 </Col>
             </Row>
-        </form>
+        </form >
     )
 }

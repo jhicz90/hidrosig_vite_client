@@ -2,9 +2,9 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Alert } from 'react-bootstrap'
-import { GridGallery } from '../../../components'
-import { useFarmStore } from '../../../hooks'
-import { startModalResource, startUpdateImageIdFarm, useGetFarmByIdQuery } from '../../../store/actions'
+import { GridGallery } from '@/components'
+import { useFarmStore } from '@/hooks'
+import { startModalResource, startUpdateImageIdFarm, useGetFarmByIdQuery } from '@/store/actions'
 
 export const AreaFarmImages = () => {
 
@@ -25,13 +25,16 @@ export const AreaFarmImages = () => {
 
     return (
         <React.Fragment>
-            <Alert variant='info'>
-                Ingrese imagenes de caracter informativo de como es o como se encuentra el predio.
-            </Alert>
-            <GridGallery
-                actionAdd={() => handleAddImage(data)}
-                actionDelete={(resource) => questionDeleteResourceFarm(data, resource)}
-                elements={data.images.map(i => ({ ...i, link: '/' }))} />
+            <div className='container-flex-stack'>
+                <Alert variant='info'>
+                    Ingrese imagenes de caracter informativo de como es o como se encuentra el predio.
+                </Alert>
+                <GridGallery
+                    actionAdd={() => handleAddImage(data)}
+                    actionDelete={(resource) => questionDeleteResourceFarm(data, resource)}
+                    elements={data.images.map(i => ({ ...i, link: '/' }))}
+                />
+            </div>
         </React.Fragment>
     )
 }

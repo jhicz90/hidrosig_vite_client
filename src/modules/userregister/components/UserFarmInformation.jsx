@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import { useFieldArray, useForm } from 'react-hook-form'
-import validator from 'validator'
-import { Liner } from '../../../components'
-import { useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '../../../store/actions'
 import { IoMdAddCircleOutline, IoMdClose } from 'react-icons/io'
+import validator from 'validator'
+import { Liner } from '@/components'
+import { useGetUserFarmByIdQuery, useUpdateUserFarmByIdMutation } from '@/store/actions'
 
 export const UserFarmInformation = () => {
 
@@ -32,7 +32,7 @@ export const UserFarmInformation = () => {
     }, [reset, data])
 
     return (
-        <form id='form-userregister-userfarm-info' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-userregister-userfarm-info' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -45,7 +45,7 @@ export const UserFarmInformation = () => {
             <Liner>Información personal</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Código
                         </Form.Label>
@@ -61,7 +61,7 @@ export const UserFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Tipo de usuario
                         </Form.Label>
@@ -83,7 +83,7 @@ export const UserFarmInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Documento de identidad o RUC
                         </Form.Label>
@@ -97,7 +97,7 @@ export const UserFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Estado
                         </Form.Label>
@@ -116,7 +116,7 @@ export const UserFarmInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Razón social
                         </Form.Label>
@@ -133,7 +133,7 @@ export const UserFarmInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Género
                         </Form.Label>
@@ -153,7 +153,7 @@ export const UserFarmInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Nombres
                         </Form.Label>
@@ -170,7 +170,7 @@ export const UserFarmInformation = () => {
             </Row>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Apellidos Paternos
                         </Form.Label>
@@ -185,7 +185,7 @@ export const UserFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Apellidos Maternos
                         </Form.Label>
@@ -203,7 +203,7 @@ export const UserFarmInformation = () => {
             <Liner>Contacto</Liner>
             <Row>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Correo electronico
                         </Form.Label>
@@ -217,7 +217,7 @@ export const UserFarmInformation = () => {
                     </Form.Group>
                 </Col>
                 <Col md={6}>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={4}>
                             Dirección
                         </Form.Label>
@@ -233,7 +233,7 @@ export const UserFarmInformation = () => {
             </Row>
             <Row>
                 <Col>
-                    <Form.Group as={Row} className='mb-3'>
+                    <Form.Group as={Row}>
                         <Form.Label column md={2}>
                             Contactos
                         </Form.Label>

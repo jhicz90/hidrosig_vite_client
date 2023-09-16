@@ -1,23 +1,23 @@
 import React, { memo, useState, useEffect } from 'react'
 import { ManageCollectCampaignContext } from './context'
-import { useGetInputIrrigByIdQuery, useGetYearRateByIdQuery } from '../../../../store/actions'
-import { LoadingPage } from '../../../../components'
 import { ManageCollectContent, ResumeCollectContent } from './components'
+import { useGetInputIrrigationByIdQuery, useGetYearRateByIdQuery } from '@/store/actions'
+import { LoadingPage } from '@/components'
 
 export const ManageCollectCampaign = memo(function ManageCollectCampaign({
     campaign = null,
-    inputIrrig = null
+    inputIrrigation = null
 }) {
 
     const { data: campaignDetail = null, isFetching: isLoadingCmp } = useGetYearRateByIdQuery(campaign)
 
-    const { data: inputIrrigDetail = null, isFetching: isLoadingIrr } = useGetInputIrrigByIdQuery(inputIrrig)
+    const { data: inputIrrigDetail = null, isFetching: isLoadingIrr } = useGetInputIrrigationByIdQuery(inputIrrigation)
 
     const [context, setContext] = useState({
         campaign: campaignDetail,
         campaignId: campaign,
-        inputIrrig: inputIrrigDetail,
-        inputIrrigId: inputIrrig,
+        inputIrrigation: inputIrrigDetail,
+        inputIrrigationId: inputIrrigation,
         payCollectRateShow: false,
         amountToPay: 0,
         farmCropNewShow: false,
@@ -26,7 +26,7 @@ export const ManageCollectCampaign = memo(function ManageCollectCampaign({
     })
 
     useEffect(() => {
-        setContext(v => ({ ...v, campaign: campaignDetail, inputIrrig: inputIrrigDetail }))
+        setContext(v => ({ ...v, campaign: campaignDetail, inputIrrigation: inputIrrigDetail }))
     }, [campaignDetail, inputIrrigDetail])
 
     return (

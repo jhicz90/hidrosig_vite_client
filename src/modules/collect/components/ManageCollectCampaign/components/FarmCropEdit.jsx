@@ -10,7 +10,7 @@ import { searchCropVarietyByJunta, searchIrrigationSystemByJunta, useDeleteFarmC
 
 export const FarmCropEdit = () => {
 
-    const [{ farmCropEditShow, farmCropEditData, inputIrrig }, setContext] = useContext(ManageCollectCampaignContext)
+    const [{ farmCropEditShow, farmCropEditData, inputIrrigation }, setContext] = useContext(ManageCollectCampaignContext)
     const { control, register, handleSubmit, reset, setValue, watch } = useForm()
     const [updateFarmCrop] = useUpdateFarmCropInCollectMutation()
     const [deleteFarmCrop, { isLoading: isDeleting }] = useDeleteFarmCropInCollectMutation()
@@ -59,12 +59,12 @@ export const FarmCropEdit = () => {
                                                 ({ field }) =>
                                                     <AsyncSelect
                                                         {...field}
-                                                        isDisabled={inputIrrig?.inputIrrig.regulation === 2}
+                                                        isDisabled={inputIrrigation?.regulation === 2}
                                                         classNamePrefix='rc-select'
                                                         hideSelectedOptions
                                                         isClearable
                                                         defaultOptions
-                                                        loadOptions={async (e) => await searchIrrigationSystemByJunta(inputIrrig?.junta, e)}
+                                                        loadOptions={async (e) => await searchIrrigationSystemByJunta(inputIrrigation?.farm.junta, e)}
                                                         menuPlacement={'auto'}
                                                         placeholder={`Buscar...`}
                                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
@@ -91,7 +91,7 @@ export const FarmCropEdit = () => {
                                                         hideSelectedOptions
                                                         isClearable
                                                         defaultOptions
-                                                        loadOptions={async (e) => await searchCropVarietyByJunta(inputIrrig?.junta, e)}
+                                                        loadOptions={async (e) => await searchCropVarietyByJunta(inputIrrigation?.farm.junta, e)}
                                                         menuPlacement={'auto'}
                                                         placeholder={`Busque y seleccione cultivo...`}
                                                         loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}

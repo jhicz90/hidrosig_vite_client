@@ -76,8 +76,8 @@ export const valuerateApi = storeApi.injectEndpoints({
             providesTags: ['VlRt']
         }),
         getValueRateByYrAndIrr: builder.query({
-            query: ({ yearrate, inputirrig }) => ({
-                url: `valuerate/edit/yrir/yr/${yearrate}/irr/${inputirrig}`,
+            query: ({ yearrate, inputirrigation }) => ({
+                url: `valuerate/edit/yrir/yr/${yearrate}/irr/${inputirrigation}`,
                 alert: false
             }),
             transformResponse: (response, meta, arg) => response.valuerate,

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { Button, Card, Form, ListGroup } from 'react-bootstrap'
 import { IoMdAddCircleOutline, IoMdClose } from 'react-icons/io'
-import { userfarmApi, useUpdateUserFarmByIdMutation } from '../../../store/actions'
+import { userfarmApi, useUpdateUserFarmByIdMutation } from '@/store/actions'
 
 export const UserFarmAdditionalData = () => {
 
@@ -31,7 +31,7 @@ export const UserFarmAdditionalData = () => {
     }, [reset, data])
 
     return (
-        <form id='form-userregister-userfarm-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
+        <form className='container-flex-stack' id='form-userregister-userfarm-edit-appids' onSubmit={handleSubmit(handleUpdate)}>
             <div className='d-flex justify-content-end gap-2'>
                 <Button
                     disabled={isUpdating}
@@ -43,8 +43,7 @@ export const UserFarmAdditionalData = () => {
             </div>
             <div className='row'>
                 <div className='col-12'>
-                    <Form.Group className='mb-3' controlId='pAppIdentifiers'>
-                        <Form.Label>Identificadores de aplicaciones</Form.Label>
+                    <Form.Group controlId='pAppIdentifiers'>
                         <ListGroup>
                             <ListGroup.Item onClick={() => append({ nameApp: '', idApp: '' })} className='d-flex align-items-center' action>
                                 Agregar identificador <IoMdAddCircleOutline className='ms-2' size={20} color='green' />

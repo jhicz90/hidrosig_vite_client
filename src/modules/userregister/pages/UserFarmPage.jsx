@@ -143,7 +143,7 @@ export const UserFarmPage = () => {
                     </Tab.Container>
                 </div>
             </div>
-            <div className='mt-2'>
+            <div className='card card-next-nav'>
                 <Routes>
                     <Route index element={<UserFarmInformation />} />
                     <Route path={`prp`} element={<UserFarmListAreaFarm />} />

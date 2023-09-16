@@ -5,8 +5,8 @@ export const consumptionApi = storeApi.injectEndpoints({
     endpoints: (builder) => ({
         // CONSUMPTION
         getListVolByCmpAndIrrAndFrp: builder.query({
-            query: ({ campaign, inputIrrig, farmCrop }) => ({
-                url: `consumption_management/list/byday/${campaign}/${inputIrrig}/${farmCrop}`
+            query: ({ campaign, inputIrrigation, farmCrop }) => ({
+                url: `consumption_management/list/byday/${campaign}/${inputIrrigation}/${farmCrop}`
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Crp', 'Cllc']

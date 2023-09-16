@@ -1,32 +1,32 @@
 import React, { memo, useState, useEffect } from 'react'
 import { CalendarContext } from './context'
-import { LoadingPage } from '../../../../components'
 import { CalendarBody, CropSelector, TableFarmCropCollect } from './components'
-import { useGetInputIrrigByIdQuery, useGetValueRateByYrAndIrrQuery, useGetYearRateByIdQuery } from '../../../../store/actions'
+import { LoadingPage } from '@/components'
+import { useGetInputIrrigationByIdQuery, useGetValueRateByYrAndIrrQuery, useGetYearRateByIdQuery } from '@/store/actions'
 
 export const CalendarVolumeFullYear = memo(function Calendar({
     campaign = null,
-    inputIrrig = null
+    inputIrrigation = null
 }) {
 
     const { data: campaignDetail = null, isFetching: isLoadingCmp } = useGetYearRateByIdQuery(campaign)
 
-    const { data: inputIrrigDetail = null, isFetching: isLoadingIrr } = useGetInputIrrigByIdQuery(inputIrrig)
+    const { data: inputIrrigDetail = null, isFetching: isLoadingIrr } = useGetInputIrrigationByIdQuery(inputIrrig)
 
     const { data: valueRateDetail = null, isFetching: isLoadingVal } = useGetValueRateByYrAndIrrQuery({ yearrate: campaign, inputirrig: inputIrrig })
 
     const [context, setContext] = useState({
         campaign: campaignDetail,
         campaignId: campaign,
-        inputIrrig: inputIrrigDetail,
-        inputIrrigId: inputIrrig,
+        inputIrrigation: inputIrrigDetail,
+        inputIrrigationId: inputIrrigation,
         valueRate: valueRateDetail,
         farmCrop: null,
         events: []
     })
 
     useEffect(() => {
-        setContext(v => ({ ...v, campaign: campaignDetail, inputIrrig: inputIrrigDetail, valueRate: valueRateDetail }))
+        setContext(v => ({ ...v, campaign: campaignDetail, inputIrrigation: inputIrrigDetail, valueRate: valueRateDetail }))
     }, [campaignDetail, inputIrrigDetail, valueRateDetail])
 
     return (

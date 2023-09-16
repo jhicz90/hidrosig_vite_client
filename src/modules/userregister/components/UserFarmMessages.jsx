@@ -3,7 +3,7 @@ import { Button, ListGroup } from 'react-bootstrap'
 
 export const UserFarmMessages = () => {
     return (
-        <div className='d-flex gap-2 w-100 h-100'>
+        <div className='container-flex-stack'>
             <ListGroup className='min-w-400'>
                 <ListGroup.Item action>
                     Familiar del titular

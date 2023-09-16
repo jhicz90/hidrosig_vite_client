@@ -21,7 +21,7 @@ export const FeeCollectAreaFarmNavPage = () => {
                     <NavLink to={`vol?cmp=${cmp}&irr=${irr}`} className={({ isActive }) => isActive ? 'btn btn-neutral active' : 'btn btn-neutral'}>Volumen</NavLink>
                 </SliderNavFlip>
             </Tab.Container>
-            <div className='mt-2'>
+            <div className='card card-next-nav'>
                 <Routes>
                     <Route index element={<Navigate to={`pay?cmp=${cmp}&irr=${irr}`} replace />} />
                     <Route path={`pay`} element={<CollectCampaign />} />

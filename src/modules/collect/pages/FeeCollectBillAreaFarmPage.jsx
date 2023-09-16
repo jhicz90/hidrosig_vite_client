@@ -4,9 +4,9 @@ import { Button } from 'react-bootstrap'
 import { HiSwitchHorizontal } from 'react-icons/hi'
 import { HiArrowUturnLeft, HiCalendar, HiCurrencyDollar, HiMap, HiPrinter, HiQueueList } from 'react-icons/hi2'
 import moment from 'moment'
-import { LoadingPage } from '../../../components'
 import { AreaFarmListCampaign, FeeCollectAreaFarmNavPage } from '..'
-import { useGetFarmByIdQuery } from '../../../store/actions'
+import { LoadingPage } from '@/components'
+import { useGetFarmByIdQuery } from '@/store/actions'
 
 export const FeeCollectBillAreaFarmPage = () => {
 
@@ -27,7 +27,7 @@ export const FeeCollectBillAreaFarmPage = () => {
                     <div className='mt-1 mt-sm-0 d-flex flex-column flex-sm-row gap-0 gap-sm-4'>
                         <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
                             <HiSwitchHorizontal size={20} />
-                            {data.inputIrrig.length}
+                            {data.inputIrrigation.length}
                         </div>
                         <div className='mt-2 d-flex align-items-center gap-1 text-muted'>
                             <HiCurrencyDollar size={20} />

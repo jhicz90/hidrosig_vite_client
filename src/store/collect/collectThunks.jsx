@@ -43,15 +43,15 @@ export const collectApi = storeApi.injectEndpoints({
             providesTags: ['Cllc']
         }),
         getPayResumeByCampaignAndInputIrrig: builder.query({
-            query: ({ campaign, inputIrrig }) => ({
-                url: `collect/list/yeardebt/resume/${campaign}/${inputIrrig}`
+            query: ({ campaign, inputIrrigation }) => ({
+                url: `collect/list/yeardebt/resume/${campaign}/${inputIrrigation}`
             }),
             transformResponse: (response, meta, arg) => response.resume,
             providesTags: ['Cllc']
         }),
         getPayResumeMonthByCampaignAndInputIrrig: builder.query({
-            query: ({ campaign, inputIrrig }) => ({
-                url: `collect/list/yeardebt/resumebymonth/${campaign}/${inputIrrig}`
+            query: ({ campaign, inputIrrigation }) => ({
+                url: `collect/list/yeardebt/resumebymonth/${campaign}/${inputIrrigation}`
             }),
             transformResponse: (response, meta, arg) => response.resume,
             providesTags: ['Cllc']
@@ -67,8 +67,8 @@ export const collectApi = storeApi.injectEndpoints({
             providesTags: ['Orgz', 'Trrt']
         }),
         getListCropByCampaignAndInputIrrig: builder.query({
-            query: ({ campaign, inputIrrig }) => ({
-                url: `collect/list/crop/${campaign}/${inputIrrig}`
+            query: ({ campaign, inputIrrigation }) => ({
+                url: `collect/list/crop/${campaign}/${inputIrrigation}`
             }),
             transformResponse: (response, meta, arg) => response.docs,
             providesTags: ['Crp', 'Cllc']

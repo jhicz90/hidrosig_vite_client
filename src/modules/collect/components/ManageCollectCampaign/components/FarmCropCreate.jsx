@@ -4,17 +4,17 @@ import { Button, Form, Offcanvas } from 'react-bootstrap'
 import { Controller, useForm } from 'react-hook-form'
 import AsyncSelect from 'react-select/async'
 import moment from 'moment'
-import { DatePicker, Liner, OptionCropVariety } from '../../../../../components'
-import { searchCropVarietyByJunta, searchIrrigationSystemByJunta, useAddFarmCropInCollectByYearRateMutation } from '../../../../../store/actions'
-import { OffCanvasFooterStyled } from '../../../../../style'
+import { DatePicker, Liner, OptionCropVariety } from '@/components'
+import { searchCropVarietyByJunta, searchIrrigationSystemByJunta, useAddFarmCropInCollectByYearRateMutation } from '@/store/actions'
+import { OffCanvasFooterStyled } from '@/style'
 
 export const FarmCropCreate = () => {
 
-    const [{ farmCropNew, inputIrrigId, inputIrrig, campaignId }, setContext] = useContext(ManageCollectCampaignContext)
+    const [{ farmCropNew, inputIrrigationId, inputIrrigation, campaignId }, setContext] = useContext(ManageCollectCampaignContext)
     const { control, register, handleSubmit, reset, setValue, watch } = useForm({
         defaultValues: {
-            inputIrrig: inputIrrigId,
-            irrigSystem: inputIrrig?.inputIrrig.irrigSystem || null,
+            inputIrrig: inputIrrigationId,
+            irrigSystem: inputIrrigation?.irrigationSystem || null,
             cropVariety: null,
             areaPlanted: 0,
             seedTime: new Date(),
@@ -23,18 +23,18 @@ export const FarmCropCreate = () => {
         }
     })
     const [addFarmCrop] = useAddFarmCropInCollectByYearRateMutation()
-
+    
     const handleSave = (farmCrop) => {
         addFarmCrop({
             yearRate: campaignId,
             farmCrop: {
                 ...farmCrop,
-                farm: inputIrrig?._id
+                farm: inputIrrigation?.farm._id
             }
         }).unwrap().then(() =>
             reset({
-                inputIrrig: inputIrrigId,
-                irrigSystem: inputIrrig?.inputIrrig.irrigSystem || null,
+                inputIrrig: inputIrrigationId,
+                irrigSystem: inputIrrigation?.irrigationSystem || null,
                 cropVariety: null,
                 areaPlanted: 0,
                 seedTime: new Date(),
@@ -46,8 +46,8 @@ export const FarmCropCreate = () => {
 
     useEffect(() => {
         reset({
-            inputIrrig: inputIrrigId,
-            irrigSystem: inputIrrig?.inputIrrig.irrigSystem || null,
+            inputIrrig: inputIrrigationId,
+            irrigSystem: inputIrrigation?.irrigationSystem || null,
             cropVariety: null,
             areaPlanted: 0,
             seedTime: new Date(),
@@ -69,7 +69,7 @@ export const FarmCropCreate = () => {
                     </div>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <form id={`form-collect-farm-crop-create`} onSubmit={handleSubmit(handleSave)}>
+                    <form id='form-collect-farm-crop-create' onSubmit={handleSubmit(handleSave)}>
                         <Liner>Información</Liner>
                         <div className='row'>
                             <div className='col-12'>
@@ -83,12 +83,12 @@ export const FarmCropCreate = () => {
                                             ({ field }) =>
                                                 <AsyncSelect
                                                     {...field}
-                                                    isDisabled={inputIrrig?.inputIrrig.regulation === 2}
+                                                    isDisabled={inputIrrigation?.regulation === 2}
                                                     classNamePrefix='rc-select'
                                                     hideSelectedOptions
                                                     isClearable
                                                     defaultOptions
-                                                    loadOptions={async (e) => await searchIrrigationSystemByJunta(inputIrrig?.junta, e)}
+                                                    loadOptions={async (e) => await searchIrrigationSystemByJunta(inputIrrigation?.farm.junta, e)}
                                                     menuPlacement={'auto'}
                                                     placeholder={`Buscar...`}
                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}
@@ -115,7 +115,7 @@ export const FarmCropCreate = () => {
                                                     hideSelectedOptions
                                                     isClearable
                                                     defaultOptions
-                                                    loadOptions={async (e) => await searchCropVarietyByJunta(inputIrrig?.junta, e)}
+                                                    loadOptions={async (e) => await searchCropVarietyByJunta(inputIrrigation?.farm.junta, e)}
                                                     menuPlacement={'auto'}
                                                     placeholder={`Busque y seleccione cultivo...`}
                                                     loadingMessage={({ inputValue }) => `Buscando '${inputValue}'`}

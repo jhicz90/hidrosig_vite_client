@@ -6,9 +6,9 @@ import { useGetListCropByCampaignAndInputIrrigQuery } from '../../../../../store
 
 export const TableFarmCropCollect = () => {
 
-    const [{ campaignId, inputIrrigId }, setContext] = useContext(ManageCollectCampaignContext)
+    const [{ campaignId, inputIrrigationId }, setContext] = useContext(ManageCollectCampaignContext)
 
-    const { data: listFarmCrops = [], isFetching, isSuccess } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrig: inputIrrigId })
+    const { data: listFarmCrops = [], isFetching, isSuccess } = useGetListCropByCampaignAndInputIrrigQuery({ campaign: campaignId, inputIrrigation: inputIrrigationId })
 
     if (isFetching) {
         return <LoadingPage />

@@ -61,63 +61,64 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                     </div>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className='row'>
-                        <div className='col-12'>
-                            <InputSearch
-                                value={search}
-                                onChange={(e) => {
-                                    if (e.trim() !== '') searchArea(e)
-                                    setSearch(e)
-                                }}
-                                placeholder='Buscar areas...'
-                                loading={isLoadingSearchArea}
-                                className='mb-2'
-                            />
-                        </div>
-                    </div>
-                    <div className='row row-cols-1 g-2'>
+                    <div className='container-flex-stack'>
+                        <InputSearch
+                            value={search}
+                            onChange={(e) => {
+                                if (e.trim() !== '') searchArea(e)
+                                setSearch(e)
+                            }}
+                            placeholder='Buscar areas...'
+                            loading={isLoadingSearchArea}
+                        />
                         {
-                            // optionsAreas.filter(a => a._id !== feature?._id).map(area =>
-                            optionsAreas.map(area =>
-                                <div key={area._id} className='col'>
-                                    <Card>
-                                        <div className='row g-0'>
-                                            <div className='col-4'>
-                                                {
-                                                    !!area
-                                                    &&
-                                                    <MapLocation
-                                                        className='rounded-start'
-                                                        geometry={
-                                                            [
-                                                                { ...area }
-                                                            ]
+                            optionsAreas.length > 0
+                            &&
+                            <div className='row row-cols-1 g-2'>
+                                {
+                                    // optionsAreas.filter(a => a._id !== feature?._id).map(area =>
+                                    optionsAreas.map(area =>
+                                        <div key={area._id} className='col'>
+                                            <Card>
+                                                <div className='row g-0'>
+                                                    <div className='col-4'>
+                                                        {
+                                                            !!area
+                                                            &&
+                                                            <MapLocation
+                                                                className='rounded-start'
+                                                                geometry={
+                                                                    [
+                                                                        { ...area }
+                                                                    ]
+                                                                }
+                                                                style={{
+                                                                    height: '250px'
+                                                                }}
+                                                            />
                                                         }
-                                                        style={{
-                                                            height: '250px'
-                                                        }}
-                                                    />
-                                                }
-                                            </div>
-                                            <div className='col-8 d-flex flex-column justify-content-between'>
-                                                <div className='d-flex flex-column justify-content-between p-2 h-100'>
-                                                    <OptionGeometry geo={area} />
-                                                    <Button
-                                                        onClick={() => {
-                                                            handleUpdate(area._id)
-                                                        }}
-                                                        disabled={isUpdating}
-                                                        size='sm'
-                                                        className='mt-2 w-100'
-                                                    >
-                                                        Seleccionar Area
-                                                    </Button>
+                                                    </div>
+                                                    <div className='col-8 d-flex flex-column justify-content-between'>
+                                                        <div className='d-flex flex-column justify-content-between p-2 h-100'>
+                                                            <OptionGeometry geo={area} />
+                                                            <Button
+                                                                onClick={() => {
+                                                                    handleUpdate(area._id)
+                                                                }}
+                                                                disabled={isUpdating}
+                                                                size='sm'
+                                                                className='mt-2 w-100'
+                                                            >
+                                                                Seleccionar Area
+                                                            </Button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </Card>
                                         </div>
-                                    </Card>
-                                </div>
-                            )
+                                    )
+                                }
+                            </div>
                         }
                     </div>
                 </Modal.Body>

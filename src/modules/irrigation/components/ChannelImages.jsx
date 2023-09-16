@@ -1,8 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Alert, Button } from 'react-bootstrap'
-import { MdAddPhotoAlternate } from 'react-icons/md'
+import { Alert } from 'react-bootstrap'
 import { GridGallery } from '@/components'
 import { channelApi, startModalResource, startUpdateImageIdFarm, useGetChannelByIdQuery } from '@/store/actions'
 

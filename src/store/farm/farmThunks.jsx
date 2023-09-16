@@ -57,13 +57,6 @@ export const farmApi = storeApi.injectEndpoints({
             transformResponse: (response, meta, arg) => response.farm,
             providesTags: ['Frm']
         }),
-        getInputIrrigById: builder.query({
-            query: (inputIrrig) => ({
-                url: `farm/edit/inputirrig/${inputIrrig}`
-            }),
-            transformResponse: (response, meta, arg) => response.farm,
-            providesTags: ['Frm']
-        }),
         updateFarmById: builder.mutation({
             query: ({ id, farm }) => ({
                 url: `farm/edit/${id}`,
@@ -105,7 +98,6 @@ export const {
     useDeleteResourceFarmMutation,
     useDraftFarmMutation,
     useGetFarmByIdQuery,
-    useGetInputIrrigByIdQuery,
     useGetListFarmByUserFarmQuery,
     useGetListFarmQuery,
     useLazyNewFarmQuery,

@@ -7,7 +7,7 @@ import { useLazyGetListVolByCmpAndIrrAndFrpQuery } from '../../../../../store/ac
 
 export const CalendarBody = () => {
 
-    const [{ campaign, campaignId, inputIrrigId, farmCrop }, setContext] = useContext(CalendarContext)
+    const [{ campaign, campaignId, inputIrrigationId, farmCrop }, setContext] = useContext(CalendarContext)
 
     const year = useMemo(() => campaign?.year ?? new Date().getFullYear(), [campaign])
 
@@ -23,7 +23,7 @@ export const CalendarBody = () => {
         if (!!farmCrop) {
             loadVolDays({
                 campaign: campaignId,
-                inputIrrig: inputIrrigId,
+                inputIrrigation: inputIrrigationId,
                 farmCrop: farmCrop._id
             })
         }
