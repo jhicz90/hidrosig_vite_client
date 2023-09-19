@@ -11,9 +11,9 @@ export const CalendarVolumeFullYear = memo(function Calendar({
 
     const { data: campaignDetail = null, isFetching: isLoadingCmp } = useGetYearRateByIdQuery(campaign)
 
-    const { data: inputIrrigDetail = null, isFetching: isLoadingIrr } = useGetInputIrrigationByIdQuery(inputIrrig)
+    const { data: inputIrrigDetail = null, isFetching: isLoadingIrr } = useGetInputIrrigationByIdQuery(inputIrrigation)
 
-    const { data: valueRateDetail = null, isFetching: isLoadingVal } = useGetValueRateByYrAndIrrQuery({ yearrate: campaign, inputirrig: inputIrrig })
+    const { data: valueRateDetail = null, isFetching: isLoadingVal } = useGetValueRateByYrAndIrrQuery({ yearrate: campaign, inputIrrigation })
 
     const [context, setContext] = useState({
         campaign: campaignDetail,

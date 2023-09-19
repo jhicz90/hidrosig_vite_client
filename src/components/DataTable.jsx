@@ -159,14 +159,14 @@ export const DataTable = ({
         selectedChange(state.ids)
     }
 
-    const select = disabledSelect instanceof function ?
-        useRowSelect(data.nodes.filter(disabledSelect), {
+    const select = disabledSelect instanceof Function ?
+        useRowSelect({ nodes: data.nodes.filter(disabledSelect) }, {
             onChange: onSelectChange,
         }, {
             clickType: SelectClickTypes.ButtonClick,
         })
         :
-        useRowSelect(data.nodes, {
+        useRowSelect(data, {
             onChange: onSelectChange,
         }, {
             clickType: SelectClickTypes.ButtonClick,

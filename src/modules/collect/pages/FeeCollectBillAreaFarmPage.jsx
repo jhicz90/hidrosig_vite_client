@@ -76,11 +76,11 @@ export const FeeCollectBillAreaFarmPage = () => {
                     </Button>
                 </div>
             </div>
-            <div className='row'>
-                <div className='col-12 col-lg-5 col-xl-3'>
+            <div className='row gap-2 gap-lg-0'>
+                <div className='col-12 col-lg-5 col-xl-4'>
                     <AreaFarmListCampaign />
                 </div>
-                <div className='col-12 col-lg-7 col-xl-9'>
+                <div className='col-12 col-lg-7 col-xl-8'>
                     <FeeCollectAreaFarmNavPage />
                 </div>
             </div>
