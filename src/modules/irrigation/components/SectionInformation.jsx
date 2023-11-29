@@ -38,20 +38,17 @@ export const SectionInformation = () => {
         if (pDistance(progressiveEnd) - pDistance(progressiveStart) > 0) {
             if (
                 pDistance(progressiveEnd) - pDistance(progressiveStart)
-                <= Number(data.limitStructure.limit + (pDistance(data.progressiveEnd) - pDistance(data.progressiveStart)))
+                <= Number(data.limitchannel.limit + (pDistance(data.progressiveEnd) - pDistance(data.progressiveStart)))
             ) {
-                try {
-                    await updateSection({
-                        id: sectid,
-                        section: {
-                            ...updateData,
-                            rugosity,
-                            idRugosity: rugosity ? rugosity._id : '',
-                        }
-                    })
-                } catch (err) {
-                    console.log(err)
-                }
+                console.log(updateData)
+                await updateSection({
+                    id: sectid,
+                    section: {
+                        ...updateData,
+                        rugosity,
+                        idRugosity: rugosity ? rugosity._id : '',
+                    }
+                })
             } else {
                 setFocus('progressiveEnd')
             }
@@ -163,7 +160,7 @@ export const SectionInformation = () => {
                             <Form.Select
                                 {...register('coatedType', { required: true })}
                                 autoComplete='off'
-                                disabled={!watch('coated')}
+                                disabled={!watch('coatedCheck')}
                             >
                                 <option value={0}>Ninguno</option>
                                 <option value={1}>Solera</option>
@@ -175,11 +172,11 @@ export const SectionInformation = () => {
                             </Form.Select>
                             <FormCheck
                                 id='newCoated'
-                                {...register('coated', {
+                                {...register('coatedCheck', {
                                     onChange: () => {
                                         setValue('coatedType', 0)
-                                        setValue('leftSlopeThickness', 0)
-                                        setValue('rightSlopeThickness', 0)
+                                        // setValue('leftSlopeThickness', 0)
+                                        // setValue('rightSlopeThickness', 0)
                                     }
                                 })}
                                 label='¿La estructura esta revestida?'
@@ -353,7 +350,7 @@ export const SectionInformation = () => {
                         </Form.Label>
                         <Col md={8}>
                             <Form.Control
-                                disabled={!watch('coated')}
+                                disabled={!watch('coatedCheck')}
                                 {...register('leftSlopeThickness', { required: true, setValueAs: v => Number(v) })}
                                 type='number'
                                 min={0}
@@ -370,7 +367,7 @@ export const SectionInformation = () => {
                         </Form.Label>
                         <Col md={8}>
                             <Form.Control
-                                disabled={!watch('coated')}
+                                disabled={!watch('coatedCheck')}
                                 {...register('rightSlopeThickness', { required: true, setValueAs: v => Number(v) })}
                                 type='number'
                                 min={0}

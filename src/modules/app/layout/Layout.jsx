@@ -6,7 +6,8 @@ import { AppComandBar, AppHeader, AppSidebar, AppToolboxBar } from '../component
 
 export const Layout = () => {
     return (
-        <RootApp className='root-app animate__animated animate__fadeIn'>
+        // <RootApp className='root-app animate__animated animate__fadeIn'>
+        <RootApp className='root-app'>
             <AppHeader />
             <ContentApp className='content-app'>
                 <AppSidebar />

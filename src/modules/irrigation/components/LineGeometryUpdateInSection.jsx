@@ -1,43 +1,27 @@
 import React, { useState } from 'react'
 import { Button, Card, Modal } from 'react-bootstrap'
 import { InputSearch, MapLocation, OptionGeometry } from '@/components'
-import { useLazyGetListPolygonQuery, useUpdateFarmByIdMutation } from '@/store/actions'
+import { useLazyGetListLineQuery, useUpdateSectionByIdMutation } from '@/store/actions'
 
-export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
+export const LineGeometryUpdateInSection = ({ section = null }) => {
 
     const [show, setShow] = useState(false)
     const [typeLocation, setTypeLocation] = useState(0)
     const [search, setSearch] = useState('')
     const [range, setRange] = useState(20)
     const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
-    const [searchArea, { data: optionsAreas = [], isFetching: isLoadingSearchArea }] = useLazyGetListPolygonQuery()
-    const [updateFarm, { isLoading: isUpdating }] = useUpdateFarmByIdMutation()
+    const [searchLine, { data: optionsLines = [], isFetching: isLoadingSearchLine }] = useLazyGetListLineQuery()
+    const [updateSection, { isLoading: isUpdating }] = useUpdateSectionByIdMutation()
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
     const handleUpdate = (feature) => {
-        updateFarm({
-            id: farm,
-            farm: { feature }
+        updateSection({
+            id: section,
+            section: { feature }
         })
     }
-
-    // const handleSave = async (newData) => {
-    //     await addInputIrrigation(newData).unwrap()
-    //         .then(() => newInputIrrigation(farm))
-    // }
-
-    // useEffect(() => {
-    //     setTypeLocation(0)
-    //     newInputIrrigation(farm)
-    // }, [show])
-
-    // useEffect(() => {
-    //     reset({
-    //         ...data
-    //     })
-    // }, [reset, data])
 
     return (
         <React.Fragment>
@@ -45,7 +29,7 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                 onClick={handleShow}
                 variant='primary'
             >
-                Cambiar superficie
+                Cambiar conducto
             </Button>
             <Modal
                 show={show}
@@ -57,7 +41,7 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
             >
                 <Modal.Header closeButton closeVariant='white'>
                     <div className='d-flex flex-column'>
-                        <Modal.Title>Area geográfica #ACTUALIZAR</Modal.Title>
+                        <Modal.Title>Linea geográfica #ACTUALIZAR</Modal.Title>
                     </div>
                 </Modal.Header>
                 <Modal.Body>
@@ -65,31 +49,31 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                         <InputSearch
                             value={search}
                             onChange={(e) => {
-                                if (e.trim() !== '') searchArea(e)
+                                if (e.trim() !== '') searchLine(e)
                                 setSearch(e)
                             }}
-                            placeholder='Buscar areas...'
-                            loading={isLoadingSearchArea}
+                            placeholder='Buscar lineas...'
+                            loading={isLoadingSearchLine}
                         />
                         {
-                            optionsAreas.length > 0
+                            optionsLines.length > 0
                             &&
                             <div className='row row-cols-1 g-2'>
                                 {
                                     // optionsAreas.filter(a => a._id !== feature?._id).map(area =>
-                                    optionsAreas.map(area =>
-                                        <div key={area._id} className='col'>
+                                    optionsLines.map(line =>
+                                        <div key={line._id} className='col'>
                                             <Card>
                                                 <div className='row g-0'>
                                                     <div className='col-4'>
                                                         {
-                                                            !!area
+                                                            !!line
                                                             &&
                                                             <MapLocation
                                                                 className='rounded-start'
                                                                 geometry={
                                                                     [
-                                                                        { ...area }
+                                                                        { ...line }
                                                                     ]
                                                                 }
                                                                 style={{
@@ -100,16 +84,16 @@ export const AreaGeometryUpdateInAreaFarm = ({ farm = null }) => {
                                                     </div>
                                                     <div className='col-8 d-flex flex-column justify-content-between'>
                                                         <div className='d-flex flex-column justify-content-between p-2 h-100'>
-                                                            <OptionGeometry geo={area} />
+                                                            <OptionGeometry geo={line} />
                                                             <Button
                                                                 onClick={() => {
-                                                                    handleUpdate(area._id)
+                                                                    handleUpdate(line._id)
                                                                 }}
                                                                 disabled={isUpdating}
                                                                 size='sm'
                                                                 className='mt-2 w-100'
                                                             >
-                                                                Seleccionar Area
+                                                                Seleccionar Linea
                                                             </Button>
                                                         </div>
                                                     </div>

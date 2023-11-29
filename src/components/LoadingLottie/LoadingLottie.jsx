@@ -5,7 +5,7 @@ import waterAnimation from './animation_waterFilling.json'
 
 export const LoadingLottie = () => {
     return (
-        <LottieWrapper className='lottie-wrapper'>
+        <LottieWrapper className='lottie-wrapper animate__animated animate__fadeOut'>
             <Lottie
                 animationData={waterAnimation}
                 loop={true}

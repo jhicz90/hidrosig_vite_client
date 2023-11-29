@@ -2,15 +2,15 @@ import { toast } from 'react-hot-toast'
 import parse from 'html-react-parser'
 
 export const msgFetchAlert = ({ msg }) => {
-    msg.forEach(e => {
-        switch (e.type) {
+    msg.forEach(({ type, title, message, duration, dismiss, timeAgo, alertBy, err }) => {
+        switch (type) {
             case 1:
                 toast(t => (
                     <>
-                        {parseContent(e, t)}
+                        {message}
                     </>
                 ), {
-                    duration: e.delay,
+                    duration,
                     className: 'notify-body'
                 })
                 break
@@ -18,10 +18,10 @@ export const msgFetchAlert = ({ msg }) => {
             case 2:
                 toast.success(t => (
                     <>
-                        {parseContent(e, t)}
+                        {message}
                     </>
                 ), {
-                    duration: e.delay,
+                    duration,
                     className: 'notify-body'
                 })
                 break
@@ -29,10 +29,10 @@ export const msgFetchAlert = ({ msg }) => {
             case 3:
                 toast.error(t => (
                     <>
-                        {parseContent(e, t)}
+                        {message}
                     </>
                 ), {
-                    duration: e.delay,
+                    duration,
                     className: 'notify-body'
                 })
                 break
@@ -40,36 +40,22 @@ export const msgFetchAlert = ({ msg }) => {
             case 4:
                 toast.success(t => (
                     <>
-                        {parseContent(e, t)}
+                        {message}
                     </>
                 ), {
-                    ariaProps: {
-                        'dismiss': e.dismiss ? 'true' : 'false'
-                    },
-                    style: {
-                        maxWidth: '350px',
-                        padding: '0px',
-                        paddingLeft: '10px'
-                    },
-                    duration: e.delay
+                    duration,
+                    className: 'notify-body'
                 })
                 break
 
             case 5:
                 toast.error(t => (
                     <>
-                        {parseContent(e, t)}
+                        {message}
                     </>
                 ), {
-                    ariaProps: {
-                        'dismiss': e.dismiss ? 'true' : 'false'
-                    },
-                    style: {
-                        maxWidth: '350px',
-                        padding: '0px',
-                        paddingLeft: '10px'
-                    },
-                    duration: e.delay
+                    duration,
+                    className: 'notify-body'
                 })
                 break
 
@@ -80,19 +66,16 @@ export const msgFetchAlert = ({ msg }) => {
             case 'custom':
                 toast(t => (
                     <>
-                        {parseContent(e, t)}
+                        {message}
                     </>
                 ), {
-                    style: {
-                        maxWidth: '350px',
-                        padding: '0px',
-                    },
-                    duration: e.delay
+                    duration,
+                    className: 'notify-body'
                 })
                 break
 
             default:
-                toast(e.content, { duration: e.delay })
+                toast(message, { duration })
                 break
 
         }

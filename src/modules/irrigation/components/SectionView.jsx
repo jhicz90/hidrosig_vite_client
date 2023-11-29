@@ -13,22 +13,26 @@ export const SectionView = () => {
         <Card className='overflow-hidden'>
             {
                 !!data.feature
-                &&
-                <div className='row'>
-                    <div className='col'>
-                        <MapLocation
-                            className='my-0'
-                            geometry={
-                                [
-                                    data.feature
-                                ]
-                            }
-                            style={{
-                                height: '400px'
-                            }}
-                        />
+                    ?
+                    <div className='row'>
+                        <div className='col'>
+                            <MapLocation
+                                className='my-0'
+                                geometry={
+                                    [
+                                        data.feature
+                                    ]
+                                }
+                                style={{
+                                    height: '400px'
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
+                    :
+                    <div className='d-flex align-items-center justify-content-center' style={{ height: '400px' }}>
+                        No ahi linea geografica definida en el tramo
+                    </div>
             }
         </Card>
     )

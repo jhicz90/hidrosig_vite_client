@@ -18,7 +18,7 @@ export const DataTable = ({
     height = '400px',
     selected = false,
     selectedChange = null,
-    disabledSelect = null,
+    disabledSelect = () => { },
     iconDisabledSelect = <IoMdCheckmarkCircleOutline size={20} />,
     footer = false,
     maxHeightHeaderRow = '40px',

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { Alert, Button, Card } from 'react-bootstrap'
-import { InputSearch, MapLocation, OptionGeometry } from '../../../components'
-import { useGetFarmByIdQuery, useLazyGetListPolygonQuery, useUpdateFarmByIdMutation } from '../../../store/actions'
+import { useSelector } from 'react-redux'
+import { Alert, Card } from 'react-bootstrap'
 import { AreaGeometryUpdateInAreaFarm } from '.'
+import { MapLocation, OptionGeometry } from '@/components'
+import { farmApi } from '@/store/actions'
 
 export const AreaFarmAreaGeometry = () => {
 
     const { prpid } = useParams()
-    const { data = null } = useGetFarmByIdQuery(prpid)
+    const { data = null } = useSelector(farmApi.endpoints.getFarmById.select(prpid))
     const [feature, setFeature] = useState(null)
 
     useEffect(() => {

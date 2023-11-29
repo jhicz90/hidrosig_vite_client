@@ -55,6 +55,16 @@ export const geoobjectApi = storeApi.injectEndpoints({
             }),
             invalidatesTags: ['Geo']
         }),
+        getListLine: builder.query({
+            query: (search = '') => ({
+                url: `geoobject/search/linestring`,
+                params: {
+                    search
+                }
+            }),
+            transformResponse: (response, meta, arg) => response.docs,
+            providesTags: ['Geo']
+        }),
         // LINE
     })
 })
@@ -66,6 +76,7 @@ export const {
     useAddPolygonMutation,
     useGetListPolygonQuery,
     useLazyGetListPolygonQuery,
+    useLazyGetListLineQuery,
 } = geoobjectApi
 
 export const startSaveNewGeometry = () => {

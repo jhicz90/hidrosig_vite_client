@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { FloatingLabel, Form } from 'react-bootstrap'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
-import { useLazyAuthLoginQuery } from '../../../store/actions'
+import { useLazyAuthLoginQuery } from '@/store/actions'
 
 import bg from '../../../assets/slider1.jpg'
 
