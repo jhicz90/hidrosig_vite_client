@@ -211,7 +211,7 @@ export const DatePicker = ({ id, value = new Date(), className = '', disabled = 
             // portalId='body'
             title={title}
             withPortal={modal}
-            {...props}
+            // {...props}
         />
     )
 }
