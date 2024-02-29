@@ -12,7 +12,7 @@ export const farmApi = storeApi.injectEndpoints({
             query: () => ({
                 url: `farm/create/new`,
             }),
-            transformResponse: (response, meta, arg) => response.farm
+            transformResponse: (response, meta, arg) => response.data
         }),
         addFarm: builder.mutation({
             query: (newFarm) => ({
@@ -32,12 +32,12 @@ export const farmApi = storeApi.injectEndpoints({
         }),
         getListFarm: builder.query({
             query: (search) => ({
-                url: `farm/list`,
+                url: `farm/search`,
                 params: {
                     search
                 }
             }),
-            transformResponse: (response, meta, arg) => response.docs,
+            transformResponse: (response, meta, arg) => response.data,
             providesTags: ['Frm']
         }),
         getListFarmByUserFarm: builder.query({
@@ -47,14 +47,14 @@ export const farmApi = storeApi.injectEndpoints({
                     search
                 }
             }),
-            transformResponse: (response, meta, arg) => response.docs,
+            transformResponse: (response, meta, arg) => response.data,
             providesTags: ['Frm']
         }),
         getFarmById: builder.query({
             query: (id) => ({
                 url: `farm/edit/${id}`
             }),
-            transformResponse: (response, meta, arg) => response.farm,
+            transformResponse: (response, meta, arg) => response.data,
             providesTags: ['Frm']
         }),
         updateFarmById: builder.mutation({
